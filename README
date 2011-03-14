@@ -1,0 +1,9 @@
+Main view controller is relatively built out.  A few pieces of functionality:
+
+1.  Grabs the report feed and mimics the web app's visualization of reports on a Google map.
+
+2.  Gets user's ISP and shows it to them.  (using a third party service - Herdict location API is acting up, should discuss)
+
+3.  Shows user the site summary for a URL they input.
+
+Am building this with a nav controller based design - user will be able to tap green button to push another VC where they can test a URL and compose/submit a URL report of their own.
