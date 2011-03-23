@@ -1,0 +1,58 @@
+/projects/Herdict Working/iOS/BarButtonItem.m: In function '-[BarButtonItem initWithFrame:]':
+/projects/Herdict Working/iOS/BarButtonItem.m:18: warning: 'setFont:' is deprecated (declared at /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIButton.h:106)
+/projects/Herdict Working/iOS/BarButtonItem.m:20: warning: 'setTitleShadowOffset:' is deprecated (declared at /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIButton.h:106)
+/projects/Herdict Working/iOS/BarButtonItem.m: In function '-[BarButtonItem drawRect:]':
+/projects/Herdict Working/iOS/BarButtonItem.m:41: error: 'myContext' undeclared (first use in this function)
+/projects/Herdict Working/iOS/BarButtonItem.m:41: error: (Each undeclared identifier is reported only once
+/projects/Herdict Working/iOS/BarButtonItem.m:41: error: for each function it appears in.)
+/projects/Herdict Working/iOS/BarButtonItem.m:32: warning: unused variable 'components'
+/projects/Herdict Working/iOS/BarButtonItem.m:31: warning: unused variable 'locations'
+/projects/Herdict Working/iOS/BarButtonItem.m:30: warning: unused variable 'num_locations'
+/projects/Herdict Working/iOS/BarButtonItem.m:29: warning: unused variable 'myColorspace'
+/projects/Herdict Working/iOS/BarButtonItem.m: At top level:
+/projects/Herdict Working/iOS/BarButtonItem.m:49: warning: property 'theTitle' requires method '-theTitle' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/BarButtonItem.m:49: warning: property 'theTitle' requires the method 'setTheTitle:' to be defined - use @synthesize, @dynamic or provide a method implementation
+{standard input}:142:non-relocatable subtraction expression, "L_OBJC_SELECTOR_REFERENCES_7" minus "L00000000001$pb"
+{standard input}:142:symbol: "L_OBJC_SELECTOR_REFERENCES_7" can't be undefined in a subtraction expression
+{standard input}:136:non-relocatable subtraction expression, "L_OBJC_SELECTOR_REFERENCES_6" minus "L00000000001$pb"
+{standard input}:136:symbol: "L_OBJC_SELECTOR_REFERENCES_6" can't be undefined in a subtraction expression
+{standard input}:133:non-relocatable subtraction expression, "L_OBJC_CLASSLIST_REFERENCES_$_2" minus "L00000000001$pb"
+{standard input}:133:symbol: "L_OBJC_CLASSLIST_REFERENCES_$_2" can't be undefined in a subtraction expression
+{standard input}:124:non-relocatable subtraction expression, "L_OBJC_SELECTOR_REFERENCES_5" minus "L00000000001$pb"
+{standard input}:124:symbol: "L_OBJC_SELECTOR_REFERENCES_5" can't be undefined in a subtraction expression
+{standard input}:118:non-relocatable subtraction expression, "LC2" minus "L00000000001$pb"
+{standard input}:118:symbol: "LC2" can't be undefined in a subtraction expression
+{standard input}:115:non-relocatable subtraction expression, "LC1" minus "L00000000001$pb"
+{standard input}:115:symbol: "LC1" can't be undefined in a subtraction expression
+{standard input}:106:non-relocatable subtraction expression, "L_OBJC_SELECTOR_REFERENCES_4" minus "L00000000001$pb"
+{standard input}:106:symbol: "L_OBJC_SELECTOR_REFERENCES_4" can't be undefined in a subtraction expression
+{standard input}:100:non-relocatable subtraction expression, "L_OBJC_SELECTOR_REFERENCES_3" minus "L00000000001$pb"
+{standard input}:100:symbol: "L_OBJC_SELECTOR_REFERENCES_3" can't be undefined in a subtraction expression
+{standard input}:97:non-relocatable subtraction expression, "L_OBJC_CLASSLIST_REFERENCES_$_2" minus "L00000000001$pb"
+{standard input}:97:symbol: "L_OBJC_CLASSLIST_REFERENCES_$_2" can't be undefined in a subtraction expression
+{standard input}:89:non-relocatable subtraction expression, "L_OBJC_SELECTOR_REFERENCES_2" minus "L00000000001$pb"
+{standard input}:89:symbol: "L_OBJC_SELECTOR_REFERENCES_2" can't be undefined in a subtraction expression
+{standard input}:82:non-relocatable subtraction expression, "LC0" minus "L00000000001$pb"
+{standard input}:82:symbol: "LC0" can't be undefined in a subtraction expression
+{standard input}:80:non-relocatable subtraction expression, "L_OBJC_SELECTOR_REFERENCES_1" minus "L00000000001$pb"
+{standard input}:80:symbol: "L_OBJC_SELECTOR_REFERENCES_1" can't be undefined in a subtraction expression
+{standard input}:77:non-relocatable subtraction expression, "L_OBJC_CLASSLIST_REFERENCES_$_1" minus "L00000000001$pb"
+{standard input}:77:symbol: "L_OBJC_CLASSLIST_REFERENCES_$_1" can't be undefined in a subtraction expression
+{standard input}:58:non-relocatable subtraction expression, "L_OBJC_SELECTOR_REFERENCES_0" minus "L00000000001$pb"
+{standard input}:58:symbol: "L_OBJC_SELECTOR_REFERENCES_0" can't be undefined in a subtraction expression
+{standard input}:54:non-relocatable subtraction expression, "L_OBJC_CLASSLIST_SUP_REFS_$_0" minus "L00000000001$pb"
+{standard input}:54:symbol: "L_OBJC_CLASSLIST_SUP_REFS_$_0" can't be undefined in a subtraction expression
+{standard input}:unknown:Undefined local symbol L_OBJC_CLASSLIST_SUP_REFS_$_0
+{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_0
+{standard input}:unknown:Undefined local symbol L_OBJC_CLASSLIST_REFERENCES_$_1
+{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_1
+{standard input}:unknown:Undefined local symbol LC0
+{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_2
+{standard input}:unknown:Undefined local symbol L_OBJC_CLASSLIST_REFERENCES_$_2
+{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_3
+{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_4
+{standard input}:unknown:Undefined local symbol LC1
+{standard input}:unknown:Undefined local symbol LC2
+{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_5
+{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_6
+{standard input}:unknown:Undefined local symbol L_OBJC_SELECTOR_REFERENCES_7

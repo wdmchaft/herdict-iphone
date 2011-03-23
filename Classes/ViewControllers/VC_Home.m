@@ -1,4 +1,4 @@
-    //
+//
 //  VC_Home.m
 //  Herdict
 //
@@ -28,229 +28,104 @@
 
 @implementation VC_Home
 
+@synthesize searchButtonCancel;
 @synthesize theSearchBar;
+@synthesize theSearchMenu;
 
-@synthesize siteSummaryPlate;
-@synthesize siteSummaryBackground;
-@synthesize siteSummaryTextView;
-@synthesize siteSummaryReceived;
+@synthesize reportsFromFeed;
+@synthesize indexOfCurrentReportToBeAnnotated;
+@synthesize reportMapView;
+@synthesize theAnnotation;
+@synthesize timerInititiateAnnotateReport;
 
-@synthesize checkSiteButtonPlate;
-@synthesize checkSiteButtonBackground;
-@synthesize checkSiteButtonLabel;
+@synthesize theSiteView;
 
-@synthesize networkInfoPlate;
-@synthesize networkInfoTabBackground;
-@synthesize networkInfoBodyBackground;
-@synthesize networkInfoLabel;
-@synthesize networkInfoText;
-@synthesize networkInfoPlateIsExpanded;
-
-@synthesize loadingPlate;
-@synthesize loadingBackground;
-@synthesize loadingActivityIndicator;
-@synthesize loadingLabel;
+@synthesize stateHome;
 
 @synthesize ipString;
 @synthesize ipInfoDict;
 @synthesize ispString;
 @synthesize countryDict;
 
-@synthesize reportsFromFeed;
-@synthesize currentReportForAnnotation;
-@synthesize nextReportForAnnotation;
-@synthesize reportMapView;
-@synthesize theAnnotation;
-
 #pragma mark UIViewController lifecycle
 
 - (void) viewDidLoad {
-
 	[super viewDidLoad];
-	
-	self.reportMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0,0,320,436)];
-	self.reportMapView.delegate = self;
-	self.reportMapView.scrollEnabled = NO;
-	self.reportMapView.zoomEnabled = NO;
-	[self.view addSubview:self.reportMapView];
-	
+		
 	self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
+	self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xe4e7e9);
 	UIImage *herdictBadgeImage = [UIImage imageNamed:@"herdict_badge"];
 	UIImageView *herdictBadgeImageView = [[[UIImageView alloc] initWithImage:herdictBadgeImage] autorelease];
 	[herdictBadgeImageView setFrame:CGRectMake(
 											   herdictBadgeImageView.frame.origin.x,
-											   herdictBadgeImageView.frame.origin.y-5,
-											   herdictBadgeImageView.frame.size.width * 1,
-											   herdictBadgeImageView.frame.size.height * 1)];
+											   herdictBadgeImageView.frame.origin.y,
+											   herdictBadgeImageView.frame.size.width * 0.8,
+											   herdictBadgeImageView.frame.size.height * 0.8)];
 	self.navigationItem.titleView = herdictBadgeImageView;
 	[herdictBadgeImageView release];
-	self.view.backgroundColor = [UIColor whiteColor];
-	
-	self.reportsFromFeed = [NSMutableArray array];
-	self.currentReportForAnnotation = 0;
-	self.nextReportForAnnotation = 1;
-	
-	self.ispString = [NSString stringWithString:@""];
-	self.ipInfoDict = [NSMutableDictionary dictionary];
+	self.view.backgroundColor = [UIColor grayColor];
 
+	// --	Set up reportMapView.
+	self.reportMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0,38,320,378)];
+	self.reportMapView.delegate = self;
+	self.reportMapView.userInteractionEnabled = NO;
+	self.reportMapView.zoomEnabled = NO;
+	[self.view addSubview:self.reportMapView];	
+	self.reportsFromFeed = [NSMutableArray array];
+	self.indexOfCurrentReportToBeAnnotated = 0;
 	self.countryDict = [NSMutableDictionary dictionary];	
 	[WebservicesController getCountries:self];	
 	
-	// --	Set up siteSummaryPlate.
-	self.siteSummaryPlate = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,480)];
-	self.siteSummaryPlate.backgroundColor = [UIColor clearColor];
-	self.siteSummaryPlate.alpha = 0;
-	[self.view addSubview:self.siteSummaryPlate];
-	self.siteSummaryBackground = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,480)];
-	self.siteSummaryBackground.backgroundColor = [UIColor blackColor];
-	self.siteSummaryBackground.alpha = 0.85;
-	[self.siteSummaryPlate addSubview:self.siteSummaryBackground];
-	self.siteSummaryTextView = [[UITextView alloc] initWithFrame:CGRectMake(40,210,280,260)];
-	self.siteSummaryTextView.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
-	self.siteSummaryTextView.backgroundColor = [UIColor clearColor];
-	self.siteSummaryTextView.textColor = [UIColor whiteColor];
-	self.siteSummaryTextView.userInteractionEnabled = NO;
-	[self.siteSummaryPlate addSubview:self.siteSummaryTextView];
-	
-	// --	Set up theSearchBar and theSearchDisplayController.
-	self.theSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,44)];
-	self.theSearchBar.placeholder = @"e.g. amnesty.org";
+	// --	Set up the 'My ISP' stuff.
+	self.ispString = [NSString stringWithString:@""];
+	self.ipInfoDict = [NSMutableDictionary dictionary];
+		
+	self.stateHome = YES;
+		
+	// --	Set up theSearchBar.
+	self.theSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,38)];
+	self.theSearchBar.placeholder = @"Enter URL to Get or Submit a Report";
+	self.theSearchBar.tintColor = UIColorFromRGB(0xbfc7cb);
+	self.theSearchBar.barStyle = UIBarStyleDefault;
 	self.theSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
 	self.theSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	self.theSearchBar.keyboardType = UIKeyboardTypeURL;
-	UITextField *searchBarTextView = [[self.theSearchBar subviews] objectAtIndex:1];
-	searchBarTextView.returnKeyType = UIReturnKeyGo;
-	self.theSearchBar.showsCancelButton = YES;
 	[self.theSearchBar setDelegate:self];
 	[self.view addSubview:self.theSearchBar];
-	
-	// --	Set up networkInfoPlate.
-	self.networkInfoPlateIsExpanded = NO;
-	self.networkInfoPlate = [[UIView alloc] initWithFrame:CGRectMake(bottomLeftTab_onscreen_x,
-																	 bottomLeftTab_offscreen_y,
-																	 networkInfoPlate_expanded_width,
-																	 networkInfoPlate_expanded_height)];
-	self.networkInfoPlate.backgroundColor = [UIColor clearColor];
-	self.networkInfoPlate.clipsToBounds = YES;
-	[self.view addSubview:self.networkInfoPlate];
-	self.networkInfoTabBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
-																			 bottomLeftTab_onscreen_width,
-																			 bottomLeftTab_onscreen_height)];
-	self.networkInfoTabBackground.backgroundColor = UIColorFromRGB(0xff5a03);
-	self.networkInfoTabBackground.alpha = 1.0;
-	self.networkInfoTabBackground.layer.cornerRadius = 8;
-	[self.networkInfoPlate addSubview:self.networkInfoTabBackground];
-	self.networkInfoBodyBackground = [[UIView alloc] initWithFrame:CGRectMake(0,
-																			  bottomLeftTab_onscreen_height - 15,
-																			  networkInfoPlate_expanded_width,
-																			  networkInfoPlate_expanded_height - bottomLeftTab_onscreen_height)];
-	self.networkInfoBodyBackground.backgroundColor = UIColorFromRGB(0xff5a03);
-	self.networkInfoBodyBackground.alpha = 1.0;
-	self.networkInfoBodyBackground.layer.cornerRadius = 8;
-	[self.networkInfoPlate addSubview:self.networkInfoBodyBackground];
+	UITextField *searchBarTextField = [[self.theSearchBar subviews] objectAtIndex:1];
+	searchBarTextField.returnKeyType = UIReturnKeyGo;
+	UIImage *urlIcon = [UIImage imageNamed:@"globe.png"];	
+	UIImageView *urlIconView = [[UIImageView alloc] initWithImage:urlIcon];
+	[searchBarTextField.leftView addSubview:urlIconView];
 
+	// --	Set up the search bar's 'Cancel' button.
+	self.searchButtonCancel = [CustomBarButton buttonWithType:UIButtonTypeCustom];
+	self.searchButtonCancel.titleLabel.text = @"Cancel";
+	[self.searchButtonCancel addTarget:self.theSearchBar action:@selector(resignFirstResponder) forControlEvents:UIControlEventTouchUpInside];
+	NSLog(@"self.searchButtonCancel.titleLabel.text: %@", self.searchButtonCancel.titleLabel.text);
 	
-	self.networkInfoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, -8,
-																		 bottomLeftTab_onscreen_width,
-																		 bottomLeftTab_onscreen_height)];
-	self.networkInfoLabel.backgroundColor = [UIColor clearColor];
-	self.networkInfoLabel.text = @"Know Your ISP";
-	self.networkInfoLabel.userInteractionEnabled = NO;
-	self.networkInfoLabel.textAlignment = UITextAlignmentCenter;
-	self.networkInfoLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
-	self.networkInfoLabel.textColor = [UIColor whiteColor];
-	[self.networkInfoPlate addSubview:self.networkInfoLabel];
-	self.networkInfoText = [[UITextView alloc] initWithFrame:CGRectMake(20, 30, networkInfoPlate_expanded_width - 40, 50)];
-	self.networkInfoText.text = [NSString stringWithFormat:@"%@", self.ispString];
-	self.networkInfoText.textColor = [UIColor whiteColor];
-	self.networkInfoText.backgroundColor = [UIColor clearColor];
-	self.networkInfoText.font = [UIFont fontWithName:@"Helvetica" size:15];
-	self.networkInfoText.userInteractionEnabled = NO;
-	[self.networkInfoPlate addSubview:self.networkInfoText];
+	// --	Set up theSearchMenu.
+	self.theSearchMenu = [[SearchMenu alloc] initWithFrame:CGRectMake(215, -40, 155, 129)];
+	[self.view addSubview:self.theSearchMenu];
 	
-	// --	Set up checkSiteButtonPlate.
-	self.checkSiteButtonPlate = [[UIView alloc] initWithFrame:CGRectMake(bottomRightTab_onscreen_x,
-																		 bottomRightTab_offscreen_y,
-																		 bottomRightTab_onscreen_width,
-																		 bottomRightTab_onscreen_height)];
-	self.checkSiteButtonPlate.backgroundColor = [UIColor clearColor];
-	self.checkSiteButtonPlate.layer.cornerRadius = 8;
-	self.checkSiteButtonPlate.clipsToBounds = YES;
-	[self.view addSubview:self.checkSiteButtonPlate];
-	self.checkSiteButtonBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
-																			  bottomRightTab_onscreen_width,
-																			  bottomRightTab_onscreen_height)];
-	self.checkSiteButtonBackground.backgroundColor = UIColorFromRGB(0x94cc00);
-	self.checkSiteButtonBackground.alpha = 0.925;
-	[self.checkSiteButtonPlate addSubview:self.checkSiteButtonBackground];
-	self.checkSiteButtonLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, -8,
-																			 bottomRightTab_onscreen_width,
-																			 bottomRightTab_onscreen_height)];
-	self.checkSiteButtonLabel.backgroundColor = [UIColor clearColor];
-	self.checkSiteButtonLabel.text = @"Test This Site";
-	self.checkSiteButtonLabel.userInteractionEnabled = NO;
-	self.checkSiteButtonLabel.textAlignment = UITextAlignmentCenter;
-	self.checkSiteButtonLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
-	self.checkSiteButtonLabel.textColor = [UIColor whiteColor];
-	[self.checkSiteButtonPlate addSubview:self.checkSiteButtonLabel];
-	
-	// --	Set up loadingPlate.
-	self.loadingPlate = [[UIView alloc] initWithFrame:CGRectMake(bottomRightTab_onscreen_x,
-																 bottomRightTab_offscreen_y,
-																 bottomRightTab_onscreen_width,
-																 bottomRightTab_onscreen_height)];
-	self.loadingPlate.backgroundColor = [UIColor clearColor];
-	[self.view addSubview:self.loadingPlate];
-	self.loadingBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0,
-																	  bottomRightTab_onscreen_width,
-																	  bottomRightTab_onscreen_height)];
-	self.loadingBackground.backgroundColor = [UIColor blackColor];
-	self.loadingBackground.alpha = 0.65;
-	self.loadingBackground.layer.cornerRadius = 8;
-	[self.loadingPlate addSubview:self.loadingBackground];
-	self.loadingActivityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(25, 5, 18, 18)];
-	self.loadingActivityIndicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
-	[self.loadingPlate addSubview:self.loadingActivityIndicator];
-	[self.loadingActivityIndicator startAnimating];
-	self.loadingLabel = [[UILabel alloc] initWithFrame:CGRectMake(49, 6, 70, 15)];
-	self.loadingLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
-	self.loadingLabel.text = @"Loading";
-	self.loadingLabel.backgroundColor = [UIColor clearColor];
-	self.loadingLabel.userInteractionEnabled = NO;
-	self.loadingLabel.textAlignment = UITextAlignmentCenter;
-	self.loadingLabel.textColor = [UIColor whiteColor];
-	[self.loadingPlate addSubview:self.loadingLabel];
+	self.theSiteView = [[SiteView alloc] initWithFrame:CGRectMake(320,38,320,378)];
+	[self.view addSubview:self.theSiteView];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-	[self getTickerUpdate];
+	NSLog(@"VC_Home viewWillApppear");
+	[self fetchTickerFeed];
 	[WebservicesController getIp:self];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+
+	[self.timerInititiateAnnotateReport invalidate];
 }
 
 - (void) dealloc {
 	[theSearchBar release];
-	
-	[siteSummaryPlate release];
-	[siteSummaryBackground release];
-	[siteSummaryTextView release];
-	[siteSummaryReceived release];
-	
-	[checkSiteButtonPlate release];
-	[checkSiteButtonBackground release];
-	[checkSiteButtonLabel release];
-	
-	[networkInfoPlate release];
-	[networkInfoTabBackground release];
-	[networkInfoBodyBackground release];
-	[networkInfoLabel release];
-	[networkInfoText release];
-	[networkInfoPlateIsExpanded release];
-	
-	[loadingPlate release];
-	[loadingBackground release];
-	[loadingActivityIndicator release];
-	[loadingLabel release];
-	
+		
 	[ipString release];
 	[ipInfoDict release];
 	[ispString release];
@@ -264,9 +139,10 @@
 }
 
 #pragma mark -
-#pragma mark Ticker and Map
+#pragma mark Herdometer
 
-- (void) getTickerUpdate {
+- (void) fetchTickerFeed {
+	
 	// TODO: See about the feed being available in multiple languages.	
 	NSURL *feedUrl = [NSURL URLWithString:@"http://www.herdict.org/web/rss/en"];
 	CXMLDocument *feedParser = [[[CXMLDocument alloc] initWithContentsOfURL:feedUrl options:0 error:nil] autorelease];
@@ -304,33 +180,194 @@
 			cDataString = [cDataString substringWithRange:remainingRange];
 		}
 		[reportDict setObject:cDataDict forKey:@"description"];
-//		NSLog(@"reportDict: %@", reportDict);
-		[self.reportsFromFeed addObject:reportDict];		
+		[self.reportsFromFeed addObject:reportDict];
 	}
+
+	NSLog(@"[reportsFromFeed count]: %i", [self.reportsFromFeed count]);
+
+	// --	Get reportsFromFeed ready for Herdometer action.
+	[self markAllReportsNotShown];
+	[self setCountryDataWhereKnown];
 	
-//		NSLog(@"self.reportsFromFeed: %@", self.reportsFromFeed);
-	
-	[self nextReportAnnotation];
+	self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
 }
 
-- (void) nextReportAnnotation {
-	
-	if (([self.reportsFromFeed count] > 0) && (self.nextReportForAnnotation >= [self.reportsFromFeed count])) {
-		self.nextReportForAnnotation = 0;
+- (void) initiateAnnotateReport {
+	if ((!self.stateHome) || [self.reportsFromFeed count] == 0) {
+		[self.reportMapView deselectAnnotation:self.theAnnotation animated:YES];
+		self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
+		return;
 	}
+		
+	NSString *countryOfCurrentReportToBeAnnotated = [[[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] objectForKey:@"description"] objectForKey:@"Reporter Country"];
 	
-	NSDictionary *currentReportDict = [self.reportsFromFeed objectAtIndex:self.currentReportForAnnotation];
-	NSString *currentReportCountry = [[currentReportDict objectForKey:@"description"] objectForKey:@"Reporter Country"];
-	NSDictionary *nextReportDict = [self.reportsFromFeed objectAtIndex:self.nextReportForAnnotation];
-	NSString *nextReportCountry = [[nextReportDict objectForKey:@"description"] objectForKey:@"Reporter Country"];
-	
-	if (![nextReportCountry isEqualToString:currentReportCountry]) {
-		[WebservicesController getRoughGeocodeForCountry:nextReportCountry callbackDelegate:self];
-		self.currentReportForAnnotation = self.nextReportForAnnotation;
+	if ([[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] objectForKey:@"geodata"] == nil) {
+		[WebservicesController getRoughGeocodeForCountry:countryOfCurrentReportToBeAnnotated callbackDelegate:self];
 	} else {
-		[NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(nextReportAnnotation) userInfo:nil repeats:NO];
+		[self annotateReport];
 	}
-	self.nextReportForAnnotation++;
+}
+
+- (void) annotateReport {
+	// --	Get the report info ready.
+	NSMutableDictionary *geometryDict = [[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] objectForKey:@"geodata"];
+	NSDictionary *reportDict = [self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated];
+	
+	// --	Add the annotation.
+	if (self.theAnnotation != nil) {
+		[self.reportMapView removeAnnotation:self.theAnnotation];
+		self.theAnnotation = nil;
+		[self.theAnnotation release];
+	}
+	self.theAnnotation = [[ReportAnnotation alloc] initWithBasics:[[[geometryDict objectForKey:@"location"] objectForKey:@"lng"] doubleValue]
+														 latitude:[[[geometryDict objectForKey:@"location"] objectForKey:@"lat"] doubleValue]
+															title:[self getAnnotationTitleString:reportDict]
+														 subtitle:[self getAnnotationSubtitleString:reportDict]
+													   sheepColor:[self getSheepColorInt:reportDict]];
+	[self.reportMapView addAnnotation:self.theAnnotation];
+	[self.reportMapView selectAnnotation:self.theAnnotation animated:YES];
+
+	NSString *logAnnotatingReport = [NSString stringWithFormat:@"Annotating report at index %i, URL %@, country %@, lat %f, lng %f",
+									self.indexOfCurrentReportToBeAnnotated,
+									[[reportDict objectForKey:@"description"] objectForKey:@"URL"],
+									[[reportDict objectForKey:@"description"] objectForKey:@"Reporter Country"],
+									self.theAnnotation.coordinate.latitude,
+									self.theAnnotation.coordinate.longitude];
+//	NSLog(@"%@", logAnnotatingReport);
+	
+	// --	Mark this report as 'shown'.
+	[[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] setObject:@"true" forKey:@"shown"];
+	
+	// --	Get ready to annotate the next report...
+	self.indexOfCurrentReportToBeAnnotated = [self indexOfReportToBeAnnotatedNext];
+	self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:4.5 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
+}
+
+- (NSString *) getAnnotationTitleString:(NSMutableDictionary *) reportDict {
+
+	// --	Process the report URL.
+	NSString *reportUrl = [[reportDict objectForKey:@"description"] objectForKey:@"URL"];
+	return reportUrl;
+}
+
+- (NSString *) getAnnotationSubtitleString:(NSMutableDictionary *)reportDict {
+
+	// --	Process the 'reported' string
+	NSString *providedTitle = [reportDict objectForKey:@"title"];
+	NSRange reportedRange = [providedTitle rangeOfString:@"reported"];
+	NSString *reportedString = [providedTitle substringWithRange:NSMakeRange(reportedRange.location, [providedTitle length] - reportedRange.location)];
+
+	// --	Process the report time.
+	NSString *unformattedDateString = [[reportDict objectForKey:@"description"] objectForKey:@"Report Date"];
+	NSDateFormatter *inputFormatter = [[[NSDateFormatter alloc] init] autorelease];
+	[inputFormatter setDateFormat:@"MMM dd, yyyy hh:mm:ss a"];	
+	NSDate *reportDate = [inputFormatter dateFromString:unformattedDateString];
+	NSTimeInterval secondsSinceReport = [[NSDate date] timeIntervalSinceDate:reportDate];
+	NSString *timeString;
+	if (((int)(secondsSinceReport / (60*60))) > 1) {
+		timeString = [NSString stringWithFormat:@"%i hrs ago", (int)(secondsSinceReport / (60*60))];
+	} else if (((int)(secondsSinceReport / 60)) > 1) {
+		timeString = [NSString stringWithFormat:@"%i min ago", (int)(secondsSinceReport / (60))];
+	}  else {
+		timeString = [NSString stringWithFormat:@"%i sec ago", (int)(secondsSinceReport)];
+	}
+	
+	// --	Combine.
+	NSString *subtitleString = [NSString stringWithFormat:@"%@ (%@)", reportedString, timeString];
+	
+	return subtitleString;
+}
+
+- (int) getSheepColorInt:(NSMutableDictionary *)reportDict {
+
+	int sheepColorInt = 2;
+	NSRange rangeOfSubstringInaccessible = [[reportDict objectForKey:@"title"] rangeOfString:@"inaccessible"];
+	if (rangeOfSubstringInaccessible.length == 0) {
+		sheepColorInt = 0;
+	}
+	return sheepColorInt;
+}
+
+- (void) setCountryDataWhereKnown {
+	// --	Build an array of country/geodata dicts using our plist.
+	NSString *plistPath = [[NSBundle mainBundle] bundlePath];
+	NSString *finalPlistPath = [plistPath stringByAppendingPathComponent:@"country_locations.plist"];
+	NSArray *countriesWithCoordinates = [NSArray arrayWithContentsOfFile:finalPlistPath];
+
+	// --	For each report in reportsFromFeed: if the report's country is found in our new array, grab its geodata from the array.	
+	for (NSMutableDictionary *reportDict in self.reportsFromFeed) {
+		NSString *countryInReport = [[reportDict objectForKey:@"description"] objectForKey:@"Reporter Country"];
+		for (NSDictionary *plistCountryDict in countriesWithCoordinates) {
+			if ([countryInReport isEqualToString:[plistCountryDict objectForKey:@"country_name"]]) {
+				NSString *lng = [[plistCountryDict objectForKey:@"lng"] stringValue];
+				NSString *lat = [[plistCountryDict objectForKey:@"lat"] stringValue];
+				NSMutableDictionary *location = [NSMutableDictionary dictionary];
+				[location setObject:lng forKey:@"lng"];
+				[location setObject:lat forKey:@"lat"];
+				NSMutableDictionary *geodata = [NSMutableDictionary dictionary];
+				[geodata setObject:location forKey:@"location"];
+				[reportDict setObject:geodata forKey:@"geodata"];
+			}
+		}
+	}
+}
+
+- (BOOL) allReportsAreShown {
+
+	for (NSDictionary *report in self.reportsFromFeed) {
+		if (![[report objectForKey:@"shown"] isEqualToString:@"true"]) {
+			return FALSE;
+		}
+	}
+	return TRUE;
+}
+
+- (void) markAllReportsNotShown {
+	NSLog(@"entered markAllReportsNotShown"); 
+	
+	for (NSMutableDictionary *report in self.reportsFromFeed) {
+		[report setObject:@"false" forKey:@"shown"];
+	}
+}
+
+- (BOOL) reportShouldBeNext:(NSMutableDictionary *)report doesCountryMatter:(BOOL)countryMatters {
+	// --	Make sure it hasn't been shown.
+	if ([[report objectForKey:@"shown"] isEqualToString:@"true"]) {
+		return FALSE;
+	}
+	// --	(only if countryMatters is YES ...) Check whether the country is the same as the country of the currently annotated report.
+	if (countryMatters) {
+		// --	Make sure the country isn't same as the current report's country.
+		NSString *candidateReportCountry = [[report objectForKey:@"description"] objectForKey:@"Reporter Country"];
+		NSString *currentReportCountry = [[[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] objectForKey:@"description"] objectForKey:@"Reporter Country"];
+		if ([candidateReportCountry isEqualToString:currentReportCountry]) {
+			return FALSE;
+		}
+	}
+	
+	return TRUE;
+}
+
+- (int) indexOfReportToBeAnnotatedNext {
+	
+	// --	If all reports are marked 'shown', change them all to 'unshown'.
+	if ([self allReportsAreShown]) {
+		[self markAllReportsNotShown];
+	}
+	// --	Look for a report that satisfies all criteria.
+	for (NSMutableDictionary *report in self.reportsFromFeed) {
+		if ([self reportShouldBeNext:report doesCountryMatter:YES]) {
+			return [self.reportsFromFeed indexOfObject:report];
+		}
+	}
+	// --	If that didn't return, just pick one that hasn't been shown, even in the same country.
+	for (NSMutableDictionary *report in self.reportsFromFeed) {
+		if ([self reportShouldBeNext:report doesCountryMatter:NO]) {
+			return [self.reportsFromFeed indexOfObject:report];
+		}
+	}
+	
+	return 0;
 }
 
 + (CGFloat)annotationPadding {
@@ -347,7 +384,6 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation {
 	MKAnnotationView *reportAnnotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"reportAnnotation"] autorelease];
-	//[reportAnnotationView setFrame:CGRectMake(0, 0, 25, 25)];
 	ReportAnnotation *thisAnnotation = annotation;
 	UIImage *sheepPin;
 	if (thisAnnotation.sheepColor == 0) {
@@ -357,133 +393,51 @@
 	}
 	reportAnnotationView.image = sheepPin;
 	reportAnnotationView.canShowCallout = YES;
-	reportAnnotationView.enabled = YES;
+
 	return reportAnnotationView;
 }
-
--(void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
-	[self.reportMapView selectAnnotation:self.theAnnotation animated:YES];
-}
-
 
 #pragma mark -
 #pragma mark self as UISearchBarDelegate
 
-- (BOOL) searchBarShouldBeginEditing:(UISearchBar *)searchBar {
-	if (self.networkInfoPlateIsExpanded) {
-		[self shrinkNetworkInfoPlate];
-		[NSTimer scheduledTimerWithTimeInterval:0.3 target:self.theSearchBar selector:@selector(becomeFirstResponder) userInfo:nil repeats:NO];
-		return NO;
-	} else {
-		return YES;
-	}
+- (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+
+	[self searchMenuOptionSelected:1];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	[self hideSiteSummaryPlate];
-	[self liftNetworkInfoPlateWithKeyboard];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.searchButtonCancel];
+	self.navigationItem.rightBarButtonItem.title = @"Cancel";
+	
+	[self.timerInititiateAnnotateReport invalidate];
+	[self.reportMapView removeAnnotation:self.theAnnotation];
+	
+	[self.theSearchMenu show];
 }
 
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
-	self.siteSummaryReceived = NO;
-	[self.theSearchBar resignFirstResponder];
-	[self dropNetworkInfoPlateWithKeyboard];	
-}
+- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
+	self.navigationItem.rightBarButtonItem = nil;
 
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-	[self.theSearchBar resignFirstResponder];
-	[self initiateGetSiteSummary];
-	[self dropNetworkInfoPlateWithKeyboard];	
+	self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
+
+	[self.theSearchMenu hide];
 }
 
 #pragma mark Some callbackHandlers
 
 - (void) getRoughGeocodeForCountryCallbackHandler:(ASIHTTPRequest *)request {
 	
-	[NSTimer scheduledTimerWithTimeInterval:4.5 target:self selector:@selector(nextReportAnnotation) userInfo:nil repeats:NO];	
-	
-	if (self.siteSummaryReceived || [self.theSearchBar isFirstResponder]) {
-		return;
-	}
-	
 	// --	Outsource the basic request callback handling to (initialResponseHandling:).
 	NSDictionary *responseDictionary = [self initialResponseHandling:request];
 	
-	// --	Pull out the country location info.
+	// --	Store the received info in the report dictionary.
 	NSMutableDictionary *geometryDict = [[[responseDictionary objectForKey:@"results"] objectAtIndex:0] objectForKey:@"geometry"];
-	NSMutableDictionary *centerDict = [geometryDict objectForKey:@"location"];
-	CLLocationCoordinate2D centerCoord = CLLocationCoordinate2DMake(
-																	[[centerDict objectForKey:@"lat"] doubleValue],
-																	[[centerDict objectForKey:@"lng"] doubleValue]
-																	);
-	NSMutableDictionary *northeastCornerDict = [[geometryDict objectForKey:@"viewport"] objectForKey:@"northeast"];
-	NSMutableDictionary *southwestCornerDict = [[geometryDict objectForKey:@"viewport"] objectForKey:@"southwest"];
-	CLLocationCoordinate2D northeastCorner = CLLocationCoordinate2DMake(
-																		[[northeastCornerDict objectForKey:@"lat"] doubleValue],
-																		[[northeastCornerDict objectForKey:@"lng"] doubleValue]
-																		);
-	CLLocationCoordinate2D southwestCorner = CLLocationCoordinate2DMake(
-																		[[southwestCornerDict objectForKey:@"lat"] doubleValue],
-																		[[southwestCornerDict objectForKey:@"lng"] doubleValue]
-																		);
+	NSMutableDictionary *reportDict = [self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated];
+	[reportDict setObject:geometryDict forKey:@"geodata"];
 	
-	// --	Set the new map region.
-	MKCoordinateRegion reportRegion = MKCoordinateRegionMake(
-															 CLLocationCoordinate2DMake(
-																						(northeastCorner.latitude + southwestCorner.latitude) / 2,
-																						(northeastCorner.longitude + southwestCorner.longitude) / 2
-																						),
-															 MKCoordinateSpanMake(
-																				  (northeastCorner.latitude - southwestCorner.latitude) * 1.3,
-																				  (northeastCorner.longitude - southwestCorner.longitude) * 1.3
-																				  )
-															 );
-	NSLog(@"reportRegion.center.latitude: %f  longitude: %f", reportRegion.center.latitude, reportRegion.center.longitude);
-	NSLog(@"reportRegion.span.latitudeDelta: %f  longitudeDelta: %f", reportRegion.span.latitudeDelta, reportRegion.span.longitudeDelta);
-	
-	[self.reportMapView setRegion:reportRegion animated:YES];
-	
-	// --	Get report details from self.reportsFromFeed.
-	NSDictionary *reportDict = [self.reportsFromFeed objectAtIndex:self.currentReportForAnnotation];
-	NSString *urlString = [[reportDict objectForKey:@"description"] objectForKey:@"URL"];
-	NSString *reportTitleString = [reportDict objectForKey:@"title"];
-	NSRange stringInaccessibleRange = [reportTitleString rangeOfString:@"inaccessible"];
-	NSLog(@"stringInaccessibleRange.length: %i", stringInaccessibleRange.length);
-	BOOL reportedAccessible = NO;
-	int sheepColorInt = 2;
-	if (stringInaccessibleRange.length == 0) {
-		reportedAccessible = YES;
-		sheepColorInt = 0;
-	}
-	NSString *unformattedDateString = [[reportDict objectForKey:@"description"] objectForKey:@"Report Date"];
-	NSDateFormatter *inputFormatter = [[[NSDateFormatter alloc] init] autorelease];
-	[inputFormatter setDateFormat:@"MMM dd, yyyy hh:mm:ss a"];	
-	NSDate *reportDate = [inputFormatter dateFromString:unformattedDateString];
-	NSTimeInterval secondsSinceReport = [[NSDate date] timeIntervalSinceDate:reportDate];
-	NSLog(@"secondsSinceReport: %f", secondsSinceReport);
-	NSString *timeString;
-	if (((int)(secondsSinceReport / (60*60))) > 1) {
-		timeString = [NSString stringWithFormat:@"%i hours ago", (int)(secondsSinceReport / (60*60))];
-	} else if (((int)(secondsSinceReport / 60)) > 1) {
-		timeString = [NSString stringWithFormat:@"%i minutes ago", (int)(secondsSinceReport / (60))];
-	}  else {
-		timeString = [NSString stringWithFormat:@"%i seconds ago", (int)(secondsSinceReport)];
-	}
-	
-	// --	Set up and add the annotation.
-	if (self.theAnnotation != nil) {
-		[self.reportMapView removeAnnotation:self.theAnnotation];
-	}
-	self.theAnnotation = nil;
-	[self.theAnnotation release];
-	self.theAnnotation = [[ReportAnnotation alloc] initWithBasics:centerCoord.longitude
-														 latitude:centerCoord.latitude + 2.0
-															title:urlString
-														 subtitle:timeString
-													   sheepColor:sheepColorInt];
-	[self.reportMapView addAnnotation:self.theAnnotation];	
+	[self annotateReport];
 }
-
+	
 - (void) getIpCallbackHandler:(ASIHTTPRequest *)theRequest {
 	NSDictionary *ipDict = [WebservicesController getDictionaryFromJSONData:[theRequest responseData]];
 	self.ipString = [ipDict objectForKey:@"ip"];
@@ -497,9 +451,7 @@
 	responseString = [responseString stringByReplacingOccurrencesOfString:@"\"valuta_rate\":," withString:@""];
 	NSData *fixedResponseData = [responseString dataUsingEncoding:NSUTF8StringEncoding];
 	self.ipInfoDict = [WebservicesController getDictionaryFromJSONData:fixedResponseData];
-	self.networkInfoText.text = [[self.ipInfoDict objectForKey:@"isp"] objectForKey:@"name"];
-	
-	[self showNetworkInfoPlate];
+
 }
 
 - (void) getCountriesCallbackHandler:(ASIHTTPRequest*)request {
@@ -516,214 +468,32 @@
 
 #pragma mark getSiteSummary
 
-- (void) initiateGetSiteSummary {
-	NSLog(@"initiateGetSiteSummary");
-	
-	self.siteSummaryReceived = NO;
-	[self hideCheckSiteButtonPlate];
-	
-	UITextField *searchBarText = [[self.theSearchBar subviews] objectAtIndex:1];
-	searchBarText.text = [searchBarText.text lowercaseString];
-	searchBarText.text = [searchBarText.text stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	searchBarText.text = [searchBarText.text stringByReplacingOccurrencesOfString:@"www." withString:@""];
-
-	if ([searchBarText.text length] > 0) {
-		[NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(showLoadingPlate) userInfo:nil repeats:NO];
-		[WebservicesController getSummaryForUrl:searchBarText.text forCountry:@"US" urlEncoding:@"none" apiVersion:@"FF1.0" callbackDelegate:self];
-	}
-}
-
 - (void) getSiteSummaryCallbackHandler:(ASIHTTPRequest*)request {
-	[NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(hideLoadingPlate) userInfo:nil repeats:NO];
 	
-	self.siteSummaryReceived = YES;
-	
-	//	Outsource the basic request callback handling to (initialResponseHandling:).
+	// --	Outsource the basic request callback handling to (initialResponseHandling:).
 	NSDictionary *siteSummaryDictionary = [self initialResponseHandling:request];
-	
+
+	// --	We handle the site summary content right here - theSiteView and theSiteView.SiteSummary never have to know about it.
 	NSString *countryCode = [siteSummaryDictionary objectForKey:@"countryCode"];
 	NSString *countryString = [self.countryDict objectForKey:countryCode];
 	int countryInaccessibleCount = [[siteSummaryDictionary objectForKey:@"countryInaccessibleCount"] intValue];
 	int globalInaccessibleCount = [[siteSummaryDictionary objectForKey:@"globalInaccessibleCount"] intValue];
 	int sheepColor = [[siteSummaryDictionary objectForKey:@"sheepColor"] intValue];
 	int siteId = [[siteSummaryDictionary objectForKey:@"siteId"] intValue];
-	NSString *urlInQuestion = [siteSummaryDictionary objectForKey:@"url"];	
 	
-	NSString *messageString = [NSString stringWithFormat:@"'Site unavailable' reports\nfor %@:\n\n  %d    %@\n  %d    Worldwide", urlInQuestion,countryInaccessibleCount,countryString,globalInaccessibleCount];
-	self.siteSummaryTextView.text = messageString;
+	NSString *messageString = [NSString stringWithFormat:@"%d   times in %@\n%d   times around the world", countryInaccessibleCount, countryString, globalInaccessibleCount];
+	self.theSiteView.theSiteSummary.textView2.text = messageString;
 
-	UIImage *sheepImage;	
 	if (sheepColor == 0) {
-		sheepImage = [UIImage imageNamed:@"icon_herdometer_sheep_green"];
+		self.theSiteView.theSiteSummary.theBackground.backgroundColor = UIColorFromRGB(0x98D428);
 	} else if (sheepColor == 1) {
-		sheepImage = [UIImage imageNamed:@"icon_herdometer_sheep_yellow"];
+		self.theSiteView.theSiteSummary.theBackground.backgroundColor = UIColorFromRGB(0x98D428);
 	} else if (sheepColor == 2) {
-		sheepImage = [UIImage imageNamed:@"icon_herdometer_sheep_orange"];
-	}
-	UIImageView *sheepImageView = [[[UIImageView alloc] initWithImage:sheepImage] autorelease];
-	[sheepImageView setFrame:CGRectMake(130, 110, 60, 60)];
-	[self.siteSummaryPlate addSubview:sheepImageView];
-	
-	[self showSiteSummaryPlate];
-	[NSTimer scheduledTimerWithTimeInterval:0.8 target:self selector:@selector(showCheckSiteButtonPlate) userInfo:nil repeats:NO];
-}
-
-#pragma mark -
-#pragma mark siteSummaryPlate
-
-- (void) showSiteSummaryPlate {
-	[UIView animateWithDuration:0.2 animations:^{
-		self.siteSummaryPlate.alpha = 1;
-	}
-	 ];
-}
-
-- (void) hideSiteSummaryPlate {
-	[UIView animateWithDuration:0.2 animations:^{
-		self.siteSummaryPlate.alpha = 0;
-	}
-	 ];	
-}
-
-#pragma mark -
-#pragma mark networkInfoPlate
-
-- (void) showNetworkInfoPlate {
-	[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-		[self.networkInfoPlate setFrame:CGRectMake(bottomLeftTab_onscreen_x,
-												   bottomLeftTab_onscreen_y,
-												   networkInfoPlate_expanded_width,
-												   bottomLeftTab_onscreen_height)];		
-	} completion:^(BOOL finished){
-	}
-	 ];
-}
-
-- (void) expandNetworkInfoPlate {
-	self.networkInfoPlateIsExpanded = YES;
-	
-	int contingentY = 0;
-	if ([self.networkInfoText.text length] > 20) {
-		contingentY = 10;
+		self.theSiteView.theSiteSummary.theBackground.backgroundColor = UIColorFromRGB(0xFF6600);
 	}
 	
-	[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-		[self.networkInfoPlate setFrame:CGRectMake(networkInfoPlate_expanded_x,
-												   networkInfoPlate_expanded_y - contingentY,
-												   networkInfoPlate_expanded_width,
-												   networkInfoPlate_expanded_height)];		
-		if (self.siteSummaryReceived) {
-			[self.checkSiteButtonPlate setFrame:CGRectMake(bottomRightTab_onscreen_x,
-														   networkInfoPlate_expanded_y - contingentY,
-														   bottomRightTab_onscreen_width,
-														   bottomRightTab_onscreen_height)];
-		}
-	} completion:^(BOOL finished){
-	}
-	 ];	
+	[self.theSiteView showSiteSummary];
 }
-
-
-- (void) shrinkNetworkInfoPlate {
-	self.networkInfoPlateIsExpanded = NO;
-	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-		[self.networkInfoPlate setFrame:CGRectMake(bottomLeftTab_onscreen_x,
-												   bottomLeftTab_onscreen_y,
-												   networkInfoPlate_expanded_width,
-												   bottomLeftTab_onscreen_height)];
-		if (self.siteSummaryReceived) {
-			[self.checkSiteButtonPlate setFrame:CGRectMake(bottomRightTab_onscreen_x,
-														   bottomRightTab_onscreen_y,
-														   bottomRightTab_onscreen_width,
-														   bottomRightTab_onscreen_height)];
-		}
-	} completion:^(BOOL finished) {
-	}
-	 ];	
-}
-
-- (void) liftNetworkInfoPlateWithKeyboard {
-	[UIView animateWithDuration:0.3 animations:^{
-		[self.networkInfoPlate setCenter:CGPointMake(self.networkInfoPlate.center.x, self.networkInfoPlate.center.y - 216)];
-	}
-	 ];
-}
-
-- (void) dropNetworkInfoPlateWithKeyboard {
-	[UIView animateWithDuration:0.28 animations:^{
-		[self.networkInfoPlate setCenter:CGPointMake(self.networkInfoPlate.center.x, self.networkInfoPlate.center.y + 216)];
-	}
-	 ];
-}
-
-- (void) hideNetworkInfoPlate {
-	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-
-	////
-	
-	} completion:^(BOOL finished){
-	}
-	 ];	
-}
-
-#pragma mark -
-#pragma mark checkSiteButtonPlate
-
-- (void) showCheckSiteButtonPlate {
-	[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-		[self.checkSiteButtonPlate setFrame:CGRectMake(bottomRightTab_onscreen_x,
-													   bottomRightTab_onscreen_y,
-													   bottomRightTab_onscreen_width,
-													   bottomRightTab_onscreen_height)];
-	} completion:^(BOOL finished){
-	}
-	 ];
-	
-}
-
-- (void) hideCheckSiteButtonPlate {
-	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-		[self.checkSiteButtonPlate setFrame:CGRectMake(bottomRightTab_onscreen_x,
-													   bottomRightTab_offscreen_y,
-													   bottomRightTab_onscreen_width,
-													   bottomRightTab_onscreen_height)];
-	} completion:^(BOOL finished){
-	}
-	 ];	
-}
-
-#pragma mark submitReport
-
-- (void) initiateSubmitReport {
-}
-
-- (void) submitReportCallbackHandler:(ASIHTTPRequest *)request {
-}
-
-#pragma mark loadingPlate
-
-- (void) showLoadingPlate {
-	if (self.siteSummaryReceived == NO) {	
-		[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-			[self.loadingPlate setFrame:CGRectMake(bottomRightTab_onscreen_x,
-												   bottomRightTab_onscreen_y,
-												   bottomRightTab_onscreen_width,
-												   bottomRightTab_onscreen_height)];
-		} completion:^(BOOL finished){}
-		 ];
-	}
-}
-
-- (void) hideLoadingPlate {
-	[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-		[self.loadingPlate setFrame:CGRectMake(bottomRightTab_onscreen_x,
-											   bottomRightTab_offscreen_y,
-											   bottomRightTab_onscreen_width,
-											   bottomRightTab_onscreen_height)];
-	} completion:^(BOOL finished){}
-	 ];
-}
-
 
 #pragma mark -
 #pragma mark Utilities
@@ -737,25 +507,106 @@
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
-	//	NSLog(@"touch.view: %@", touch.view);
-	//	NSLog(@"[touch.view superview]: %@", [touch.view superview]);
-	if (self.networkInfoPlateIsExpanded) {
-		[self shrinkNetworkInfoPlate];
-	} else {
-		for (UIView *view in [self.networkInfoPlate subviews]) {
-			if (touch.view == view) {
-				if ([self.theSearchBar isFirstResponder]) {
-					[NSTimer scheduledTimerWithTimeInterval:0.3 target:self selector:@selector(expandNetworkInfoPlate) userInfo:nil repeats:NO];
-					[self searchBarCancelButtonClicked:self.theSearchBar];
-					[self.view bringSubviewToFront:self.networkInfoPlate];
-				} else {
-					[self.view bringSubviewToFront:self.networkInfoPlate];
-					[self expandNetworkInfoPlate];
-				}
-				break;
-			}
-		}
+	NSLog(@"touchesBegan... touch.view: %@, [touch.view superview]: %@", touch.view, [touch.view superview]);
+	CGPoint touchPoint = [touch locationInView:self.theSearchMenu];
+
+	if (touch.view == self.reportMapView) {
+		[self.theSearchBar resignFirstResponder];
 	}
+	
+	if ([self.theSearchMenu point:touchPoint isInFrame:self.theSearchMenu.menuOption1.frame]) {
+		[self searchMenuOptionSelected:1];		
+		return;
+	}
+	if ([self.theSearchMenu point:touchPoint isInFrame:self.theSearchMenu.menuOption2.frame]) {		
+		[self searchMenuOptionSelected:2];
+		return;
+	}
+	if ([self.theSearchMenu point:touchPoint isInFrame:self.theSearchMenu.menuOption3.frame]) {
+		[self searchMenuOptionSelected:3];
+		return;
+	}
+	if (touch.view == self.theSiteView.webViewFooter) {
+		[self searchMenuOptionSelected:2];
+		return;
+	}
+
+	// --	If the touch is anywhere else...
+	if (touch.view != self.theSearchBar) {
+		[self.theSearchBar resignFirstResponder];
+	}
+}
+
+- (NSString *) fixUpTypedUrl {
+
+	NSString *typedUrl = [[[self.theSearchBar subviews] objectAtIndex:1] text];
+
+	typedUrl = [typedUrl lowercaseString];
+	
+	NSRange rangeHttp = [typedUrl rangeOfString:@"http"];
+	if (rangeHttp.location == NSNotFound) {
+		NSLog(@"location isEqual NSNotFound");
+		typedUrl = [NSString stringWithFormat:@"%@%@", @"http://", typedUrl];
+	}
+	
+	return typedUrl;
+}
+
+#pragma mark -
+#pragma mark self as SearchMenuDelegate
+
+- (void) searchMenuOptionSelected:(int)optionNumber {
+	NSString *theUrl = [[[self.theSearchBar subviews] objectAtIndex:1] text];
+
+	// --	Check whether the entry is blank.
+	if ([theUrl length] == 0) {
+		[self.theSearchMenu removeSelectionBackground];				
+		UIAlertView *alertNoUrl = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter a complete URL." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alertNoUrl show];
+		[alertNoUrl release];
+		return;
+	}
+	// --	Fix up the Url.
+	theUrl = [self fixUpTypedUrl];
+	self.theSearchBar.text = theUrl;
+
+	// --	Get the search bar and menu out of the way.
+	[NSTimer scheduledTimerWithTimeInterval:0.5 target:self.theSearchBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
+	[NSTimer scheduledTimerWithTimeInterval:0 target:self.theSearchMenu selector:@selector(hide) userInfo:nil repeats:NO];
+	[NSTimer scheduledTimerWithTimeInterval:1.5 target:self.theSearchMenu selector:@selector(removeSelectionBackground) userInfo:nil repeats:NO];				
+
+	// --	
+	if (optionNumber == 1) {
+		// --	Show selection background.
+		self.theSearchMenu.selectionBackground.backgroundColor = [UIColor blueColor];
+		[self.theSearchMenu.selectionBackground setFrame:CGRectMake(5, 31, 143, 30)];
+		
+		// --	Do appropriate stuff.
+		[self.theSiteView hideSiteSummary];
+		[self.theSiteView loadUrl:theUrl];
+		return;
+	}
+	if (optionNumber == 2) {
+		// --	Show selection background.
+		self.theSearchMenu.selectionBackground.backgroundColor = [UIColor blueColor];
+		[self.theSearchMenu.selectionBackground setFrame:CGRectMake(5, 61, 143, 30)];
+
+		// --	Do appropriate stuff.
+		[self.theSiteView loadUrl:theUrl];
+		theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+		theUrl = [theUrl stringByReplacingOccurrencesOfString:@"www." withString:@""];		
+		[WebservicesController getSummaryForUrl:theUrl forCountry:@"US" urlEncoding:@"none" apiVersion:@"FF1.0" callbackDelegate:self];
+		return;
+	}
+	if (optionNumber == 3) {
+		// --	Show selection background.
+		self.theSearchMenu.selectionBackground.backgroundColor = [UIColor blueColor];
+		[self.theSearchMenu.selectionBackground setFrame:CGRectMake(5, 91, 143, 30)];
+		
+		// --	Do appropriate stuff.
+		// TODO nothing here yet!
+		return;
+	}		
 }
 
 @end

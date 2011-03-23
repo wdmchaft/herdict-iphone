@@ -1,0 +1,4 @@
+/projects/Herdict Working/iOS/WebViewStatusBar.m:51: warning: property 'buttonBackground' requires method '-buttonBackground' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/WebViewStatusBar.m:51: warning: property 'buttonBackground' requires the method 'setButtonBackground:' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/WebViewStatusBar.m:51: warning: property 'buttonTextView' requires method '-buttonTextView' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/WebViewStatusBar.m:51: warning: property 'buttonTextView' requires the method 'setButtonTextView:' to be defined - use @synthesize, @dynamic or provide a method implementation
