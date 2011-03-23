@@ -1,7 +1,7 @@
 THerdict
 v7
 r0
-t322559735.621719
+t322561107.808107
 cCheck dependencies
 cProcessInfoPlistFile "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Info.plist" Herdict-Info.plist
 cCompileXIB "/projects/Herdict Working/iOS/MainWindow.xib"
@@ -53,11 +53,11 @@ cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal
 cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CXMLNode_XPathExtensions.o "/projects/Herdict Working/iOS/Classes/Utility/schwaTouchXML/Source/CXMLNode_XPathExtensions.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CTidy.o "/projects/Herdict Working/iOS/Classes/Utility/schwaTouchXML/Source/Tidy/CTidy.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/ReportAnnotation.o "/projects/Herdict Working/iOS/Classes/Utility/ReportAnnotation.m" normal i386 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SearchMenu.o "/projects/Herdict Working/iOS/SearchMenu.m" normal i386 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteView.o "/projects/Herdict Working/iOS/SiteView.m" normal i386 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/FooterBar.o "/projects/Herdict Working/iOS/FooterBar.m" normal i386 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteSummary.o "/projects/Herdict Working/iOS/SiteSummary.m" normal i386 objective-c com.apple.compilers.gcc.4_2
-cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CustomBarButton.o "/projects/Herdict Working/iOS/CustomBarButton.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CustomBarButton.o "/projects/Herdict Working/iOS/Views/CustomBarButton.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/FooterBar.o "/projects/Herdict Working/iOS/Views/FooterBar.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SearchMenu.o "/projects/Herdict Working/iOS/Views/SearchMenu.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteSummary.o "/projects/Herdict Working/iOS/Views/SiteSummary.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteView.o "/projects/Herdict Working/iOS/Views/SiteView.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 cLd "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict" normal i386
 cGenerateDSYMFile "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app.dSYM" "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict"
 cTouch "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app"
@@ -774,9 +774,9 @@ i"SiteView.h"
 i"CustomBarButton.h"
 
 N/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m
-c000000004D89A7740000000000008294
-t1300866932
-s33428
+c000000004D89A8120000000000006153
+t1300867090
+s24915
 i"Constants.h"
 i"VC_Home.h"
 i"WebservicesController.h"
@@ -792,7 +792,8 @@ N/projects/Herdict Working/iOS/CustomBarButton.m
 c000000004D89A5DF000000000000106E
 t1300866527
 s4206
-i"BarButtonItem.h"
+i"CustomBarButton.h"
+i"Constants.h"
 
 N/projects/Herdict Working/iOS/FooterBar.h
 c000000004D8968D600000000000001DD
@@ -887,8 +888,8 @@ i<UIKit/UIKit.h>
 i<QuartzCore/QuartzCore.h>
 
 N/projects/Herdict Working/iOS/SearchMenu.m
-c000000004D89A17F0000000000001BCA
-t1300865407
+c000000004D89A8270000000000001BCA
+t1300867111
 s7114
 i"SearchMenu.h"
 i<QuartzCore/QuartzCore.h>
@@ -948,6 +949,76 @@ s2549
 i"TriangleAnchor.h"
 i<QuartzCore/QuartzCore.h>
 
+N/projects/Herdict Working/iOS/Views/CustomBarButton.h
+c000000004D898FF100000000000000F7
+t1300860913
+s247
+i<UIKit/UIKit.h>
+i<QuartzCore/QuartzCore.h>
+
+N/projects/Herdict Working/iOS/Views/CustomBarButton.m
+c000000004D89A5DF000000000000106E
+t1300866527
+s4206
+i"CustomBarButton.h"
+i"Constants.h"
+
+N/projects/Herdict Working/iOS/Views/FooterBar.h
+c000000004D8968D600000000000001DD
+t1300850902
+s477
+i<UIKit/UIKit.h>
+i<QuartzCore/QuartzCore.h>
+
+N/projects/Herdict Working/iOS/Views/FooterBar.m
+c000000004D89A58400000000000007A0
+t1300866436
+s1952
+i"FooterBar.h"
+
+N/projects/Herdict Working/iOS/Views/SearchMenu.h
+c000000004D8978030000000000000337
+t1300854787
+s823
+i<UIKit/UIKit.h>
+i<QuartzCore/QuartzCore.h>
+
+N/projects/Herdict Working/iOS/Views/SearchMenu.m
+c000000004D89A8270000000000001BCA
+t1300867111
+s7114
+i"SearchMenu.h"
+i<QuartzCore/QuartzCore.h>
+
+N/projects/Herdict Working/iOS/Views/SiteSummary.h
+c000000004D8957010000000000000236
+t1300846337
+s566
+i<UIKit/UIKit.h>
+i<QuartzCore/QuartzCore.h>
+i"FooterBar.h"
+
+N/projects/Herdict Working/iOS/Views/SiteSummary.m
+c000000004D8971A2000000000000061C
+t1300853154
+s1564
+i"SiteSummary.h"
+i"Constants.h"
+
+N/projects/Herdict Working/iOS/Views/SiteView.h
+c000000004D89A204000000000000023E
+t1300865540
+s574
+i<UIKit/UIKit.h>
+i"FooterBar.h"
+i"SiteSummary.h"
+
+N/projects/Herdict Working/iOS/Views/SiteView.m
+c000000004D89A4B400000000000010B5
+t1300866228
+s4277
+i"SiteView.h"
+
 N/projects/Herdict Working/iOS/WebViewStatusBar.h
 c000000004D8927140000000000000194
 t1300834068
@@ -962,16 +1033,16 @@ s1510
 i"WebViewStatusBar.h"
 
 N/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app
-t1300866935
+t1300868307
 s646
 
 N/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app.dSYM
-t1300866935
+t1300868307
 s102
 
 N/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict
-t1300866935
-s534396
+t1300868307
+s534420
 
 N/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Info.plist
 t1300734861
@@ -1141,17 +1212,25 @@ N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict
 t1300734865
 s17028
 
+N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CustomBarButton-767933D8AE99BA8A.o
+t2
+s0
+
 N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CustomBarButton.o
-t1300866527
-s47420
+t1300868307
+s47432
+
+N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/FooterBar-FDF7D4AE7D21AA89.o
+t2
+s0
 
 N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/FooterBar.o
-t1300866464
-s48684
+t1300868307
+s48696
 
 N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/Herdict.LinkFileList
-c000000004D898EB60000000000001353
-t1300860598
+c000000004D89ACD20000000000001353
+t1300868306
 s4947
 
 N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/HerdictAppDelegate.o
@@ -1178,17 +1257,29 @@ N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict
 t1300734865
 s14068
 
+N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SearchMenu-857675844BA99A88.o
+t2
+s0
+
 N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SearchMenu.o
-t1300865407
-s70920
+t1300868307
+s70928
+
+N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteSummary-C16B7C32BFE91A80.o
+t2
+s0
 
 N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteSummary.o
-t1300853154
-s48608
+t1300868307
+s48620
+
+N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteView-48EA1D088E710A7F.o
+t2
+s0
 
 N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteView.o
-t1300866255
-s76868
+t1300868307
+s76876
 
 N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteViewHeaderFooter.o
 t1300834891
@@ -1199,8 +1290,8 @@ t1300666730
 s41728
 
 N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/VC_Home.o
-t1300866935
-s141372
+t1300868307
+s141356
 
 N/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/WebViewStatusBar.o
 t1300834250
@@ -1236,7 +1327,7 @@ s877
 
 CCheck dependencies
 r0
-lSLF07#2@18"Check dependencies322559735#322559735#0(0"0(0#1#0"8671184320#0"0#
+lSLF07#2@18"Check dependencies322561106#322561106#0(0"0(0#1#0"8247620834010738688#0"0#
 
 CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/ASIAuthenticationDialog.o "/projects/Herdict Working/iOS/Classes/Utility/ASIHTTPRequest/ASIAuthenticationDialog.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 s322427663.739122
@@ -1591,6 +1682,9 @@ xobjective-c
 xcom.apple.compilers.gcc.4_2
 lSLF07#2@101"Compile /projects/Herdict Working/iOS/Classes/Utility/schwaTouchXML/Source/CXMLNode_XPathExtensions.m322427665#322427665#0(0"0(0#0#93"/projects/Herdict Working/iOS/Classes/Utility/schwaTouchXML/Source/CXMLNode_XPathExtensions.m8634874944#2082"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/Classes/Utility/schwaTouchXML/Source/CXMLNode_XPathExtensions.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CXMLNode_XPathExtensions.o"0#
 
+CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CustomBarButton-767933D8AE99BA8A.o "/projects/Herdict Working/iOS/CustomBarButton.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+r0
+
 CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CustomBarButton.o "/projects/Herdict Working/iOS/CustomBarButton.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 s322559327.629729
 e322559327.922745
@@ -1606,6 +1700,24 @@ o/projects/Herdict Working/iOS/CustomBarButton.m: In function '-[CustomBarButton
 o/projects/Herdict Working/iOS/CustomBarButton.m:47: warning: unused variable 'stroke'
 lSLF07#2@55"Compile /projects/Herdict Working/iOS/CustomBarButton.m322559327#322559327#0(179"/projects/Herdict Working/iOS/CustomBarButton.m: In function '-[CustomBarButton drawRect:]':/projects/Herdict Working/iOS/CustomBarButton.m:47: warning: unused variable 'stroke'1(22@24"Unused variable 'stroke'322559327#93#86#0(6@47"/projects/Herdict Working/iOS/CustomBarButton.m322559327#47#0#47#0#19"unused variable '*'0(0#0#47"/projects/Herdict Working/iOS/CustomBarButton.m8650117600#2027"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/CustomBarButton.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CustomBarButton.o"0#
 
+CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CustomBarButton.o "/projects/Herdict Working/iOS/Views/CustomBarButton.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+s322561106.818384
+e322561107.117170
+r1
+xCompileC
+xbuild/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CustomBarButton.o
+x/projects/Herdict Working/iOS/Views/CustomBarButton.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+o/projects/Herdict Working/iOS/Views/CustomBarButton.m: In function '-[CustomBarButton drawRect:]':
+o/projects/Herdict Working/iOS/Views/CustomBarButton.m:47: warning: unused variable 'stroke'
+lSLF07#2@61"Compile /projects/Herdict Working/iOS/Views/CustomBarButton.m322561106#322561107#0(191"/projects/Herdict Working/iOS/Views/CustomBarButton.m: In function '-[CustomBarButton drawRect:]':/projects/Herdict Working/iOS/Views/CustomBarButton.m:47: warning: unused variable 'stroke'1(22@24"Unused variable 'stroke'322561107#99#92#0(6@53"/projects/Herdict Working/iOS/Views/CustomBarButton.m322559327#47#0#47#0#19"unused variable '*'0(0#0#53"/projects/Herdict Working/iOS/Views/CustomBarButton.m8664689792#2033"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/Views/CustomBarButton.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/CustomBarButton.o"0#
+
+CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/FooterBar-FDF7D4AE7D21AA89.o "/projects/Herdict Working/iOS/FooterBar.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+r0
+
 CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/FooterBar.o "/projects/Herdict Working/iOS/FooterBar.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 s322559264.872370
 e322559264.996422
@@ -1618,6 +1730,19 @@ xi386
 xobjective-c
 xcom.apple.compilers.gcc.4_2
 lSLF07#2@49"Compile /projects/Herdict Working/iOS/FooterBar.m322559264#322559264#0(0"0(0#0#41"/projects/Herdict Working/iOS/FooterBar.m8635910560#2015"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/FooterBar.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/FooterBar.o"0#
+
+CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/FooterBar.o "/projects/Herdict Working/iOS/Views/FooterBar.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+s322561106.819759
+e322561107.198002
+r1
+xCompileC
+xbuild/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/FooterBar.o
+x/projects/Herdict Working/iOS/Views/FooterBar.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@55"Compile /projects/Herdict Working/iOS/Views/FooterBar.m322561106#322561107#0(0"0(0#0#47"/projects/Herdict Working/iOS/Views/FooterBar.m8664067296#2021"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/Views/FooterBar.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/FooterBar.o"0#
 
 CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/HerdictAppDelegate.o "/projects/Herdict Working/iOS/Classes/HerdictAppDelegate.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 s322559735.123708
@@ -1697,6 +1822,9 @@ xobjective-c
 xcom.apple.compilers.gcc.4_2
 lSLF07#2@72"Compile /projects/Herdict Working/iOS/Classes/Utility/ReportAnnotation.m322427665#322427665#0(0"0(0#0#64"/projects/Herdict Working/iOS/Classes/Utility/ReportAnnotation.m8631331520#2045"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/Classes/Utility/ReportAnnotation.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/ReportAnnotation.o"0#
 
+CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SearchMenu-857675844BA99A88.o "/projects/Herdict Working/iOS/SearchMenu.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+r0
+
 CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SearchMenu.o "/projects/Herdict Working/iOS/SearchMenu.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 s322558207.380638
 e322558207.726058
@@ -1717,6 +1845,29 @@ o/projects/Herdict Working/iOS/SearchMenu.m: In function '-[SearchMenu hide]':
 o/projects/Herdict Working/iOS/SearchMenu.m:165: warning: 'SearchMenu' may not respond to '-rotateTuckedAway'
 lSLF07#2@50"Compile /projects/Herdict Working/iOS/SearchMenu.m322558207#322558207#0(650"/projects/Herdict Working/iOS/SearchMenu.m: In function '-[SearchMenu show]':/projects/Herdict Working/iOS/SearchMenu.m:154: warning: 'SearchMenu' may not respond to '-rotateForUse'/projects/Herdict Working/iOS/SearchMenu.m:154: warning: (Messages without a matching method signature/projects/Herdict Working/iOS/SearchMenu.m:154: warning: will be assumed to return 'id' and accept/projects/Herdict Working/iOS/SearchMenu.m:154: warning: '...' as arguments.)/projects/Herdict Working/iOS/SearchMenu.m: In function '-[SearchMenu hide]':/projects/Herdict Working/iOS/SearchMenu.m:165: warning: 'SearchMenu' may not respond to '-rotateTuckedAway'3(22@47"'SearchMenu' may not respond to '-rotateForUse'322558207#78#105#0(6@42"/projects/Herdict Working/iOS/SearchMenu.m322558207#154#0#154#0#26"'*' may not respond to '*'0(13@108"(Messages without a matching method signature will be assumed to return 'id' and accept '...' as arguments.)322558207#183#103#0(6@42"/projects/Herdict Working/iOS/SearchMenu.m322558207#154#0#154#0#0"0(22@51"'SearchMenu' may not respond to '-rotateTuckedAway'322558207#541#109#0(6@42"/projects/Herdict Working/iOS/SearchMenu.m322558207#165#0#165#0#26"'*' may not respond to '*'0(0#0#42"/projects/Herdict Working/iOS/SearchMenu.m8656871072#2017"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/SearchMenu.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SearchMenu.o"0#
 
+CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SearchMenu.o "/projects/Herdict Working/iOS/Views/SearchMenu.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+s322561106.821149
+e322561107.203644
+r1
+xCompileC
+xbuild/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SearchMenu.o
+x/projects/Herdict Working/iOS/Views/SearchMenu.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+o/projects/Herdict Working/iOS/Views/SearchMenu.m: In function '-[SearchMenu show]':
+o/projects/Herdict Working/iOS/Views/SearchMenu.m:154: warning: 'SearchMenu' may not respond to '-rotateForUse'
+o/projects/Herdict Working/iOS/Views/SearchMenu.m:154: warning: (Messages without a matching method signature
+o/projects/Herdict Working/iOS/Views/SearchMenu.m:154: warning: will be assumed to return 'id' and accept
+o/projects/Herdict Working/iOS/Views/SearchMenu.m:154: warning: '...' as arguments.)
+o/projects/Herdict Working/iOS/Views/SearchMenu.m: In function '-[SearchMenu hide]':
+o/projects/Herdict Working/iOS/Views/SearchMenu.m:165: warning: 'SearchMenu' may not respond to '-rotateTuckedAway'
+lSLF07#2@56"Compile /projects/Herdict Working/iOS/Views/SearchMenu.m322561106#322561107#0(692"/projects/Herdict Working/iOS/Views/SearchMenu.m: In function '-[SearchMenu show]':/projects/Herdict Working/iOS/Views/SearchMenu.m:154: warning: 'SearchMenu' may not respond to '-rotateForUse'/projects/Herdict Working/iOS/Views/SearchMenu.m:154: warning: (Messages without a matching method signature/projects/Herdict Working/iOS/Views/SearchMenu.m:154: warning: will be assumed to return 'id' and accept/projects/Herdict Working/iOS/Views/SearchMenu.m:154: warning: '...' as arguments.)/projects/Herdict Working/iOS/Views/SearchMenu.m: In function '-[SearchMenu hide]':/projects/Herdict Working/iOS/Views/SearchMenu.m:165: warning: 'SearchMenu' may not respond to '-rotateTuckedAway'3(22@47"'SearchMenu' may not respond to '-rotateForUse'322561107#84#111#0(6@48"/projects/Herdict Working/iOS/Views/SearchMenu.m322559911#154#0#154#0#26"'*' may not respond to '*'0(13@108"(Messages without a matching method signature will be assumed to return 'id' and accept '...' as arguments.)322561107#195#109#0(6@48"/projects/Herdict Working/iOS/Views/SearchMenu.m322559911#154#0#154#0#0"0(22@51"'SearchMenu' may not respond to '-rotateTuckedAway'322561107#577#115#0(6@48"/projects/Herdict Working/iOS/Views/SearchMenu.m322559911#165#0#165#0#26"'*' may not respond to '*'0(0#0#48"/projects/Herdict Working/iOS/Views/SearchMenu.m8663217408#2023"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/Views/SearchMenu.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SearchMenu.o"0#
+
+CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteSummary-C16B7C32BFE91A80.o "/projects/Herdict Working/iOS/SiteSummary.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+r0
+
 CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteSummary.o "/projects/Herdict Working/iOS/SiteSummary.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 s322545954.342569
 e322545954.702465
@@ -1730,6 +1881,22 @@ xobjective-c
 xcom.apple.compilers.gcc.4_2
 lSLF07#2@51"Compile /projects/Herdict Working/iOS/SiteSummary.m322545954#322545954#0(0"0(0#0#43"/projects/Herdict Working/iOS/SiteSummary.m8629986656#2019"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/SiteSummary.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteSummary.o"0#
 
+CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteSummary.o "/projects/Herdict Working/iOS/Views/SiteSummary.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+s322561107.117291
+e322561107.327360
+r1
+xCompileC
+xbuild/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteSummary.o
+x/projects/Herdict Working/iOS/Views/SiteSummary.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@57"Compile /projects/Herdict Working/iOS/Views/SiteSummary.m322561107#322561107#0(0"0(0#0#49"/projects/Herdict Working/iOS/Views/SiteSummary.m8672221824#2025"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/Views/SiteSummary.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteSummary.o"0#
+
+CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteView-48EA1D088E710A7F.o "/projects/Herdict Working/iOS/SiteView.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+r0
+
 CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteView.o "/projects/Herdict Working/iOS/SiteView.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 s322559055.600944
 e322559055.897438
@@ -1742,6 +1909,19 @@ xi386
 xobjective-c
 xcom.apple.compilers.gcc.4_2
 lSLF07#2@48"Compile /projects/Herdict Working/iOS/SiteView.m322559055#322559055#0(0"0(0#0#40"/projects/Herdict Working/iOS/SiteView.m8665953504#2013"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/SiteView.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteView.o"0#
+
+CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteView.o "/projects/Herdict Working/iOS/Views/SiteView.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+s322561107.198588
+e322561107.379018
+r1
+xCompileC
+xbuild/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteView.o
+x/projects/Herdict Working/iOS/Views/SiteView.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@54"Compile /projects/Herdict Working/iOS/Views/SiteView.m322561107#322561107#0(0"0(0#0#46"/projects/Herdict Working/iOS/Views/SiteView.m8669373344#2019"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/Views/SiteView.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteView.o"0#
 
 CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/SiteViewHeaderFooter.o "/projects/Herdict Working/iOS/SiteViewHeaderFooter.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 s322527691.453727
@@ -1770,8 +1950,8 @@ xcom.apple.compilers.gcc.4_2
 lSLF07#2@54"Compile /projects/Herdict Working/iOS/TriangleAnchor.m322359529#322359530#0(0"0(0#0#46"/projects/Herdict Working/iOS/TriangleAnchor.m8661777376#2025"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/TriangleAnchor.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/TriangleAnchor.o"0#
 
 CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/VC_Home.o "/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m" normal i386 objective-c com.apple.compilers.gcc.4_2
-s322559735.128286
-e322559735.462429
+s322561106.487402
+e322561107.464117
 r1
 xCompileC
 xbuild/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/VC_Home.o
@@ -1781,44 +1961,44 @@ xi386
 xobjective-c
 xcom.apple.compilers.gcc.4_2
 o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home viewWillAppear:]':
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:200: warning: 'VC_Home' may not respond to '-fetchTickerFeed'
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:200: warning: (Messages without a matching method signature
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:200: warning: will be assumed to return 'id' and accept
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:200: warning: '...' as arguments.)
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:117: warning: 'VC_Home' may not respond to '-fetchTickerFeed'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:117: warning: (Messages without a matching method signature
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:117: warning: will be assumed to return 'id' and accept
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:117: warning: '...' as arguments.)
 o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home initiateAnnotateReport]':
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:299: warning: 'WebservicesController' may not respond to '+getRoughGeocodeForCountry:callbackDelegate:'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:205: warning: 'WebservicesController' may not respond to '+getRoughGeocodeForCountry:callbackDelegate:'
 o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home annotateReport]':
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:318: warning: 'VC_Home' may not respond to '-getAnnotationTitleString:'
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:319: warning: 'VC_Home' may not respond to '-getAnnotationSubtitleString:'
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:320: warning: 'VC_Home' may not respond to '-getSheepColorInt:'
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:320: warning: passing argument 5 of 'initWithBasics:latitude:title:subtitle:sheepColor:' makes integer from pointer without a cast
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:324: warning: unused variable 'logAnnotatingReport'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:224: warning: 'VC_Home' may not respond to '-getAnnotationTitleString:'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:225: warning: 'VC_Home' may not respond to '-getAnnotationSubtitleString:'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:226: warning: 'VC_Home' may not respond to '-getSheepColorInt:'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:226: warning: passing argument 5 of 'initWithBasics:latitude:title:subtitle:sheepColor:' makes integer from pointer without a cast
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:230: warning: unused variable 'logAnnotatingReport'
 o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home searchBarTextDidBeginEditing:]':
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:509: warning: 'SearchMenu' may not respond to '-show'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:415: warning: 'SearchMenu' may not respond to '-show'
 o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home searchBarTextDidEndEditing:]':
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:517: warning: 'SearchMenu' may not respond to '-hide'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:423: warning: 'SearchMenu' may not respond to '-hide'
 o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home getSiteSummaryCallbackHandler:]':
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:593: warning: 'SiteView' may not respond to '-showSiteSummary'
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:580: warning: unused variable 'siteId'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:495: warning: 'SiteView' may not respond to '-showSiteSummary'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:482: warning: unused variable 'siteId'
 o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home searchMenuOptionSelected:]':
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:767: warning: 'SearchMenu' may not respond to '-removeSelectionBackground'
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:789: warning: 'SiteView' may not respond to '-hideSiteSummary'
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:790: warning: 'SiteView' may not respond to '-loadUrl:'
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:799: warning: 'SiteView' may not respond to '-loadUrl:'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:563: warning: 'SearchMenu' may not respond to '-removeSelectionBackground'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:585: warning: 'SiteView' may not respond to '-hideSiteSummary'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:586: warning: 'SiteView' may not respond to '-loadUrl:'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:595: warning: 'SiteView' may not respond to '-loadUrl:'
 o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: At top level:
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingPlate' requires method '-loadingPlate' to be defined - use @synthesize, @dynamic or provide a method implementation
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingPlate' requires the method 'setLoadingPlate:' to be defined - use @synthesize, @dynamic or provide a method implementation
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingBackground' requires method '-loadingBackground' to be defined - use @synthesize, @dynamic or provide a method implementation
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingBackground' requires the method 'setLoadingBackground:' to be defined - use @synthesize, @dynamic or provide a method implementation
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingActivityIndicator' requires method '-loadingActivityIndicator' to be defined - use @synthesize, @dynamic or provide a method implementation
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingActivityIndicator' requires the method 'setLoadingActivityIndicator:' to be defined - use @synthesize, @dynamic or provide a method implementation
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingLabel' requires method '-loadingLabel' to be defined - use @synthesize, @dynamic or provide a method implementation
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingLabel' requires the method 'setLoadingLabel:' to be defined - use @synthesize, @dynamic or provide a method implementation
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: incomplete implementation of class 'VC_Home'
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: method definition for '-showHerdictButtons' not found
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: method definition for '-initiateGetSiteSummary' not found
-o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: method definition for '-setUrlSchemeHttp' not found
-lSLF07#2@71"Compile /projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559735#322559735#0(5513"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home viewWillAppear:]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:200: warning: 'VC_Home' may not respond to '-fetchTickerFeed'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:200: warning: (Messages without a matching method signature/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:200: warning: will be assumed to return 'id' and accept/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:200: warning: '...' as arguments.)/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home initiateAnnotateReport]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:299: warning: 'WebservicesController' may not respond to '+getRoughGeocodeForCountry:callbackDelegate:'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home annotateReport]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:318: warning: 'VC_Home' may not respond to '-getAnnotationTitleString:'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:319: warning: 'VC_Home' may not respond to '-getAnnotationSubtitleString:'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:320: warning: 'VC_Home' may not respond to '-getSheepColorInt:'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:320: warning: passing argument 5 of 'initWithBasics:latitude:title:subtitle:sheepColor:' makes integer from pointer without a cast/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:324: warning: unused variable 'logAnnotatingReport'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home searchBarTextDidBeginEditing:]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:509: warning: 'SearchMenu' may not respond to '-show'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home searchBarTextDidEndEditing:]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:517: warning: 'SearchMenu' may not respond to '-hide'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home getSiteSummaryCallbackHandler:]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:593: warning: 'SiteView' may not respond to '-showSiteSummary'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:580: warning: unused variable 'siteId'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home searchMenuOptionSelected:]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:767: warning: 'SearchMenu' may not respond to '-removeSelectionBackground'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:789: warning: 'SiteView' may not respond to '-hideSiteSummary'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:790: warning: 'SiteView' may not respond to '-loadUrl:'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:799: warning: 'SiteView' may not respond to '-loadUrl:'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: At top level:/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingPlate' requires method '-loadingPlate' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingPlate' requires the method 'setLoadingPlate:' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingBackground' requires method '-loadingBackground' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingBackground' requires the method 'setLoadingBackground:' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingActivityIndicator' requires method '-loadingActivityIndicator' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingActivityIndicator' requires the method 'setLoadingActivityIndicator:' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingLabel' requires method '-loadingLabel' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: property 'loadingLabel' requires the method 'setLoadingLabel:' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: incomplete implementation of class 'VC_Home'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: method definition for '-showHerdictButtons' not found/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: method definition for '-initiateGetSiteSummary' not found/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:816: warning: method definition for '-setUrlSchemeHttp' not found29(22@47"'VC_Home' may not respond to '-fetchTickerFeed'322559735#107#126#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#200#0#200#0#26"'*' may not respond to '*'0(13@108"(Messages without a matching method signature will be assumed to return 'id' and accept '...' as arguments.)322559735#233#124#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#200#0#200#0#0"0(22@89"'WebservicesController' may not respond to '+getRoughGeocodeForCountry:callbackDelegate:'322559735#690#168#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#299#0#299#0#26"'*' may not respond to '*'0(22@57"'VC_Home' may not respond to '-getAnnotationTitleString:'322559735#964#136#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#318#0#318#0#26"'*' may not respond to '*'0(22@60"'VC_Home' may not respond to '-getAnnotationSubtitleString:'322559735#1100#139#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#319#0#319#0#26"'*' may not respond to '*'0(22@49"'VC_Home' may not respond to '-getSheepColorInt:'322559735#1239#128#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#320#0#320#0#26"'*' may not respond to '*'0(22@116"Passing argument 5 of 'initWithBasics:latitude:title:subtitle:sheepColor:' makes integer from pointer without a cast322559735#1367#195#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#320#0#320#0#67"passing argument * of '*' makes integer from pointer without a cast0(22@37"Unused variable 'logAnnotatingReport'322559735#1562#116#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#324#0#324#0#19"unused variable '*'0(22@39"'SearchMenu' may not respond to '-show'322559735#1799#118#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#509#0#509#0#26"'*' may not respond to '*'0(22@39"'SearchMenu' may not respond to '-hide'322559735#2036#118#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#517#0#517#0#26"'*' may not respond to '*'0(22@48"'SiteView' may not respond to '-showSiteSummary'322559735#2276#127#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#593#0#593#0#26"'*' may not respond to '*'0(22@24"Unused variable 'siteId'322559735#2403#103#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#580#0#580#0#19"unused variable '*'0(22@60"'SearchMenu' may not respond to '-removeSelectionBackground'322559735#2623#139#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#767#0#767#0#26"'*' may not respond to '*'0(22@48"'SiteView' may not respond to '-hideSiteSummary'322559735#2762#127#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#789#0#789#0#26"'*' may not respond to '*'0(22@41"'SiteView' may not respond to '-loadUrl:'322559735#2889#120#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#790#0#790#0#26"'*' may not respond to '*'0(22@41"'SiteView' may not respond to '-loadUrl:'322559735#3009#120#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#799#0#799#0#26"'*' may not respond to '*'0(23@13"At top level:322559735#3129#79#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#0#0#0#0#0"0(22@132"Property 'loadingPlate' requires method '-loadingPlate' to be defined - use @synthesize, @dynamic or provide a method implementation322559735#3208#211#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#816#0#816#0#0"0(22@139"Property 'loadingPlate' requires the method 'setLoadingPlate:' to be defined - use @synthesize, @dynamic or provide a method implementation322559735#3419#218#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#816#0#816#0#0"0(22@142"Property 'loadingBackground' requires method '-loadingBackground' to be defined - use @synthesize, @dynamic or provide a method implementation322559735#3637#221#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#816#0#816#0#0"0(22@149"Property 'loadingBackground' requires the method 'setLoadingBackground:' to be defined - use @synthesize, @dynamic or provide a method implementation322559735#3858#228#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#816#0#816#0#0"0(22@156"Property 'loadingActivityIndicator' requires method '-loadingActivityIndicator' to be defined - use @synthesize, @dynamic or provide a method implementation322559735#4086#235#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#816#0#816#0#0"0(22@163"Property 'loadingActivityIndicator' requires the method 'setLoadingActivityIndicator:' to be defined - use @synthesize, @dynamic or provide a method implementation322559735#4321#242#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#816#0#816#0#0"0(22@132"Property 'loadingLabel' requires method '-loadingLabel' to be defined - use @synthesize, @dynamic or provide a method implementation322559735#4563#211#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#816#0#816#0#0"0(22@139"Property 'loadingLabel' requires the method 'setLoadingLabel:' to be defined - use @synthesize, @dynamic or provide a method implementation322559735#4774#218#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#816#0#816#0#0"0(22@44"Incomplete implementation of class 'VC_Home'322559735#4992#123#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#816#0#816#0#38"incomplete implementation of class '*'0(22@53"Method definition for '-showHerdictButtons' not found322559735#5115#132#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#816#0#816#0#35"method definition for '*' not found0(22@57"Method definition for '-initiateGetSiteSummary' not found322559735#5247#136#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#816#0#816#0#35"method definition for '*' not found0(22@51"Method definition for '-setUrlSchemeHttp' not found322559735#5383#130#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559732#816#0#816#0#35"method definition for '*' not found0(0#0#63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m8634671744#2035"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/VC_Home.o"0#
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingPlate' requires method '-loadingPlate' to be defined - use @synthesize, @dynamic or provide a method implementation
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingPlate' requires the method 'setLoadingPlate:' to be defined - use @synthesize, @dynamic or provide a method implementation
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingBackground' requires method '-loadingBackground' to be defined - use @synthesize, @dynamic or provide a method implementation
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingBackground' requires the method 'setLoadingBackground:' to be defined - use @synthesize, @dynamic or provide a method implementation
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingActivityIndicator' requires method '-loadingActivityIndicator' to be defined - use @synthesize, @dynamic or provide a method implementation
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingActivityIndicator' requires the method 'setLoadingActivityIndicator:' to be defined - use @synthesize, @dynamic or provide a method implementation
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingLabel' requires method '-loadingLabel' to be defined - use @synthesize, @dynamic or provide a method implementation
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingLabel' requires the method 'setLoadingLabel:' to be defined - use @synthesize, @dynamic or provide a method implementation
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: incomplete implementation of class 'VC_Home'
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: method definition for '-showHerdictButtons' not found
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: method definition for '-initiateGetSiteSummary' not found
+o/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: method definition for '-setUrlSchemeHttp' not found
+lSLF07#2@71"Compile /projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322561106#322561107#0(5513"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home viewWillAppear:]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:117: warning: 'VC_Home' may not respond to '-fetchTickerFeed'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:117: warning: (Messages without a matching method signature/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:117: warning: will be assumed to return 'id' and accept/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:117: warning: '...' as arguments.)/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home initiateAnnotateReport]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:205: warning: 'WebservicesController' may not respond to '+getRoughGeocodeForCountry:callbackDelegate:'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home annotateReport]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:224: warning: 'VC_Home' may not respond to '-getAnnotationTitleString:'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:225: warning: 'VC_Home' may not respond to '-getAnnotationSubtitleString:'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:226: warning: 'VC_Home' may not respond to '-getSheepColorInt:'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:226: warning: passing argument 5 of 'initWithBasics:latitude:title:subtitle:sheepColor:' makes integer from pointer without a cast/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:230: warning: unused variable 'logAnnotatingReport'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home searchBarTextDidBeginEditing:]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:415: warning: 'SearchMenu' may not respond to '-show'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home searchBarTextDidEndEditing:]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:423: warning: 'SearchMenu' may not respond to '-hide'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home getSiteSummaryCallbackHandler:]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:495: warning: 'SiteView' may not respond to '-showSiteSummary'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:482: warning: unused variable 'siteId'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home searchMenuOptionSelected:]':/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:563: warning: 'SearchMenu' may not respond to '-removeSelectionBackground'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:585: warning: 'SiteView' may not respond to '-hideSiteSummary'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:586: warning: 'SiteView' may not respond to '-loadUrl:'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:595: warning: 'SiteView' may not respond to '-loadUrl:'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: At top level:/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingPlate' requires method '-loadingPlate' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingPlate' requires the method 'setLoadingPlate:' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingBackground' requires method '-loadingBackground' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingBackground' requires the method 'setLoadingBackground:' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingActivityIndicator' requires method '-loadingActivityIndicator' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingActivityIndicator' requires the method 'setLoadingActivityIndicator:' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingLabel' requires method '-loadingLabel' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: property 'loadingLabel' requires the method 'setLoadingLabel:' to be defined - use @synthesize, @dynamic or provide a method implementation/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: incomplete implementation of class 'VC_Home'/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: method definition for '-showHerdictButtons' not found/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: method definition for '-initiateGetSiteSummary' not found/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:612: warning: method definition for '-setUrlSchemeHttp' not found29(22@47"'VC_Home' may not respond to '-fetchTickerFeed'322561107#107#126#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#117#0#117#0#26"'*' may not respond to '*'0(13@108"(Messages without a matching method signature will be assumed to return 'id' and accept '...' as arguments.)322561107#233#124#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#117#0#117#0#0"0(22@89"'WebservicesController' may not respond to '+getRoughGeocodeForCountry:callbackDelegate:'322561107#690#168#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#205#0#205#0#26"'*' may not respond to '*'0(22@57"'VC_Home' may not respond to '-getAnnotationTitleString:'322561107#964#136#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#224#0#224#0#26"'*' may not respond to '*'0(22@60"'VC_Home' may not respond to '-getAnnotationSubtitleString:'322561107#1100#139#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#225#0#225#0#26"'*' may not respond to '*'0(22@49"'VC_Home' may not respond to '-getSheepColorInt:'322561107#1239#128#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#226#0#226#0#26"'*' may not respond to '*'0(22@116"Passing argument 5 of 'initWithBasics:latitude:title:subtitle:sheepColor:' makes integer from pointer without a cast322561107#1367#195#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#226#0#226#0#67"passing argument * of '*' makes integer from pointer without a cast0(22@37"Unused variable 'logAnnotatingReport'322561107#1562#116#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#230#0#230#0#19"unused variable '*'0(22@39"'SearchMenu' may not respond to '-show'322561107#1799#118#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#415#0#415#0#26"'*' may not respond to '*'0(22@39"'SearchMenu' may not respond to '-hide'322561107#2036#118#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#423#0#423#0#26"'*' may not respond to '*'0(22@48"'SiteView' may not respond to '-showSiteSummary'322561107#2276#127#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#495#0#495#0#26"'*' may not respond to '*'0(22@24"Unused variable 'siteId'322561107#2403#103#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#482#0#482#0#19"unused variable '*'0(22@60"'SearchMenu' may not respond to '-removeSelectionBackground'322561107#2623#139#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#563#0#563#0#26"'*' may not respond to '*'0(22@48"'SiteView' may not respond to '-hideSiteSummary'322561107#2762#127#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#585#0#585#0#26"'*' may not respond to '*'0(22@41"'SiteView' may not respond to '-loadUrl:'322561107#2889#120#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#586#0#586#0#26"'*' may not respond to '*'0(22@41"'SiteView' may not respond to '-loadUrl:'322561107#3009#120#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#595#0#595#0#26"'*' may not respond to '*'0(23@13"At top level:322561107#3129#79#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#0#0#0#0#0"0(22@132"Property 'loadingPlate' requires method '-loadingPlate' to be defined - use @synthesize, @dynamic or provide a method implementation322561107#3208#211#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#612#0#612#0#0"0(22@139"Property 'loadingPlate' requires the method 'setLoadingPlate:' to be defined - use @synthesize, @dynamic or provide a method implementation322561107#3419#218#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#612#0#612#0#0"0(22@142"Property 'loadingBackground' requires method '-loadingBackground' to be defined - use @synthesize, @dynamic or provide a method implementation322561107#3637#221#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#612#0#612#0#0"0(22@149"Property 'loadingBackground' requires the method 'setLoadingBackground:' to be defined - use @synthesize, @dynamic or provide a method implementation322561107#3858#228#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#612#0#612#0#0"0(22@156"Property 'loadingActivityIndicator' requires method '-loadingActivityIndicator' to be defined - use @synthesize, @dynamic or provide a method implementation322561107#4086#235#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#612#0#612#0#0"0(22@163"Property 'loadingActivityIndicator' requires the method 'setLoadingActivityIndicator:' to be defined - use @synthesize, @dynamic or provide a method implementation322561107#4321#242#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#612#0#612#0#0"0(22@132"Property 'loadingLabel' requires method '-loadingLabel' to be defined - use @synthesize, @dynamic or provide a method implementation322561107#4563#211#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#612#0#612#0#0"0(22@139"Property 'loadingLabel' requires the method 'setLoadingLabel:' to be defined - use @synthesize, @dynamic or provide a method implementation322561107#4774#218#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#612#0#612#0#0"0(22@44"Incomplete implementation of class 'VC_Home'322561107#4992#123#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#612#0#612#0#38"incomplete implementation of class '*'0(22@53"Method definition for '-showHerdictButtons' not found322561107#5115#132#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#612#0#612#0#35"method definition for '*' not found0(22@57"Method definition for '-initiateGetSiteSummary' not found322561107#5247#136#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#612#0#612#0#35"method definition for '*' not found0(22@51"Method definition for '-setUrlSchemeHttp' not found322561107#5383#130#0(6@63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m322559890#612#0#612#0#35"method definition for '*' not found0(0#0#63"/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m8386658438684291072#2035"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -include /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch -c "/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m" -o "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/VC_Home.o"0#
 
 CCompileC build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/WebViewStatusBar.o "/projects/Herdict Working/iOS/WebViewStatusBar.m" normal i386 objective-c com.apple.compilers.gcc.4_2
 s322527049.184324
@@ -1985,23 +2165,23 @@ xImages/triangle.png
 lSLF07#2@24"Copy Images/triangle.png322427661#322427661#0(0"0(0#0#49"/projects/Herdict Working/iOS/Images/triangle.png8648648448#518"    cd "/projects/Herdict Working/iOS"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -resolve-src-symlinks "/projects/Herdict Working/iOS/Images/triangle.png" "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app"0#
 
 CGenerateDSYMFile "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app.dSYM" "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict"
-s322559735.552787
-e322559735.615068
+s322561107.656532
+e322561107.804289
 r1
 xGenerateDSYMFile
 x/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app.dSYM
 x/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict
-lSLF07#2@109"GenerateDSYMFile build/Debug-iphonesimulator/Herdict.app.dSYM build/Debug-iphonesimulator/Herdict.app/Herdict322559735#322559735#0(0"0(0#0#77"/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict8674038240#424"    cd "/projects/Herdict Working/iOS"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/usr/bin/dsymutil "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict" -o "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app.dSYM"0#
+lSLF07#2@109"GenerateDSYMFile build/Debug-iphonesimulator/Herdict.app.dSYM build/Debug-iphonesimulator/Herdict.app/Herdict322561107#322561107#0(0"0(0#0#77"/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict8655376800#424"    cd "/projects/Herdict Working/iOS"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/usr/bin/dsymutil "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict" -o "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app.dSYM"0#
 
 CLd "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict" normal i386
-s322559735.462520
-e322559735.552631
+s322561107.464228
+e322561107.656411
 r1
 xLd
 x/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict
 xnormal
 xi386
-lSLF07#2@82"Link /projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict322559735#322559735#0(0"0(0#0#0"8676628768#1116"    cd "/projects/Herdict Working/iOS"    setenv MACOSX_DEPLOYMENT_TARGET 10.6    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -arch i386 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk "-L/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" -filelist "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/Herdict.LinkFileList" -mmacosx-version-min=10.6 -lxml2 -Xlinker -objc_abi_version -Xlinker 2 -framework Foundation -framework UIKit -framework CoreGraphics -framework CFNetwork -framework CoreFoundation -framework MobileCoreServices -framework QuartzCore -framework SystemConfiguration -lz.1.2.3 -framework MapKit -framework CoreLocation -o "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict"0#
+lSLF07#2@82"Link /projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict322561107#322561107#0(0"0(0#0#0"8662521792#1116"    cd "/projects/Herdict Working/iOS"    setenv MACOSX_DEPLOYMENT_TARGET 10.6    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -arch i386 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk "-L/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" -filelist "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Objects-normal/i386/Herdict.LinkFileList" -mmacosx-version-min=10.6 -lxml2 -Xlinker -objc_abi_version -Xlinker 2 -framework Foundation -framework UIKit -framework CoreGraphics -framework CFNetwork -framework CoreFoundation -framework MobileCoreServices -framework QuartzCore -framework SystemConfiguration -lz.1.2.3 -framework MapKit -framework CoreLocation -o "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Herdict"0#
 
 CProcessInfoPlistFile "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app/Info.plist" Herdict-Info.plist
 s322427661.610211
@@ -2026,10 +2206,10 @@ xcom.apple.compilers.gcc.4_2
 lSLF07#2@29"Precompile Herdict_Prefix.pch322427662#322427663#0(0"0(0#0#48"/projects/Herdict Working/iOS/Herdict_Prefix.pch8644806816#1904"    cd "/projects/Herdict Working/iOS"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c-header -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk -fexceptions -fvisibility=hidden -mmacosx-version-min=10.6 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -D__IPHONE_OS_VERSION_MIN_REQUIRED=40200 -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-generated-files.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-own-target-headers.hmap" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-all-target-headers.hmap" -iquote "/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/Herdict-project-headers.hmap" "-F/projects/Herdict Working/iOS/build/Debug-iphonesimulator" "-I/projects/Herdict Working/iOS/build/Debug-iphonesimulator/include" -I/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator4.2.sdk/usr/include/libxml2 "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources/i386" "-I/projects/Herdict Working/iOS/build/Herdict.build/Debug-iphonesimulator/Herdict.build/DerivedSources" -c "/projects/Herdict Working/iOS/Herdict_Prefix.pch" -o /var/folders/QI/QIfIT+RbFNaAFNcgEdNMkE+++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/Herdict_Prefix-fftoaqplzkftpzbcwalttopvnspu/Herdict_Prefix.pch.gch0#
 
 CTouch "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app"
-s322559735.615558
-e322559735.621654
+s322561107.804380
+e322561107.808020
 r1
 xTouch
 x/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app
-lSLF07#2@75"Touch /projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app322559735#322559735#0(0"0(0#0#0"8671394496#326"    cd "/projects/Herdict Working/iOS"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /usr/bin/touch -c "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app"0#
+lSLF07#2@75"Touch /projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app322561107#322561107#0(0"0(0#0#0"8672934176#326"    cd "/projects/Herdict Working/iOS"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/opt/local/bin:/usr/local/git/bin"    /usr/bin/touch -c "/projects/Herdict Working/iOS/build/Debug-iphonesimulator/Herdict.app"0#
 

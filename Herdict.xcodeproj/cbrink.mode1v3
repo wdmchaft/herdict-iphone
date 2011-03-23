@@ -229,6 +229,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -268,7 +270,6 @@
 								<string>A679A30312B6F17A00A67538</string>
 								<string>A679A34C12B6F18E00A67538</string>
 								<string>29B97317FDCFA39411CA2CEA</string>
-								<string>A6CCA1F51339C10B00708A7B</string>
 								<string>29B97315FDCFA39411CA2CEA</string>
 								<string>29B97323FDCFA39411CA2CEA</string>
 								<string>19C28FACFE9D520D11CA2CBB</string>
@@ -277,7 +278,6 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>19</integer>
 									<integer>17</integer>
 									<integer>16</integer>
 									<integer>0</integer>
@@ -314,14 +314,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>SearchMenu.m</string>
+								<string>country_locations.plist</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -329,25 +327,17 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>SearchMenu.m</string>
+										<string>country_locations.plist</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>A6CCA3871339DFA900708A7B</string>
+										<string>A6CCA3AB1339E46500708A7B</string>
 										<key>history</key>
 										<array>
-											<string>A6CCA1221339A92300708A7B</string>
-											<string>A6CCA3481339DA0900708A7B</string>
-											<string>A6CCA3561339DC5000708A7B</string>
-											<string>A6CCA3581339DC5000708A7B</string>
 											<string>A6CCA3621339DD0800708A7B</string>
-											<string>A6CCA3631339DD0800708A7B</string>
-											<string>A6CCA3641339DD0800708A7B</string>
-											<string>A6CCA3781339DE8800708A7B</string>
 											<string>A6CCA37A1339DE8800708A7B</string>
-											<string>A6CCA3841339DF9B00708A7B</string>
-											<string>A6CCA3851339DF9B00708A7B</string>
-											<string>A6CCA3791339DE8800708A7B</string>
+											<string>A6CCA3A91339E46500708A7B</string>
+											<string>A6CCA3AA1339E46500708A7B</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
