@@ -16,6 +16,7 @@
 	UITextView *textView1;
 	UITextView *textView2;
 	FooterBar *theFooter;
+	UILabel *hideLabel;
 		
 }
 
@@ -23,5 +24,6 @@
 @property (nonatomic, retain) UITextView *textView1;
 @property (nonatomic, retain) UITextView *textView2;
 @property (nonatomic, retain) FooterBar *theFooter;
+@property (nonatomic, retain) UILabel *hideLabel;
 
 @end

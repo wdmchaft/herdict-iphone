@@ -12,79 +12,63 @@
 #import "ASIHTTPRequest.h"
 #import "TouchXML.h"
 #import "ReportAnnotation.h"
-#import "SearchMenu.h"
+#import "URLMenu.h"
 #import "SiteView.h"
 #import "CustomBarButton.h"
+#import "Constants.h"
+#import "WebservicesController.h"
+#import "ReportForm.h"
+#import "URLBar.h"
 
-@interface VC_Home : UIViewController <UIAlertViewDelegate, UISearchBarDelegate, MKMapViewDelegate> {
+@interface VC_Home : UIViewController <UIAlertViewDelegate, UISearchBarDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource> {
 
-	CustomBarButton *searchButtonCancel;
-	UISearchBar *theSearchBar;	
-	SearchMenu *theSearchMenu;
+	CustomBarButton *buttonMyIsp;
+	CustomBarButton *buttonCancelSearch;
 	
+	URLBar *theUrlBar;	
+	MKMapView *reportMapView;
+	URLMenu *theUrlMenu;
+	SiteView *theSiteView;	
+	ReportForm *theReportForm;
+	UIView *theScreen;
+	
+	NSString *ipAddress;
 	NSMutableArray *reportsFromFeed;
 	int indexOfCurrentReportToBeAnnotated;
-	MKMapView *reportMapView;
 	ReportAnnotation *theAnnotation;
-	NSTimer *timerInititiateAnnotateReport;
-	
-	SiteView *theSiteView;
-	
-	bool stateHome;
-	
-//	UIView *networkInfoPlate;
-//	UIView *networkInfoTabBackground;
-//	UIView *networkInfoBodyBackground;
-//	UILabel *networkInfoLabel;
-//	UITextView *networkInfoText;
-//	bool networkInfoPlateIsExpanded;
-	
-	UIView *loadingPlate;
-	UIView *loadingBackground;
-	UIActivityIndicatorView *loadingActivityIndicator;
-	UILabel *loadingLabel;
-	
-	NSString *ipString;
-	NSMutableDictionary *ipInfoDict;
-	NSString *ispString;
-	NSMutableDictionary *countryDict;	
+	NSTimer *timerInititiateAnnotateReport;	
+
 }
 
-@property (nonatomic, retain) CustomBarButton *searchButtonCancel;
-@property (nonatomic, retain) UISearchBar *theSearchBar;
-@property (nonatomic, retain) SearchMenu *theSearchMenu;
+@property (nonatomic, retain) CustomBarButton *buttonMyIsp;
+@property (nonatomic, retain) CustomBarButton *buttonCancelSearch;
 
+@property (nonatomic, retain) URLBar *theUrlBar;
+@property (nonatomic, retain) MKMapView *reportMapView;
+@property (nonatomic, retain) URLMenu *theUrlMenu;
+@property (nonatomic, retain) SiteView *theSiteView;
+@property (nonatomic, retain) ReportForm *theReportForm;
+@property (nonatomic, retain) UIView *theScreen;
+
+@property (nonatomic, retain) NSString *ipAddress;
 @property (nonatomic, retain) NSMutableArray *reportsFromFeed;
 @property (nonatomic) int indexOfCurrentReportToBeAnnotated;
-@property (nonatomic, retain) MKMapView *reportMapView;
 @property (nonatomic, retain) ReportAnnotation *theAnnotation;
 @property (nonatomic, retain) NSTimer *timerInititiateAnnotateReport;
 
-@property (nonatomic, retain) SiteView *theSiteView;
-
-@property (nonatomic) bool stateHome;
-
-//@property (nonatomic, retain) UIView *networkInfoPlate;
-//@property (nonatomic, retain) UIView *networkInfoTabBackground;
-//@property (nonatomic, retain) UIView *networkInfoBodyBackground;
-//@property (nonatomic, retain) UILabel *networkInfoLabel;
-//@property (nonatomic, retain) UITextView *networkInfoText;
-//@property (nonatomic) bool networkInfoPlateIsExpanded;
-
-@property (nonatomic, retain) UIView *loadingPlate;
-@property (nonatomic, retain) UIView *loadingBackground;
-@property (nonatomic, retain) UIActivityIndicatorView *loadingActivityIndicator;
-@property (nonatomic, retain) UILabel *loadingLabel;
-
-@property (nonatomic, retain) NSString *ipString;
-@property (nonatomic, retain) NSMutableDictionary *ipInfoDict;
-@property (nonatomic, retain) NSString *ispString;
-@property (nonatomic, retain) NSMutableDictionary *countryDict;
 
 - (NSMutableDictionary *) initialResponseHandling:(ASIHTTPRequest *)theRequest;
 
+- (void) fetchTickerFeed;
+
 - (void) setUrlSchemeHttp;
+
 - (void) getCountriesCallbackHandler:(ASIHTTPRequest*)request;
+- (void) getCategoriesCallbackHandler:(ASIHTTPRequest *)request;
+- (void) getInterestsCallbackHandler:(ASIHTTPRequest *)request;
+- (void) getReasonsCallbackHandler:(ASIHTTPRequest *)request;
+- (void) getLocationsCallbackHandler:(ASIHTTPRequest *)request;
+
 - (void) initiateGetSiteSummary;
 - (void) getSiteSummaryCallbackHandler:(ASIHTTPRequest*)request;
 - (void) showHerdictButtons;
@@ -97,6 +81,10 @@
 - (void) setCountryDataWhereKnown;
 - (int) indexOfReportToBeAnnotatedNext;
 
-- (void) searchMenuOptionSelected:(int)optionNumber;
+- (NSString *)getAnnotationTitleString:(NSMutableDictionary *)reportDict;
+- (NSString *)getAnnotationSubtitleString:(NSMutableDictionary *)reportDict; 
+- (int)getSheepColorInt:(NSMutableDictionary *)reportDict;
+
+- (void) urlMenuOptionSelected:(NSNumber *)optionNumber;
 
 @end

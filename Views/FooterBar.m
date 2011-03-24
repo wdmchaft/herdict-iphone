@@ -19,6 +19,9 @@
     self = [super initWithFrame:frame];
 
 	if (self) {
+		
+		self.userInteractionEnabled = YES;
+		
 		self.theBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
 		self.theBackground.backgroundColor = [UIColor blackColor];
 		self.theBackground.alpha = 0.85;
@@ -30,6 +33,7 @@
 		self.textViewLeft.textColor = [UIColor whiteColor];
 		self.textViewLeft.textAlignment = UITextAlignmentLeft;
 		self.textViewLeft.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
+		self.textViewLeft.editable = NO;
 		self.textViewLeft.userInteractionEnabled = NO;
 		[self addSubview:self.textViewLeft];
 		
@@ -38,6 +42,7 @@
 		self.textViewRight.textColor = [UIColor whiteColor];
 		self.textViewRight.textAlignment = UITextAlignmentLeft;
 		self.textViewRight.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
+		self.textViewRight.editable = NO;
 		self.textViewRight.userInteractionEnabled = NO;
 		[self addSubview:self.textViewRight];
 		

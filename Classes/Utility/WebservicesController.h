@@ -15,12 +15,13 @@
 @interface WebservicesController : NSObject {
 }
 
-+ (void) getCountries:(id)theCallbackDelegate;
++ (void) getIp:(id)theCallbackDelegate;
++ (void) getInfoForIpAddress:(NSString *)theIpAddress callbackDelegate:(id)theDelegate;
++ (void) getRoughGeocodeForCountry:(NSString *)theCountry callbackDelegate:(id)theCallbackDelegate;
 
++ (void) getHerdictDicts:(id)theCallbackDelegate;
 + (void) getSummaryForUrl:(NSString *)theUrl forCountry:(NSString *)theCountry urlEncoding:(NSString *)theEncoding apiVersion:(NSString *)theVersion callbackDelegate:(id)theDelegate;
-
-+ (void) reportUrl:(NSString *)theEncodedUrl reportType:(NSString *)theReportType country:(NSString *)theCountry userISP:(NSString *)theIsp userLocation:(NSString *)theLocation interest:(NSString *)theInterest reason:(NSString *)theReason sourceId:(NSString *)theSourceId tag:(NSString *)theTag comments:(NSString *)theComments defaultCountryCode:(NSString *)theDCC defaultIspName:(NSString *)theDIN callbackDelegate:(id)theDelegate;
-
++ (void) reportUrl:(NSString *)theEncodedUrl reportType:(NSString *)theReportType country:(NSString *)theCountry userISP:(NSString *)theIsp userLocation:(NSString *)theLocation interest:(NSString *)theInterest reason:(NSString *)theReason sourceId:(NSString *)theSourceId tag:(NSString *)theTag comments:(NSString *)theComments defaultCountryCode:(NSString *)theDCC defaultispDefaultName:(NSString *)theDIN callbackDelegate:(id)theDelegate;
 
 
 + (NSMutableArray *) getArrayFromJSONData:(NSData *)theData;

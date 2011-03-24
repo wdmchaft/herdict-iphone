@@ -25,4 +25,9 @@
 @property (nonatomic, retain) SiteSummary *theSiteSummary;
 @property (nonatomic, retain) NSString *lastTestedUrl;
 
+- (void)showWebView;
+- (void)hideWebView;
+- (void)showSiteSummary;
+- (void)hideSiteSummary;
+
 @end

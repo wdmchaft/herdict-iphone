@@ -8,11 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import "GradientBackground.h"
 
 
 @interface CustomBarButton : UIButton {
 	
+	UILabel *theTitle;
+	GradientBackground *notSelectedBackground;
+	GradientBackground *selectedBackground;
 }
 
+@property (nonatomic, retain) UILabel *theTitle;
+@property (nonatomic, retain) GradientBackground *notSelectedBackground;
+@property (nonatomic, retain) GradientBackground *selectedBackground;
+
+- (void)setSelected;
+- (void)setNotSelected;
 
 @end

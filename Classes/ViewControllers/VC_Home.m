@@ -6,54 +6,39 @@
 //  Copyright 2011 Herdict. All rights reserved.
 //
 
-#import "Constants.h"
 #import "VC_Home.h"
-#import "WebservicesController.h"
-
-#define bottomLeftTab_onscreen_x 15
-#define bottomLeftTab_onscreen_y 391
-#define bottomLeftTab_onscreen_width 140
-#define bottomLeftTab_onscreen_height 40
-#define bottomLeftTab_offscreen_y 480
-#define bottomRightTab_onscreen_x 165
-#define bottomRightTab_onscreen_y 391
-#define bottomRightTab_onscreen_width 140
-#define bottomRightTab_onscreen_height 40
-#define bottomRightTab_offscreen_y 480
-
-#define networkInfoPlate_expanded_x 15
-#define networkInfoPlate_expanded_y 340
-#define networkInfoPlate_expanded_width 290
-#define networkInfoPlate_expanded_height 140
 
 @implementation VC_Home
 
-@synthesize searchButtonCancel;
-@synthesize theSearchBar;
-@synthesize theSearchMenu;
+@synthesize buttonMyIsp;
+@synthesize buttonCancelSearch;
+
+@synthesize theUrlBar;
+@synthesize reportMapView;
+@synthesize theUrlMenu;
+@synthesize theSiteView;
+@synthesize theReportForm;
+@synthesize theScreen;
 
 @synthesize reportsFromFeed;
 @synthesize indexOfCurrentReportToBeAnnotated;
-@synthesize reportMapView;
 @synthesize theAnnotation;
 @synthesize timerInititiateAnnotateReport;
 
-@synthesize theSiteView;
+@synthesize ipAddress;
 
-@synthesize stateHome;
-
-@synthesize ipString;
-@synthesize ipInfoDict;
-@synthesize ispString;
-@synthesize countryDict;
 
 #pragma mark UIViewController lifecycle
 
 - (void) viewDidLoad {
 	[super viewDidLoad];
 		
+	self.view.userInteractionEnabled = YES;
+	
+	self.view.backgroundColor = [UIColor grayColor];
+
 	self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
-	self.navigationController.navigationBar.tintColor = UIColorFromRGB(0xe4e7e9);
+	self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.893 green:0.903 blue:0.923 alpha:0.9]; // UIColorFromRGB(0xe4eaec);
 	UIImage *herdictBadgeImage = [UIImage imageNamed:@"herdict_badge"];
 	UIImageView *herdictBadgeImageView = [[[UIImageView alloc] initWithImage:herdictBadgeImage] autorelease];
 	[herdictBadgeImageView setFrame:CGRectMake(
@@ -63,59 +48,74 @@
 											   herdictBadgeImageView.frame.size.height * 0.8)];
 	self.navigationItem.titleView = herdictBadgeImageView;
 	[herdictBadgeImageView release];
-	self.view.backgroundColor = [UIColor grayColor];
 
+	// --	Set up buttonMyIsp.
+	self.buttonMyIsp = [CustomBarButton buttonWithType:UIButtonTypeCustom];
+	self.buttonMyIsp.notSelectedBackground.floatRed = 0.935;
+	self.buttonMyIsp.notSelectedBackground.floatGreen = 0.945;
+	self.buttonMyIsp.notSelectedBackground.floatBlue = 0.965;
+	self.buttonMyIsp.theTitle.text = @"My ISP";
+	[self.buttonMyIsp addTarget:self action:@selector(selectedMyIsp) forControlEvents:UIControlEventTouchUpInside];
+	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.buttonMyIsp];
+	
+	// --	Set up buttonCancelSearch.
+	self.buttonCancelSearch = [CustomBarButton buttonWithType:UIButtonTypeCustom];
+	self.buttonCancelSearch.notSelectedBackground.floatRed = 0.935;
+	self.buttonCancelSearch.notSelectedBackground.floatGreen = 0.945;
+	self.buttonCancelSearch.notSelectedBackground.floatBlue = 0.965;
+	self.buttonCancelSearch.theTitle.text = @"Cancel";
+	[self.buttonCancelSearch addTarget:self action:@selector(selectedCancelSearch) forControlEvents:UIControlEventTouchUpInside];
+	
+	// --	Set up theUrlBar.
+	self.theUrlBar = [[URLBar alloc] initWithFrame:CGRectMake(0,0,320,38)];
+	[self.theUrlBar setDelegate:self];
+	[self.view addSubview:self.theUrlBar];
+	
 	// --	Set up reportMapView.
 	self.reportMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0,38,320,378)];
 	self.reportMapView.delegate = self;
-	self.reportMapView.userInteractionEnabled = NO;
+	self.reportMapView.userInteractionEnabled = YES;
+	self.reportMapView.scrollEnabled = NO;
 	self.reportMapView.zoomEnabled = NO;
 	[self.view addSubview:self.reportMapView];	
-	self.reportsFromFeed = [NSMutableArray array];
 	self.indexOfCurrentReportToBeAnnotated = 0;
-	self.countryDict = [NSMutableDictionary dictionary];	
-	[WebservicesController getCountries:self];	
+	
+	// --	Set up theSiteView.
+	self.theSiteView = [[SiteView alloc] initWithFrame:CGRectMake(0,416,320,378)];
+	[self.view addSubview:self.theSiteView];
+	
+	// --	Set up theReportForm.
+	self.theReportForm = [[ReportForm alloc] initWithFrame:CGRectMake(0, 416, 320, 378)];
+	[self.view addSubview:self.theReportForm];
+
+	// --	Set up theUrlMenu.  (adding this subview after adding reportMapView, theSiteView, and theReportForm.. for z-ordering)
+	self.theUrlMenu = [[URLMenu alloc] initWithFrame:CGRectMake(65 - 130, -35 - 200, 150, 129)];
+	[self.view addSubview:self.theUrlMenu];
+	
+	// --	Put up 'The Screen'.  (to catch all touches below theUrlBar.. forwards to [self touchesBegan--]) 
+	self.theScreen = [[UIView alloc] initWithFrame:CGRectMake(0, 38, 320, 378)];
+	[self.view addSubview:self.theScreen];
+	[self.view bringSubviewToFront:self.theScreen];
+	
+	// --	Hit the 5 endpoints of the Herdict API to get up-to-date Report Form options.  
+	[WebservicesController getHerdictDicts:self];	
 	
 	// --	Set up the 'My ISP' stuff.
-	self.ispString = [NSString stringWithString:@""];
-	self.ipInfoDict = [NSMutableDictionary dictionary];
-		
-	self.stateHome = YES;
-		
-	// --	Set up theSearchBar.
-	self.theSearchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0,0,320,38)];
-	self.theSearchBar.placeholder = @"Enter URL to Get or Submit a Report";
-	self.theSearchBar.tintColor = UIColorFromRGB(0xbfc7cb);
-	self.theSearchBar.barStyle = UIBarStyleDefault;
-	self.theSearchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-	self.theSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-	self.theSearchBar.keyboardType = UIKeyboardTypeURL;
-	[self.theSearchBar setDelegate:self];
-	[self.view addSubview:self.theSearchBar];
-	UITextField *searchBarTextField = [[self.theSearchBar subviews] objectAtIndex:1];
-	searchBarTextField.returnKeyType = UIReturnKeyGo;
-	UIImage *urlIcon = [UIImage imageNamed:@"globe.png"];	
-	UIImageView *urlIconView = [[UIImageView alloc] initWithImage:urlIcon];
-	[searchBarTextField.leftView addSubview:urlIconView];
+	self.theReportForm.ispAccordingToWebservice = [NSString stringWithString:@""];
+	self.theReportForm.ipInfoDict = [NSMutableDictionary dictionary];
+}
 
-	// --	Set up the search bar's 'Cancel' button.
-	self.searchButtonCancel = [CustomBarButton buttonWithType:UIButtonTypeCustom];
-	self.searchButtonCancel.titleLabel.text = @"Cancel";
-	[self.searchButtonCancel addTarget:self.theSearchBar action:@selector(resignFirstResponder) forControlEvents:UIControlEventTouchUpInside];
-	NSLog(@"self.searchButtonCancel.titleLabel.text: %@", self.searchButtonCancel.titleLabel.text);
-	
-	// --	Set up theSearchMenu.
-	self.theSearchMenu = [[SearchMenu alloc] initWithFrame:CGRectMake(215, -40, 155, 129)];
-	[self.view addSubview:self.theSearchMenu];
-	
-	self.theSiteView = [[SiteView alloc] initWithFrame:CGRectMake(320,38,320,378)];
-	[self.view addSubview:self.theSiteView];
+- (BOOL) canBecomeFirstResponder {
+	return YES;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
 	NSLog(@"VC_Home viewWillApppear");
 	[self fetchTickerFeed];
 	[WebservicesController getIp:self];
+	[self becomeFirstResponder];
+	
+	[self.theUrlMenu touchesBegan:nil withEvent:nil];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -124,12 +124,9 @@
 }
 
 - (void) dealloc {
-	[theSearchBar release];
+	[theUrlBar release];
 		
-	[ipString release];
-	[ipInfoDict release];
-	[ispString release];
-	[countryDict release];
+	[ipAddress release];
 	
 	[reportsFromFeed release];
 	[reportMapView release];
@@ -142,7 +139,9 @@
 #pragma mark Herdometer
 
 - (void) fetchTickerFeed {
-	
+
+	self.reportsFromFeed = [NSMutableArray array];
+
 	// TODO: See about the feed being available in multiple languages.	
 	NSURL *feedUrl = [NSURL URLWithString:@"http://www.herdict.org/web/rss/en"];
 	CXMLDocument *feedParser = [[[CXMLDocument alloc] initWithContentsOfURL:feedUrl options:0 error:nil] autorelease];
@@ -182,7 +181,7 @@
 		[reportDict setObject:cDataDict forKey:@"description"];
 		[self.reportsFromFeed addObject:reportDict];
 	}
-
+	
 	NSLog(@"[reportsFromFeed count]: %i", [self.reportsFromFeed count]);
 
 	// --	Get reportsFromFeed ready for Herdometer action.
@@ -193,7 +192,13 @@
 }
 
 - (void) initiateAnnotateReport {
-	if ((!self.stateHome) || [self.reportsFromFeed count] == 0) {
+	
+	BOOL shouldContinue = YES;
+	shouldContinue = shouldContinue && ([self.reportsFromFeed count] > 0);
+	shouldContinue = shouldContinue && (self.theSiteView.frame.origin.y > 300);
+	shouldContinue = shouldContinue && (self.theReportForm.frame.origin.y > 300);
+	if (!shouldContinue) {
+		NSLog(@"[self initiateAnnotateReport] found: !shouldContinue");
 		[self.reportMapView deselectAnnotation:self.theAnnotation animated:YES];
 		self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
 		return;
@@ -211,7 +216,7 @@
 - (void) annotateReport {
 	// --	Get the report info ready.
 	NSMutableDictionary *geometryDict = [[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] objectForKey:@"geodata"];
-	NSDictionary *reportDict = [self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated];
+	NSMutableDictionary *reportDict = [self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated];
 	
 	// --	Add the annotation.
 	if (self.theAnnotation != nil) {
@@ -297,10 +302,10 @@
 	// --	For each report in reportsFromFeed: if the report's country is found in our new array, grab its geodata from the array.	
 	for (NSMutableDictionary *reportDict in self.reportsFromFeed) {
 		NSString *countryInReport = [[reportDict objectForKey:@"description"] objectForKey:@"Reporter Country"];
-		for (NSDictionary *plistCountryDict in countriesWithCoordinates) {
-			if ([countryInReport isEqualToString:[plistCountryDict objectForKey:@"country_name"]]) {
-				NSString *lng = [[plistCountryDict objectForKey:@"lng"] stringValue];
-				NSString *lat = [[plistCountryDict objectForKey:@"lat"] stringValue];
+		for (NSDictionary *plistt02dictCountries in countriesWithCoordinates) {
+			if ([countryInReport isEqualToString:[plistt02dictCountries objectForKey:@"country_name"]]) {
+				NSString *lng = [[plistt02dictCountries objectForKey:@"lng"] stringValue];
+				NSString *lat = [[plistt02dictCountries objectForKey:@"lat"] stringValue];
 				NSMutableDictionary *location = [NSMutableDictionary dictionary];
 				[location setObject:lng forKey:@"lng"];
 				[location setObject:lat forKey:@"lat"];
@@ -344,12 +349,10 @@
 			return FALSE;
 		}
 	}
-	
 	return TRUE;
 }
 
 - (int) indexOfReportToBeAnnotatedNext {
-	
 	// --	If all reports are marked 'shown', change them all to 'unshown'.
 	if ([self allReportsAreShown]) {
 		[self markAllReportsNotShown];
@@ -401,26 +404,25 @@
 #pragma mark self as UISearchBarDelegate
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-
-	[self searchMenuOptionSelected:1];
+	[self urlMenuOptionSelected:[NSNumber numberWithInt:1]];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.searchButtonCancel];
-	self.navigationItem.rightBarButtonItem.title = @"Cancel";
+	NSLog(@"searchBarTextDidBeginEditing");
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonCancelSearch] autorelease];
 	
 	[self.timerInititiateAnnotateReport invalidate];
 	[self.reportMapView removeAnnotation:self.theAnnotation];
 	
-	[self.theSearchMenu show];
+	[self.theUrlMenu show];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-	self.navigationItem.rightBarButtonItem = nil;
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonMyIsp] autorelease];
 
 	self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
 
-	[self.theSearchMenu hide];
+	[NSTimer scheduledTimerWithTimeInterval:0.075 target:self.theUrlMenu selector:@selector(hide) userInfo:nil repeats:NO];
 }
 
 #pragma mark Some callbackHandlers
@@ -440,8 +442,8 @@
 	
 - (void) getIpCallbackHandler:(ASIHTTPRequest *)theRequest {
 	NSDictionary *ipDict = [WebservicesController getDictionaryFromJSONData:[theRequest responseData]];
-	self.ipString = [ipDict objectForKey:@"ip"];
-	[WebservicesController getInfoForIpAddress:self.ipString callbackDelegate:self];
+	self.ipAddress = [ipDict objectForKey:@"ip"];
+	[WebservicesController getInfoForIpAddress:self.ipAddress callbackDelegate:self];
 
 }
 
@@ -450,20 +452,46 @@
 	NSString *responseString = [request responseString];
 	responseString = [responseString stringByReplacingOccurrencesOfString:@"\"valuta_rate\":," withString:@""];
 	NSData *fixedResponseData = [responseString dataUsingEncoding:NSUTF8StringEncoding];
-	self.ipInfoDict = [WebservicesController getDictionaryFromJSONData:fixedResponseData];
+	self.theReportForm.ipInfoDict = [WebservicesController getDictionaryFromJSONData:fixedResponseData];
 
 }
 
+#pragma mark -
+#pragma mark Herdict API callbacks
+- (NSMutableDictionary *) dictionaryFromArrayOfPairs:(NSArray *)theArray {
+	NSMutableDictionary *aDict = [NSMutableDictionary dictionary];
+	// --	Convert array of dicts into a single dict (and where necessary remove quotation marks from 'label' strings).
+	for (int i = 0; i < [theArray count]; i++) {
+		NSString *labelWithoutQuotes = [[theArray objectAtIndex:i] objectForKey:@"label"];
+		labelWithoutQuotes = [labelWithoutQuotes stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+		[aDict setObject:labelWithoutQuotes forKey:[[theArray objectAtIndex:i] objectForKey:@"value"]];
+	}
+	return aDict;
+}
+- (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {
+	NSMutableArray *responseArray = [NSMutableArray array];
+	responseArray = [WebservicesController getArrayFromJSONData:[request responseData]];
+	self.theReportForm.t01dictCategories = [self dictionaryFromArrayOfPairs:responseArray];
+}
 - (void) getCountriesCallbackHandler:(ASIHTTPRequest*)request {
 	NSMutableArray *responseArray = [NSMutableArray array];
 	responseArray = [WebservicesController getArrayFromJSONData:[request responseData]];
-	
-	// --	Convert array of dicts into a single dict (and where necessary remove quotation marks from 'label' strings).
-	for (int i = 0; i < [responseArray count]; i++) {
-		NSString *labelWithoutQuotes = [[responseArray objectAtIndex:i] objectForKey:@"label"];
-		labelWithoutQuotes = [labelWithoutQuotes stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-		[self.countryDict setObject:labelWithoutQuotes forKey:[[responseArray objectAtIndex:i] objectForKey:@"value"]];
-	}	
+	self.theReportForm.t02dictCountries = [self dictionaryFromArrayOfPairs:responseArray];
+}
+- (void) getLocationsCallbackHandler:(ASIHTTPRequest*)request {
+	NSMutableArray *responseArray = [NSMutableArray array];
+	responseArray = [WebservicesController getArrayFromJSONData:[request responseData]];
+	self.theReportForm.t03dictLocations = [self dictionaryFromArrayOfPairs:responseArray];
+}
+- (void) getInterestsCallbackHandler:(ASIHTTPRequest*)request {
+	NSMutableArray *responseArray = [NSMutableArray array];
+	responseArray = [WebservicesController getArrayFromJSONData:[request responseData]];
+	self.theReportForm.t04dictInterests = [self dictionaryFromArrayOfPairs:responseArray];
+}
+- (void) getReasonsCallbackHandler:(ASIHTTPRequest*)request {
+	NSMutableArray *responseArray = [NSMutableArray array];
+	responseArray = [WebservicesController getArrayFromJSONData:[request responseData]];
+	self.theReportForm.t05dictReasons = [self dictionaryFromArrayOfPairs:responseArray];
 }
 
 #pragma mark getSiteSummary
@@ -475,7 +503,7 @@
 
 	// --	We handle the site summary content right here - theSiteView and theSiteView.SiteSummary never have to know about it.
 	NSString *countryCode = [siteSummaryDictionary objectForKey:@"countryCode"];
-	NSString *countryString = [self.countryDict objectForKey:countryCode];
+	NSString *countryString = [self.theReportForm.t02dictCountries objectForKey:countryCode];
 	int countryInaccessibleCount = [[siteSummaryDictionary objectForKey:@"countryInaccessibleCount"] intValue];
 	int globalInaccessibleCount = [[siteSummaryDictionary objectForKey:@"globalInaccessibleCount"] intValue];
 	int sheepColor = [[siteSummaryDictionary objectForKey:@"sheepColor"] intValue];
@@ -505,41 +533,9 @@
 	return responseDictionary;
 }
 
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	UITouch *touch = [touches anyObject];
-	NSLog(@"touchesBegan... touch.view: %@, [touch.view superview]: %@", touch.view, [touch.view superview]);
-	CGPoint touchPoint = [touch locationInView:self.theSearchMenu];
-
-	if (touch.view == self.reportMapView) {
-		[self.theSearchBar resignFirstResponder];
-	}
-	
-	if ([self.theSearchMenu point:touchPoint isInFrame:self.theSearchMenu.menuOption1.frame]) {
-		[self searchMenuOptionSelected:1];		
-		return;
-	}
-	if ([self.theSearchMenu point:touchPoint isInFrame:self.theSearchMenu.menuOption2.frame]) {		
-		[self searchMenuOptionSelected:2];
-		return;
-	}
-	if ([self.theSearchMenu point:touchPoint isInFrame:self.theSearchMenu.menuOption3.frame]) {
-		[self searchMenuOptionSelected:3];
-		return;
-	}
-	if (touch.view == self.theSiteView.webViewFooter) {
-		[self searchMenuOptionSelected:2];
-		return;
-	}
-
-	// --	If the touch is anywhere else...
-	if (touch.view != self.theSearchBar) {
-		[self.theSearchBar resignFirstResponder];
-	}
-}
-
 - (NSString *) fixUpTypedUrl {
 
-	NSString *typedUrl = [[[self.theSearchBar subviews] objectAtIndex:1] text];
+	NSString *typedUrl = [[[self.theUrlBar subviews] objectAtIndex:1] text];
 
 	typedUrl = [typedUrl lowercaseString];
 	
@@ -553,14 +549,14 @@
 }
 
 #pragma mark -
-#pragma mark self as SearchMenuDelegate
+#pragma mark self as URLMenuDelegate
 
-- (void) searchMenuOptionSelected:(int)optionNumber {
-	NSString *theUrl = [[[self.theSearchBar subviews] objectAtIndex:1] text];
+- (void) urlMenuOptionSelected:(NSNumber *)optionNumber {
+	NSString *theUrl = [[[self.theUrlBar subviews] objectAtIndex:1] text];
 
 	// --	Check whether the entry is blank.
 	if ([theUrl length] == 0) {
-		[self.theSearchMenu removeSelectionBackground];				
+		[self.theUrlMenu removeSelectionBackground];				
 		UIAlertView *alertNoUrl = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter a complete URL." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[alertNoUrl show];
 		[alertNoUrl release];
@@ -568,28 +564,26 @@
 	}
 	// --	Fix up the Url.
 	theUrl = [self fixUpTypedUrl];
-	self.theSearchBar.text = theUrl;
+	self.theUrlBar.text = theUrl;
 
 	// --	Get the search bar and menu out of the way.
-	[NSTimer scheduledTimerWithTimeInterval:0.5 target:self.theSearchBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
-	[NSTimer scheduledTimerWithTimeInterval:0 target:self.theSearchMenu selector:@selector(hide) userInfo:nil repeats:NO];
-	[NSTimer scheduledTimerWithTimeInterval:1.5 target:self.theSearchMenu selector:@selector(removeSelectionBackground) userInfo:nil repeats:NO];				
+	[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
+	[NSTimer scheduledTimerWithTimeInterval:1.5 target:self.theUrlMenu selector:@selector(removeSelectionBackground) userInfo:nil repeats:NO];				
 
 	// --	
-	if (optionNumber == 1) {
+	if ([optionNumber intValue] == 1) {
 		// --	Show selection background.
-		self.theSearchMenu.selectionBackground.backgroundColor = [UIColor blueColor];
-		[self.theSearchMenu.selectionBackground setFrame:CGRectMake(5, 31, 143, 30)];
+		self.theUrlMenu.selectionBackground.backgroundColor = [UIColor blueColor];
+		[self.theUrlMenu.selectionBackground setFrame:CGRectMake(5, 31, 143, 30)];
 		
 		// --	Do appropriate stuff.
-		[self.theSiteView hideSiteSummary];
 		[self.theSiteView loadUrl:theUrl];
 		return;
 	}
-	if (optionNumber == 2) {
+	if ([optionNumber intValue] == 2) {
 		// --	Show selection background.
-		self.theSearchMenu.selectionBackground.backgroundColor = [UIColor blueColor];
-		[self.theSearchMenu.selectionBackground setFrame:CGRectMake(5, 61, 143, 30)];
+		self.theUrlMenu.selectionBackground.backgroundColor = [UIColor blueColor];
+		[self.theUrlMenu.selectionBackground setFrame:CGRectMake(5, 61, 143, 30)];
 
 		// --	Do appropriate stuff.
 		[self.theSiteView loadUrl:theUrl];
@@ -598,15 +592,105 @@
 		[WebservicesController getSummaryForUrl:theUrl forCountry:@"US" urlEncoding:@"none" apiVersion:@"FF1.0" callbackDelegate:self];
 		return;
 	}
-	if (optionNumber == 3) {
+	if ([optionNumber intValue] == 3) {
 		// --	Show selection background.
-		self.theSearchMenu.selectionBackground.backgroundColor = [UIColor blueColor];
-		[self.theSearchMenu.selectionBackground setFrame:CGRectMake(5, 91, 143, 30)];
+		self.theUrlMenu.selectionBackground.backgroundColor = [UIColor blueColor];
+		[self.theUrlMenu.selectionBackground setFrame:CGRectMake(5, 91, 143, 30)];
 		
 		// --	Do appropriate stuff.
-		// TODO nothing here yet!
+		[self.theSiteView loadUrl:theUrl];
+		[self.theReportForm showForm];
 		return;
 	}		
+}
+
+#pragma mark -
+#pragma mark BarButtonItems
+
+- (void) selectedAbout {
+	
+}
+
+- (void) selectedHome {
+	
+}
+
+- (void) selectedMyIsp {
+	[self.buttonMyIsp setSelected];
+	[NSTimer scheduledTimerWithTimeInterval:0.075 target:self.buttonMyIsp selector:@selector(setNotSelected) userInfo:nil repeats:NO];
+}
+
+- (void) dismissMyIsp {
+	
+}
+
+- (void) selectedCancelSearch {
+	[self.buttonCancelSearch setSelected];
+	[NSTimer scheduledTimerWithTimeInterval:0.075 target:self.buttonCancelSearch selector:@selector(setNotSelected) userInfo:nil repeats:NO];
+	[NSTimer scheduledTimerWithTimeInterval:0.125 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
+}
+
+//#pragma mark -
+//#pragma mark self as surrogate tableView datasource/delegate
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+//	return [self.theReportForm numberOfSectionsInTableView:tableView];
+//}
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+//	return [self.theReportForm tableView:tableView numberOfRowsInSection:section];
+//}
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//	return [self.theReportForm tableView:tableView cellForRowAtIndexPath:indexPath];	
+//}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//	return [self.theReportForm tableView:tableView didSelectRowAtIndexPath:indexPath];
+//}
+
+#pragma mark -
+#pragma mark UITouch
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	UITouch *touch = [touches anyObject];
+//	NSLog(@"VC_Home touchesBegan");
+	CGPoint touchPoint;
+	
+	touchPoint = [touch locationInView:self.theSiteView.theSiteSummary.hideLabel];
+	if ([self.theSiteView.theSiteSummary.hideLabel pointInside:touchPoint withEvent:nil]) {
+		[self.theSiteView hideSiteSummary];
+		return;
+	}
+	touchPoint = [touch locationInView:self.theReportForm.hideLabel];
+	if ([self.theReportForm.hideLabel pointInside:touchPoint withEvent:nil]) {
+		[self.theReportForm hideForm];
+		return;
+	}
+	touchPoint = [touch locationInView:self.theUrlMenu.menuOption1];
+	if ([self.theUrlMenu.menuOption1 pointInside:touchPoint withEvent:nil]) {
+		[self performSelector:@selector(urlMenuOptionSelected:) withObject:[NSNumber numberWithInt:1] afterDelay:0.2];
+		return;
+	}
+	touchPoint = [touch locationInView:self.theUrlMenu.menuOption2];
+	if ([self.theUrlMenu.menuOption2 pointInside:touchPoint withEvent:nil]) {
+		[self performSelector:@selector(urlMenuOptionSelected:) withObject:[NSNumber numberWithInt:2] afterDelay:0.2];
+		return;
+	}
+	touchPoint = [touch locationInView:self.theUrlMenu.menuOption3];
+	if ([self.theUrlMenu.menuOption3 pointInside:touchPoint withEvent:nil]) {
+		[self performSelector:@selector(urlMenuOptionSelected:) withObject:[NSNumber numberWithInt:3] afterDelay:0.2];
+		return;
+	}
+	touchPoint = [touch locationInView:self.theSiteView.webViewFooter];
+	if ([self.theSiteView.webViewFooter pointInside:touchPoint withEvent:nil]) {	
+		if (self.theSiteView.theSiteSummary.frame.origin.y > 350) {
+			[self urlMenuOptionSelected:[NSNumber numberWithInt:2]];
+		} else {
+			[self urlMenuOptionSelected:[NSNumber numberWithInt:3]];
+		}
+		return;
+	}
+	touchPoint = [touch locationInView:self.theUrlBar];
+	if (![self.theUrlBar pointInside:touchPoint withEvent:nil]) {
+		[self.theUrlBar resignFirstResponder];
+	}
 }
 
 @end

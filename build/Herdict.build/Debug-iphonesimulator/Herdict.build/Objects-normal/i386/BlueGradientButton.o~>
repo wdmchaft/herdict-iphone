@@ -1,0 +1,8 @@
+/projects/Herdict Working/iOS/Views/BlueGradientButton.m: In function '-[BlueGradientButton normalGradient]':
+/projects/Herdict Working/iOS/Views/BlueGradientButton.m:14: error: 'normalGradient' undeclared (first use in this function)
+/projects/Herdict Working/iOS/Views/BlueGradientButton.m:14: error: (Each undeclared identifier is reported only once
+/projects/Herdict Working/iOS/Views/BlueGradientButton.m:14: error: for each function it appears in.)
+/projects/Herdict Working/iOS/Views/BlueGradientButton.m:34: warning: control reaches end of non-void function
+/projects/Herdict Working/iOS/Views/BlueGradientButton.m: In function '-[BlueGradientButton highlightGradient]':
+/projects/Herdict Working/iOS/Views/BlueGradientButton.m:37: error: 'highlightGradient' undeclared (first use in this function)
+/projects/Herdict Working/iOS/Views/BlueGradientButton.m:60: warning: control reaches end of non-void function
