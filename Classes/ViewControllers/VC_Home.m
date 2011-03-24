@@ -10,7 +10,6 @@
 
 @implementation VC_Home
 
-@synthesize buttonMyIsp;
 @synthesize buttonCancelSearch;
 
 @synthesize theUrlBar;
@@ -49,14 +48,8 @@
 	self.navigationItem.titleView = herdictBadgeImageView;
 	[herdictBadgeImageView release];
 
-	// --	Set up buttonMyIsp.
-	self.buttonMyIsp = [CustomBarButton buttonWithType:UIButtonTypeCustom];
-	self.buttonMyIsp.notSelectedBackground.floatRed = 0.935;
-	self.buttonMyIsp.notSelectedBackground.floatGreen = 0.945;
-	self.buttonMyIsp.notSelectedBackground.floatBlue = 0.965;
-	self.buttonMyIsp.theTitle.text = @"My ISP";
-	[self.buttonMyIsp addTarget:self action:@selector(selectedMyIsp) forControlEvents:UIControlEventTouchUpInside];
-	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.buttonMyIsp];
+	[self setButtonInfoNotSelected];
+	[self setButtonWifiNotSelected];
 	
 	// --	Set up buttonCancelSearch.
 	self.buttonCancelSearch = [CustomBarButton buttonWithType:UIButtonTypeCustom];
@@ -82,6 +75,7 @@
 	
 	// --	Set up theSiteView.
 	self.theSiteView = [[SiteView alloc] initWithFrame:CGRectMake(0,416,320,378)];
+	self.theSiteView.theDelegate = self;
 	[self.view addSubview:self.theSiteView];
 	
 	// --	Set up theReportForm.
@@ -418,7 +412,7 @@
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonMyIsp] autorelease];
+	[self setButtonWifiNotSelected];
 
 	self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
 
@@ -570,11 +564,10 @@
 	[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
 	[NSTimer scheduledTimerWithTimeInterval:1.5 target:self.theUrlMenu selector:@selector(removeSelectionBackground) userInfo:nil repeats:NO];				
 
-	// --	
 	if ([optionNumber intValue] == 1) {
 		// --	Show selection background.
 		self.theUrlMenu.selectionBackground.backgroundColor = [UIColor blueColor];
-		[self.theUrlMenu.selectionBackground setFrame:CGRectMake(5, 31, 143, 30)];
+		[self.theUrlMenu.selectionBackground setFrame:CGRectMake(5, 31, 139, 30)];
 		
 		// --	Do appropriate stuff.
 		[self.theSiteView loadUrl:theUrl];
@@ -583,7 +576,7 @@
 	if ([optionNumber intValue] == 2) {
 		// --	Show selection background.
 		self.theUrlMenu.selectionBackground.backgroundColor = [UIColor blueColor];
-		[self.theUrlMenu.selectionBackground setFrame:CGRectMake(5, 61, 143, 30)];
+		[self.theUrlMenu.selectionBackground setFrame:CGRectMake(5, 61, 139, 30)];
 
 		// --	Do appropriate stuff.
 		[self.theSiteView loadUrl:theUrl];
@@ -595,7 +588,7 @@
 	if ([optionNumber intValue] == 3) {
 		// --	Show selection background.
 		self.theUrlMenu.selectionBackground.backgroundColor = [UIColor blueColor];
-		[self.theUrlMenu.selectionBackground setFrame:CGRectMake(5, 91, 143, 30)];
+		[self.theUrlMenu.selectionBackground setFrame:CGRectMake(5, 91, 139, 30)];
 		
 		// --	Do appropriate stuff.
 		[self.theSiteView loadUrl:theUrl];
@@ -607,17 +600,50 @@
 #pragma mark -
 #pragma mark BarButtonItems
 
-- (void) selectedAbout {
+
+- (void) setButtonInfoNotSelected {
+	UIImage *infoImage = [UIImage imageNamed:@"buttonInfo.png"];
+	UIImageView *infoImageView = [[[UIImageView alloc] initWithImage:infoImage] autorelease];
+	[infoImageView setFrame:CGRectMake(0, 0, 57, 30)];
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:infoImageView] autorelease];
+	[self.navigationItem.leftBarButtonItem setTarget:self]; 
+	[self.navigationItem.leftBarButtonItem setAction:@selector(selectButtonInfo)];	
+}
+
+- (void) setButtonInfoSelected {	
+	UIImage *imageInfoSelected = [UIImage imageNamed:@"buttonInfoSelected.png"];
+	UIImageView *imageInfoSelectedView = [[[UIImageView alloc] initWithImage:imageInfoSelected] autorelease];
+	[imageInfoSelectedView setFrame:CGRectMake(0, 0, 57, 30)];
+	self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:imageInfoSelectedView] autorelease];
+}
+
+- (void) setButtonWifiNotSelected {
+	NSLog(@"setButtonWifiNotSelected");
+	UIImage *wifiImage = [UIImage imageNamed:@"buttonWiFi.png"];
+	UIImageView *wifiImageView = [[[UIImageView alloc] initWithImage:wifiImage] autorelease];
+	[wifiImageView setFrame:CGRectMake(0, 0, 57, 30)];
+	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:wifiImageView] autorelease];
+	[self.navigationItem.rightBarButtonItem setTarget:self];
+	[self.navigationItem.rightBarButtonItem setAction:@selector(selectButtonWifi)];
+}	
+
+- (void) setButtonWifiSelected {
 	
+}
+
+- (void) selectButtonInfo {
+	[self setButtonInfoSelected];
+//	[self performSelector:setButtonInfoNotSelected withObject:nil afterDelay:0.15];
+	
+	// TODO: actually load the 'About' view...
 }
 
 - (void) selectedHome {
 	
 }
 
-- (void) selectedMyIsp {
-	[self.buttonMyIsp setSelected];
-	[NSTimer scheduledTimerWithTimeInterval:0.075 target:self.buttonMyIsp selector:@selector(setNotSelected) userInfo:nil repeats:NO];
+- (void) selectButtonWifi {
+
 }
 
 - (void) dismissMyIsp {
@@ -626,8 +652,8 @@
 
 - (void) selectedCancelSearch {
 	[self.buttonCancelSearch setSelected];
-	[NSTimer scheduledTimerWithTimeInterval:0.075 target:self.buttonCancelSearch selector:@selector(setNotSelected) userInfo:nil repeats:NO];
-	[NSTimer scheduledTimerWithTimeInterval:0.125 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
+	[NSTimer scheduledTimerWithTimeInterval:0.05 target:self.buttonCancelSearch selector:@selector(setNotSelected) userInfo:nil repeats:NO];
+	[NSTimer scheduledTimerWithTimeInterval:0.05 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
 }
 
 //#pragma mark -
@@ -687,10 +713,29 @@
 		}
 		return;
 	}
+	touchPoint = [touch locationInView:self.theSiteView.theWebView];
+	if ([self.theSiteView.theWebView pointInside:touchPoint withEvent:nil]) {
+		[self.theSiteView.theWebView touchesBegan:touches withEvent:event];
+		return;
+	}
+	
 	touchPoint = [touch locationInView:self.theUrlBar];
 	if (![self.theUrlBar pointInside:touchPoint withEvent:nil]) {
 		[self.theUrlBar resignFirstResponder];
 	}
+}
+
+- (void) theSiteViewIsShowingWebView {
+	[self.theScreen setFrame:CGRectMake(0, 436 - 60, 320, 334)];
+}
+- (void) theSiteViewIsShowingSiteSummary {
+	[self.theScreen setFrame:CGRectMake(0, 436 - 180, 320, 334)];
+}
+- (void) theSiteViewIsHiding {
+	// TODO: this method can't really be tested yet, since we don't yet have a Home button.
+	self.theScreen.backgroundColor = [UIColor yellowColor];
+	self.theScreen.alpha = 0.4;
+	[self.theScreen setFrame:CGRectMake(0, 38, 320, 334)];
 }
 
 @end

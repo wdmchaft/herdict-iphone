@@ -10,9 +10,20 @@
 #import "FooterBar.h"
 #import "SiteSummary.h"
 
+@class SiteView;
+@protocol SiteViewDelegate
+@optional
+
+- (void) theSiteViewIsShowingWebView;
+- (void) theSiteViewIsShowingSiteSummary;
+- (void) theSiteViewIsHiding;
+
+@end
+
 
 @interface SiteView : UIView {
 
+	id <SiteViewDelegate> theDelegate;
 	UIWebView *theWebView;
 	FooterBar *webViewFooter;
 	SiteSummary *theSiteSummary;
@@ -20,6 +31,7 @@
 	
 }
 
+@property (nonatomic, retain) id <SiteViewDelegate> theDelegate;
 @property (nonatomic, retain) UIWebView *theWebView;
 @property (nonatomic, retain) FooterBar *webViewFooter;
 @property (nonatomic, retain) SiteSummary *theSiteSummary;

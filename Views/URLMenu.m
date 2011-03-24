@@ -27,7 +27,7 @@
     self = [super initWithFrame:frame];
 	self.userInteractionEnabled = YES;
 	
-	self.selectionBackgroundBasicFrame = CGRectMake(5, 28, 140, 30);
+	self.selectionBackgroundBasicFrame = CGRectMake(5, 28, 130, 30);
 	
 	// --	Set up selectionBackground.  We will manipulate its backgroundColor and origin.y (from VC_Home). 
 	self.selectionBackground = [[UIView alloc] initWithFrame:self.selectionBackgroundBasicFrame];

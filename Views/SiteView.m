@@ -10,6 +10,7 @@
 
 @implementation SiteView
 
+@synthesize theDelegate;
 @synthesize theWebView;
 @synthesize webViewFooter;
 @synthesize theSiteSummary;
@@ -27,6 +28,7 @@
 		self.theWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 378)];
 		self.theWebView.backgroundColor = [UIColor whiteColor];
 		self.theWebView.scalesPageToFit = YES;
+		self.theWebView.userInteractionEnabled = YES;
 		[self addSubview:self.theWebView];
 		
 		self.theSiteSummary = [[SiteSummary alloc] initWithFrame:CGRectMake(0, 378, 320, 160)];
@@ -41,6 +43,11 @@
 				
 	}
     return self;
+}
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	NSLog(@"touchesBegan on SiteView");
+	return;
 }
 
 - (void)dealloc {
@@ -58,9 +65,17 @@
 					 } completion:^(BOOL finished){
 					 }
 	 ];
+	
+	// --	(Assuming Site Summary isn't showing) notify the delegate (VC_Home).
+	if (self.theSiteSummary.frame.origin.y > 280) {
+		[self.theDelegate theSiteViewIsShowingWebView];
+	}
 }
 
 - (void) hideWebView {
+
+	// --	Notify the delegate (VC_Home).
+	[self.theDelegate theSiteViewIsHiding];
 	
 	[UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut
 					 animations:^{
@@ -93,6 +108,9 @@
 
 - (void) showSiteSummary {
 
+	// --	Notify the delegate (VC_Home).
+	[self.theDelegate theSiteViewIsShowingSiteSummary];
+	
 	// --	In case theSiteView isn't on the screen at all yet... 
 	if (self.frame.origin.y > 300) {
 		[self showWebView];
@@ -121,6 +139,9 @@
 }
 
 - (void) hideSiteSummary {
+	
+	// --	(Assuming Site Summary isn't showing) notify the delegate (VC_Home).
+	[self.theDelegate theSiteViewIsShowingWebView];
 	
 	// --	Shove the theSiteSummary down out of view.
 	[UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionCurveEaseOut

@@ -22,7 +22,6 @@
 
 @interface VC_Home : UIViewController <UIAlertViewDelegate, UISearchBarDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource> {
 
-	CustomBarButton *buttonMyIsp;
 	CustomBarButton *buttonCancelSearch;
 	
 	URLBar *theUrlBar;	
@@ -40,7 +39,6 @@
 
 }
 
-@property (nonatomic, retain) CustomBarButton *buttonMyIsp;
 @property (nonatomic, retain) CustomBarButton *buttonCancelSearch;
 
 @property (nonatomic, retain) URLBar *theUrlBar;
