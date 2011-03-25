@@ -89,10 +89,11 @@
 	[urlMenuOptions insertObject:[NSString stringWithString:@"Test Site"] atIndex:0];
 	[urlMenuOptions insertObject:[NSString stringWithString:@"Get a Report"] atIndex:1];
 	[urlMenuOptions insertObject:[NSString stringWithString:@"Submit a Report"] atIndex:2];	
-	self.theUrlBarMenu = [[BubbleMenu alloc] initWithFrame:CGRectMake(-65, -235, 150, 0)
-										  menuOptionsArray:urlMenuOptions
-												tailHeight:22
-											   anchorPoint:CGPointMake(0, 0)];
+	self.theUrlBarMenu = [[BubbleMenu alloc] initWithMessageHeight:0
+														 withFrame:CGRectMake(-65, -35, 150, 0)
+												  menuOptionsArray:urlMenuOptions
+														tailHeight:22
+													   anchorPoint:CGPointMake(0, 0)];
 	[self.view addSubview:self.theUrlBarMenu];
 
 	// --	Put up 'The Screen'.  (to catch all touches below theUrlBar.. forwards to [self touchesBegan--]) 
@@ -109,12 +110,9 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-	NSLog(@"VC_Home viewWillApppear");
 	[self fetchTickerFeed];
 	[WebservicesController getIp:self];
 	[self becomeFirstResponder];
-	
-	[self.theUrlBarMenu touchesBegan:nil withEvent:nil];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -407,7 +405,7 @@
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	NSLog(@"searchBarTextDidBeginEditing");
+	//NSLog(@"searchBarTextDidBeginEditing");
 	self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonCancelSearch] autorelease];
 	
 	[self.timerInititiateAnnotateReport invalidate];
@@ -461,41 +459,122 @@
 
 #pragma mark -
 #pragma mark Herdict API callbacks
-- (NSMutableDictionary *) dictionaryFromArrayOfPairs:(NSArray *)theArray {
-	NSMutableDictionary *aDict = [NSMutableDictionary dictionary];
-	// --	Convert array of dicts into a single dict (and where necessary remove quotation marks from 'label' strings).
-	for (int i = 0; i < [theArray count]; i++) {
-		NSString *labelWithoutQuotes = [[theArray objectAtIndex:i] objectForKey:@"label"];
-		labelWithoutQuotes = [labelWithoutQuotes stringByReplacingOccurrencesOfString:@"\"" withString:@""];
-		[aDict setObject:labelWithoutQuotes forKey:[[theArray objectAtIndex:i] objectForKey:@"value"]];
-	}
-	[aDict setObject:@"Tap to Select" forKey:@"blank"];
-	return aDict;
-}
+
 - (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {
-	NSMutableArray *responseArray = [NSMutableArray array];
-	responseArray = [WebservicesController getArrayFromJSONData:[request responseData]];
-	self.theReportForm.t01dictCategories = [self dictionaryFromArrayOfPairs:responseArray];
-}
+	self.theReportForm.t01arrayCategories = [WebservicesController getArrayFromJSONData:[request responseData]];
+
+	// TODO this is only because the scroll view isn't working
+	for (int i = 0; i < 5; i++) {
+		[self.theReportForm.t01arrayCategories removeLastObject];
+	}
+		
+	// Set up the Bubble Menu that uses this array
+	NSMutableArray *menuOptions = [NSMutableArray array];
+	for (id item in self.theReportForm.t01arrayCategories) {
+		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
+		[menuOptions addObject:anOption];
+	}
+	self.theReportForm.menuCategory = [[BubbleMenu alloc] initWithMessageHeight:32
+																	 withFrame:CGRectMake(-110, -33, 270, 0)
+															  menuOptionsArray:menuOptions
+																	tailHeight:25
+																   anchorPoint:CGPointMake(0, 0)];
+	self.theReportForm.menuCategory.theMessage.text = @"What type of site is this?";
+	[self.theReportForm addSubview:self.theReportForm.menuCategory];
+	
+	[self.theReportForm.t01arrayCategories insertObject:@"Tap to Select" atIndex:0];	}
+
 - (void) getCountriesCallbackHandler:(ASIHTTPRequest*)request {
-	NSMutableArray *responseArray = [NSMutableArray array];
-	responseArray = [WebservicesController getArrayFromJSONData:[request responseData]];
-	self.theReportForm.t02dictCountries = [self dictionaryFromArrayOfPairs:responseArray];
+	self.theReportForm.t02arrayCountries = [WebservicesController getArrayFromJSONData:[request responseData]];
+
+	NSLog(@"[self.theReportForm.t02arrayCountries count] before removal: %i", [self.theReportForm.t02arrayCountries count]);
+	// TODO this is only because the scroll view isn't working
+	while ([self.theReportForm.t02arrayCountries count] > 7) {
+		for (int i = 0; i < [self.theReportForm.t02arrayCountries count] - 3; i++) {			
+			NSString *codeString = [[self.theReportForm.t02arrayCountries objectAtIndex:i] objectForKey:@"value"];
+			if (![codeString isEqualToString:@"US"]) {
+				[self.theReportForm.t02arrayCountries removeObjectAtIndex:i];
+			}
+		}
+	}
+	NSLog(@"[self.theReportForm.t02arrayCountries count]: %i", [self.theReportForm.t02arrayCountries count]);
+	
+	// Set up the Bubble Menu that uses this array
+	NSMutableArray *menuOptions = [NSMutableArray array];
+	for (id item in self.theReportForm.t02arrayCountries) {
+		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
+		[menuOptions addObject:anOption];
+	}
+	self.theReportForm.menuCountry = [[BubbleMenu alloc] initWithMessageHeight:32
+																	  withFrame:CGRectMake(-110, -75, 270, 0)
+															   menuOptionsArray:menuOptions
+																	 tailHeight:25
+																	anchorPoint:CGPointMake(0, 0)];
+	self.theReportForm.menuCountry.theMessage.text = @"What country are you in?";
+	[self.theReportForm addSubview:self.theReportForm.menuCountry];
+	
+	[self.theReportForm.t02arrayCountries insertObject:@"Tap to Select" atIndex:0];	
 }
 - (void) getLocationsCallbackHandler:(ASIHTTPRequest*)request {
-	NSMutableArray *responseArray = [NSMutableArray array];
-	responseArray = [WebservicesController getArrayFromJSONData:[request responseData]];
-	self.theReportForm.t03dictLocations = [self dictionaryFromArrayOfPairs:responseArray];
+	self.theReportForm.t03arrayLocations = [WebservicesController getArrayFromJSONData:[request responseData]];
+
+	// Set up the Bubble Menu that uses this array
+	NSMutableArray *menuOptions = [NSMutableArray array];
+	for (id item in self.theReportForm.t03arrayLocations) {
+		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
+		[menuOptions addObject:anOption];
+	}
+	self.theReportForm.menuLocation = [[BubbleMenu alloc] initWithMessageHeight:32
+																	  withFrame:CGRectMake(-110, -75, 270, 0)
+															   menuOptionsArray:menuOptions
+																	 tailHeight:25
+																	anchorPoint:CGPointMake(0, 0)];
+	self.theReportForm.menuLocation.theMessage.text = @"Where are you right now?";
+	[self.theReportForm addSubview:self.theReportForm.menuLocation];
+	
+	[self.theReportForm.t03arrayLocations insertObject:@"Tap to Select" atIndex:0];	
 }
 - (void) getInterestsCallbackHandler:(ASIHTTPRequest*)request {
-	NSMutableArray *responseArray = [NSMutableArray array];
-	responseArray = [WebservicesController getArrayFromJSONData:[request responseData]];
-	self.theReportForm.t04dictInterests = [self dictionaryFromArrayOfPairs:responseArray];
+	self.theReportForm.t04arrayInterests = [WebservicesController getArrayFromJSONData:[request responseData]];
+
+	// Set up the Bubble Menu that uses this array
+	[self.theReportForm.t04arrayInterests removeLastObject];		// TODO am only removing this because the text is too big
+	NSMutableArray *menuOptions = [NSMutableArray array];
+	for (id item in self.theReportForm.t04arrayInterests) {
+		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
+		[menuOptions addObject:anOption];
+	}
+	self.theReportForm.menuInterest = [[BubbleMenu alloc] initWithMessageHeight:32
+																	withFrame:CGRectMake(-110, 32, 270, 0)
+															 menuOptionsArray:menuOptions
+																   tailHeight:25
+																  anchorPoint:CGPointMake(0, 0)];
+	self.theReportForm.menuInterest.theMessage.text = @"Is this site useful to you?";
+	[self.theReportForm addSubview:self.theReportForm.menuInterest];
+	
+	[self.theReportForm.t04arrayInterests insertObject:@"Tap to Select" atIndex:0];	
 }
 - (void) getReasonsCallbackHandler:(ASIHTTPRequest*)request {
-	NSMutableArray *responseArray = [NSMutableArray array];
-	responseArray = [WebservicesController getArrayFromJSONData:[request responseData]];
-	self.theReportForm.t05dictReasons = [self dictionaryFromArrayOfPairs:responseArray];
+	self.theReportForm.t05arrayReasons = [WebservicesController getArrayFromJSONData:[request responseData]];
+
+	// NOTE this is by design - we are not showing the 'Reasons' option if the site is designated as accessible.
+	[self.theReportForm.t05arrayReasons removeObjectAtIndex:0]; 
+	
+	// Set up the Bubble Menu that uses this array
+	NSMutableArray *menuOptions = [NSMutableArray array];
+	for (id item in self.theReportForm.t05arrayReasons) {
+		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
+		[menuOptions addObject:anOption];
+	}
+	self.theReportForm.menuReason = [[BubbleMenu alloc] initWithMessageHeight:60
+													  withFrame:CGRectMake(-110, -37, 270, 0)
+											   menuOptionsArray:menuOptions
+													 tailHeight:25
+													anchorPoint:CGPointMake(0, 0)];
+	self.theReportForm.menuReason.theMessage.text = @"Why do you think this site is inaccessible?";
+	[self.theReportForm addSubview:self.theReportForm.menuReason];
+
+	[self.theReportForm.t05arrayReasons insertObject:@"Tap to Select" atIndex:0];
 }
 
 #pragma mark getSiteSummary
@@ -507,7 +586,13 @@
 
 	// --	We handle the site summary content right here - theSiteView and theSiteView.SiteSummary never have to know about it.
 	NSString *countryCode = [siteSummaryDictionary objectForKey:@"countryCode"];
-	NSString *countryString = [self.theReportForm.t02dictCountries objectForKey:countryCode];
+	NSString *countryString;
+	for (id item in self.theReportForm.t02arrayCountries) {
+		NSString *countryCodeFromArray = [item objectForKey:@"value"];
+		if ([countryCodeFromArray isEqualToString:countryCode]) {
+			countryString = [item objectForKey:@"label"];
+		}
+	}
 	int countryInaccessibleCount = [[siteSummaryDictionary objectForKey:@"countryInaccessibleCount"] intValue];
 	int globalInaccessibleCount = [[siteSummaryDictionary objectForKey:@"globalInaccessibleCount"] intValue];
 	int sheepColor = [[siteSummaryDictionary objectForKey:@"sheepColor"] intValue];
@@ -545,63 +630,31 @@
 	
 	NSRange rangeHttp = [typedUrl rangeOfString:@"http"];
 	if (rangeHttp.location == NSNotFound) {
-		NSLog(@"location isEqual NSNotFound");
+		//NSLog(@"location isEqual NSNotFound");
 		typedUrl = [NSString stringWithFormat:@"%@%@", @"http://", typedUrl];
 	}
 	
 	return typedUrl;
 }
 
-
-- (void) selectBubbleMenuOption:(UITextView *)selectedSubview {
-	BubbleMenu *theMenu = [selectedSubview superview];
-	
-	// --	Have the menu show the selection background (and schedule its removal).
-	[theMenu showSelectionBackgroundForOption:selectedSubview.tag];
-	[NSTimer scheduledTimerWithTimeInterval:0.4 target:theMenu selector:@selector(removeSelectionBackground) userInfo:nil repeats:NO];				
-	
-	
-	if ([theMenu isEqual:self.theUrlBarMenu]) {
-		NSString *theUrl = [[[self.theUrlBar subviews] objectAtIndex:1] text];
-
-		// --	Check whether the entry is blank.
-		if ([theUrl length] == 0) {
-			//[self.theUrlBarMenu removeSelectionBackground];
-			UIAlertView *alertNoUrl = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter a complete URL." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-			[alertNoUrl show];
-			[alertNoUrl release];
-			return;
-		}
-		// --	Fix up the Url.
-		theUrl = [self fixUpTypedUrl];
-		self.theUrlBar.text = theUrl;
-		
-		// --	Get the search bar out of the way.
-		[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
-
-		if (selectedSubview.tag == 0) {
-			[self.theSiteView loadUrl:theUrl];
-			return;
-		}
-		if (selectedSubview.tag == 1) {
-			[self.theSiteView loadUrl:theUrl];
-			theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-			theUrl = [theUrl stringByReplacingOccurrencesOfString:@"www." withString:@""];		
-			[WebservicesController getSummaryForUrl:theUrl forCountry:@"US" urlEncoding:@"none" apiVersion:@"FF1.0" callbackDelegate:self];
-			return;
-		}
-		if (selectedSubview.tag == 2) {
-			[self.theSiteView loadUrl:theUrl];
-			[self.theReportForm showForm];
-			return;
-		}		
-	}
+#pragma mark -
+#pragma mark SiteViewDelegate methods
+- (void) theSiteViewIsShowingWebView {
+	[self.theScreen setFrame:CGRectMake(0, 436 - 60, 320, 334)];
 }
+- (void) theSiteViewIsShowingSiteSummary {
+	[self.theScreen setFrame:CGRectMake(0, 436 - 180, 320, 334)];
+}
+- (void) theSiteViewIsHiding {
+	// TODO: this method can't really be tested yet, since we don't yet have a Home button.
+	self.theScreen.backgroundColor = [UIColor yellowColor];
+	self.theScreen.alpha = 0.4;
+	[self.theScreen setFrame:CGRectMake(0, 38, 320, 334)];
+}
+
 
 #pragma mark -
 #pragma mark BarButtonItems
-
-
 - (void) setButtonInfoNotSelected {
 	UIImage *infoImage = [UIImage imageNamed:@"buttonInfo.png"];
 	UIImageView *infoImageView = [[[UIImageView alloc] initWithImage:infoImage] autorelease];
@@ -619,7 +672,7 @@
 }
 
 - (void) setButtonWifiNotSelected {
-	NSLog(@"setButtonWifiNotSelected");
+	//NSLog(@"setButtonWifiNotSelected");
 	UIImage *wifiImage = [UIImage imageNamed:@"buttonWiFi.png"];
 	UIImageView *wifiImageView = [[[UIImageView alloc] initWithImage:wifiImage] autorelease];
 	[wifiImageView setFrame:CGRectMake(0, 0, 57, 30)];
@@ -631,26 +684,17 @@
 - (void) setButtonWifiSelected {
 	
 }
-
 - (void) selectButtonInfo {
 	[self setButtonInfoSelected];
-//	[self performSelector:setButtonInfoNotSelected withObject:nil afterDelay:0.15];
-	
+//	[self performSelector:setButtonInfoNotSelected withObject:nil afterDelay:0.15];	
 	// TODO: actually load the 'About' view...
 }
-
-- (void) selectedHome {
-	
+- (void) selectedHome {	
 }
-
 - (void) selectButtonWifi {
-
 }
-
-- (void) dismissMyIsp {
-	
+- (void) dismissMyIsp {	
 }
-
 - (void) selectedCancelSearch {
 	[self.buttonCancelSearch setSelected];
 	[NSTimer scheduledTimerWithTimeInterval:0.05 target:self.buttonCancelSearch selector:@selector(setNotSelected) userInfo:nil repeats:NO];
@@ -661,9 +705,9 @@
 #pragma mark UITableViewDelegate, UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	if (self.theReportForm.siteIsAccessible) {
-		return 7;
+		return 6;
 	}
-	return 8;
+	return 7;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return 1;
@@ -687,11 +731,13 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
 	FormCell *cell = [[[FormCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"] autorelease];
-	
 	int indexPathSection = indexPath.section;
-	
+
+	if (self.theReportForm.siteIsAccessible && indexPathSection > 0) {
+		indexPathSection++;													// remember we're using this trick 
+	}
+		
 	// --	'Is the Site Accessible?'.
 	if (indexPathSection == 0) {
 		UIImage *iconImage = [UIImage imageNamed:@"146-gavel@2x.png"];
@@ -705,28 +751,36 @@
 		return cell;
 	}
 	if (indexPathSection == 1) {
-		if (self.theReportForm.siteIsAccessible) {
-			indexPathSection++;																			// remember we're using this trick 
-		} else {
-			UIImage *iconImage = [UIImage imageNamed:@"20-gear2@2x.png"];
-			cell.theIconView.image = iconImage;
-			cell.cellLabel.text = @"Reason";
-			cell.cellDetailLabel.text = [self.theReportForm.t05dictReasons objectForKey:self.theReportForm.keyReason];
-			return cell;
+		UIImage *iconImage = [UIImage imageNamed:@"20-gear2@2x.png"];
+		cell.theIconView.image = iconImage;
+		cell.cellLabel.text = @"Reason";
+		cell.cellDetailLabel.text = @"Tap to Select";
+		if (self.theReportForm.keyReason > 0) {
+			NSMutableDictionary *theDict = [self.theReportForm.t05arrayReasons objectAtIndex:self.theReportForm.keyReason];
+			cell.cellDetailLabel.text = [theDict objectForKey:@"label"];
 		}
+		return cell;
 	}
 	if (indexPathSection == 2) {
 		UIImage *iconImage = [UIImage imageNamed:@"15-tags@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Category";
-		cell.cellDetailLabel.text = [self.theReportForm.t01dictCategories objectForKey:self.theReportForm.keyCategory];
+		cell.cellDetailLabel.text = @"Tap to Select";
+		if (self.theReportForm.keyCategory > 0) {
+			NSMutableDictionary *theDict = [self.theReportForm.t01arrayCategories objectAtIndex:self.theReportForm.keyCategory];
+			cell.cellDetailLabel.text = [theDict objectForKey:@"label"];
+		}
 		return cell;
 	}
 	if (indexPathSection == 3) {
 		UIImage *iconImage = [UIImage imageNamed:@"186-ruler@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Usefulness";
-		cell.cellDetailLabel.text = [self.theReportForm.t04dictInterests objectForKey:self.theReportForm.keyInterest];
+		cell.cellDetailLabel.text = @"Tap to Select";
+		if (self.theReportForm.keyInterest > 0) {
+			NSMutableDictionary *theDict = [self.theReportForm.t04arrayInterests objectAtIndex:self.theReportForm.keyInterest];
+			cell.cellDetailLabel.text = [theDict objectForKey:@"label"];
+		}
 		return cell;
 	}
 	if (indexPathSection == 4) {
@@ -734,14 +788,31 @@
 		cell.theIconView.image = iconImage;
 		[cell.theIconView setFrame:CGRectMake(10, 6, 20, 28)];
 		cell.cellLabel.text = @"Country";
-		cell.cellDetailLabel.text = [self.theReportForm.t02dictCountries objectForKey:self.theReportForm.accordingToUser_countryCode];
+		
+
+		NSLog(@"self.theReportForm.accordingToUser_countryCode: %@", self.theReportForm.accordingToUser_countryCode);
+		for (id item in self.theReportForm.t02arrayCountries) {
+			if ([self.theReportForm.t02arrayCountries indexOfObject:item] > 0) {
+				NSString *countryCodeInArray = [item objectForKey:@"value"]; 
+				NSLog(@"countryCodeInArray: %@", countryCodeInArray);
+				if ([countryCodeInArray isEqualToString:self.theReportForm.accordingToUser_countryCode]) {
+					cell.cellDetailLabel.text = [item objectForKey:@"label"];
+					NSLog(@"thus cell.cellDetailLabel.text has been assigned!");
+				}
+			}
+		}
+
 		return cell;
 	}
 	if (indexPathSection == 5) {
 		UIImage *iconImage = [UIImage imageNamed:@"193-location-arrow@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Location";
-		cell.cellDetailLabel.text = [self.theReportForm.t03dictLocations objectForKey:self.theReportForm.keyLocation];
+		cell.cellDetailLabel.text = @"Tap to Select";
+		if (self.theReportForm.keyLocation > 0) {
+			NSMutableDictionary *theDict = [self.theReportForm.t03arrayLocations objectAtIndex:self.theReportForm.keyLocation];
+			cell.cellDetailLabel.text = [theDict objectForKey:@"label"];
+		}
 		return cell;
 	}
 	if (indexPathSection == 6) {
@@ -752,25 +823,31 @@
 		cell.cellDetailLabel.text = self.theReportForm.accordingToUser_ispName;
 		return cell;
 	}
-	if (indexPathSection == 7) {
-		UIImage *iconImage = [UIImage imageNamed:@"09-chat-2@2x.png"];
-		cell.theIconView.image = iconImage;
-		cell.cellLabel.text = @"Comments";
-		cell.cellDetailLabel.text = self.theReportForm.comments;
-		return cell;
-	}
+//	if (indexPathSection == 7) {
+//		UIImage *iconImage = [UIImage imageNamed:@"09-chat-2@2x.png"];
+//		cell.theIconView.image = iconImage;
+//		cell.cellLabel.text = @"Comments";
+//		cell.cellDetailLabel.text = self.theReportForm.comments;
+//		return cell;
+//	}
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
+	int indexPathSection = indexPath.section;	
+	if (self.theReportForm.siteIsAccessible && indexPathSection > 0) {		
+		indexPathSection++;											// remember we're using this trick 
+	}
+	
+	if (indexPathSection >= 6) {
+		return;
+	}
+	
 	// --	Disable form interaction.
 	self.theReportForm.formTable.userInteractionEnabled = NO;
 
-	// --	Cancel button.
-	
-	
 	// --	Apply white screen.
 	[UIView animateWithDuration:0.2 delay:0 options:nil
-					 animations:^{						 
+					 animations:^{
 						 // --	theReportForm.formBackground
 						 self.theReportForm.formBackground.backgroundColor = [UIColor whiteColor];
 						 self.theReportForm.formBackground.alpha = 1;
@@ -787,19 +864,62 @@
 					 }
 	 ];
 	
-	// --	Slide the whole tableView up so the selected cell is at the top.
-	[UIView animateWithDuration:0.15 delay:0.1 options:UIViewAnimationOptionCurveEaseOut
-					 animations:^{						 
+	/** --	Slide the whole tableView up so the selected cell is at the top -- **/
+	
+	// --	First determine how much to slide it, based on which cell this is.
+	int rowSpan = [self.theReportForm.formTable.delegate tableView:self.theReportForm.formTable heightForRowAtIndexPath:indexPath];
+	rowSpan = rowSpan + [self.theReportForm.formTable.delegate tableView:self.theReportForm.formTable heightForFooterInSection:indexPath.section];
+	int slideSpan;
+	if (indexPathSection == 0) {
+		slideSpan = rowSpan * (indexPath.section - 1.5);
+	} else if (indexPathSection == 1) {
+		slideSpan = rowSpan * (indexPath.section - 0.5);
+	} else if (indexPathSection == 2) {
+		slideSpan = rowSpan * (indexPath.section - 0.5);
+	} else if (indexPathSection == 3) {
+		slideSpan = rowSpan * (indexPath.section - 1);
+	} else if (indexPathSection == 4) {
+		slideSpan = rowSpan * (indexPath.section + 0);
+	} else if (indexPathSection == 5) {
+		slideSpan = rowSpan * (indexPath.section + 0.1);
+	} else if (indexPathSection == 6) {
+		slideSpan = 0; //rowSpan * (indexPath.section - 1);
+	} else if (indexPathSection == 7) {
+		slideSpan = 0; //rowSpan * (indexPath.section - 1);
+	}
+	
+	[UIView animateWithDuration:0.3 delay:0.1 options:UIViewAnimationOptionCurveEaseOut
+					 animations:^{
 						 [self.view bringSubviewToFront:self.theUrlBar];
-						 int rowSpan = [self.theReportForm.formTable.delegate tableView:self.theReportForm.formTable heightForRowAtIndexPath:indexPath];
-						 rowSpan = rowSpan + [self.theReportForm.formTable.delegate tableView:self.theReportForm.formTable heightForFooterInSection:indexPath.section];
-						 int slideSpan = rowSpan * indexPath.section;						 
 						 [self.theReportForm.formTable setCenter:CGPointMake(
 																			 self.theReportForm.formTable.center.x,
 																			 self.theReportForm.formTable.center.y - slideSpan)];						 
 					  } completion:^(BOOL finished){
 					  }
 	 ];
+
+	/** --	what to actually do	-- **/
+
+	
+	if (indexPathSection == 0) {
+		[self.theReportForm.menuAccessible performSelector:@selector(showBubbleMenu) withObject:nil afterDelay:0.3];
+		return;
+	}
+	if (indexPathSection == 1) {
+		[self.theReportForm.menuReason performSelector:@selector(showBubbleMenu) withObject:nil afterDelay:0.3];
+	}
+	if (indexPathSection == 2) {
+		[self.theReportForm.menuCategory performSelector:@selector(showBubbleMenu) withObject:nil afterDelay:0.3];
+	}
+	if (indexPathSection == 3) {
+		[self.theReportForm.menuInterest performSelector:@selector(showBubbleMenu) withObject:nil afterDelay:0.3];
+	}
+	if (indexPathSection == 4) {
+		[self.theReportForm.menuCountry performSelector:@selector(showBubbleMenu) withObject:nil afterDelay:0.3];
+	}
+	if (indexPathSection == 5) {
+		[self.theReportForm.menuLocation performSelector:@selector(showBubbleMenu) withObject:nil afterDelay:0.3];
+	}
 }
 
 - (void) returnToFormTable {
@@ -816,7 +936,7 @@
 	 ];	
 	
 	// --	Remove white screen.
-	[UIView animateWithDuration:0.2 delay:0.1 options:nil
+	[UIView animateWithDuration:0.15 delay:0.2 options:nil
 					 animations:^{						 
 						 // --	theReportForm.formBackground
 						 self.theReportForm.formBackground.backgroundColor = [UIColor blackColor];
@@ -826,7 +946,9 @@
  						 int countCells = [self.theReportForm.formTable numberOfSections];
  						 for (int i = 0; i < countCells; i++) {
 							 FormCell *nonSelectedCell = [self.theReportForm.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];							
-							 nonSelectedCell.whiteScreen.alpha = 1;
+							 if (nonSelectedCell.whiteScreen.alpha > 0) {
+								 nonSelectedCell.whiteScreen.alpha = 0;
+							 }
 						 }
 					 } completion:^(BOOL finished){
 					 }
@@ -840,6 +962,51 @@
 	UITouch *touch = [touches anyObject];
 
 	CGPoint touchPoint;
+	
+	// --	If it's in any of our BubbleMenu views....
+	for (UIView *theMenu in [self.view subviews]) {
+		if ([theMenu isKindOfClass:[BubbleMenu class]]) {
+			touchPoint = [touch locationInView:theMenu];
+			if ([theMenu pointInside:touchPoint withEvent:nil]) {
+				
+				// --	If it 's in any of this BubbleMenu's tagged views...
+				for (UIView *theSubview in [theMenu subviews]) {
+					if (theSubview.tag > 0) {
+						touchPoint = [touch locationInView:theSubview];
+						if ([theSubview pointInside:touchPoint withEvent:nil]) {
+							[self performSelector:@selector(selectBubbleMenuOption:)
+									   withObject:theSubview
+									   afterDelay:0];
+							return;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// --	If it's in any of theReportForm's BubbleMenu views....
+	for (UIView *theMenu in [self.theReportForm subviews]) {
+		if ([theMenu isKindOfClass:[BubbleMenu class]]) {
+			touchPoint = [touch locationInView:theMenu];
+			if ([theMenu pointInside:touchPoint withEvent:nil]) {
+				
+				// --	If it 's in any of this BubbleMenu's tagged views...
+				for (UIView *theSubview in [theMenu subviews]) {
+					if (theSubview.tag > 0) {
+						touchPoint = [touch locationInView:theSubview];
+						if ([theSubview pointInside:touchPoint withEvent:nil]) {
+							[self performSelector:@selector(selectBubbleMenuOption:)
+									   withObject:theSubview
+									   afterDelay:0];
+							return;
+						}
+					}
+				}
+			}
+		}
+	}	
+	
 	touchPoint = [touch locationInView:self.theSiteView.theSiteSummary.hideLabel];
 	if ([self.theSiteView.theSiteSummary.hideLabel pointInside:touchPoint withEvent:nil]) {
 		[self.theSiteView hideSiteSummary];
@@ -850,28 +1017,7 @@
 		[self.theReportForm hideForm];
 		return;
 	}
-	
-	// --	If it's in any of our BubbleMenu views....
-	for (UIView *theMenu in [self.view subviews]) {
-		if ([theMenu isKindOfClass:[BubbleMenu class]]) {
-			touchPoint = [touch locationInView:theMenu];
-			if ([theMenu pointInside:touchPoint withEvent:nil]) {
-				
-				// --	If it 's in any of this BubbleMenu's tagged views...
-				for (UIView *theSubview in [theMenu subviews]) {
-					if ([theSubview isKindOfClass:[UITextView class]]) {
-						touchPoint = [touch locationInView:theSubview];
-						if ([theSubview pointInside:touchPoint withEvent:nil]) {
-							[self performSelector:@selector(selectBubbleMenuOption:)
-							   withObject:theSubview
-							   afterDelay:0];
-						}
-					}
-				}
-			}
-		}
-	}
-	
+		
 	touchPoint = [touch locationInView:self.theSiteView.webViewFooter];
 	if ([self.theSiteView.webViewFooter pointInside:touchPoint withEvent:nil]) {	
 		if (self.theSiteView.theSiteSummary.frame.origin.y > 350) {
@@ -893,24 +1039,153 @@
 	}
 }
 
-#pragma mark -
-#pragma mark SiteViewDelegate methods
-- (void) theSiteViewIsShowingWebView {
-	[self.theScreen setFrame:CGRectMake(0, 436 - 60, 320, 334)];
-}
-- (void) theSiteViewIsShowingSiteSummary {
-	[self.theScreen setFrame:CGRectMake(0, 436 - 180, 320, 334)];
-}
-- (void) theSiteViewIsHiding {
-	// TODO: this method can't really be tested yet, since we don't yet have a Home button.
-	self.theScreen.backgroundColor = [UIColor yellowColor];
-	self.theScreen.alpha = 0.4;
-	[self.theScreen setFrame:CGRectMake(0, 38, 320, 334)];
-}
-
-- (void) reverseFormTableWhiteOut {
-
+- (void) selectBubbleMenuOption:(UITextView *)selectedSubview {
+	BubbleMenu *theMenu = [selectedSubview superview];
 	
+	// --	Have the menu show the selection background (and schedule its removal as well as the menu's).
+	[theMenu showSelectionBackgroundForOption:selectedSubview.tag];
+	[NSTimer scheduledTimerWithTimeInterval:0.4 target:theMenu selector:@selector(removeSelectionBackground) userInfo:nil repeats:NO];				
+	
+	if ([theMenu isEqual:self.theUrlBarMenu]) {
+		NSString *theUrl = [[[self.theUrlBar subviews] objectAtIndex:1] text];
+		
+		// --	Check whether the entry is blank.
+		if ([theUrl length] == 0) {
+			//[self.theUrlBarMenu removeSelectionBackground];
+			UIAlertView *alertNoUrl = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter a complete URL." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alertNoUrl show];
+			[alertNoUrl release];
+			return;
+		}
+		// --	Fix up the Url.
+		theUrl = [self fixUpTypedUrl];
+		self.theUrlBar.text = theUrl;
+		
+		// --	Get the search bar out of the way.
+		[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
+		
+		if (selectedSubview.tag == 1) {
+			[self.theSiteView loadUrl:theUrl];
+			return;
+		}
+		if (selectedSubview.tag == 2) {
+			[self.theSiteView loadUrl:theUrl];
+			theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+			theUrl = [theUrl stringByReplacingOccurrencesOfString:@"www." withString:@""];		
+			[WebservicesController getSummaryForUrl:theUrl forCountry:@"US" urlEncoding:@"none" apiVersion:@"FF1.0" callbackDelegate:self];
+			return;
+		}
+		if (selectedSubview.tag == 3) {
+			[self.theSiteView loadUrl:theUrl];
+			[self.theReportForm showForm];
+			return;
+		}		
+	}
+	
+	/** --	Now we are into the theReportForm bubble menus -- **/
+	
+	// --	Schedule hiding of bubble menu.
+	[NSTimer scheduledTimerWithTimeInterval:0.2 target:theMenu selector:@selector(hideBubbleMenu) userInfo:nil repeats:NO];
+	
+	if ([theMenu isEqual:self.theReportForm.menuAccessible]) {
+		BOOL siteIsAccessible_priorValue = self.theReportForm.siteIsAccessible;
+		if (selectedSubview.tag == 1) {
+			self.theReportForm.siteIsAccessible = YES;
+			// --	Study this... it works!
+			if (siteIsAccessible_priorValue == NO) {
+				[self.theReportForm.formTable beginUpdates];
+				[self.theReportForm.formTable deleteSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationRight];
+				[self.theReportForm.formTable endUpdates];
+				NSRange sectionsToReload = NSMakeRange(0,6);				
+				[self.theReportForm.formTable beginUpdates];
+				[self.theReportForm.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
+				[self.theReportForm.formTable endUpdates];
+			}
+		}
+		if (selectedSubview.tag == 2) {
+			self.theReportForm.siteIsAccessible = NO;			
+			// --	Study this... it works!
+			if (siteIsAccessible_priorValue == YES) {
+				[self.theReportForm.formTable beginUpdates];
+				[self.theReportForm.formTable insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationLeft];
+				[self.theReportForm.formTable endUpdates];
+				NSRange sectionsToReload = NSMakeRange(0,7);
+				[self.theReportForm.formTable beginUpdates];
+				[self.theReportForm.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
+				[self.theReportForm.formTable endUpdates];
+			}
+		}
+	}
+	if ([theMenu isEqual:self.theReportForm.menuReason]) {
+		self.theReportForm.keyReason = selectedSubview.tag;
+		NSRange sectionsToReload = NSMakeRange(1,1);
+		if (self.theReportForm.siteIsAccessible) {
+			sectionsToReload = NSMakeRange(0, 0);
+		}
+		[self.theReportForm.formTable beginUpdates];
+		[self.theReportForm.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
+		[self.theReportForm.formTable endUpdates];
+	}
+	if ([theMenu isEqual:self.theReportForm.menuCategory]) {
+		self.theReportForm.keyCategory = selectedSubview.tag;
+		NSRange sectionsToReload = NSMakeRange(2,1);
+		if (self.theReportForm.siteIsAccessible) {
+			sectionsToReload = NSMakeRange(1, 0);
+		}
+		[self.theReportForm.formTable beginUpdates];
+		[self.theReportForm.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
+		[self.theReportForm.formTable endUpdates];
+	}
+	if ([theMenu isEqual:self.theReportForm.menuInterest]) {
+		self.theReportForm.keyInterest = selectedSubview.tag;
+		NSRange sectionsToReload = NSMakeRange(3,1);
+		if (self.theReportForm.siteIsAccessible) {
+			sectionsToReload = NSMakeRange(2, 0);
+		}
+		[self.theReportForm.formTable beginUpdates];
+		[self.theReportForm.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
+		[self.theReportForm.formTable endUpdates];
+	}
+	if ([theMenu isEqual:self.theReportForm.menuCountry]) {
+		NSDictionary *theDict = [self.theReportForm.t02arrayCountries objectAtIndex:selectedSubview.tag];
+		self.theReportForm.accordingToUser_countryCode = [theDict objectForKey:@"value"];
+		NSRange sectionsToReload = NSMakeRange(4,1);
+		if (self.theReportForm.siteIsAccessible) {
+			sectionsToReload = NSMakeRange(3, 0);
+		}
+		[self.theReportForm.formTable beginUpdates];
+		[self.theReportForm.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
+		[self.theReportForm.formTable endUpdates];
+	}
+	if ([theMenu isEqual:self.theReportForm.menuLocation]) {
+		self.theReportForm.keyLocation = selectedSubview.tag;
+		NSRange sectionsToReload = NSMakeRange(5,1);
+		if (self.theReportForm.siteIsAccessible) {
+			sectionsToReload = NSMakeRange(4, 0);
+		}		
+		[self.theReportForm.formTable beginUpdates];
+		[self.theReportForm.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
+		[self.theReportForm.formTable endUpdates];
+	}
+	if ([theMenu isEqual:self.theReportForm.menuIsp]) {
+//		self.theReportForm.accordingToUser_ispName = selectedSubview.tag;
+//		NSRange sectionsToReload = NSMakeRange(6,1);
+//		[self.theReportForm.formTable beginUpdates];
+//		[self.theReportForm.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
+//		[self.theReportForm.formTable endUpdates];
+	}
+	if ([theMenu isEqual:self.theReportForm.menuComments]) {
+//		self.theReportForm.comments = selectedSubview.tag;
+//		NSRange sectionsToReload = NSMakeRange(7,1);
+//		[self.theReportForm.formTable beginUpdates];
+//		[self.theReportForm.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
+//		[self.theReportForm.formTable endUpdates];
+	}
+	
+	[self performSelector:@selector(returnToFormTable) withObject:nil afterDelay:0.4];
+	return;
 }
+
+
 
 @end

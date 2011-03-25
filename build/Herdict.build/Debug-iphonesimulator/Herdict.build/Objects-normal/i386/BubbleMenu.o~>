@@ -1,0 +1,22 @@
+/projects/Herdict Working/iOS/Views/BubbleMenu.m: In function '-[BubbleMenu showSelectionBackgroundForOption:]':
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:280: warning: incompatible Objective-C types initializing 'struct UIView *', expected 'struct UITextView *'
+/projects/Herdict Working/iOS/Views/BubbleMenu.m: At top level:
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'theScrollView' requires method '-theScrollView' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'theScrollView' requires the method 'setTheScrollView:' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot1' requires method '-optionSlot1' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot1' requires the method 'setOptionSlot1:' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot2' requires method '-optionSlot2' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot2' requires the method 'setOptionSlot2:' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot3' requires method '-optionSlot3' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot3' requires the method 'setOptionSlot3:' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot4' requires method '-optionSlot4' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot4' requires the method 'setOptionSlot4:' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot5' requires method '-optionSlot5' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot5' requires the method 'setOptionSlot5:' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot6' requires method '-optionSlot6' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot6' requires the method 'setOptionSlot6:' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot7' requires method '-optionSlot7' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: property 'optionSlot7' requires the method 'setOptionSlot7:' to be defined - use @synthesize, @dynamic or provide a method implementation
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: incomplete implementation of class 'BubbleMenu'
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: method definition for '-hide' not found
+/projects/Herdict Working/iOS/Views/BubbleMenu.m:296: warning: method definition for '-show' not found

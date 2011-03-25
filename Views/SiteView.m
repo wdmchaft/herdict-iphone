@@ -46,6 +46,9 @@
 }
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+
+	// --	THIS NEEDS TO CATCH TOUCHES otherwise we get an infinite forwarding loop with touchesBegan.
+	
 	NSLog(@"touchesBegan on SiteView");
 	return;
 }

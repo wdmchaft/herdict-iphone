@@ -13,19 +13,27 @@
 
 @synthesize formBackground;
 @synthesize formTable;
-@synthesize formFooter;
-@synthesize hideLabel;
-
 @synthesize formTableNormalFrame;
+
+@synthesize menuAccessible;
+@synthesize menuReason;
+@synthesize menuCategory;
+@synthesize menuInterest;
+@synthesize menuCountry;
+@synthesize menuLocation;
+@synthesize menuIsp;
+@synthesize menuComments;
+
+@synthesize hideLabel;
 
 @synthesize ipInfoDict;
 @synthesize detected_ispName;
 @synthesize detected_countryCode;
-@synthesize t01dictCategories;
-@synthesize t02dictCountries;
-@synthesize t03dictLocations;
-@synthesize t04dictInterests;
-@synthesize t05dictReasons;
+@synthesize t01arrayCategories;
+@synthesize t02arrayCountries;
+@synthesize t03arrayLocations;
+@synthesize t04arrayInterests;
+@synthesize t05arrayReasons;
 
 @synthesize siteIsAccessible;
 @synthesize accordingToUser_countryCode;
@@ -65,14 +73,31 @@
 		
 		self.formTable = [[UITableView alloc] initWithFrame:self.formTableNormalFrame style:UITableViewStyleGrouped];
 		self.formTable.backgroundColor = [UIColor clearColor];
+		self.formTable.scrollEnabled = YES;
 		[self addSubview:self.formTable];
 		
 		self.siteIsAccessible = NO;
-		self.keyReason = @"blank";
-		self.keyInterest = @"blank";
-		self.keyLocation = @"blank";
-		self.keyCategory = @"blank";
-		self.comments = @"None Yet";
+		self.keyReason = 0;
+		self.keyInterest = 0;
+		self.keyLocation = 0;
+		self.keyCategory = 0;
+		self.comments = [NSString stringWithString:@"None Yet"];
+		
+		// --	menuAccessible
+		NSMutableArray *menuAccessibleOptions = [NSMutableArray array];
+		[menuAccessibleOptions addObject:[NSString stringWithString:@"Yes"]];
+		[menuAccessibleOptions addObject:[NSString stringWithString:@"No"]];
+		self.menuAccessible = [[BubbleMenu alloc] initWithMessageHeight:32
+															  withFrame:CGRectMake(-110, 60, 270, 0)
+													   menuOptionsArray:menuAccessibleOptions
+															 tailHeight:25
+															anchorPoint:CGPointMake(0, 0)];
+		self.menuAccessible.theMessage.text = @"Can you access this site?";
+		[self addSubview:self.menuAccessible];
+		
+		// --	menuReason... handled in callback method on VC_Home
+		
+		
 	}
     return self;
 }
@@ -82,13 +107,12 @@
 }
 
 - (void) showForm {
-
+	[self.formTable reloadData];
+	
 	[UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseOut
 					 animations:^{
 						 [self setFrame:CGRectMake(0,38,320,400)];
 					 } completion:^(BOOL finished){
-						 [self.formTable reloadData];
-//						 [self.formTable reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
 					 }
 	 ];
 }

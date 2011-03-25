@@ -12,13 +12,13 @@
 
 @interface BubbleMenu : UIView {
 
-	NSMutableArray *menuOptions;
-	
-	CGRect selectionBackgroundBasicFrame;
+	UITextView *theMessage;
+	NSMutableArray *menuOptions;	
 	UIView *selectionBackground;
 
 	CATransform3D rotationWhenHidden;
 	
+	CGRect frameForShowMenu;
 	CGFloat tailHeight;
 	CGFloat tailWidth;
 	CGFloat stroke;
@@ -30,10 +30,11 @@
 	
 }
 
+@property (nonatomic, retain) UITextView *theMessage;
 @property (nonatomic, retain) NSMutableArray *menuOptions;
-
-@property (nonatomic) CGRect selectionBackgroundBasicFrame;
 @property (nonatomic, retain) UIView *selectionBackground;
+
+@property (nonatomic) CGRect frameForShowMenu;
 
 @property (nonatomic) CATransform3D rotationWhenHidden;
 
@@ -47,7 +48,7 @@
 @property (nonatomic) CGFloat selfheight;
 
 
-- (id)initWithFrame:(CGRect)frame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint;
+- (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint;
 
 - (void)show;
 - (void)hide;

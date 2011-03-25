@@ -8,13 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
-
+#import "BubbleMenu.h"
 
 @interface FormCell : UITableViewCell {
-
-	CGFloat floatRed;
-	CGFloat floatGreen;
-	CGFloat floatBlue;	
 
 	UIView *iconBackground;
 	UIView *mainBackground;
@@ -24,13 +20,8 @@
 	UILabel *cellLabel;
 	UILabel *cellDetailLabel;
 	
-	UIView *whiteScreen;
-	
+	UIView *whiteScreen;	
 }
-
-@property (nonatomic) CGFloat floatRed;
-@property (nonatomic) CGFloat floatGreen;
-@property (nonatomic) CGFloat floatBlue;
 
 @property (nonatomic, retain) UIView *iconBackground;
 @property (nonatomic, retain) UIView *mainBackground;
