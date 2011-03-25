@@ -84,6 +84,6 @@
 - (NSString *)getAnnotationSubtitleString:(NSMutableDictionary *)reportDict; 
 - (int)getSheepColorInt:(NSMutableDictionary *)reportDict;
 
-- (void) urlBarMenuOptionSelected:(NSNumber *)optionNumber;
+- (void) selectBubbleMenuOption:(UITextView *)selectedSubview;
 
 @end

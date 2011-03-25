@@ -85,12 +85,16 @@
 	[self.view addSubview:self.theReportForm];
 
 	// --	Set up theUrlBarMenu.  (adding this subview after adding reportMapView, theSiteView, and theReportForm.. for z-ordering)
-	self.theUrlBarMenu = [[BubbleMenu alloc] initWithFrame:CGRectMake(-65, -235, 150, 129)];
-	self.theUrlBarMenu.menuOption1.text = @"Test Site";
-	self.theUrlBarMenu.menuOption2.text = @"Get a Report";
-	self.theUrlBarMenu.menuOption3.text = @"Submit a Report";
+	NSMutableArray *urlMenuOptions = [NSMutableArray array];
+	[urlMenuOptions insertObject:[NSString stringWithString:@"Test Site"] atIndex:0];
+	[urlMenuOptions insertObject:[NSString stringWithString:@"Get a Report"] atIndex:1];
+	[urlMenuOptions insertObject:[NSString stringWithString:@"Submit a Report"] atIndex:2];	
+	self.theUrlBarMenu = [[BubbleMenu alloc] initWithFrame:CGRectMake(-65, -235, 150, 0)
+										  menuOptionsArray:urlMenuOptions
+												tailHeight:22
+											   anchorPoint:CGPointMake(0, 0)];
 	[self.view addSubview:self.theUrlBarMenu];
-	
+
 	// --	Put up 'The Screen'.  (to catch all touches below theUrlBar.. forwards to [self touchesBegan--]) 
 	self.theScreen = [[UIView alloc] initWithFrame:CGRectMake(0, 38, 320, 378)];
 	[self.view addSubview:self.theScreen];
@@ -399,7 +403,7 @@
 #pragma mark self as UISearchBarDelegate
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-	[self urlBarMenuOptionSelected:[NSNumber numberWithInt:1]];
+	[self selectBubbleMenuOption:[self.theUrlBarMenu viewWithTag:1]];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
@@ -409,7 +413,7 @@
 	[self.timerInititiateAnnotateReport invalidate];
 	[self.reportMapView removeAnnotation:self.theAnnotation];
 	
-	[self.theUrlBarMenu show];
+	[self.theUrlBarMenu showBubbleMenu];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
@@ -417,7 +421,7 @@
 
 	self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
 
-	[NSTimer scheduledTimerWithTimeInterval:0.075 target:self.theUrlBarMenu selector:@selector(hide) userInfo:nil repeats:NO];
+	[NSTimer scheduledTimerWithTimeInterval:0.075 target:self.theUrlBarMenu selector:@selector(hideBubbleMenu) userInfo:nil repeats:NO];
 }
 
 
@@ -549,56 +553,49 @@
 }
 
 
-- (void) urlBarMenuOptionSelected:(NSNumber *)optionNumber {
-	NSString *theUrl = [[[self.theUrlBar subviews] objectAtIndex:1] text];
+- (void) selectBubbleMenuOption:(UITextView *)selectedSubview {
+	BubbleMenu *theMenu = [selectedSubview superview];
+	
+	// --	Have the menu show the selection background (and schedule its removal).
+	[theMenu showSelectionBackgroundForOption:selectedSubview.tag];
+	[NSTimer scheduledTimerWithTimeInterval:0.4 target:theMenu selector:@selector(removeSelectionBackground) userInfo:nil repeats:NO];				
+	
+	
+	if ([theMenu isEqual:self.theUrlBarMenu]) {
+		NSString *theUrl = [[[self.theUrlBar subviews] objectAtIndex:1] text];
 
-	// --	Check whether the entry is blank.
-	if ([theUrl length] == 0) {
-		[self.theUrlBarMenu removeSelectionBackground];				
-		UIAlertView *alertNoUrl = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter a complete URL." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alertNoUrl show];
-		[alertNoUrl release];
-		return;
-	}
-	// --	Fix up the Url.
-	theUrl = [self fixUpTypedUrl];
-	self.theUrlBar.text = theUrl;
-
-	// --	Get the search bar and menu out of the way.
-	[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
-	[NSTimer scheduledTimerWithTimeInterval:1.5 target:self.theUrlBarMenu selector:@selector(removeSelectionBackground) userInfo:nil repeats:NO];				
-
-	if ([optionNumber intValue] == 1) {
-		// --	Show selection background.
-		self.theUrlBarMenu.selectionBackground.backgroundColor = [UIColor blueColor];
-		[self.theUrlBarMenu.selectionBackground setFrame:CGRectMake(5, 31, 139, 30)];
+		// --	Check whether the entry is blank.
+		if ([theUrl length] == 0) {
+			//[self.theUrlBarMenu removeSelectionBackground];
+			UIAlertView *alertNoUrl = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter a complete URL." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+			[alertNoUrl show];
+			[alertNoUrl release];
+			return;
+		}
+		// --	Fix up the Url.
+		theUrl = [self fixUpTypedUrl];
+		self.theUrlBar.text = theUrl;
 		
-		// --	Do appropriate stuff.
-		[self.theSiteView loadUrl:theUrl];
-		return;
-	}
-	if ([optionNumber intValue] == 2) {
-		// --	Show selection background.
-		self.theUrlBarMenu.selectionBackground.backgroundColor = [UIColor blueColor];
-		[self.theUrlBarMenu.selectionBackground setFrame:CGRectMake(5, 61, 139, 30)];
+		// --	Get the search bar out of the way.
+		[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
 
-		// --	Do appropriate stuff.
-		[self.theSiteView loadUrl:theUrl];
-		theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-		theUrl = [theUrl stringByReplacingOccurrencesOfString:@"www." withString:@""];		
-		[WebservicesController getSummaryForUrl:theUrl forCountry:@"US" urlEncoding:@"none" apiVersion:@"FF1.0" callbackDelegate:self];
-		return;
+		if (selectedSubview.tag == 0) {
+			[self.theSiteView loadUrl:theUrl];
+			return;
+		}
+		if (selectedSubview.tag == 1) {
+			[self.theSiteView loadUrl:theUrl];
+			theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+			theUrl = [theUrl stringByReplacingOccurrencesOfString:@"www." withString:@""];		
+			[WebservicesController getSummaryForUrl:theUrl forCountry:@"US" urlEncoding:@"none" apiVersion:@"FF1.0" callbackDelegate:self];
+			return;
+		}
+		if (selectedSubview.tag == 2) {
+			[self.theSiteView loadUrl:theUrl];
+			[self.theReportForm showForm];
+			return;
+		}		
 	}
-	if ([optionNumber intValue] == 3) {
-		// --	Show selection background.
-		self.theUrlBarMenu.selectionBackground.backgroundColor = [UIColor blueColor];
-		[self.theUrlBarMenu.selectionBackground setFrame:CGRectMake(5, 91, 139, 30)];
-		
-		// --	Do appropriate stuff.
-		[self.theSiteView loadUrl:theUrl];
-		[self.theReportForm showForm];
-		return;
-	}		
 }
 
 #pragma mark -
@@ -841,9 +838,8 @@
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 	UITouch *touch = [touches anyObject];
-//	NSLog(@"VC_Home touchesBegan");
+
 	CGPoint touchPoint;
-	
 	touchPoint = [touch locationInView:self.theSiteView.theSiteSummary.hideLabel];
 	if ([self.theSiteView.theSiteSummary.hideLabel pointInside:touchPoint withEvent:nil]) {
 		[self.theSiteView hideSiteSummary];
@@ -854,27 +850,34 @@
 		[self.theReportForm hideForm];
 		return;
 	}
-	touchPoint = [touch locationInView:self.theUrlBarMenu.menuOption1];
-	if ([self.theUrlBarMenu.menuOption1 pointInside:touchPoint withEvent:nil]) {
-		[self performSelector:@selector(urlBarMenuOptionSelected:) withObject:[NSNumber numberWithInt:1] afterDelay:0.2];
-		return;
+	
+	// --	If it's in any of our BubbleMenu views....
+	for (UIView *theMenu in [self.view subviews]) {
+		if ([theMenu isKindOfClass:[BubbleMenu class]]) {
+			touchPoint = [touch locationInView:theMenu];
+			if ([theMenu pointInside:touchPoint withEvent:nil]) {
+				
+				// --	If it 's in any of this BubbleMenu's tagged views...
+				for (UIView *theSubview in [theMenu subviews]) {
+					if ([theSubview isKindOfClass:[UITextView class]]) {
+						touchPoint = [touch locationInView:theSubview];
+						if ([theSubview pointInside:touchPoint withEvent:nil]) {
+							[self performSelector:@selector(selectBubbleMenuOption:)
+							   withObject:theSubview
+							   afterDelay:0];
+						}
+					}
+				}
+			}
+		}
 	}
-	touchPoint = [touch locationInView:self.theUrlBarMenu.menuOption2];
-	if ([self.theUrlBarMenu.menuOption2 pointInside:touchPoint withEvent:nil]) {
-		[self performSelector:@selector(urlBarMenuOptionSelected:) withObject:[NSNumber numberWithInt:2] afterDelay:0.2];
-		return;
-	}
-	touchPoint = [touch locationInView:self.theUrlBarMenu.menuOption3];
-	if ([self.theUrlBarMenu.menuOption3 pointInside:touchPoint withEvent:nil]) {
-		[self performSelector:@selector(urlBarMenuOptionSelected:) withObject:[NSNumber numberWithInt:3] afterDelay:0.2];
-		return;
-	}
+	
 	touchPoint = [touch locationInView:self.theSiteView.webViewFooter];
 	if ([self.theSiteView.webViewFooter pointInside:touchPoint withEvent:nil]) {	
 		if (self.theSiteView.theSiteSummary.frame.origin.y > 350) {
-			[self urlBarMenuOptionSelected:[NSNumber numberWithInt:2]];
+			[self selectBubbleMenuOption:[self.theUrlBarMenu viewWithTag:2]];
 		} else {
-			[self urlBarMenuOptionSelected:[NSNumber numberWithInt:3]];
+			[self selectBubbleMenuOption:[self.theUrlBarMenu viewWithTag:3]];
 		}
 		return;
 	}

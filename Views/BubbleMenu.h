@@ -8,37 +8,53 @@
 
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
+#import "Constants.h"
 
 @interface BubbleMenu : UIView {
 
-	NSString *menuName;
+	NSMutableArray *menuOptions;
 	
-	UITextView *menuOption1;
-	UITextView *menuOption2;
-	UITextView *menuOption3;
-
 	CGRect selectionBackgroundBasicFrame;
 	UIView *selectionBackground;
 
 	CATransform3D rotationWhenHidden;
 	
+	CGFloat tailHeight;
+	CGFloat tailWidth;
+	CGFloat stroke;
+	CGFloat tailBaseOffset;
+	CGFloat tailTipOffset;
+	CGFloat cornerRad;
+	CGFloat selfwidth;
+	CGFloat selfheight;
+	
 }
 
-@property (nonatomic, retain) UITextView *menuOption1;
-@property (nonatomic, retain) UITextView *menuOption2;
-@property (nonatomic, retain) UITextView *menuOption3;
+@property (nonatomic, retain) NSMutableArray *menuOptions;
 
 @property (nonatomic) CGRect selectionBackgroundBasicFrame;
 @property (nonatomic, retain) UIView *selectionBackground;
 
 @property (nonatomic) CATransform3D rotationWhenHidden;
 
+@property (nonatomic) CGFloat stroke;
+@property (nonatomic) CGFloat tailHeight;
+@property (nonatomic) CGFloat tailWidth;
+@property (nonatomic) CGFloat tailBaseOffset;
+@property (nonatomic) CGFloat tailTipOffset;
+@property (nonatomic) CGFloat cornerRad;
+@property (nonatomic) CGFloat selfwidth;
+@property (nonatomic) CGFloat selfheight;
+
+
+- (id)initWithFrame:(CGRect)frame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint;
+
 - (void)show;
 - (void)hide;
 - (void)rotateForUse;
 - (void)rotateTuckedAway;
 
-- (BOOL) point:(CGPoint)thePoint isInFrame:(CGRect)theFrame;
+- (void) showSelectionBackgroundForOption:(int)optionNumber;
 - (void)removeSelectionBackground;
 
 @end

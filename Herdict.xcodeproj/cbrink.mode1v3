@@ -229,8 +229,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -280,7 +278,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>24</integer>
+									<integer>25</integer>
 									<integer>17</integer>
 									<integer>16</integer>
 									<integer>0</integer>
@@ -317,12 +315,14 @@
 					<key>Dock</key>
 					<array>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>BubbleMenu.h</string>
+								<string>VC_Home.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -330,11 +330,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>BubbleMenu.h</string>
+										<string>VC_Home.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>A63B58F1133C642600199382</string>
+										<string>A63B5A32133C839E00199382</string>
 										<key>history</key>
 										<array>
 											<string>A62FE75F133AD43900754BEC</string>
@@ -367,11 +367,11 @@
 											<string>A63B583E133C49F600199382</string>
 											<string>A63B58C4133C5C5000199382</string>
 											<string>A63B58CB133C5D1E00199382</string>
-											<string>A63B58E1133C61D700199382</string>
-											<string>A63B58ED133C642600199382</string>
-											<string>A63B58EE133C642600199382</string>
-											<string>A63B58EF133C642600199382</string>
-											<string>A63B58F0133C642600199382</string>
+											<string>A63B596F133C79BE00199382</string>
+											<string>A63B59B7133C7E6F00199382</string>
+											<string>A63B5A0F133C82B100199382</string>
+											<string>A63B5A20133C833300199382</string>
+											<string>A63B5A21133C833300199382</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -383,14 +383,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1188, 488}}</string>
+								<string>{{0, 0}, {1188, 473}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 115 1440 763 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>488pt</string>
+							<string>473pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -403,14 +403,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 493}, {1188, 229}}</string>
+								<string>{{0, 478}, {1188, 244}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 115 1440 763 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>229pt</string>
+							<string>244pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -569,14 +569,14 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>A63B58F2133C642600199382</string>
+		<string>A63B5A33133C839E00199382</string>
 		<string>A63B54DC133BF8C900199382</string>
 		<string>A63B54CB133BF7AA00199382</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>A63B54BE133BF77000199382</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>A679A20A12B6ECB000A67538</string>
+		<string>1C78EAAD065D492600B07095</string>
 		<string>/projects/Herdict Working/iOS/Herdict.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -603,7 +603,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>ReportForm.h</string>
+								<string>VC_Home.m</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -821,7 +821,7 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CDD528C0622207200134675</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>VC_Home.m</string>
+										<string>BubbleMenu.m</string>
 										<key>StatusBarVisibility</key>
 										<true/>
 									</dict>
@@ -953,7 +953,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>

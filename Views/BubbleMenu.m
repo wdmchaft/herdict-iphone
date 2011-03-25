@@ -6,84 +6,102 @@
 //  Copyright 2011 Herdict. All rights reserved.
 //
 
-#import "BubbleMenu.h"
-#import <QuartzCore/QuartzCore.h>
+//	To set up a BubbleMenu object, create an array of strings and pass in this array in the init call.
+//	On the menu's parent object, use touchesBegan to catch touches on the menu's subviews.  If a subview has a tag,
+//	it's one of the menu options.  Proceed according to its tag...
+//	When catching the touch, it looks better if selectionBackground is used.
+//	Use drawRect to make any real changes to the tail, other than its height.
 
+
+#import "BubbleMenu.h"
 
 @implementation BubbleMenu
 
-@synthesize menuOption1;
-@synthesize menuOption2;
-@synthesize menuOption3;
+@synthesize menuOptions;
 
 @synthesize selectionBackgroundBasicFrame;
 @synthesize selectionBackground;
 
 @synthesize rotationWhenHidden;
 
+@synthesize stroke;
+@synthesize tailHeight;
+@synthesize tailWidth;
+@synthesize tailBaseOffset;
+@synthesize tailTipOffset;
+@synthesize cornerRad;
+@synthesize selfwidth;
+@synthesize selfheight;
 
-- (id)initWithFrame:(CGRect)frame {
-    
+
+- (id)initWithFrame:(CGRect)frame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint {
+
     self = [super initWithFrame:frame];
-	self.userInteractionEnabled = YES;
-	
-	self.selectionBackgroundBasicFrame = CGRectMake(5, 28, 130, 30);
-	
-	// --	Set up selectionBackground.  We will manipulate its backgroundColor and origin.y (from VC_Home). 
-	self.selectionBackground = [[UIView alloc] initWithFrame:self.selectionBackgroundBasicFrame];
-	self.selectionBackground.backgroundColor = [UIColor clearColor];
-	self.selectionBackground.alpha = 0.8;
-	self.selectionBackground.layer.cornerRadius = 4;
-	self.selectionBackground.userInteractionEnabled = NO;
-	[self addSubview:self.selectionBackground];
-	
-	self.menuOption1 = [[UITextView alloc] initWithFrame:CGRectMake(5, 28, 140, 30)];
-	self.menuOption1.layer.cornerRadius = 4;
-	self.menuOption1.textColor = [UIColor whiteColor];
-	self.menuOption1.backgroundColor = [UIColor clearColor];
-	self.menuOption1.editable = NO;
-	self.menuOption1.userInteractionEnabled = NO;
-	self.menuOption1.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
-	[self addSubview:self.menuOption1];
-	self.menuOption2 = [[UITextView alloc] initWithFrame:CGRectMake(5, 58, 140, 30)];
-	self.menuOption2.layer.cornerRadius = 4;
-	self.menuOption2.textColor = [UIColor whiteColor];
-	self.menuOption2.backgroundColor = [UIColor clearColor];
-	self.menuOption2.editable = NO;
-	self.menuOption2.userInteractionEnabled = NO;
-	self.menuOption2.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
-	[self addSubview:self.menuOption2];
-	self.menuOption3 = [[UITextView alloc] initWithFrame:CGRectMake(5, 88, 140, 30)];
-	self.menuOption3.layer.cornerRadius = 4;
-	self.menuOption3.textColor = [UIColor whiteColor];
-	self.menuOption3.backgroundColor = [UIColor clearColor];
-	self.menuOption3.editable = NO;
-	self.menuOption3.userInteractionEnabled = NO;
-	self.menuOption3.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
-	[self addSubview:self.menuOption3];
+	if (self) {
 		
-	self.rotationWhenHidden = CATransform3DMakeRotation(-(M_PI * 0.25), 0, 0, 1);
+		// --	Fix height, which was prob passed in as 0 in the init call.
+		CGFloat totalHeight = theTailHeight + 6 + 12 + ([theOptionsArray count] * 30);
+		[self setFrame:CGRectMake(self.frame.origin.x,
+								  self.frame.origin.y,
+								  self.frame.size.width,
+								  totalHeight)];
+		
+		self.alpha = 0;
+		self.backgroundColor = [UIColor clearColor];
+		self.layer.anchorPoint = theAnchorPoint;
+		self.userInteractionEnabled = YES;
+		
+		rotationWhenHidden = CATransform3DMakeRotation(-(M_PI * 0.25), 0, 0, 1);
 
-	self.alpha = 0;
-	self.backgroundColor = [UIColor clearColor];
-	self.layer.anchorPoint = CGPointMake(0, 0);
+		tailHeight = theTailHeight;
+		tailWidth = 25;
+		tailBaseOffset = 105;
+		tailTipOffset = 130;
+		
+		stroke = 2;
+		cornerRad = 5;
+		selfwidth = self.frame.size.width;
+		selfheight = self.frame.size.height;	
 
-	[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(rotateTuckedAway) userInfo:nil repeats:NO];	
+		// --	Basic setup for self.selectionBackground.  The parent object will manipulate its backgroundColor and origin.y. 
+		self.selectionBackground = [[UIView alloc] initWithFrame:CGRectZero];
+		self.selectionBackground.backgroundColor = [UIColor clearColor];
+		self.selectionBackground.alpha = 0.8;
+		self.selectionBackground.layer.cornerRadius = 4;
+		self.selectionBackground.userInteractionEnabled = NO;
+		[self addSubview:self.selectionBackground];		
+		
+		for (UIView *aView in self.subviews) {
+			aView.tag = -1;
+		}
+		self.tag = -1;
+		
+		// --	Set up the Menu Options.
+		for (NSString *optionText in theOptionsArray) {
+			UITextView *menuOption = [[UITextView alloc] initWithFrame:CGRectMake(5,
+																				  self.tailHeight + 6 + (30 * [theOptionsArray indexOfObject:optionText]),
+																				  self.frame.size.width - 12,
+																				  30)];
+			menuOption.text = [NSString stringWithString:optionText];
+			menuOption.tag = [theOptionsArray indexOfObject:optionText];
+			NSLog(@"adding option to menu, tag: %i", menuOption.tag);
+			menuOption.layer.cornerRadius = 4;
+			menuOption.textColor = [UIColor whiteColor];
+			menuOption.backgroundColor = [UIColor clearColor];
+			menuOption.editable = NO;
+			menuOption.userInteractionEnabled = NO;
+			menuOption.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
+			[self addSubview:menuOption];
+		}
+		
+		[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(rotateTuckedAway) userInfo:nil repeats:NO];
+	}
 
     return self;
 	
 }
 
 - (void) drawRect:(CGRect)rect {
-
-	CGFloat stroke = 2;
-	CGFloat tailHeight = 22;
-	CGFloat tailWidth = 25;
-	CGFloat tailBaseOffset = 105;
-	CGFloat tailTipOffset = 130;
-	CGFloat cornerRad = 5;
-	CGFloat selfwidth = self.frame.size.width;
-	CGFloat selfheight = self.frame.size.height;
 	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextSetLineJoin(context, kCGLineJoinRound);
@@ -170,8 +188,9 @@
 }
 
 
-- (void) show {
+- (void) showBubbleMenu {
 	
+	[self.superview bringSubviewToFront:self];
 	[self setCenter:CGPointMake(self.center.x, self.center.y + 200)];
 	[self rotateForUse];
 	[UIView animateWithDuration:0.1 delay:0.1 options:UIViewAnimationOptionCurveEaseIn animations:^{
@@ -182,10 +201,10 @@
 	 ];
 }
 
-- (void) hide {
+- (void) hideBubbleMenu {
 	
 	[self rotateTuckedAway];
-	[UIView animateWithDuration:0.05 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+	[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
 		self.alpha = 0;
 	}
 					 completion:^(BOOL finished){
@@ -240,12 +259,13 @@
     [super dealloc];
 }
 
-- (BOOL) point:(CGPoint)thePoint isInFrame:(CGRect)theFrame {
-
-	if (thePoint.x >= theFrame.origin.x && thePoint.x <= (theFrame.origin.x + theFrame.size.width) && thePoint.y >= theFrame.origin.y && thePoint.y <= (theFrame.origin.y + theFrame.size.height)) {
-		return TRUE;
-	}
-	return FALSE;
+- (void) showSelectionBackgroundForOption:(int)optionNumber {
+	UITextView *selectedOption = [self viewWithTag:optionNumber];
+	self.selectionBackground.backgroundColor = UIColorFromRGB(0x5AabF7);
+	[self.selectionBackground setFrame:CGRectMake(selectedOption.frame.origin.x,
+												   selectedOption.frame.origin.y + 3,
+												   selectedOption.frame.size.width,
+												   selectedOption.frame.size.height)]; 
 }
 
 - (void) removeSelectionBackground {
