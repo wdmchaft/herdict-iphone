@@ -53,7 +53,7 @@
 		self.hideLabel.textAlignment = UITextAlignmentCenter;
 		self.hideLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12];
 		self.hideLabel.textColor = [UIColor whiteColor];
-		self.hideLabel.text = @"hide";
+		self.hideLabel.text = @"Done";
 		self.hideLabel.userInteractionEnabled = NO;
 		[self addSubview:self.hideLabel];
 		

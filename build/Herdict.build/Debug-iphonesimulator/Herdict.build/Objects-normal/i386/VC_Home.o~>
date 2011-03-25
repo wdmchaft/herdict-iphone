@@ -4,26 +4,31 @@
 /projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:51: warning: will be assumed to return 'id' and accept
 /projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:51: warning: '...' as arguments.)
 /projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:52: warning: 'VC_Home' may not respond to '-setButtonWifiNotSelected'
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:78: warning: class 'VC_Home' does not implement the 'SiteViewDelegate' protocol
 /projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home annotateReport]':
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:229: warning: unused variable 'logAnnotatingReport'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:230: warning: unused variable 'logAnnotatingReport'
 /projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home searchBarTextDidEndEditing:]':
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:415: warning: 'VC_Home' may not respond to '-setButtonWifiNotSelected'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:416: warning: 'VC_Home' may not respond to '-setButtonWifiNotSelected'
 /projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home getSiteSummaryCallbackHandler:]':
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:504: warning: unused variable 'siteId'
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home urlMenuOptionSelected:]':
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:573: warning: 'SiteView' may not respond to '-loadUrl:'
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:582: warning: 'SiteView' may not respond to '-loadUrl:'
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:594: warning: 'SiteView' may not respond to '-loadUrl:'
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:595: warning: 'ReportForm' may not respond to '-showForm'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:510: warning: unused variable 'siteId'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home urlBarMenuOptionSelected:]':
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:577: warning: 'SiteView' may not respond to '-loadUrl:'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:586: warning: 'SiteView' may not respond to '-loadUrl:'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:598: warning: 'SiteView' may not respond to '-loadUrl:'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:599: warning: 'ReportForm' may not respond to '-showForm'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home tableView:cellForRowAtIndexPath:]':
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:765: warning: control reaches end of non-void function
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '__-[VC_Home tableView:didSelectRowAtIndexPath:]_block_invoke_1':
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:784: warning: incompatible Objective-C types initializing 'struct UITableViewCell *', expected 'struct FormCell *'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home tableView:didSelectRowAtIndexPath:]':
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:791: warning: passing argument 3 of 'animateWithDuration:delay:options:animations:completion:' makes integer from pointer without a cast
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '__-[VC_Home returnToFormTable]_block_invoke_3':
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:831: warning: incompatible Objective-C types initializing 'struct UITableViewCell *', expected 'struct FormCell *'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home returnToFormTable]':
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:836: warning: passing argument 3 of 'animateWithDuration:delay:options:animations:completion:' makes integer from pointer without a cast
 /projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: In function '-[VC_Home touchesBegan:withEvent:]':
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:689: warning: 'ReportForm' may not respond to '-hideForm'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:854: warning: 'ReportForm' may not respond to '-hideForm'
 /projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m: At top level:
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:741: warning: incomplete implementation of class 'VC_Home'
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:741: warning: method definition for '-showHerdictButtons' not found
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:741: warning: method definition for '-initiateGetSiteSummary' not found
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:741: warning: method definition for '-setUrlSchemeHttp' not found
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:741: warning: incomplete implementation of class 'VC_Home'
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:741: warning: method definition for '-tableView:cellForRowAtIndexPath:' not found
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:741: warning: method definition for '-tableView:numberOfRowsInSection:' not found
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:741: warning: class 'VC_Home' does not fully implement the 'UITableViewDataSource' protocol
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:913: warning: incomplete implementation of class 'VC_Home'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:913: warning: method definition for '-showHerdictButtons' not found
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:913: warning: method definition for '-initiateGetSiteSummary' not found
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Home.m:913: warning: method definition for '-setUrlSchemeHttp' not found

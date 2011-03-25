@@ -30,7 +30,7 @@
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
 	CGFloat stroke = 3;
-	CGFloat cornerRad = 6;
+	CGFloat cornerRad = self.layer.cornerRadius;
 	CGFloat selfwidth = self.frame.size.width;
 	CGFloat selfheight = self.frame.size.height;
 	

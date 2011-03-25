@@ -16,9 +16,12 @@
 	FooterBar *formFooter;
 	UILabel *hideLabel;
 	
+	CGRect formTableNormalFrame;
+	
 	// --	Background variables.
 	NSMutableDictionary *ipInfoDict;
-	NSString *ispAccordingToWebservice;
+	NSString *detected_ispName;
+	NSString *detected_countryCode;
 	NSMutableDictionary *t01dictCategories;
 	NSMutableDictionary *t02dictCountries;	
 	NSMutableDictionary *t03dictLocations;
@@ -27,14 +30,14 @@
 	
 	// --	User-modified variables.
 	BOOL siteIsAccessible;
-	int indexOfCountryAccordingToUser;
-	NSString *ispAccordingToUser;
-	int indexOfLocation;
-	int indexOfInterest;
-	int indexOfReason;
-	int indexOfCategory;
-	BOOL ignoreCategoryAndUseCustomTag;
-	NSString *customTag;
+	NSString *accordingToUser_countryCode;
+	NSString *accordingToUser_ispName;
+	NSString *keyLocation;
+	NSString *keyInterest;
+	NSString *keyReason;
+	NSString *keyCategory;
+	BOOL ignoreCategoryAndUseCustomString;
+	NSString *customString;
 	NSString *comments;
 }
 
@@ -43,9 +46,12 @@
 @property (nonatomic, retain) FooterBar *formFooter;
 @property (nonatomic, retain) UILabel *hideLabel;
 
+@property (nonatomic) CGRect formTableNormalFrame;
+
 // --	Background variables.
 @property (nonatomic, retain) NSMutableDictionary *ipInfoDict;
-@property (nonatomic, retain) NSString *ispAccordingToWebservice;
+@property (nonatomic, retain) NSString *detected_ispName;
+@property (nonatomic, retain) NSString *detected_countryCode;
 @property (nonatomic, retain) NSMutableDictionary *t01dictCategories;
 @property (nonatomic, retain) NSMutableDictionary *t02dictCountries;
 @property (nonatomic, retain) NSMutableDictionary *t03dictLocations;
@@ -54,14 +60,14 @@
 
 // --	User-modified variables.
 @property (nonatomic) BOOL siteIsAccessible;
-@property (nonatomic) int indexOfCountryAccordingToUser;
-@property (nonatomic, retain) NSString *ispAccordingToUser;
-@property (nonatomic) int indexOfLocation;
-@property (nonatomic) int indexOfInterest;
-@property (nonatomic) int indexOfReason;
-@property (nonatomic) int indexOfCategory;
-@property (nonatomic) BOOL ignoreCategoryAndUseCustomTag;
-@property (nonatomic, retain) NSString *customTag;
+@property (nonatomic, retain) NSString *accordingToUser_ispName;
+@property (nonatomic, retain) NSString *accordingToUser_countryCode;
+@property (nonatomic, retain) NSString *keyLocation;
+@property (nonatomic, retain) NSString *keyInterest;
+@property (nonatomic, retain) NSString *keyReason;
+@property (nonatomic, retain) NSString *keyCategory;
+@property (nonatomic) BOOL ignoreCategoryAndUseCustomString;
+@property (nonatomic, retain) NSString *customString;
 @property (nonatomic, retain) NSString *comments;
 
 @end

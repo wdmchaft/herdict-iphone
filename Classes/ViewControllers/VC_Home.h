@@ -12,21 +12,22 @@
 #import "ASIHTTPRequest.h"
 #import "TouchXML.h"
 #import "ReportAnnotation.h"
-#import "URLMenu.h"
+#import "BubbleMenu.h"
 #import "SiteView.h"
 #import "CustomBarButton.h"
 #import "Constants.h"
 #import "WebservicesController.h"
 #import "ReportForm.h"
 #import "URLBar.h"
+#import "FormCell.h"
 
-@interface VC_Home : UIViewController <UIAlertViewDelegate, UISearchBarDelegate, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource> {
+@interface VC_Home : UIViewController <UIAlertViewDelegate, UISearchBarDelegate, MKMapViewDelegate, SiteViewDelegate, UITableViewDelegate, UITableViewDataSource> {
 
 	CustomBarButton *buttonCancelSearch;
 	
 	URLBar *theUrlBar;	
 	MKMapView *reportMapView;
-	URLMenu *theUrlMenu;
+	BubbleMenu *theUrlBarMenu;
 	SiteView *theSiteView;	
 	ReportForm *theReportForm;
 	UIView *theScreen;
@@ -43,7 +44,7 @@
 
 @property (nonatomic, retain) URLBar *theUrlBar;
 @property (nonatomic, retain) MKMapView *reportMapView;
-@property (nonatomic, retain) URLMenu *theUrlMenu;
+@property (nonatomic, retain) BubbleMenu *theUrlBarMenu;
 @property (nonatomic, retain) SiteView *theSiteView;
 @property (nonatomic, retain) ReportForm *theReportForm;
 @property (nonatomic, retain) UIView *theScreen;
@@ -83,6 +84,6 @@
 - (NSString *)getAnnotationSubtitleString:(NSMutableDictionary *)reportDict; 
 - (int)getSheepColorInt:(NSMutableDictionary *)reportDict;
 
-- (void) urlMenuOptionSelected:(NSNumber *)optionNumber;
+- (void) urlBarMenuOptionSelected:(NSNumber *)optionNumber;
 
 @end

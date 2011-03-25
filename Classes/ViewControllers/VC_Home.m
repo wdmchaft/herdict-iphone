@@ -14,7 +14,7 @@
 
 @synthesize theUrlBar;
 @synthesize reportMapView;
-@synthesize theUrlMenu;
+@synthesize theUrlBarMenu;
 @synthesize theSiteView;
 @synthesize theReportForm;
 @synthesize theScreen;
@@ -80,11 +80,16 @@
 	
 	// --	Set up theReportForm.
 	self.theReportForm = [[ReportForm alloc] initWithFrame:CGRectMake(0, 416, 320, 378)];
+	self.theReportForm.formTable.delegate = self;
+	self.theReportForm.formTable.dataSource = self;
 	[self.view addSubview:self.theReportForm];
 
-	// --	Set up theUrlMenu.  (adding this subview after adding reportMapView, theSiteView, and theReportForm.. for z-ordering)
-	self.theUrlMenu = [[URLMenu alloc] initWithFrame:CGRectMake(65 - 130, -35 - 200, 150, 129)];
-	[self.view addSubview:self.theUrlMenu];
+	// --	Set up theUrlBarMenu.  (adding this subview after adding reportMapView, theSiteView, and theReportForm.. for z-ordering)
+	self.theUrlBarMenu = [[BubbleMenu alloc] initWithFrame:CGRectMake(-65, -235, 150, 129)];
+	self.theUrlBarMenu.menuOption1.text = @"Test Site";
+	self.theUrlBarMenu.menuOption2.text = @"Get a Report";
+	self.theUrlBarMenu.menuOption3.text = @"Submit a Report";
+	[self.view addSubview:self.theUrlBarMenu];
 	
 	// --	Put up 'The Screen'.  (to catch all touches below theUrlBar.. forwards to [self touchesBegan--]) 
 	self.theScreen = [[UIView alloc] initWithFrame:CGRectMake(0, 38, 320, 378)];
@@ -93,10 +98,6 @@
 	
 	// --	Hit the 5 endpoints of the Herdict API to get up-to-date Report Form options.  
 	[WebservicesController getHerdictDicts:self];	
-	
-	// --	Set up the 'My ISP' stuff.
-	self.theReportForm.ispAccordingToWebservice = [NSString stringWithString:@""];
-	self.theReportForm.ipInfoDict = [NSMutableDictionary dictionary];
 }
 
 - (BOOL) canBecomeFirstResponder {
@@ -109,7 +110,7 @@
 	[WebservicesController getIp:self];
 	[self becomeFirstResponder];
 	
-	[self.theUrlMenu touchesBegan:nil withEvent:nil];
+	[self.theUrlBarMenu touchesBegan:nil withEvent:nil];
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
@@ -192,7 +193,7 @@
 	shouldContinue = shouldContinue && (self.theSiteView.frame.origin.y > 300);
 	shouldContinue = shouldContinue && (self.theReportForm.frame.origin.y > 300);
 	if (!shouldContinue) {
-		NSLog(@"[self initiateAnnotateReport] found: !shouldContinue");
+		//NSLog(@"[self initiateAnnotateReport] found: !shouldContinue");
 		[self.reportMapView deselectAnnotation:self.theAnnotation animated:YES];
 		self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
 		return;
@@ -296,10 +297,10 @@
 	// --	For each report in reportsFromFeed: if the report's country is found in our new array, grab its geodata from the array.	
 	for (NSMutableDictionary *reportDict in self.reportsFromFeed) {
 		NSString *countryInReport = [[reportDict objectForKey:@"description"] objectForKey:@"Reporter Country"];
-		for (NSDictionary *plistt02dictCountries in countriesWithCoordinates) {
-			if ([countryInReport isEqualToString:[plistt02dictCountries objectForKey:@"country_name"]]) {
-				NSString *lng = [[plistt02dictCountries objectForKey:@"lng"] stringValue];
-				NSString *lat = [[plistt02dictCountries objectForKey:@"lat"] stringValue];
+		for (NSDictionary *country in countriesWithCoordinates) {
+			if ([countryInReport isEqualToString:[country objectForKey:@"country_name"]]) {
+				NSString *lng = [[country objectForKey:@"lng"] stringValue];
+				NSString *lat = [[country objectForKey:@"lat"] stringValue];
 				NSMutableDictionary *location = [NSMutableDictionary dictionary];
 				[location setObject:lng forKey:@"lng"];
 				[location setObject:lat forKey:@"lat"];
@@ -398,7 +399,7 @@
 #pragma mark self as UISearchBarDelegate
 
 - (void) searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-	[self urlMenuOptionSelected:[NSNumber numberWithInt:1]];
+	[self urlBarMenuOptionSelected:[NSNumber numberWithInt:1]];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
@@ -408,7 +409,7 @@
 	[self.timerInititiateAnnotateReport invalidate];
 	[self.reportMapView removeAnnotation:self.theAnnotation];
 	
-	[self.theUrlMenu show];
+	[self.theUrlBarMenu show];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
@@ -416,13 +417,14 @@
 
 	self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
 
-	[NSTimer scheduledTimerWithTimeInterval:0.075 target:self.theUrlMenu selector:@selector(hide) userInfo:nil repeats:NO];
+	[NSTimer scheduledTimerWithTimeInterval:0.075 target:self.theUrlBarMenu selector:@selector(hide) userInfo:nil repeats:NO];
 }
 
-#pragma mark Some callbackHandlers
+
+#pragma mark -
+#pragma mark Some callback handlers
 
 - (void) getRoughGeocodeForCountryCallbackHandler:(ASIHTTPRequest *)request {
-	
 	// --	Outsource the basic request callback handling to (initialResponseHandling:).
 	NSDictionary *responseDictionary = [self initialResponseHandling:request];
 	
@@ -447,7 +449,10 @@
 	responseString = [responseString stringByReplacingOccurrencesOfString:@"\"valuta_rate\":," withString:@""];
 	NSData *fixedResponseData = [responseString dataUsingEncoding:NSUTF8StringEncoding];
 	self.theReportForm.ipInfoDict = [WebservicesController getDictionaryFromJSONData:fixedResponseData];
-
+	self.theReportForm.detected_ispName = [NSString stringWithString:[[self.theReportForm.ipInfoDict objectForKey:@"isp"] objectForKey:@"name"]];
+	self.theReportForm.accordingToUser_ispName = self.theReportForm.detected_ispName;
+	self.theReportForm.detected_countryCode = [NSString stringWithString:[[self.theReportForm.ipInfoDict objectForKey:@"country"] objectForKey:@"code"]];
+	self.theReportForm.accordingToUser_countryCode = self.theReportForm.detected_countryCode;
 }
 
 #pragma mark -
@@ -460,6 +465,7 @@
 		labelWithoutQuotes = [labelWithoutQuotes stringByReplacingOccurrencesOfString:@"\"" withString:@""];
 		[aDict setObject:labelWithoutQuotes forKey:[[theArray objectAtIndex:i] objectForKey:@"value"]];
 	}
+	[aDict setObject:@"Tap to Select" forKey:@"blank"];
 	return aDict;
 }
 - (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {
@@ -542,15 +548,13 @@
 	return typedUrl;
 }
 
-#pragma mark -
-#pragma mark self as URLMenuDelegate
 
-- (void) urlMenuOptionSelected:(NSNumber *)optionNumber {
+- (void) urlBarMenuOptionSelected:(NSNumber *)optionNumber {
 	NSString *theUrl = [[[self.theUrlBar subviews] objectAtIndex:1] text];
 
 	// --	Check whether the entry is blank.
 	if ([theUrl length] == 0) {
-		[self.theUrlMenu removeSelectionBackground];				
+		[self.theUrlBarMenu removeSelectionBackground];				
 		UIAlertView *alertNoUrl = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter a complete URL." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[alertNoUrl show];
 		[alertNoUrl release];
@@ -562,12 +566,12 @@
 
 	// --	Get the search bar and menu out of the way.
 	[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
-	[NSTimer scheduledTimerWithTimeInterval:1.5 target:self.theUrlMenu selector:@selector(removeSelectionBackground) userInfo:nil repeats:NO];				
+	[NSTimer scheduledTimerWithTimeInterval:1.5 target:self.theUrlBarMenu selector:@selector(removeSelectionBackground) userInfo:nil repeats:NO];				
 
 	if ([optionNumber intValue] == 1) {
 		// --	Show selection background.
-		self.theUrlMenu.selectionBackground.backgroundColor = [UIColor blueColor];
-		[self.theUrlMenu.selectionBackground setFrame:CGRectMake(5, 31, 139, 30)];
+		self.theUrlBarMenu.selectionBackground.backgroundColor = [UIColor blueColor];
+		[self.theUrlBarMenu.selectionBackground setFrame:CGRectMake(5, 31, 139, 30)];
 		
 		// --	Do appropriate stuff.
 		[self.theSiteView loadUrl:theUrl];
@@ -575,8 +579,8 @@
 	}
 	if ([optionNumber intValue] == 2) {
 		// --	Show selection background.
-		self.theUrlMenu.selectionBackground.backgroundColor = [UIColor blueColor];
-		[self.theUrlMenu.selectionBackground setFrame:CGRectMake(5, 61, 139, 30)];
+		self.theUrlBarMenu.selectionBackground.backgroundColor = [UIColor blueColor];
+		[self.theUrlBarMenu.selectionBackground setFrame:CGRectMake(5, 61, 139, 30)];
 
 		// --	Do appropriate stuff.
 		[self.theSiteView loadUrl:theUrl];
@@ -587,8 +591,8 @@
 	}
 	if ([optionNumber intValue] == 3) {
 		// --	Show selection background.
-		self.theUrlMenu.selectionBackground.backgroundColor = [UIColor blueColor];
-		[self.theUrlMenu.selectionBackground setFrame:CGRectMake(5, 91, 139, 30)];
+		self.theUrlBarMenu.selectionBackground.backgroundColor = [UIColor blueColor];
+		[self.theUrlBarMenu.selectionBackground setFrame:CGRectMake(5, 91, 139, 30)];
 		
 		// --	Do appropriate stuff.
 		[self.theSiteView loadUrl:theUrl];
@@ -656,20 +660,181 @@
 	[NSTimer scheduledTimerWithTimeInterval:0.05 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
 }
 
-//#pragma mark -
-//#pragma mark self as surrogate tableView datasource/delegate
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//	return [self.theReportForm numberOfSectionsInTableView:tableView];
-//}
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-//	return [self.theReportForm tableView:tableView numberOfRowsInSection:section];
-//}
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-//	return [self.theReportForm tableView:tableView cellForRowAtIndexPath:indexPath];	
-//}
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//	return [self.theReportForm tableView:tableView didSelectRowAtIndexPath:indexPath];
-//}
+#pragma mark -
+#pragma mark UITableViewDelegate, UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	if (self.theReportForm.siteIsAccessible) {
+		return 7;
+	}
+	return 8;
+}
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return 1;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if(section == 0)
+        return 6;
+    return 1.0;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+	return 1.0;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	return [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)] autorelease];
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+	return [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)] autorelease];
+}	
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	return 40;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	FormCell *cell = [[[FormCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"] autorelease];
+	
+	int indexPathSection = indexPath.section;
+	
+	// --	'Is the Site Accessible?'.
+	if (indexPathSection == 0) {
+		UIImage *iconImage = [UIImage imageNamed:@"146-gavel@2x.png"];
+		cell.theIconView.image = iconImage;
+		cell.cellLabel.text = @"Site Accessible";
+		if (self.theReportForm.siteIsAccessible) {
+			cell.cellDetailLabel.text = @"Yes";
+		} else {
+			cell.cellDetailLabel.text = @"No";
+		}
+		return cell;
+	}
+	if (indexPathSection == 1) {
+		if (self.theReportForm.siteIsAccessible) {
+			indexPathSection++;																			// remember we're using this trick 
+		} else {
+			UIImage *iconImage = [UIImage imageNamed:@"20-gear2@2x.png"];
+			cell.theIconView.image = iconImage;
+			cell.cellLabel.text = @"Reason";
+			cell.cellDetailLabel.text = [self.theReportForm.t05dictReasons objectForKey:self.theReportForm.keyReason];
+			return cell;
+		}
+	}
+	if (indexPathSection == 2) {
+		UIImage *iconImage = [UIImage imageNamed:@"15-tags@2x.png"];
+		cell.theIconView.image = iconImage;
+		cell.cellLabel.text = @"Category";
+		cell.cellDetailLabel.text = [self.theReportForm.t01dictCategories objectForKey:self.theReportForm.keyCategory];
+		return cell;
+	}
+	if (indexPathSection == 3) {
+		UIImage *iconImage = [UIImage imageNamed:@"186-ruler@2x.png"];
+		cell.theIconView.image = iconImage;
+		cell.cellLabel.text = @"Usefulness";
+		cell.cellDetailLabel.text = [self.theReportForm.t04dictInterests objectForKey:self.theReportForm.keyInterest];
+		return cell;
+	}
+	if (indexPathSection == 4) {
+		UIImage *iconImage = [UIImage imageNamed:@"59-flag@2x.png"];
+		cell.theIconView.image = iconImage;
+		[cell.theIconView setFrame:CGRectMake(10, 6, 20, 28)];
+		cell.cellLabel.text = @"Country";
+		cell.cellDetailLabel.text = [self.theReportForm.t02dictCountries objectForKey:self.theReportForm.accordingToUser_countryCode];
+		return cell;
+	}
+	if (indexPathSection == 5) {
+		UIImage *iconImage = [UIImage imageNamed:@"193-location-arrow@2x.png"];
+		cell.theIconView.image = iconImage;
+		cell.cellLabel.text = @"Location";
+		cell.cellDetailLabel.text = [self.theReportForm.t03dictLocations objectForKey:self.theReportForm.keyLocation];
+		return cell;
+	}
+	if (indexPathSection == 6) {
+		UIImage *iconImage = [UIImage imageNamed:@"55-wifi@2x.png"];
+		cell.theIconView.image = iconImage;
+		[cell.theIconView setFrame:CGRectMake(6, 10, 28, 20)];
+		cell.cellLabel.text = @"ISP";
+		cell.cellDetailLabel.text = self.theReportForm.accordingToUser_ispName;
+		return cell;
+	}
+	if (indexPathSection == 7) {
+		UIImage *iconImage = [UIImage imageNamed:@"09-chat-2@2x.png"];
+		cell.theIconView.image = iconImage;
+		cell.cellLabel.text = @"Comments";
+		cell.cellDetailLabel.text = self.theReportForm.comments;
+		return cell;
+	}
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	// --	Disable form interaction.
+	self.theReportForm.formTable.userInteractionEnabled = NO;
+
+	// --	Cancel button.
+	
+	
+	// --	Apply white screen.
+	[UIView animateWithDuration:0.2 delay:0 options:nil
+					 animations:^{						 
+						 // --	theReportForm.formBackground
+						 self.theReportForm.formBackground.backgroundColor = [UIColor whiteColor];
+						 self.theReportForm.formBackground.alpha = 1;
+						
+						 // --	cells
+ 						 int countCells = [self.theReportForm.formTable numberOfSections];
+ 						 for (int i = 0; i < countCells; i++) {	
+							 FormCell *nonSelectedCell = [self.theReportForm.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];							
+							 if (i != indexPath.section) {
+								 nonSelectedCell.whiteScreen.alpha = 1;
+							 }
+						 }
+					 } completion:^(BOOL finished){
+					 }
+	 ];
+	
+	// --	Slide the whole tableView up so the selected cell is at the top.
+	[UIView animateWithDuration:0.15 delay:0.1 options:UIViewAnimationOptionCurveEaseOut
+					 animations:^{						 
+						 [self.view bringSubviewToFront:self.theUrlBar];
+						 int rowSpan = [self.theReportForm.formTable.delegate tableView:self.theReportForm.formTable heightForRowAtIndexPath:indexPath];
+						 rowSpan = rowSpan + [self.theReportForm.formTable.delegate tableView:self.theReportForm.formTable heightForFooterInSection:indexPath.section];
+						 int slideSpan = rowSpan * indexPath.section;						 
+						 [self.theReportForm.formTable setCenter:CGPointMake(
+																			 self.theReportForm.formTable.center.x,
+																			 self.theReportForm.formTable.center.y - slideSpan)];						 
+					  } completion:^(BOOL finished){
+					  }
+	 ];
+}
+
+- (void) returnToFormTable {
+
+	// --	Enable form interaction.
+	self.theReportForm.formTable.userInteractionEnabled = YES;
+
+	// --	Slide the tableView back to its normal frame.
+	[UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionCurveEaseOut
+					 animations:^{
+						 [self.theReportForm.formTable setFrame:self.theReportForm.formTableNormalFrame];
+					 } completion:^(BOOL finished){
+					 }
+	 ];	
+	
+	// --	Remove white screen.
+	[UIView animateWithDuration:0.2 delay:0.1 options:nil
+					 animations:^{						 
+						 // --	theReportForm.formBackground
+						 self.theReportForm.formBackground.backgroundColor = [UIColor blackColor];
+						 self.theReportForm.formBackground.alpha = 0.8;
+						 
+						 // --	cells
+ 						 int countCells = [self.theReportForm.formTable numberOfSections];
+ 						 for (int i = 0; i < countCells; i++) {
+							 FormCell *nonSelectedCell = [self.theReportForm.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];							
+							 nonSelectedCell.whiteScreen.alpha = 1;
+						 }
+					 } completion:^(BOOL finished){
+					 }
+	 ];	
+}
 
 #pragma mark -
 #pragma mark UITouch
@@ -689,27 +854,27 @@
 		[self.theReportForm hideForm];
 		return;
 	}
-	touchPoint = [touch locationInView:self.theUrlMenu.menuOption1];
-	if ([self.theUrlMenu.menuOption1 pointInside:touchPoint withEvent:nil]) {
-		[self performSelector:@selector(urlMenuOptionSelected:) withObject:[NSNumber numberWithInt:1] afterDelay:0.2];
+	touchPoint = [touch locationInView:self.theUrlBarMenu.menuOption1];
+	if ([self.theUrlBarMenu.menuOption1 pointInside:touchPoint withEvent:nil]) {
+		[self performSelector:@selector(urlBarMenuOptionSelected:) withObject:[NSNumber numberWithInt:1] afterDelay:0.2];
 		return;
 	}
-	touchPoint = [touch locationInView:self.theUrlMenu.menuOption2];
-	if ([self.theUrlMenu.menuOption2 pointInside:touchPoint withEvent:nil]) {
-		[self performSelector:@selector(urlMenuOptionSelected:) withObject:[NSNumber numberWithInt:2] afterDelay:0.2];
+	touchPoint = [touch locationInView:self.theUrlBarMenu.menuOption2];
+	if ([self.theUrlBarMenu.menuOption2 pointInside:touchPoint withEvent:nil]) {
+		[self performSelector:@selector(urlBarMenuOptionSelected:) withObject:[NSNumber numberWithInt:2] afterDelay:0.2];
 		return;
 	}
-	touchPoint = [touch locationInView:self.theUrlMenu.menuOption3];
-	if ([self.theUrlMenu.menuOption3 pointInside:touchPoint withEvent:nil]) {
-		[self performSelector:@selector(urlMenuOptionSelected:) withObject:[NSNumber numberWithInt:3] afterDelay:0.2];
+	touchPoint = [touch locationInView:self.theUrlBarMenu.menuOption3];
+	if ([self.theUrlBarMenu.menuOption3 pointInside:touchPoint withEvent:nil]) {
+		[self performSelector:@selector(urlBarMenuOptionSelected:) withObject:[NSNumber numberWithInt:3] afterDelay:0.2];
 		return;
 	}
 	touchPoint = [touch locationInView:self.theSiteView.webViewFooter];
 	if ([self.theSiteView.webViewFooter pointInside:touchPoint withEvent:nil]) {	
 		if (self.theSiteView.theSiteSummary.frame.origin.y > 350) {
-			[self urlMenuOptionSelected:[NSNumber numberWithInt:2]];
+			[self urlBarMenuOptionSelected:[NSNumber numberWithInt:2]];
 		} else {
-			[self urlMenuOptionSelected:[NSNumber numberWithInt:3]];
+			[self urlBarMenuOptionSelected:[NSNumber numberWithInt:3]];
 		}
 		return;
 	}
@@ -725,6 +890,8 @@
 	}
 }
 
+#pragma mark -
+#pragma mark SiteViewDelegate methods
 - (void) theSiteViewIsShowingWebView {
 	[self.theScreen setFrame:CGRectMake(0, 436 - 60, 320, 334)];
 }
@@ -736,6 +903,11 @@
 	self.theScreen.backgroundColor = [UIColor yellowColor];
 	self.theScreen.alpha = 0.4;
 	[self.theScreen setFrame:CGRectMake(0, 38, 320, 334)];
+}
+
+- (void) reverseFormTableWhiteOut {
+
+	
 }
 
 @end
