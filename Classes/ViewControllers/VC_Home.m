@@ -931,6 +931,10 @@
 	[UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionCurveEaseOut
 					 animations:^{
 						 [self.theReportForm.formTable setFrame:self.theReportForm.formTableNormalFrame];
+						 if (self.theReportForm.siteIsAccessible) {
+							 [self.theReportForm.formTable setCenter:CGPointMake(self.theReportForm.formTable.center.x,
+																				 self.theReportForm.formTable.center.y + 15)];
+						 }
 					 } completion:^(BOOL finished){
 					 }
 	 ];	
