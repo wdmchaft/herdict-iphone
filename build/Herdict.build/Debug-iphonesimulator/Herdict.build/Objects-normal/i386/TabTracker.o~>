@@ -1,0 +1,2 @@
+/projects/Herdict Working/iOS/Views/TabTracker.m: In function '-[TabTracker drawRect:]':
+/projects/Herdict Working/iOS/Views/TabTracker.m:33: warning: unused variable 'cornerRad'

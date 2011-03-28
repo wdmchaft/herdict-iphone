@@ -14,7 +14,6 @@
 @synthesize theBackground;
 @synthesize textView1;
 @synthesize textView2;
-@synthesize theFooter;
 @synthesize hideLabel;
 
 - (id)initWithFrame:(CGRect)frame {

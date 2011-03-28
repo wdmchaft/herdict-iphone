@@ -122,7 +122,7 @@
 	CGContextSetLineJoin(context, kCGLineJoinRound);
 	CGContextSetLineWidth(context, 1);
 	CGContextSetRGBStrokeColor(context, 0, 0, 0, 0.7); 
-	CGContextSetRGBFillColor(context, 0, 0, 0, 0.85);
+	CGContextSetRGBFillColor(context, 0, 0, 0, 0.915);
 
 	CGContextBeginPath(context);
 	
@@ -203,18 +203,26 @@
 }
 
 
-- (void) showBubbleMenu {
+- (void) showBubbleMenuWithAnimation:(NSNumber *)withAnimation {
 	
 	[self setFrame:self.frameForShowMenu];
 	[self.superview bringSubviewToFront:self];
-	[self rotateForUse];
-	[UIView animateWithDuration:0.1 delay:0.1 options:UIViewAnimationOptionCurveEaseIn
-					 animations:^{
-						 self.alpha = 1;
-					 }
-					 completion:^(BOOL finished){
-					 }
-	 ];
+	
+	BOOL animated = [withAnimation boolValue];
+	
+	if (animated) {
+		[self rotateForUse];
+		[UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseIn
+						 animations:^{
+							 self.alpha = 1;
+						 }
+						 completion:^(BOOL finished){
+						 }
+		 ];
+	} else {
+		self.layer.transform = CATransform3DIdentity;
+		self.alpha = 1;
+	}
 }
 
 - (void) hideBubbleMenu {
@@ -278,8 +286,6 @@
 
 - (void) showSelectionBackgroundForOption:(int)optionNumber {
 	UITextView *selectedOption = [self viewWithTag:optionNumber];
-
-	NSLog(@"showing selection background for view %@", selectedOption);
 
 	self.selectionBackground.backgroundColor = UIColorFromRGB(0x5AabF7);
 	[self.selectionBackground setFrame:CGRectMake(selectedOption.frame.origin.x,

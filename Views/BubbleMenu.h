@@ -50,7 +50,7 @@
 
 - (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint;
 
-- (void)show;
+- (void) showBubbleMenuWithAnimation:(NSNumber *)animation;
 - (void)hide;
 - (void)rotateForUse;
 - (void)rotateTuckedAway;
