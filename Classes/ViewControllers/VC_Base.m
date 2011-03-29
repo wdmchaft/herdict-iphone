@@ -10,6 +10,7 @@
 
 @implementation VC_Base
 
+@synthesize blackBackgroundForNavBar;
 @synthesize navBar;
 @synthesize navItem;
 @synthesize buttonCancelTyping;
@@ -25,8 +26,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	self.view.backgroundColor = [UIColor blackColor];
-
+	self.view.backgroundColor = [UIColor colorWithRed:themeRed green:themeGreen blue:themeBlue alpha:1];
+	
 	/* --	Set up theUrlBar	-- */
 	self.theUrlBar = [[URLBar alloc] initWithFrame:CGRectMake(0,heightForNavBar - yOverhangForNavBar,320,heightForURLBar)];
 	for (UIView *view in self.theUrlBar.subviews) {
@@ -38,8 +39,10 @@
 	[self.theUrlBar setDelegate:self];
 	[self.view addSubview:self.theUrlBar];
 	
-	
-	/* --	Set up navBar and navItem	-- */
+	/* --	Set up blackBackgroundForNavBar, navBar, navItem	-- */
+	self.blackBackgroundForNavBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, heightForNavBar + heightForURLBar - yOverhangForNavBar)];
+	self.blackBackgroundForNavBar.backgroundColor = [UIColor blackColor];
+	[self.view insertSubview:self.blackBackgroundForNavBar belowSubview:self.theUrlBar];	
 	self.navBar = [[CustomNavBar alloc] initWithFrame:CGRectMake(0, 0, 320, heightForNavBar)];
 	self.navBar.delegate = self;
 	[self.view addSubview:self.navBar];		
@@ -105,6 +108,8 @@
 	[super viewWillAppear:animated];
 	NSLog(@"%@ viewWillAppear", self.title);
 	
+	[self.view bringSubviewToFront:self.theUrlBar];
+	[self.view bringSubviewToFront:self.navBar];
 	[self.view bringSubviewToFront:self.theTabTracker];
 	
 }

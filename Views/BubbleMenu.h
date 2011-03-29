@@ -16,17 +16,17 @@
 	NSMutableArray *menuOptions;	
 	UIView *selectionBackground;
 
-	CATransform3D rotationWhenHidden;
-	
+	CGFloat selfwidth;
+	CGFloat selfheight;
+
 	CGRect frameForShowMenu;
 	CGFloat tailHeight;
 	CGFloat tailWidth;
-	CGFloat stroke;
 	CGFloat tailOffset;
-	CGFloat cornerRad;
-	CGFloat selfwidth;
-	CGFloat selfheight;
 	
+	CGFloat stroke;
+	CGFloat cornerRad;
+	CATransform3D rotationWhenHidden;
 }
 
 @property (nonatomic, retain) UITextView *theMessage;

@@ -138,7 +138,7 @@
 	NSMutableArray *colors = [NSMutableArray arrayWithCapacity:3];
 	UIColor *color0 = [UIColor colorWithRed:(themeRed - 0.442) green:(themeGreen - 0.442) blue:(themeBlue - 0.442)  alpha:0.9];
 	UIColor *color1 = [UIColor colorWithRed:themeRed green:themeGreen blue:themeBlue alpha:1];
-	UIColor *color2 = [UIColor colorWithRed:(themeRed - 0.292) green:(themeGreen - 0.292) blue:(themeBlue - 0.292)  alpha:0.9];
+	UIColor *color2 = [UIColor colorWithRed:(themeRed - 0.202) green:(themeGreen - 0.202) blue:(themeBlue - 0.202)  alpha:0.9];
 	
 	locations[0] = 0.0;
 	[colors addObject:(id)[color0 CGColor]];

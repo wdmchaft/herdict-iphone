@@ -26,6 +26,7 @@
 @interface VC_Base : UIViewController <UINavigationBarDelegate, UIAlertViewDelegate, UISearchBarDelegate> {
 
 	/* --	Nav Bar	-- */
+	UIView *blackBackgroundForNavBar;
 	CustomNavBar *navBar;
 	UINavigationItem *navItem;
 	CustomUIButton *buttonCancelTyping;
@@ -41,6 +42,7 @@
 	
 }
 
+@property (nonatomic, retain) UIView *blackBackgroundForNavBar;
 @property (nonatomic, retain) CustomNavBar *navBar;
 @property (nonatomic, retain) UINavigationItem *navItem;
 @property (nonatomic, retain) CustomUIButton *buttonCancelTyping;

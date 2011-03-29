@@ -20,12 +20,19 @@
 		self.autocorrectionType = UITextAutocorrectionTypeNo;
 		self.autocapitalizationType = UITextAutocapitalizationTypeNone;
 		self.keyboardType = UIKeyboardTypeURL;
+		
 		UITextField *searchBarTextField = [[self subviews] objectAtIndex:1];
 		searchBarTextField.returnKeyType = UIReturnKeyGo;
 		searchBarTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+		
 		UIImage *urlIcon = [UIImage imageNamed:@"globe.png"];	
 		UIImageView *urlIconView = [[UIImageView alloc] initWithImage:urlIcon];
 		[searchBarTextField.leftView addSubview:urlIconView];
+		
+		self.layer.masksToBounds = NO;
+		self.layer.shadowOffset = CGSizeMake(0, 0);
+		self.layer.shadowRadius = 5;
+		self.layer.shadowOpacity = 0.8;
     }
     return self;
 }
@@ -42,11 +49,11 @@
 
 	UIColor *color0 = [UIColor colorWithRed:(themeRed - navBarColorDelta) green:(themeGreen - navBarColorDelta) blue:(themeBlue - navBarColorDelta)  alpha:0.9];
 	UIColor *color1 = [UIColor colorWithRed:(themeRed - urlBarColorDelta) green:(themeGreen - urlBarColorDelta) blue:(themeBlue - urlBarColorDelta)  alpha:0.9];
-	UIColor *color2 = [UIColor colorWithRed:(themeRed - 0.482) green:(themeGreen - 0.482) blue:(themeBlue - 0.482)  alpha:0.9];
+	UIColor *color2 = [UIColor colorWithRed:(themeRed - 0.382) green:(themeGreen - 0.382) blue:(themeBlue - 0.382)  alpha:0.9];
 	
 	locations[0] = 0.25;
 	[colors addObject:(id)[color0 CGColor]];
-	locations[1] = 0.96;
+	locations[1] = 0.94;
 	[colors addObject:(id)[color1 CGColor]];
 	locations[2] = 1.00;
 	[colors addObject:(id)[color2 CGColor]];
@@ -77,9 +84,8 @@
 	
     CGGradientRelease(myGradient);
     CGColorSpaceRelease(space);
-	
+
 	CGContextDrawPath(context, kCGPathStroke);
-	
 }
 
 

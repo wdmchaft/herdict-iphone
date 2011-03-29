@@ -16,7 +16,7 @@
     
 	/* --	Decide frame here	-- */
 	CGRect frame = CGRectMake([self xOffset:tabNumber],
-							  480 - 20 - 49 - (heightForTabTracker - 1),
+							  480 - 20 - 49 - (heightForTabTracker - 4),
 							  widthForTabTracker,
 							  heightForTabTracker);	
 	
@@ -24,6 +24,12 @@
     if (self) {
 		self.backgroundColor = [UIColor clearColor];
 	}
+	
+	self.layer.masksToBounds = NO;
+	self.layer.shadowOffset = CGSizeMake(0, 0);
+	self.layer.shadowRadius = 5;
+	self.layer.shadowOpacity = 0.8;
+	
     return self;
 }
 

@@ -26,6 +26,11 @@
 		self.backgroundColor = [UIColor clearColor];
 		self.userInteractionEnabled = YES;
 		
+		self.layer.masksToBounds = NO;
+		self.layer.shadowOffset = CGSizeMake(0, 0);
+		self.layer.shadowRadius = 5;
+		self.layer.shadowOpacity = 0.8;		
+		
 		self.textView1 = [[UITextView alloc] initWithFrame:CGRectMake(32, 5 + heightForSiteSummaryHideTab, 280, 55)];
 		self.textView1.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
 		self.textView1.backgroundColor = [UIColor clearColor];
@@ -75,10 +80,6 @@
 
 - (void) drawRect:(CGRect)rect {
 
-	// path + fill
-	// gradient ... darker up at tab
-	// shadow
-		
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
 	CGFloat offsetForStroke = 1;
@@ -90,7 +91,7 @@
 	CGContextSetLineWidth(context, 2);
 
 	CGContextSetRGBStrokeColor(context, 0, 0, 0, 0.4);
-	CGContextSetRGBFillColor(context, 0, 0, 0, 0.85);
+	CGContextSetRGBFillColor(context, 0, 0, 0, 0.7);
 	
 	CGContextBeginPath(context);
 	
@@ -199,7 +200,7 @@
 						 [self setFrame:CGRectMake(0,
 												   480 - 20 - 49 - heightForSiteSummary,
 												   320,
-												   heightForSiteSummary)];
+												   heightForSiteSummary + 5)];
 					 } completion:^(BOOL finished){
 					 }
 	 ];	
@@ -228,7 +229,7 @@
 						 [self setFrame:CGRectMake(0,
 												   480 - 20 - 49 - heightForSiteSummaryHideTab,
 												   320,
-												   heightForSiteSummary)];
+												   heightForSiteSummary + 5)];
 					 } completion:^(BOOL finished){
 					 }
 	 ];

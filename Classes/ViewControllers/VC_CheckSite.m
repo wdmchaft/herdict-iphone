@@ -31,8 +31,14 @@
 	self.theSiteSummary = [[SiteSummary alloc] initWithFrame:CGRectMake(0,
 																		480 - 20 - 49 - heightForSiteSummaryHideTab,
 																		320,
-																		heightForSiteSummary)];
+																		heightForSiteSummary + 5)];
 	[self.view insertSubview:self.theSiteSummary aboveSubview:self.theWebView];	
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+	[self.view bringSubviewToFront:self.theWebView];
+	[self.view bringSubviewToFront:self.theSiteSummary];
+	[super viewWillAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning {

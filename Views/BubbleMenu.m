@@ -52,10 +52,15 @@
 		self.layer.anchorPoint = theAnchorPoint;
 		self.userInteractionEnabled = YES;
 		
+		self.layer.masksToBounds = NO;
+		self.layer.shadowOffset = CGSizeMake(0, 0);
+		self.layer.shadowRadius = 5;
+		self.layer.shadowOpacity = 0.8;
+		
 		self.frameForShowMenu = self.frame;
 
 		self.selfwidth = self.frame.size.width;
-		self.selfheight = self.frame.size.height;	
+		self.selfheight = self.frame.size.height;
 
 		self.tailHeight = theTailHeight;
 		self.tailWidth = selfwidth * 0.175;
@@ -134,7 +139,7 @@
 	CGContextSetLineJoin(context, kCGLineJoinRound);
 	CGContextSetLineWidth(context, 0);
 	CGContextSetRGBStrokeColor(context, 0, 0, 0, 0.4); 
-	CGContextSetRGBFillColor(context, 0, 0, 0, 0.85);
+	CGContextSetRGBFillColor(context, 0, 0, 0, 0.7);
 
 	CGContextBeginPath(context);
 	
@@ -202,6 +207,7 @@
 					);
 	
 	CGContextClosePath(context);
+
 	CGContextDrawPath(context, kCGPathFillStroke);
 }
 

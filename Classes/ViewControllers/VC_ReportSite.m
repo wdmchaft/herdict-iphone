@@ -72,13 +72,20 @@
 	self.formTable = [[UITableView alloc] initWithFrame:CGRectMake(0,
 																   heightForNavBar - yOverhangForNavBar + heightForURLBar,
 																   320,
-																   480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)
+																   heightForFormCell * 4) // 480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)
 												  style:UITableViewStylePlain];
 	self.formTable.backgroundColor = [UIColor clearColor];
 	self.formTable.scrollEnabled = YES;
 	self.formTable.delegate = self;
 	self.formTable.dataSource = self;
-	[self.view insertSubview:self.formTable atIndex:2];
+	
+	self.formTable.layer.masksToBounds = NO;
+	self.formTable.layer.shadowOffset = CGSizeMake(0, 0);
+	self.formTable.layer.shadowRadius = 5;
+	self.formTable.layer.shadowOpacity = 0.8;
+	self.formTable.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.formTable.bounds].CGPath;
+	
+	[self.view addSubview:self.formTable];
 	
 	self.siteIsAccessible = NO;
 	self.keyReason = 0;
@@ -145,47 +152,6 @@
 	[self.t01arrayCategories insertObject:@"Tap to Select" atIndex:0];
 }
 
-//- (void) getLocationsCallbackHandler:(ASIHTTPRequest*)request {
-//	self.t03arrayLocations = [WebservicesController getArrayFromJSONData:[request responseData]];
-//	
-//	// Set up the Bubble Menu that uses this array
-//	NSMutableArray *menuOptions = [NSMutableArray array];
-//	for (id item in self.t03arrayLocations) {
-//		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
-//		[menuOptions addObject:anOption];
-//	}
-//	self.menuLocation = [[BubbleMenu alloc] initWithMessageHeight:32
-//																	  withFrame:CGRectMake(-110, -75, 270, 0)
-//															   menuOptionsArray:menuOptions
-//																	 tailHeight:25
-//																	anchorPoint:CGPointMake(0, 0)];
-//	self.menuLocation.theMessage.text = @"Where are you right now?";
-//	[self.view addSubview:self.menuLocation];
-//	
-//	[self.t03arrayLocations insertObject:@"Tap to Select" atIndex:0];	
-//}
-
-//- (void) getInterestsCallbackHandler:(ASIHTTPRequest*)request {
-//	self.t04arrayInterests = [WebservicesController getArrayFromJSONData:[request responseData]];
-//	
-//	// Set up the Bubble Menu that uses this array
-//	[self.t04arrayInterests removeLastObject];		// TODO am only removing this because the text is too big
-//	NSMutableArray *menuOptions = [NSMutableArray array];
-//	for (id item in self.t04arrayInterests) {
-//		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
-//		[menuOptions addObject:anOption];
-//	}
-//	self.menuInterest = [[BubbleMenu alloc] initWithMessageHeight:32
-//																	  withFrame:CGRectMake(-110, 32, 270, 0)
-//															   menuOptionsArray:menuOptions
-//																	 tailHeight:25
-//																	anchorPoint:CGPointMake(0, 0)];
-//	self.menuInterest.theMessage.text = @"Is this site useful to you?";
-//	[self.view addSubview:self.menuInterest];
-//	
-//	[self.t04arrayInterests insertObject:@"Tap to Select" atIndex:0];	
-//}
-
 - (void) getReasonsCallbackHandler:(ASIHTTPRequest*)request {
 	self.t05arrayReasons = [WebservicesController getArrayFromJSONData:[request responseData]];
 	
@@ -213,42 +179,34 @@
 #pragma mark -
 #pragma mark UITableViewDelegate, UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	if (self.siteIsAccessible) {
-		return 4;
-	}
-	return 3;
-}
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 	return 1;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if(section == 0)
-        return 6;
-    return 1.0;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	if (self.siteIsAccessible) {
+		return 3;
+	}
+	return 4;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	return 1.0;
+	NSLog(@"heightForFooterInSection called");
+	return 6.0;
 }
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	return [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)] autorelease];
-}
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-	return [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)] autorelease];
-}	
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return 40;
+	return heightForFormCell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	FormCell *cell = [[[FormCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"] autorelease];
-	int indexPathSection = indexPath.section;
+	int indexPathRow = indexPath.row;
 	
-	if (self.siteIsAccessible && indexPathSection > 0) {
-		indexPathSection++;													// remember we're using this trick 
+	if (self.siteIsAccessible && indexPathRow > 0) {
+		indexPathRow++;													// remember we're using this trick 
 	}
 	
 	// --	'Is the Site Accessible?'.
-	if (indexPathSection == 0) {
+	if (indexPathRow == 0) {
 		UIImage *iconImage = [UIImage imageNamed:@"146-gavel@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Site Accessible";
@@ -259,7 +217,7 @@
 		}
 		return cell;
 	}
-	if (indexPathSection == 1) {
+	if (indexPathRow == 1) {
 		UIImage *iconImage = [UIImage imageNamed:@"20-gear2@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Reason";
@@ -270,7 +228,7 @@
 		}
 		return cell;
 	}
-	if (indexPathSection == 2) {
+	if (indexPathRow == 2) {
 		UIImage *iconImage = [UIImage imageNamed:@"15-tags@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Category";
@@ -281,7 +239,7 @@
 		}
 		return cell;
 	}
-//	if (indexPathSection == 3) {
+//	if (indexPathRow == 3) {
 //		UIImage *iconImage = [UIImage imageNamed:@"186-ruler@2x.png"];
 //		cell.theIconView.image = iconImage;
 //		cell.cellLabel.text = @"Usefulness";
@@ -292,7 +250,7 @@
 //		}
 //		return cell;
 //	}
-//	if (indexPathSection == 4) {
+//	if (indexPathRow == 4) {
 //		UIImage *iconImage = [UIImage imageNamed:@"59-flag@2x.png"];
 //		cell.theIconView.image = iconImage;
 //		[cell.theIconView setFrame:CGRectMake(10, 6, 20, 28)];
@@ -313,7 +271,7 @@
 //		
 //		return cell;
 //	}
-//	if (indexPathSection == 5) {
+//	if (indexPathRow == 5) {
 //		UIImage *iconImage = [UIImage imageNamed:@"193-location-arrow@2x.png"];
 //		cell.theIconView.image = iconImage;
 //		cell.cellLabel.text = @"Location";
@@ -324,7 +282,7 @@
 //		}
 //		return cell;
 //	}
-//	if (indexPathSection == 6) {
+//	if (indexPathRow == 6) {
 //		UIImage *iconImage = [UIImage imageNamed:@"55-wifi@2x.png"];
 //		cell.theIconView.image = iconImage;
 //		[cell.theIconView setFrame:CGRectMake(6, 10, 28, 20)];
@@ -332,7 +290,7 @@
 //		cell.cellDetailLabel.text = self.accordingToUser_ispName;
 //		return cell;
 //	}
-	if (indexPathSection == 3) {
+	if (indexPathRow == 3) {
 		UIImage *iconImage = [UIImage imageNamed:@"09-chat-2@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Comments";
@@ -342,12 +300,12 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	int indexPathSection = indexPath.section;	
-	if (self.siteIsAccessible && indexPathSection > 0) {		
-		indexPathSection++;											// remember we're using this trick 
+	int indexPathRow = indexPath.section;	
+	if (self.siteIsAccessible && indexPathRow > 0) {		
+		indexPathRow++;											// remember we're using this trick 
 	}
 	
-	if (indexPathSection >= 6) {
+	if (indexPathRow >= 6) {
 		return;
 	}
 	
@@ -379,13 +337,13 @@
 	int rowSpan = [self.formTable.delegate tableView:self.formTable heightForRowAtIndexPath:indexPath];
 	rowSpan = rowSpan + [self.formTable.delegate tableView:self.formTable heightForFooterInSection:indexPath.section];
 	int slideSpan;
-	if (indexPathSection == 0) {
+	if (indexPathRow == 0) {
 		slideSpan = rowSpan * (indexPath.section - 1.5);
-	} else if (indexPathSection == 1) {
+	} else if (indexPathRow == 1) {
 		slideSpan = rowSpan * (indexPath.section - 0.5);
-	} else if (indexPathSection == 2) {
+	} else if (indexPathRow == 2) {
 		slideSpan = rowSpan * (indexPath.section - 0.5);
-	} else if (indexPathSection == 3) {
+	} else if (indexPathRow == 3) {
 		slideSpan = rowSpan * (indexPath.section - 1);
 	}
 	
@@ -402,14 +360,14 @@
 	/** --	what to actually do	-- **/
 	
 	
-	if (indexPathSection == 0) {
+	if (indexPathRow == 0) {
 		[self.menuAccessible performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
 		return;
 	}
-	if (indexPathSection == 1) {
+	if (indexPathRow == 1) {
 		[self.menuReason performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
 	}
-	if (indexPathSection == 2) {
+	if (indexPathRow == 2) {
 		[self.menuCategory performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
 	}
 }

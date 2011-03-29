@@ -35,7 +35,7 @@
 	self.reportMapView.userInteractionEnabled = YES;
 	self.reportMapView.scrollEnabled = NO;
 	self.reportMapView.zoomEnabled = NO;
-	[self.view insertSubview:self.reportMapView atIndex:2];	
+	[self.view addSubview:self.reportMapView];	
 	self.indexOfCurrentReportToBeAnnotated = 0;	
 
 	[self fetchTickerFeed];

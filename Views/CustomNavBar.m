@@ -91,7 +91,7 @@
 	NSMutableArray *colors = [NSMutableArray arrayWithCapacity:4];
 	UIColor *color0 = [UIColor colorWithRed:themeRed green:themeGreen blue:themeBlue alpha:1];
 	UIColor *color1 = [UIColor colorWithRed:(themeRed - 0.032) green:(themeGreen - 0.032) blue:(themeBlue - 0.032)  alpha:0.9];	
-	UIColor *color2 = [UIColor colorWithRed:(themeRed - 0.082) green:(themeGreen - 0.082) blue:(themeBlue - 0.082)  alpha:0.9];
+	UIColor *color2 = [UIColor colorWithRed:(themeRed - 0.062) green:(themeGreen - 0.062) blue:(themeBlue - 0.062)  alpha:0.9];
 	UIColor *color3 = [UIColor colorWithRed:(themeRed - navBarColorDelta) green:(themeGreen - navBarColorDelta) blue:(themeBlue - navBarColorDelta)  alpha:0.9];
 	
 	locations[0] = 0.00;
