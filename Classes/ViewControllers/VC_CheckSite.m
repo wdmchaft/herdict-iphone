@@ -116,7 +116,7 @@
 																heightForNavBar - yOverhangForNavBar + heightForURLBar,
 																320,
 																480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
-	self.loadingView.backgroundColor = [UIColor colorWithRed:themeRed green:themeGreen blue:themeBlue alpha:1];
+	self.loadingView.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
 	[self.view addSubview:self.loadingView];
 
 	/* --	Set up loadingIndicator	-- */

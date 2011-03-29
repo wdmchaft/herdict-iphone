@@ -13,7 +13,7 @@
 @interface BubbleMenu : UIView {
 
 	UITextView *theMessage;
-	NSMutableArray *menuOptions;	
+	NSMutableArray *menuOptions;
 	UIView *selectionBackground;
 
 	CGFloat selfwidth;

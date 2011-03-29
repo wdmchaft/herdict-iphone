@@ -8,14 +8,16 @@
 
 #import "VC_Base.h"
 
-#import "FormCell.h"
+#import "FormStateCell.h"
+#import "FormClearCell.h"
 
 
 @interface VC_ReportSite : VC_Base <UITableViewDelegate, UITableViewDataSource> {
 
-	/* --	turn formBackground into self.view	-- */
-	UIView *formBackground;
 	UITableView *formTable;
+	
+	int sectionNowEditing;
+	
 	CGRect formTableNormalFrame;
 	
 	BubbleMenu *menuAccessible;
@@ -50,8 +52,10 @@
 	
 }
 
-//@property (nonatomic, retain) UIView *formBackground;
 @property (nonatomic, retain) UITableView *formTable;
+
+@property (nonatomic) int sectionNowEditing;
+
 @property (nonatomic) CGRect formTableNormalFrame;
 
 

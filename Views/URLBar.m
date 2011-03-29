@@ -47,9 +47,9 @@
 	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
 	NSMutableArray *colors = [NSMutableArray arrayWithCapacity:2];
 
-	UIColor *color0 = [UIColor colorWithRed:(themeRed - navBarColorDelta) green:(themeGreen - navBarColorDelta) blue:(themeBlue - navBarColorDelta)  alpha:0.9];
-	UIColor *color1 = [UIColor colorWithRed:(themeRed - urlBarColorDelta) green:(themeGreen - urlBarColorDelta) blue:(themeBlue - urlBarColorDelta)  alpha:0.9];
-	UIColor *color2 = [UIColor colorWithRed:(themeRed - 0.382) green:(themeGreen - 0.382) blue:(themeBlue - 0.382)  alpha:0.9];
+	UIColor *color0 = [UIColor colorWithRed:(barThemeRed - navBarColorDelta) green:(barThemeGreen - navBarColorDelta) blue:(barThemeBlue - navBarColorDelta)  alpha:0.9];
+	UIColor *color1 = [UIColor colorWithRed:(barThemeRed - urlBarColorDelta) green:(barThemeGreen - urlBarColorDelta) blue:(barThemeBlue - urlBarColorDelta)  alpha:0.9];
+	UIColor *color2 = [UIColor colorWithRed:(barThemeRed - 0.382) green:(barThemeGreen - 0.382) blue:(barThemeBlue - 0.382)  alpha:0.9];
 	
 	locations[0] = 0.25;
 	[colors addObject:(id)[color0 CGColor]];
@@ -59,9 +59,9 @@
 	[colors addObject:(id)[color2 CGColor]];
 	
 	
-//	UIColor *color0 = [UIColor colorWithRed:(themeRed - 0.392) green:(themeGreen - 0.392) blue:(themeBlue - 0.392)  alpha:0.9];
-//	UIColor *color1 = [UIColor colorWithRed:themeRed green:themeGreen blue:themeBlue alpha:1];
-//	UIColor *color2 = [UIColor colorWithRed:(themeRed - 0.252) green:(themeGreen - 0.252) blue:(themeBlue - 0.252)  alpha:0.9];
+//	UIColor *color0 = [UIColor colorWithRed:(barThemeRed - 0.392) green:(barThemeGreen - 0.392) blue:(barThemeBlue - 0.392)  alpha:0.9];
+//	UIColor *color1 = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+//	UIColor *color2 = [UIColor colorWithRed:(barThemeRed - 0.252) green:(barThemeGreen - 0.252) blue:(barThemeBlue - 0.252)  alpha:0.9];
 //	
 //	locations[0] = 0.0;
 //	[colors addObject:(id)[color0 CGColor]];

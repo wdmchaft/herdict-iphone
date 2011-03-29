@@ -12,6 +12,9 @@
 @implementation VC_ReportSite
 
 @synthesize formTable;
+
+@synthesize sectionNowEditing;
+
 @synthesize formTableNormalFrame;
 
 @synthesize menuAccessible;
@@ -51,6 +54,7 @@
 	[super viewDidLoad];
 
 	self.title = @"Report Site";
+//	self.view.backgroundColor = [UIColor colorWithRed:menuThemeRed green:menuThemeGreen blue:menuThemeBlue alpha:1];
 	
 	[WebservicesController getReasons:self];
 	[WebservicesController getCategories:self];
@@ -72,18 +76,22 @@
 	self.formTable = [[UITableView alloc] initWithFrame:CGRectMake(0,
 																   heightForNavBar - yOverhangForNavBar + heightForURLBar,
 																   320,
-																   heightForFormCell * 4) // 480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)
+																   heightForFormStateCell * 4) // 480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)
 												  style:UITableViewStylePlain];
 	self.formTable.backgroundColor = [UIColor clearColor];
-	self.formTable.scrollEnabled = YES;
+	self.formTable.scrollEnabled = NO;
 	self.formTable.delegate = self;
 	self.formTable.dataSource = self;
+	
+	self.formTable.separatorStyle = UITableViewCellSeparatorStyleNone;
 	
 	self.formTable.layer.masksToBounds = NO;
 	self.formTable.layer.shadowOffset = CGSizeMake(0, 0);
 	self.formTable.layer.shadowRadius = 5;
 	self.formTable.layer.shadowOpacity = 0.8;
-	self.formTable.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.formTable.bounds].CGPath;
+//	self.formTable.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.formTable.bounds].CGPath;
+	
+	self.sectionNowEditing = -1;
 	
 	[self.view addSubview:self.formTable];
 	
@@ -179,34 +187,60 @@
 #pragma mark -
 #pragma mark UITableViewDelegate, UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	return 1;
+	NSLog(@"entered numberOfSectionsInTableView");
+	
+	int num = 4;
+	if (self.siteIsAccessible) {
+		num = 3;
+	}
+	
+	NSLog(@"about to exit numberOfSectionsInTableView");
+	return num;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	if (self.siteIsAccessible) {
-		return 3;
+	NSLog(@"entered numberOfRowsInSection");
+
+	int num = 1;
+	if (section == self.sectionNowEditing) {
+		num = 2;
 	}
-	return 4;
+	
+	NSLog(@"about to exit numberOfRowsInSection");
+	return num;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-	NSLog(@"heightForFooterInSection called");
-	return 6.0;
+	return 0.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-	return heightForFormCell;
+
+	UITableViewCell *cellAtPath = [self tableView:self.formTable cellForRowAtIndexPath:indexPath];
+	if ([cellAtPath isKindOfClass:[FormClearCell class]]) {
+		return 250.0;
+	}
+	
+	return heightForFormStateCell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	FormCell *cell = [[[FormCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cell"] autorelease];
-	int indexPathRow = indexPath.row;
-	
-	if (self.siteIsAccessible && indexPathRow > 0) {
-		indexPathRow++;													// remember we're using this trick 
+
+	/* --	If it's the editCell	-- */
+	if (indexPath.section == self.sectionNowEditing && indexPath.row == 1) {
+		FormClearCell *cellClear = [[[FormClearCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellClear"] autorelease];
+		return cellClear;
+	}
+
+	/* --	Index adjustments	-- */
+	int indexPathSection = indexPath.section;
+	if (self.siteIsAccessible && indexPathSection > 0) {
+		indexPathSection++;
 	}
 	
+	FormStateCell *cell = [[[FormStateCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellState"] autorelease];
+		
 	// --	'Is the Site Accessible?'.
-	if (indexPathRow == 0) {
+	if (indexPathSection == 0) {
 		UIImage *iconImage = [UIImage imageNamed:@"146-gavel@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Site Accessible";
@@ -217,7 +251,7 @@
 		}
 		return cell;
 	}
-	if (indexPathRow == 1) {
+	if (indexPathSection == 1) {
 		UIImage *iconImage = [UIImage imageNamed:@"20-gear2@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Reason";
@@ -228,7 +262,7 @@
 		}
 		return cell;
 	}
-	if (indexPathRow == 2) {
+	if (indexPathSection == 2) {
 		UIImage *iconImage = [UIImage imageNamed:@"15-tags@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Category";
@@ -239,58 +273,7 @@
 		}
 		return cell;
 	}
-//	if (indexPathRow == 3) {
-//		UIImage *iconImage = [UIImage imageNamed:@"186-ruler@2x.png"];
-//		cell.theIconView.image = iconImage;
-//		cell.cellLabel.text = @"Usefulness";
-//		cell.cellDetailLabel.text = @"Tap to Select";
-//		if (self.keyInterest > 0) {
-//			NSMutableDictionary *theDict = [self.t04arrayInterests objectAtIndex:self.keyInterest];
-//			cell.cellDetailLabel.text = [theDict objectForKey:@"label"];
-//		}
-//		return cell;
-//	}
-//	if (indexPathRow == 4) {
-//		UIImage *iconImage = [UIImage imageNamed:@"59-flag@2x.png"];
-//		cell.theIconView.image = iconImage;
-//		[cell.theIconView setFrame:CGRectMake(10, 6, 20, 28)];
-//		cell.cellLabel.text = @"Country";
-//		
-//		
-//		NSLog(@"self.accordingToUser_countryCode: %@", self.accordingToUser_countryCode);
-//		for (id item in self.t02arrayCountries) {
-//			if ([self.t02arrayCountries indexOfObject:item] > 0) {
-//				NSString *countryCodeInArray = [item objectForKey:@"value"]; 
-//				NSLog(@"countryCodeInArray: %@", countryCodeInArray);
-//				if ([countryCodeInArray isEqualToString:self.accordingToUser_countryCode]) {
-//					cell.cellDetailLabel.text = [item objectForKey:@"label"];
-//					NSLog(@"thus cell.cellDetailLabel.text has been assigned!");
-//				}
-//			}
-//		}
-//		
-//		return cell;
-//	}
-//	if (indexPathRow == 5) {
-//		UIImage *iconImage = [UIImage imageNamed:@"193-location-arrow@2x.png"];
-//		cell.theIconView.image = iconImage;
-//		cell.cellLabel.text = @"Location";
-//		cell.cellDetailLabel.text = @"Tap to Select";
-//		if (self.keyLocation > 0) {
-//			NSMutableDictionary *theDict = [self.t03arrayLocations objectAtIndex:self.keyLocation];
-//			cell.cellDetailLabel.text = [theDict objectForKey:@"label"];
-//		}
-//		return cell;
-//	}
-//	if (indexPathRow == 6) {
-//		UIImage *iconImage = [UIImage imageNamed:@"55-wifi@2x.png"];
-//		cell.theIconView.image = iconImage;
-//		[cell.theIconView setFrame:CGRectMake(6, 10, 28, 20)];
-//		cell.cellLabel.text = @"ISP";
-//		cell.cellDetailLabel.text = self.accordingToUser_ispName;
-//		return cell;
-//	}
-	if (indexPathRow == 3) {
+	if (indexPathSection == 3) {
 		UIImage *iconImage = [UIImage imageNamed:@"09-chat-2@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Comments";
@@ -299,79 +282,78 @@
 	}
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	
-	int indexPathRow = indexPath.section;	
-	if (self.siteIsAccessible && indexPathRow > 0) {		
-		indexPathRow++;											// remember we're using this trick 
-	}
-	
-	if (indexPathRow >= 6) {
+
+	/* --	If an editCell is already showing	-- */
+	BOOL editCellWasOpen = NO;
+	if (self.sectionNowEditing > -1 && indexPath.row == 0) {
+
+		editCellWasOpen = YES;
+		
+		int sectionNowEditing_priorValue = self.sectionNowEditing;
+		NSIndexPath *pathForDeleteRow = [NSIndexPath indexPathForRow:(1) inSection:sectionNowEditing_priorValue];
+		
+		self.sectionNowEditing = -1;
+
+		[self.formTable beginUpdates];
+		[self.formTable deleteRowsAtIndexPaths:[NSArray arrayWithObject:pathForDeleteRow] withRowAnimation:UITableViewRowAnimationNone];
+		[self.formTable endUpdates];
+		
+		[self.formTable beginUpdates];
+		[self.formTable reloadSections:[NSIndexSet indexSetWithIndex:sectionNowEditing_priorValue] withRowAnimation:UITableViewRowAnimationNone];
+		[self.formTable endUpdates];
+		
 		return;
 	}
 	
-	// --	Disable form interaction.
+	self.sectionNowEditing = indexPath.section;
+
+	/* --	Index adjustments	-- */
+	int indexPathSection = indexPath.section;
+	if (self.siteIsAccessible && indexPathSection > 0) {
+		indexPathSection++;
+	}
+
+	/* --	Disable form interaction	-- */
 	self.formTable.userInteractionEnabled = NO;
-	
-	// --	Apply white screen.
-	[UIView animateWithDuration:0.2 delay:0 options:nil
-					 animations:^{
-//						 // --	theReportSite.formBackground
-//						 self.formBackground.backgroundColor = [UIColor whiteColor];
-//						 self.formBackground.alpha = 1;
-						 
-						 // --	cells
- 						 int countCells = [self.formTable numberOfSections];
- 						 for (int i = 0; i < countCells; i++) {	
-							 FormCell *nonSelectedCell = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];							
-							 if (i != indexPath.section) {
-								 nonSelectedCell.whiteScreen.alpha = 1;
-							 }
-						 }
-					 } completion:^(BOOL finished){
-					 }
-	 ];
-	
-	/** --	Slide the whole tableView up so the selected cell is at the top -- **/
-	
-	// --	First determine how much to slide it, based on which cell this is.
-	int rowSpan = [self.formTable.delegate tableView:self.formTable heightForRowAtIndexPath:indexPath];
-	rowSpan = rowSpan + [self.formTable.delegate tableView:self.formTable heightForFooterInSection:indexPath.section];
-	int slideSpan;
-	if (indexPathRow == 0) {
-		slideSpan = rowSpan * (indexPath.section - 1.5);
-	} else if (indexPathRow == 1) {
-		slideSpan = rowSpan * (indexPath.section - 0.5);
-	} else if (indexPathRow == 2) {
-		slideSpan = rowSpan * (indexPath.section - 0.5);
-	} else if (indexPathRow == 3) {
-		slideSpan = rowSpan * (indexPath.section - 1);
+
+	CGFloat insertDelay = 0;
+	if (editCellWasOpen) {
+		insertDelay = 0.35;
 	}
 	
-	[UIView animateWithDuration:0.3 delay:0.1 options:UIViewAnimationOptionCurveEaseOut
-					 animations:^{
-						 [self.view bringSubviewToFront:self.theUrlBar];
-						 [self.formTable setCenter:CGPointMake(
-																			 self.formTable.center.x,
-																			 self.formTable.center.y - slideSpan)];						 
-					 } completion:^(BOOL finished){
-					 }
-	 ];
+	NSIndexPath *pathForInsertRow = [NSIndexPath indexPathForRow:(1) inSection:indexPathSection];
+	[self performSelector:@selector(addRow:) withObject:pathForInsertRow afterDelay:insertDelay];
 	
-	/** --	what to actually do	-- **/
-	
-	
-	if (indexPathRow == 0) {
-		[self.menuAccessible performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
-		return;
-	}
-	if (indexPathRow == 1) {
-		[self.menuReason performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
-	}
-	if (indexPathRow == 2) {
-		[self.menuCategory performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
-	}
+//	if (indexPathSection == 0) {
+//		[self.menuAccessible performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
+//		return;
+//	}
+//	if (indexPathSection == 1) {
+//		[self.menuReason performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
+//	}
+//	if (indexPathSection == 2) {
+//		[self.menuCategory performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
+//	}
+//	if (indexPathSection == 2) {
+//		[self.menuComments performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
+//	}	
 }
 
+
+- (void) addRow:(NSIndexPath *)pathForRow {
+	
+	[self.formTable beginUpdates];
+	[self.formTable insertRowsAtIndexPaths:[NSArray arrayWithObject:pathForRow] withRowAnimation:UITableViewRowAnimationNone];
+	[self.formTable endUpdates];
+	
+	[self.formTable beginUpdates];
+	[self.formTable reloadSections:[NSIndexSet indexSetWithIndex:[pathForRow section]] withRowAnimation:UITableViewRowAnimationNone];
+	[self.formTable endUpdates];
+	
+	NSIndexPath *stateCellPath = [NSIndexPath indexPathForRow:0 inSection:pathForRow.section];
+	
+	[self.formTable scrollToRowAtIndexPath:stateCellPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
 
 #pragma mark -
 #pragma mark Form 'Dives'
@@ -464,36 +446,6 @@
 	// --	Enable form interaction.
 	self.formTable.userInteractionEnabled = YES;
 	
-	// --	Slide the tableView back to its normal frame.
-	[UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionCurveEaseOut
-					 animations:^{
-						 [self.formTable setFrame:self.formTableNormalFrame];
-						 if (self.siteIsAccessible) {
-							 [self.formTable setCenter:CGPointMake(self.formTable.center.x,
-																				 self.formTable.center.y + 15)];
-						 }
-					 } completion:^(BOOL finished){
-					 }
-	 ];	
-	
-	// --	Remove white screen.
-	[UIView animateWithDuration:0.15 delay:0.2 options:nil
-					 animations:^{						 
-//						 // --	theReportSite.formBackground
-//						 self.formBackground.backgroundColor = [UIColor blackColor];
-//						 self.formBackground.alpha = 0.8;
-						 
-						 // --	cells
- 						 int countCells = [self.formTable numberOfSections];
- 						 for (int i = 0; i < countCells; i++) {
-							 FormCell *nonSelectedCell = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];							
-							 if (nonSelectedCell.whiteScreen.alpha > 0) {
-								 nonSelectedCell.whiteScreen.alpha = 0;
-							 }
-						 }
-					 } completion:^(BOOL finished){
-					 }
-	 ];	
 }
 
 

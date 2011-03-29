@@ -26,7 +26,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	self.view.backgroundColor = [UIColor colorWithRed:themeRed green:themeGreen blue:themeBlue alpha:1];
+	self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
 	
 	/* --	Set up theUrlBar	-- */
 	self.theUrlBar = [[URLBar alloc] initWithFrame:CGRectMake(0,heightForNavBar - yOverhangForNavBar,320,heightForURLBar)];

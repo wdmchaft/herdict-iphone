@@ -13,9 +13,12 @@
 
 
 /* --	App theme	-- */
-#define themeRed	1//0.915//0.949
-#define themeGreen	0.964//0.906//0.937
-#define themeBlue	0.920//0.769//0.914
+#define barThemeRed	1//0.915//0.949
+#define barThemeGreen	0.964//0.906//0.937
+#define barThemeBlue	0.920//0.769//0.914
+#define menuThemeRed 0.906
+#define menuThemeGreen 0.945
+#define menuThemeBlue 0.973
 
 /* --	VC_Base elements	-- */
 #define heightForNavBar 44
@@ -48,8 +51,8 @@
 #define heightForSiteSummaryLoadingText 18
 
 /* --	VC_ReportSite elements	-- */
-#define heightForFormCell 82
-#define diameterForFormCellIconView 48
+#define heightForFormStateCell 82
+#define diameterForFormStateCellIconView 48
 
 //	Notes on UITableViewAnimations...
 //	Consider using reloadSections instead of deleteRowsAtIndexPaths.  The reload animation for deleteRowsAtIndexPaths doesn't look as good (deleted rows collapse upward while their contents appear to fall out the bottom).

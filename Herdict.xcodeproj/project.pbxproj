@@ -18,7 +18,7 @@
 		A63A48D1133B26E1004DBAC5 /* buttonInfo.png in Resources */ = {isa = PBXBuildFile; fileRef = A63A48D0133B26E1004DBAC5 /* buttonInfo.png */; };
 		A63A4914133B2BD6004DBAC5 /* buttonWiFi.png in Resources */ = {isa = PBXBuildFile; fileRef = A63A4913133B2BD6004DBAC5 /* buttonWiFi.png */; };
 		A63A492E133B2F81004DBAC5 /* buttonInfoSelected.png in Resources */ = {isa = PBXBuildFile; fileRef = A63A492D133B2F81004DBAC5 /* buttonInfoSelected.png */; };
-		A63B5578133C033900199382 /* FormCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A63B5577133C033900199382 /* FormCell.m */; };
+		A63B5578133C033900199382 /* FormStateCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A63B5577133C033900199382 /* FormStateCell.m */; };
 		A63B57DB133C340E00199382 /* 55-network@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63B57DA133C340E00199382 /* 55-network@2x.png */; };
 		A63B57EA133C356100199382 /* 146-gavel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63B57E9133C356100199382 /* 146-gavel@2x.png */; };
 		A63B57EF133C35B400199382 /* 157-wrench@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A63B57EE133C35B400199382 /* 157-wrench@2x.png */; };
@@ -60,6 +60,8 @@
 		A64CF127133FC4C400BFCDB5 /* CustomNavBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A64CF126133FC4C400BFCDB5 /* CustomNavBar.m */; };
 		A64CF6FA13404B9F00BFCDB5 /* Screen.m in Sources */ = {isa = PBXBuildFile; fileRef = A64CF6F813404B9F00BFCDB5 /* Screen.m */; };
 		A64CF7FE13405D1300BFCDB5 /* TabTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = A64CF7FD13405D1300BFCDB5 /* TabTracker.m */; };
+		A64D97F613425E5400D8B036 /* FormEditCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A64D97F513425E5400D8B036 /* FormEditCell.m */; };
+		A64D9810134262C100D8B036 /* FormClearCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A64D980F134262C100D8B036 /* FormClearCell.m */; };
 		A6724F8012BBEA7A00BB607F /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = A6724F7F12BBEA7A00BB607F /* square.png */; };
 		A679A33D12B6F17B00A67538 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = A679A31E12B6F17A00A67538 /* ASIAuthenticationDialog.m */; };
 		A679A33E12B6F17B00A67538 /* ASIDownloadCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A679A32112B6F17A00A67538 /* ASIDownloadCache.m */; };
@@ -118,8 +120,8 @@
 		A63A48D0133B26E1004DBAC5 /* buttonInfo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonInfo.png; sourceTree = "<group>"; };
 		A63A4913133B2BD6004DBAC5 /* buttonWiFi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonWiFi.png; sourceTree = "<group>"; };
 		A63A492D133B2F81004DBAC5 /* buttonInfoSelected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonInfoSelected.png; sourceTree = "<group>"; };
-		A63B5576133C033900199382 /* FormCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormCell.h; sourceTree = "<group>"; };
-		A63B5577133C033900199382 /* FormCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormCell.m; sourceTree = "<group>"; };
+		A63B5576133C033900199382 /* FormStateCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormStateCell.h; sourceTree = "<group>"; };
+		A63B5577133C033900199382 /* FormStateCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormStateCell.m; sourceTree = "<group>"; };
 		A63B57DA133C340E00199382 /* 55-network@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "55-network@2x.png"; sourceTree = "<group>"; };
 		A63B57E9133C356100199382 /* 146-gavel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "146-gavel@2x.png"; sourceTree = "<group>"; };
 		A63B57EE133C35B400199382 /* 157-wrench@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "157-wrench@2x.png"; sourceTree = "<group>"; };
@@ -189,6 +191,10 @@
 		A64CF6F913404B9F00BFCDB5 /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
 		A64CF7FC13405D1300BFCDB5 /* TabTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabTracker.h; sourceTree = "<group>"; };
 		A64CF7FD13405D1300BFCDB5 /* TabTracker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabTracker.m; sourceTree = "<group>"; };
+		A64D97F413425E5400D8B036 /* FormEditCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormEditCell.h; sourceTree = "<group>"; };
+		A64D97F513425E5400D8B036 /* FormEditCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormEditCell.m; sourceTree = "<group>"; };
+		A64D980E134262C100D8B036 /* FormClearCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormClearCell.h; sourceTree = "<group>"; };
+		A64D980F134262C100D8B036 /* FormClearCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormClearCell.m; sourceTree = "<group>"; };
 		A6724F7F12BBEA7A00BB607F /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
 		A679A30412B6F17A00A67538 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; wrapsLines = 1; };
 		A679A31D12B6F17A00A67538 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
@@ -574,14 +580,18 @@
 				A62FE7D8133AE08500754BEC /* URLBar.m */,
 				A6CCA39C1339E43B00708A7B /* BubbleMenu.h */,
 				A6CCA39D1339E43B00708A7B /* BubbleMenu.m */,
-				A6CCA39E1339E43B00708A7B /* SiteSummary.h */,
-				A6CCA39F1339E43B00708A7B /* SiteSummary.m */,
-				A63B5576133C033900199382 /* FormCell.h */,
-				A63B5577133C033900199382 /* FormCell.m */,
-				A64CF6F913404B9F00BFCDB5 /* Screen.h */,
-				A64CF6F813404B9F00BFCDB5 /* Screen.m */,
 				A64CF7FC13405D1300BFCDB5 /* TabTracker.h */,
 				A64CF7FD13405D1300BFCDB5 /* TabTracker.m */,
+				A64CF6F913404B9F00BFCDB5 /* Screen.h */,
+				A64CF6F813404B9F00BFCDB5 /* Screen.m */,
+				A6CCA39E1339E43B00708A7B /* SiteSummary.h */,
+				A6CCA39F1339E43B00708A7B /* SiteSummary.m */,
+				A63B5576133C033900199382 /* FormStateCell.h */,
+				A63B5577133C033900199382 /* FormStateCell.m */,
+				A64D97F413425E5400D8B036 /* FormEditCell.h */,
+				A64D97F513425E5400D8B036 /* FormEditCell.m */,
+				A64D980E134262C100D8B036 /* FormClearCell.h */,
+				A64D980F134262C100D8B036 /* FormClearCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -733,7 +743,7 @@
 				A6CCA3A41339E43B00708A7B /* BubbleMenu.m in Sources */,
 				A6CCA3A51339E43B00708A7B /* SiteSummary.m in Sources */,
 				A62FE7D9133AE08500754BEC /* URLBar.m in Sources */,
-				A63B5578133C033900199382 /* FormCell.m in Sources */,
+				A63B5578133C033900199382 /* FormStateCell.m in Sources */,
 				A6F64EDC133E6FBE0053DFB9 /* VC_CheckSite.m in Sources */,
 				A6F64EEF133E76580053DFB9 /* VC_ReportSite.m in Sources */,
 				A6F64F0C133E7B0A0053DFB9 /* VC_Base.m in Sources */,
@@ -742,6 +752,8 @@
 				A64CF127133FC4C400BFCDB5 /* CustomNavBar.m in Sources */,
 				A64CF6FA13404B9F00BFCDB5 /* Screen.m in Sources */,
 				A64CF7FE13405D1300BFCDB5 /* TabTracker.m in Sources */,
+				A64D97F613425E5400D8B036 /* FormEditCell.m in Sources */,
+				A64D9810134262C100D8B036 /* FormClearCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
