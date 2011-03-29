@@ -18,7 +18,6 @@
 
 + (void) getRoughGeocodeForCountry:(NSString *)theCountry callbackDelegate:(id)theCallbackDelegate;
 
-+ (void) getReasons:(id)theCallbackDelegate;
 + (void) getCategories:(id)theCallbackDelegate;
 + (void) getSiteSummary:(NSString *)theUrl forCountry:(NSString *)theCountry urlEncoding:(NSString *)theEncoding apiVersion:(NSString *)theVersion callbackDelegate:(id)theDelegate;
 + (void) reportUrl:(NSString *)theEncodedUrl reportType:(NSString *)theReportType country:(NSString *)theCountry userISP:(NSString *)theIsp userLocation:(NSString *)theLocation interest:(NSString *)theInterest reason:(NSString *)theReason sourceId:(NSString *)theSourceId tag:(NSString *)theTag comments:(NSString *)theComments defaultCountryCode:(NSString *)theDCC defaultispDefaultName:(NSString *)theDIN callbackDelegate:(id)theDelegate;

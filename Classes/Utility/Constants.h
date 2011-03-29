@@ -13,7 +13,7 @@
 
 
 /* --	App theme	-- */
-#define barThemeRed	1//0.915//0.949
+#define barThemeRed	0.984//0.915//0.949
 #define barThemeGreen	0.964//0.906//0.937
 #define barThemeBlue	0.920//0.769//0.914
 #define menuThemeRed 0.906
@@ -51,7 +51,7 @@
 #define heightForSiteSummaryLoadingText 18
 
 /* --	VC_ReportSite elements	-- */
-#define heightForFormStateCell 82
+#define heightForFormStateCell 110
 #define diameterForFormStateCellIconView 48
 
 //	Notes on UITableViewAnimations...

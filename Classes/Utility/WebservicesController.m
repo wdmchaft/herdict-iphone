@@ -65,19 +65,7 @@
 	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/init-categories/FF0.9"];
 	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getCategoriesCallbackHandler:)];	
 }
-+ (void)getReasons:(id)theCallbackDelegate {
-	// TO5
-	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/init-reasons/FF0.9"];
-	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getReasonsCallbackHandler:)];	
-}
-//+ (void)getHerdictDicts:(id)theCallbackDelegate {
-//	// T03
-//	urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/init-locations/FF0.9"];
-//	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getLocationsCallbackHandler:)];
-//	// T04
-//	urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/init-interests/FF0.9"];
-//	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getInterestsCallbackHandler:)];
-//}
+
 + (void)getSiteSummary:(NSString *)theUrl forCountry:(NSString *)theCountry urlEncoding:(NSString *)theEncoding apiVersion:(NSString *)theVersion callbackDelegate:(id)theDelegate {
 
 	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/site/%@/%@/%@/%@",

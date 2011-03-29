@@ -62,6 +62,7 @@
 		A64CF7FE13405D1300BFCDB5 /* TabTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = A64CF7FD13405D1300BFCDB5 /* TabTracker.m */; };
 		A64D97F613425E5400D8B036 /* FormEditCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A64D97F513425E5400D8B036 /* FormEditCell.m */; };
 		A64D9810134262C100D8B036 /* FormClearCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A64D980F134262C100D8B036 /* FormClearCell.m */; };
+		A64D9A99134293E500D8B036 /* FormDetailMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = A64D9A98134293E500D8B036 /* FormDetailMenu.m */; };
 		A6724F8012BBEA7A00BB607F /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = A6724F7F12BBEA7A00BB607F /* square.png */; };
 		A679A33D12B6F17B00A67538 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = A679A31E12B6F17A00A67538 /* ASIAuthenticationDialog.m */; };
 		A679A33E12B6F17B00A67538 /* ASIDownloadCache.m in Sources */ = {isa = PBXBuildFile; fileRef = A679A32112B6F17A00A67538 /* ASIDownloadCache.m */; };
@@ -195,6 +196,8 @@
 		A64D97F513425E5400D8B036 /* FormEditCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormEditCell.m; sourceTree = "<group>"; };
 		A64D980E134262C100D8B036 /* FormClearCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormClearCell.h; sourceTree = "<group>"; };
 		A64D980F134262C100D8B036 /* FormClearCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormClearCell.m; sourceTree = "<group>"; };
+		A64D9A97134293E500D8B036 /* FormDetailMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormDetailMenu.h; sourceTree = "<group>"; };
+		A64D9A98134293E500D8B036 /* FormDetailMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormDetailMenu.m; sourceTree = "<group>"; };
 		A6724F7F12BBEA7A00BB607F /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
 		A679A30412B6F17A00A67538 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; wrapsLines = 1; };
 		A679A31D12B6F17A00A67538 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
@@ -588,6 +591,8 @@
 				A6CCA39F1339E43B00708A7B /* SiteSummary.m */,
 				A63B5576133C033900199382 /* FormStateCell.h */,
 				A63B5577133C033900199382 /* FormStateCell.m */,
+				A64D9A97134293E500D8B036 /* FormDetailMenu.h */,
+				A64D9A98134293E500D8B036 /* FormDetailMenu.m */,
 				A64D97F413425E5400D8B036 /* FormEditCell.h */,
 				A64D97F513425E5400D8B036 /* FormEditCell.m */,
 				A64D980E134262C100D8B036 /* FormClearCell.h */,
@@ -754,6 +759,7 @@
 				A64CF7FE13405D1300BFCDB5 /* TabTracker.m in Sources */,
 				A64D97F613425E5400D8B036 /* FormEditCell.m in Sources */,
 				A64D9810134262C100D8B036 /* FormClearCell.m in Sources */,
+				A64D9A99134293E500D8B036 /* FormDetailMenu.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

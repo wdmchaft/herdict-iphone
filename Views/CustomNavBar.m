@@ -90,9 +90,9 @@
 	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
 	NSMutableArray *colors = [NSMutableArray arrayWithCapacity:4];
 	UIColor *color0 = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
-	UIColor *color1 = [UIColor colorWithRed:(barThemeRed - 0.032) green:(barThemeGreen - 0.032) blue:(barThemeBlue - 0.032)  alpha:0.9];	
-	UIColor *color2 = [UIColor colorWithRed:(barThemeRed - 0.062) green:(barThemeGreen - 0.062) blue:(barThemeBlue - 0.062)  alpha:0.9];
-	UIColor *color3 = [UIColor colorWithRed:(barThemeRed - navBarColorDelta) green:(barThemeGreen - navBarColorDelta) blue:(barThemeBlue - navBarColorDelta)  alpha:0.9];
+	UIColor *color1 = [UIColor colorWithRed:(barThemeRed - 0.032) green:(barThemeGreen - 0.032) blue:(barThemeBlue - 0.032)  alpha:1.0];	
+	UIColor *color2 = [UIColor colorWithRed:(barThemeRed - 0.062) green:(barThemeGreen - 0.062) blue:(barThemeBlue - 0.062)  alpha:1.0];
+	UIColor *color3 = [UIColor colorWithRed:(barThemeRed - navBarColorDelta) green:(barThemeGreen - navBarColorDelta) blue:(barThemeBlue - navBarColorDelta)  alpha:1.0];
 	
 	locations[0] = 0.00;
 	[colors addObject:(id)[color0 CGColor]];

@@ -1,28 +1,19 @@
 //
-//  BubbleMenu.m
+//  FormDetailMenu.m
 //  Herdict
 //
-//  Created by Christian Brink on 3/19/11.
+//  Created by Christian Brink on 3/29/11.
 //  Copyright 2011 Herdict. All rights reserved.
 //
 
-//	To set up a BubbleMenu object, create an array of strings and pass in this array in the init call.
-//	On the menu's parent object, use touchesBegan to catch touches on the menu's subviews.  If a subview has a tag,
-//	it's one of the menu options.  Proceed according to its tag...
-//	When catching the touch, it looks better if selectionBackground is used.
-//	Use drawRect to make any real changes to the tail, other than its height.
+#import "FormDetailMenu.h"
 
-
-#import "BubbleMenu.h"
-
-@implementation BubbleMenu
+@implementation FormDetailMenu
 
 @synthesize theMessage;
 @synthesize menuOptions;
 @synthesize selectionBackground;
 
-@synthesize frameForShowMenu;
-@synthesize rotationWhenHidden;
 @synthesize stroke;
 @synthesize tailHeight;
 @synthesize tailWidth;
@@ -33,7 +24,7 @@
 
 
 - (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint {
-
+	
     self = [super initWithFrame:theFrame];
 	if (self) {
 		
@@ -57,18 +48,15 @@
 		self.layer.shadowRadius = 5;
 		self.layer.shadowOpacity = 0.8;
 		
-		self.frameForShowMenu = self.frame;
-
 		self.selfwidth = self.frame.size.width;
 		self.selfheight = self.frame.size.height;
-
+		
 		self.tailHeight = theTailHeight;
 		self.tailWidth = selfwidth * 0.175;
 		self.tailOffset = selfwidth * 0.725;
-				
+		
 		self.cornerRad = 6.0;
-		self.rotationWhenHidden = CATransform3DMakeRotation(-(M_PI * 0.25), 0, 0, 1);
-
+		
 		CGFloat xPaddingLeft = selfwidth * 0.04;
 		CGFloat xPaddingRight = selfwidth * 0.08;
 		
@@ -118,12 +106,26 @@
 			[self addSubview:menuOption];
 		}
 		
-		[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(hideBubbleMenu) userInfo:nil repeats:NO];
 	}
-
+	
     return self;
 	
 }
+
+- (void) showSelectionBackgroundForOption:(int)optionNumber {
+	UITextView *selectedOption = [self viewWithTag:optionNumber];
+	
+	self.selectionBackground.backgroundColor = UIColorFromRGB(0x5AabF7);
+	[self.selectionBackground setFrame:CGRectMake(selectedOption.frame.origin.x,
+												  selectedOption.frame.origin.y + 3,
+												  selectedOption.frame.size.width,
+												  selectedOption.frame.size.height)]; 
+}
+
+- (void) hideSelectionBackground {
+	self.selectionBackground.backgroundColor = [UIColor clearColor];
+}
+
 
 - (void) drawRect:(CGRect)rect {
 	
@@ -140,7 +142,7 @@
 	CGContextSetLineWidth(context, 0);
 	CGContextSetRGBStrokeColor(context, 0, 0, 0, 0.4); 
 	CGContextSetRGBFillColor(context, 0, 0, 0, 0.7);
-
+	
 	CGContextBeginPath(context);
 	
 	// --	Begin at top right corner of layer, i.e. tip of tail.
@@ -207,106 +209,15 @@
 					);
 	
 	CGContextClosePath(context);
-
+	
 	CGContextDrawPath(context, kCGPathFillStroke);
 }
 
-
-- (void) showBubbleMenuWithAnimation:(NSNumber *)withAnimation {
-	
-	[self setFrame:self.frameForShowMenu];
-	[self.superview bringSubviewToFront:self];
-	
-	BOOL animated = [withAnimation boolValue];
-	
-	if (animated) {
-		[self rotateForUse];
-		[UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseIn
-						 animations:^{
-							 self.alpha = 1;
-						 }
-						 completion:^(BOOL finished){
-						 }
-		 ];
-	} else {
-		CATransform3D theTransform = CATransform3DIdentity;
-		self.layer.transform = theTransform;
-		self.alpha = 1;
-	}
-}
-
-- (void) hideBubbleMenu {
-	
-	[self rotateTuckedAway];
-	[UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionCurveEaseIn
-					 animations:^{
-						 self.alpha = 0;
-					 }
-					 completion:^(BOOL finished){
-						 [self setFrame:CGRectZero];
-					 }
-	 ];
-
-}
-
-- (void) rotateForUse {
-	CAKeyframeAnimation *theAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-	
-	NSArray *scaleValues = [NSArray arrayWithObjects:
-							[NSValue valueWithCATransform3D:self.rotationWhenHidden],
-							[NSValue valueWithCATransform3D:CATransform3DIdentity],
-							nil];
-	[theAnimation setValues:scaleValues];
-	
-	NSArray *timingFunctions = [NSArray arrayWithObjects:
-								[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut],
-								nil];
-	[theAnimation setTimingFunctions:timingFunctions];
-	[theAnimation setRemovedOnCompletion:NO];
-	theAnimation.fillMode = kCAFillModeForwards;
-	theAnimation.duration = 0.25;
-	
-	[self.layer addAnimation:theAnimation forKey:@"scale"];
-	
-}
-
-- (void) rotateTuckedAway {	
-	CAKeyframeAnimation *theAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
-	
-	NSArray *scaleValues = [NSArray arrayWithObjects:
-							[NSValue valueWithCATransform3D:CATransform3DIdentity],
-							[NSValue valueWithCATransform3D:self.rotationWhenHidden],
-							nil];
-	[theAnimation setValues:scaleValues];
-	
-	NSArray *timingFunctions = [NSArray arrayWithObjects:
-								[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut],
-								nil];
-	[theAnimation setTimingFunctions:timingFunctions];
-	[theAnimation setRemovedOnCompletion:NO];
-	theAnimation.fillMode = kCAFillModeForwards;
-	theAnimation.duration = 0.25;
-	
-	[self.layer addAnimation:theAnimation forKey:@"scale"];
-}
 
 - (void)dealloc {
     [super dealloc];
 }
 
-- (void) showSelectionBackgroundForOption:(int)optionNumber {
-	UITextView *selectedOption = [self viewWithTag:optionNumber];
 
-	self.selectionBackground.backgroundColor = UIColorFromRGB(0x5AabF7);
-	[self.selectionBackground setFrame:CGRectMake(selectedOption.frame.origin.x,
-												   selectedOption.frame.origin.y + 3,
-												   selectedOption.frame.size.width,
-												   selectedOption.frame.size.height)]; 
-}
 
-- (void) hideSelectionBackground {
-	self.selectionBackground.backgroundColor = [UIColor clearColor];
-}
-
-	
 @end

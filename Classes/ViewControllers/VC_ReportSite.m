@@ -15,33 +15,16 @@
 
 @synthesize sectionNowEditing;
 
-@synthesize formTableNormalFrame;
-
 @synthesize menuAccessible;
-@synthesize menuReason;
 @synthesize menuCategory;
-//@synthesize menuInterest;
-//@synthesize menuCountry;
-//@synthesize menuLocation;
-//@synthesize menuIsp;
 @synthesize menuComments;
 
 @synthesize hideLabel;
 
 @synthesize t01arrayCategories;
-//@synthesize t03arrayLocations;
-//@synthesize t04arrayInterests;
-@synthesize t05arrayReasons;
 
 @synthesize siteIsAccessible;
-//@synthesize accordingToUser_countryCode;
-//@synthesize accordingToUser_ispName;
-//@synthesize keyLocation;
-//@synthesize keyInterest;
-@synthesize keyReason;
 @synthesize keyCategory;
-//@synthesize ignoreCategoryAndUseCustomString;
-//@synthesize customString;
 @synthesize comments;
 
 
@@ -54,9 +37,7 @@
 	[super viewDidLoad];
 
 	self.title = @"Report Site";
-//	self.view.backgroundColor = [UIColor colorWithRed:menuThemeRed green:menuThemeGreen blue:menuThemeBlue alpha:1];
 	
-	[WebservicesController getReasons:self];
 	[WebservicesController getCategories:self];
 
 	self.hideLabel = [[UILabel alloc] initWithFrame:CGRectMake(270, heightForNavBar - yOverhangForNavBar + heightForURLBar + 7, 50, 14)];
@@ -68,15 +49,10 @@
 	self.hideLabel.userInteractionEnabled = NO;
 	//		[self.view addSubview:self.hideLabel];
 	
-	self.formTableNormalFrame = CGRectMake(30,
-										   heightForNavBar - yOverhangForNavBar + heightForURLBar,
-										   320,
-										   480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49);
-	
 	self.formTable = [[UITableView alloc] initWithFrame:CGRectMake(0,
 																   heightForNavBar - yOverhangForNavBar + heightForURLBar,
 																   320,
-																   heightForFormStateCell * 4) // 480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)
+																   heightForFormStateCell * 4)
 												  style:UITableViewStylePlain];
 	self.formTable.backgroundColor = [UIColor clearColor];
 	self.formTable.scrollEnabled = NO;
@@ -89,33 +65,24 @@
 	self.formTable.layer.shadowOffset = CGSizeMake(0, 0);
 	self.formTable.layer.shadowRadius = 5;
 	self.formTable.layer.shadowOpacity = 0.8;
-//	self.formTable.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.formTable.bounds].CGPath;
 	
 	self.sectionNowEditing = -1;
 	
 	[self.view addSubview:self.formTable];
 	
 	self.siteIsAccessible = NO;
-	self.keyReason = 0;
-	//		self.keyInterest = 0;
-	//		self.keyLocation = 0;
 	self.keyCategory = 0;
-	//		self.comments = [NSString stringWithString:@"None Yet"];
 	
 	// --	menuAccessible
 	NSMutableArray *menuAccessibleOptions = [NSMutableArray array];
 	[menuAccessibleOptions addObject:[NSString stringWithString:@"Yes"]];
 	[menuAccessibleOptions addObject:[NSString stringWithString:@"No"]];
-	self.menuAccessible = [[BubbleMenu alloc] initWithMessageHeight:32
+	self.menuAccessible = [[FormDetailMenu alloc] initWithMessageHeight:32
 														  withFrame:CGRectMake(-110, heightForNavBar - yOverhangForNavBar + 60, 270, 0)
 												   menuOptionsArray:menuAccessibleOptions
 														 tailHeight:25
 														anchorPoint:CGPointMake(0, 0)];
 	self.menuAccessible.theMessage.text = @"Can you access this site?";
-	[self.view insertSubview:self.menuAccessible atIndex:2];
-	
-
-	
 }
 
 
@@ -149,63 +116,25 @@
 		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
 		[menuOptions addObject:anOption];
 	}
-	self.menuCategory = [[BubbleMenu alloc] initWithMessageHeight:32
+	self.menuCategory = [[FormDetailMenu alloc] initWithMessageHeight:0
 																	  withFrame:CGRectMake(-110, heightForNavBar - yOverhangForNavBar -33, 270, 0)
 															   menuOptionsArray:menuOptions
 																	 tailHeight:25
 																	anchorPoint:CGPointMake(0, 0)];
-	self.menuCategory.theMessage.text = @"What type of site is this?";
-	[self.view insertSubview:self.menuCategory atIndex:2];
-	
+	self.menuCategory.theMessage.text = @"";	
 	[self.t01arrayCategories insertObject:@"Tap to Select" atIndex:0];
 }
-
-- (void) getReasonsCallbackHandler:(ASIHTTPRequest*)request {
-	self.t05arrayReasons = [WebservicesController getArrayFromJSONData:[request responseData]];
-	
-	// NOTE this is by design - we are not showing the 'Reasons' option if the site is designated as accessible.
-	[self.t05arrayReasons removeObjectAtIndex:0]; 
-	
-	// Set up the Bubble Menu that uses this array
-	NSMutableArray *menuOptions = [NSMutableArray array];
-	for (id item in self.t05arrayReasons) {
-		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
-		[menuOptions addObject:anOption];
-	}
-	self.menuReason = [[BubbleMenu alloc] initWithMessageHeight:60
-																	withFrame:CGRectMake(-110, heightForNavBar - yOverhangForNavBar -37, 270, 0)
-															 menuOptionsArray:menuOptions
-																   tailHeight:25
-																  anchorPoint:CGPointMake(0, 0)];
-	self.menuReason.theMessage.text = @"Why do you think this site is inaccessible?";
-	[self.view insertSubview:self.menuReason atIndex:2];
-	
-	[self.t05arrayReasons insertObject:@"Tap to Select" atIndex:0];
-}
-
 
 #pragma mark -
 #pragma mark UITableViewDelegate, UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-	NSLog(@"entered numberOfSectionsInTableView");
-	
-	int num = 4;
-	if (self.siteIsAccessible) {
-		num = 3;
-	}
-	
-	NSLog(@"about to exit numberOfSectionsInTableView");
-	return num;
+	return 3;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	NSLog(@"entered numberOfRowsInSection");
-
 	int num = 1;
 	if (section == self.sectionNowEditing) {
 		num = 2;
-	}
-	
-	NSLog(@"about to exit numberOfRowsInSection");
+	}	
 	return num;
 }
 
@@ -220,7 +149,10 @@
 		return 250.0;
 	}
 	
-	return heightForFormStateCell;
+	if (indexPath.section < 2) {
+		return heightForFormStateCell;
+	}
+	return heightForFormStateCell - 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -231,16 +163,10 @@
 		return cellClear;
 	}
 
-	/* --	Index adjustments	-- */
-	int indexPathSection = indexPath.section;
-	if (self.siteIsAccessible && indexPathSection > 0) {
-		indexPathSection++;
-	}
-	
 	FormStateCell *cell = [[[FormStateCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellState"] autorelease];
 		
 	// --	'Is the Site Accessible?'.
-	if (indexPathSection == 0) {
+	if (indexPath.section == 2) {
 		UIImage *iconImage = [UIImage imageNamed:@"146-gavel@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Site Accessible";
@@ -251,21 +177,10 @@
 		}
 		return cell;
 	}
-	if (indexPathSection == 1) {
-		UIImage *iconImage = [UIImage imageNamed:@"20-gear2@2x.png"];
-		cell.theIconView.image = iconImage;
-		cell.cellLabel.text = @"Reason";
-		cell.cellDetailLabel.text = @"Tap to Select";
-		if (self.keyReason > 0) {
-			NSMutableDictionary *theDict = [self.t05arrayReasons objectAtIndex:self.keyReason];
-			cell.cellDetailLabel.text = [theDict objectForKey:@"label"];
-		}
-		return cell;
-	}
-	if (indexPathSection == 2) {
+	if (indexPath.section == 0) {
 		UIImage *iconImage = [UIImage imageNamed:@"15-tags@2x.png"];
 		cell.theIconView.image = iconImage;
-		cell.cellLabel.text = @"Category";
+		cell.cellLabel.text = @"Site Category";
 		cell.cellDetailLabel.text = @"Tap to Select";
 		if (self.keyCategory > 0) {
 			NSMutableDictionary *theDict = [self.t01arrayCategories objectAtIndex:self.keyCategory];
@@ -273,7 +188,7 @@
 		}
 		return cell;
 	}
-	if (indexPathSection == 3) {
+	if (indexPath.section == 1) {
 		UIImage *iconImage = [UIImage imageNamed:@"09-chat-2@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Comments";
@@ -307,12 +222,6 @@
 	
 	self.sectionNowEditing = indexPath.section;
 
-	/* --	Index adjustments	-- */
-	int indexPathSection = indexPath.section;
-	if (self.siteIsAccessible && indexPathSection > 0) {
-		indexPathSection++;
-	}
-
 	/* --	Disable form interaction	-- */
 	self.formTable.userInteractionEnabled = NO;
 
@@ -321,27 +230,24 @@
 		insertDelay = 0.35;
 	}
 	
-	NSIndexPath *pathForInsertRow = [NSIndexPath indexPathForRow:(1) inSection:indexPathSection];
-	[self performSelector:@selector(addRow:) withObject:pathForInsertRow afterDelay:insertDelay];
-	
-//	if (indexPathSection == 0) {
-//		[self.menuAccessible performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
-//		return;
-//	}
-//	if (indexPathSection == 1) {
-//		[self.menuReason performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
-//	}
-//	if (indexPathSection == 2) {
-//		[self.menuCategory performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
-//	}
-//	if (indexPathSection == 2) {
-//		[self.menuComments performSelector:@selector(showBubbleMenuWithAnimation:) withObject:[NSNumber numberWithBool:YES] afterDelay:0.3];
-//	}	
+	NSIndexPath *pathForInsertRow = [NSIndexPath indexPathForRow:(1) inSection:indexPath.section];
+	[self performSelector:@selector(addRow:) withObject:pathForInsertRow afterDelay:insertDelay];	
 }
 
 
 - (void) addRow:(NSIndexPath *)pathForRow {
-	
+		
+	FormDetailMenu *theMenu;
+	if ([pathForRow section] == 0) {
+		theMenu = self.menuCategory;
+	} else if ([pathForRow section] == 1) {
+		theMenu = self.menuComments;
+	} else if ([pathForRow section] == 2) {
+		theMenu = self.menuAccessible;
+	}
+	[self.view insertSubview:theMenu belowSubview:self.formTable];
+	theMenu.alpha = 1;
+		
 	[self.formTable beginUpdates];
 	[self.formTable insertRowsAtIndexPaths:[NSArray arrayWithObject:pathForRow] withRowAnimation:UITableViewRowAnimationNone];
 	[self.formTable endUpdates];
@@ -358,16 +264,16 @@
 #pragma mark -
 #pragma mark Form 'Dives'
 
-- (void) selectBubbleMenuOption:(UITextView *)selectedSubview {
+- (void) selectFormDetailMenuOption:(UITextView *)selectedSubview {
 	
-	BubbleMenu *theMenu = [selectedSubview superview];
+	FormDetailMenu *theMenu = [selectedSubview superview];
 	
 	// --	Have the menu show the selection background (and schedule its removal as well as the menu's).
 	[theMenu showSelectionBackgroundForOption:selectedSubview.tag];
 	[NSTimer scheduledTimerWithTimeInterval:0.25 target:theMenu selector:@selector(hideSelectionBackground) userInfo:nil repeats:NO];				
 	
 	// --	Schedule hiding of bubble menu.
-	[NSTimer scheduledTimerWithTimeInterval:0.2 target:theMenu selector:@selector(hideBubbleMenu) userInfo:nil repeats:NO];
+	[NSTimer scheduledTimerWithTimeInterval:0.2 target:theMenu selector:@selector(hideFormDetailMenu) userInfo:nil repeats:NO];
 	
 	if ([theMenu isEqual:self.menuAccessible]) {
 		BOOL siteIsAccessible_priorValue = self.siteIsAccessible;
@@ -400,19 +306,6 @@
 		[self performSelector:@selector(returnFromFormDive) withObject:nil afterDelay:0.4];
 		return;
 	}
-	if ([theMenu isEqual:self.menuReason]) {
-		self.keyReason = selectedSubview.tag;
-		NSRange sectionsToReload = NSMakeRange(1,1);
-		if (self.siteIsAccessible) {
-			sectionsToReload = NSMakeRange(0, 0);
-		}
-		[self.formTable beginUpdates];
-		[self.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
-		[self.formTable endUpdates];
-		
-		[self performSelector:@selector(returnFromFormDive) withObject:nil afterDelay:0.4];
-		return;
-	}
 	if ([theMenu isEqual:self.menuCategory]) {
 		self.keyCategory = selectedSubview.tag;
 		NSRange sectionsToReload = NSMakeRange(2,1);
@@ -437,7 +330,7 @@
 		[self performSelector:@selector(returnFromFormDive) withObject:nil afterDelay:0.4];
 		return;
 	}
-	[super selectBubbleMenuOption:selectedSubview];
+	[super selectFormDetailMenuOption:selectedSubview];
 }
 
 
