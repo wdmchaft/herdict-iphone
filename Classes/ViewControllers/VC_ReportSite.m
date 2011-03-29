@@ -55,7 +55,7 @@
 	[WebservicesController getReasons:self];
 	[WebservicesController getCategories:self];
 
-	self.hideLabel = [[UILabel alloc] initWithFrame:CGRectMake(270, heightForNavBar - overlapOnBars + heightForURLBar + 7, 50, 14)];
+	self.hideLabel = [[UILabel alloc] initWithFrame:CGRectMake(270, heightForNavBar - yOverhangForNavBar + heightForURLBar + 7, 50, 14)];
 	self.hideLabel.backgroundColor = [UIColor clearColor];
 	self.hideLabel.textAlignment = UITextAlignmentCenter;
 	self.hideLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12];
@@ -65,11 +65,15 @@
 	//		[self.view addSubview:self.hideLabel];
 	
 	self.formTableNormalFrame = CGRectMake(30,
-										   heightForNavBar - overlapOnBars + heightForURLBar,
+										   heightForNavBar - yOverhangForNavBar + heightForURLBar,
 										   320,
-										   480 - 20 - (heightForNavBar - overlapOnBars + heightForURLBar) - 49);
+										   480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49);
 	
-	self.formTable = [[UITableView alloc] initWithFrame:self.formTableNormalFrame style:UITableViewStyleGrouped];
+	self.formTable = [[UITableView alloc] initWithFrame:CGRectMake(0,
+																   heightForNavBar - yOverhangForNavBar + heightForURLBar,
+																   320,
+																   480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)
+												  style:UITableViewStylePlain];
 	self.formTable.backgroundColor = [UIColor clearColor];
 	self.formTable.scrollEnabled = YES;
 	self.formTable.delegate = self;
@@ -88,7 +92,7 @@
 	[menuAccessibleOptions addObject:[NSString stringWithString:@"Yes"]];
 	[menuAccessibleOptions addObject:[NSString stringWithString:@"No"]];
 	self.menuAccessible = [[BubbleMenu alloc] initWithMessageHeight:32
-														  withFrame:CGRectMake(-110, heightForNavBar - overlapOnBars + 60, 270, 0)
+														  withFrame:CGRectMake(-110, heightForNavBar - yOverhangForNavBar + 60, 270, 0)
 												   menuOptionsArray:menuAccessibleOptions
 														 tailHeight:25
 														anchorPoint:CGPointMake(0, 0)];
@@ -131,7 +135,7 @@
 		[menuOptions addObject:anOption];
 	}
 	self.menuCategory = [[BubbleMenu alloc] initWithMessageHeight:32
-																	  withFrame:CGRectMake(-110, heightForNavBar - overlapOnBars -33, 270, 0)
+																	  withFrame:CGRectMake(-110, heightForNavBar - yOverhangForNavBar -33, 270, 0)
 															   menuOptionsArray:menuOptions
 																	 tailHeight:25
 																	anchorPoint:CGPointMake(0, 0)];
@@ -195,7 +199,7 @@
 		[menuOptions addObject:anOption];
 	}
 	self.menuReason = [[BubbleMenu alloc] initWithMessageHeight:60
-																	withFrame:CGRectMake(-110, heightForNavBar - overlapOnBars -37, 270, 0)
+																	withFrame:CGRectMake(-110, heightForNavBar - yOverhangForNavBar -37, 270, 0)
 															 menuOptionsArray:menuOptions
 																   tailHeight:25
 																  anchorPoint:CGPointMake(0, 0)];
@@ -420,7 +424,7 @@
 	
 	// --	Have the menu show the selection background (and schedule its removal as well as the menu's).
 	[theMenu showSelectionBackgroundForOption:selectedSubview.tag];
-	[NSTimer scheduledTimerWithTimeInterval:0.4 target:theMenu selector:@selector(removeSelectionBackground) userInfo:nil repeats:NO];				
+	[NSTimer scheduledTimerWithTimeInterval:0.25 target:theMenu selector:@selector(hideSelectionBackground) userInfo:nil repeats:NO];				
 	
 	// --	Schedule hiding of bubble menu.
 	[NSTimer scheduledTimerWithTimeInterval:0.2 target:theMenu selector:@selector(hideBubbleMenu) userInfo:nil repeats:NO];

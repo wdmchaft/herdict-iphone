@@ -1,5 +1,0 @@
-/projects/Herdict Working/iOS/Views/BubbleMenu.m: In function '-[BubbleMenu showSelectionBackgroundForOption:]':
-/projects/Herdict Working/iOS/Views/BubbleMenu.m:288: warning: incompatible Objective-C types initializing 'struct UIView *', expected 'struct UITextView *'
-/projects/Herdict Working/iOS/Views/BubbleMenu.m: At top level:
-/projects/Herdict Working/iOS/Views/BubbleMenu.m:302: warning: incomplete implementation of class 'BubbleMenu'
-/projects/Herdict Working/iOS/Views/BubbleMenu.m:302: warning: method definition for '-hide' not found

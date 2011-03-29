@@ -22,8 +22,7 @@
 	CGFloat tailHeight;
 	CGFloat tailWidth;
 	CGFloat stroke;
-	CGFloat tailBaseOffset;
-	CGFloat tailTipOffset;
+	CGFloat tailOffset;
 	CGFloat cornerRad;
 	CGFloat selfwidth;
 	CGFloat selfheight;
@@ -41,8 +40,7 @@
 @property (nonatomic) CGFloat stroke;
 @property (nonatomic) CGFloat tailHeight;
 @property (nonatomic) CGFloat tailWidth;
-@property (nonatomic) CGFloat tailBaseOffset;
-@property (nonatomic) CGFloat tailTipOffset;
+@property (nonatomic) CGFloat tailOffset;
 @property (nonatomic) CGFloat cornerRad;
 @property (nonatomic) CGFloat selfwidth;
 @property (nonatomic) CGFloat selfheight;
@@ -56,6 +54,6 @@
 - (void)rotateTuckedAway;
 
 - (void) showSelectionBackgroundForOption:(int)optionNumber;
-- (void)removeSelectionBackground;
+- (void)hideSelectionBackground;
 
 @end

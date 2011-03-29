@@ -1,5 +1,0 @@
-In file included from /projects/Herdict Working/iOS/Views/SiteSummary.m:9:
-/projects/Herdict Working/iOS/Views/SiteSummary.h:11:22: error: FooterBar.h: No such file or directory
-In file included from /projects/Herdict Working/iOS/Views/SiteSummary.m:9:
-/projects/Herdict Working/iOS/Views/SiteSummary.h:18: error: expected specifier-qualifier-list before 'FooterBar'
-/projects/Herdict Working/iOS/Views/SiteSummary.h:26: error: expected specifier-qualifier-list before 'FooterBar'

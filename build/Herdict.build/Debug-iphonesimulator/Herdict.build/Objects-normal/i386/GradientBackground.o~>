@@ -1,8 +1,0 @@
-/projects/Herdict Working/iOS/Views/GradientBackground.m:30: warning: property 'floatRed' requires method '-floatRed' to be defined - use @synthesize, @dynamic or provide a method implementation
-/projects/Herdict Working/iOS/Views/GradientBackground.m:30: warning: property 'floatRed' requires the method 'setFloatRed:' to be defined - use @synthesize, @dynamic or provide a method implementation
-/projects/Herdict Working/iOS/Views/GradientBackground.m:30: warning: property 'floatGreen' requires method '-floatGreen' to be defined - use @synthesize, @dynamic or provide a method implementation
-/projects/Herdict Working/iOS/Views/GradientBackground.m:30: warning: property 'floatGreen' requires the method 'setFloatGreen:' to be defined - use @synthesize, @dynamic or provide a method implementation
-/projects/Herdict Working/iOS/Views/GradientBackground.m:30: warning: property 'floatBlue' requires method '-floatBlue' to be defined - use @synthesize, @dynamic or provide a method implementation
-/projects/Herdict Working/iOS/Views/GradientBackground.m:30: warning: property 'floatBlue' requires the method 'setFloatBlue:' to be defined - use @synthesize, @dynamic or provide a method implementation
-/projects/Herdict Working/iOS/Views/GradientBackground.m:30: warning: property 'highColor' requires method '-highColor' to be defined - use @synthesize, @dynamic or provide a method implementation
-/projects/Herdict Working/iOS/Views/GradientBackground.m:30: warning: property 'highColor' requires the method 'setHighColor:' to be defined - use @synthesize, @dynamic or provide a method implementation

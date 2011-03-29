@@ -11,9 +11,13 @@
 
 @implementation VC_CheckSite
 
+@synthesize loadingView;
 @synthesize theWebView;
 @synthesize theSiteSummary;
 @synthesize lastTestedUrl;
+
+@synthesize loadingIndicator;
+@synthesize loadingText;
 
 
 - (void)viewDidLoad {
@@ -21,21 +25,14 @@
 
 	self.title = @"Check Site";
 	
-	self.theWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0,
-																  heightForNavBar - overlapOnBars + heightForURLBar,
-																  320,
-																  480 - 20 - (heightForNavBar - overlapOnBars + heightForURLBar) - 49)];
-	self.theWebView.backgroundColor = [UIColor whiteColor];
-	self.theWebView.scalesPageToFit = YES;
-	self.theWebView.userInteractionEnabled = YES;
-	[self.view insertSubview:self.theWebView atIndex:2];
+	[self setUpSiteLoadingMessage];
+	[self resetCheckSite];
 	
 	self.theSiteSummary = [[SiteSummary alloc] initWithFrame:CGRectMake(0,
-																		480 - 20 - 49,
+																		480 - 20 - 49 - heightForSiteSummaryHideTab,
 																		320,
 																		heightForSiteSummary)];
-	self.theSiteSummary.userInteractionEnabled = YES;
-	[self.view insertSubview:self.theSiteSummary atIndex:2];
+	[self.view insertSubview:self.theSiteSummary aboveSubview:self.theWebView];	
 }
 
 - (void)didReceiveMemoryWarning {
@@ -77,17 +74,15 @@
 	int siteId = [[siteSummaryDictionary objectForKey:@"siteId"] intValue];
 	
 	NSString *messageString = [NSString stringWithFormat:@"%d   times in %@\n%d   times around the world", countryInaccessibleCount, countryString, globalInaccessibleCount];
-	self.theSiteSummary.textView2.text = messageString;
 	
-	if (sheepColor == 0) {
-		self.theSiteSummary.theBackground.backgroundColor = UIColorFromRGB(0x98D428);
-	} else if (sheepColor == 1) {
-		self.theSiteSummary.theBackground.backgroundColor = UIColorFromRGB(0x98D428);
-	} else if (sheepColor == 2) {
-		self.theSiteSummary.theBackground.backgroundColor = UIColorFromRGB(0xFF6600);
-	}
+	[self.theSiteSummary setStateLoaded:messageString theColor:sheepColor];	
+	[self.theSiteSummary positionSiteSummaryInView];
+}
+
+- (void) searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+	[super searchBarTextDidBeginEditing:searchBar];
 	
-	[self showSiteSummary];
+	[self.theSiteSummary positionSiteSummaryOutOfView];
 }
 
 #pragma mark -
@@ -98,12 +93,66 @@
 	
 	UITouch *touch = [touches anyObject];
 	
-	if ([self.theSiteSummary.hideLabel pointInside:[touch locationInView:self.theSiteSummary.hideLabel] withEvent:nil]) {
-		[self hideSiteSummary];
+	if ([self.theSiteSummary pointInside:[touch locationInView:self.theSiteSummary] withEvent:nil]) {
+		if ([self.theSiteSummary.hideLabel.text isEqualToString:textForSiteSummaryHideTabStateShowing]) {
+			[self.theSiteSummary positionSiteSummaryOutOfView];
+		} else {
+			[self.theSiteSummary positionSiteSummaryInView];
+		}
 		return;
 	}
 }
 
+- (void) setUpSiteLoadingMessage {
+
+	/* --	Set up loadingView	-- */
+	self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(0,
+																heightForNavBar - yOverhangForNavBar + heightForURLBar,
+																320,
+																480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
+	self.loadingView.backgroundColor = [UIColor colorWithRed:themeRed green:themeGreen blue:themeBlue alpha:1];
+	[self.view addSubview:self.loadingView];
+
+	/* --	Set up loadingIndicator	-- */
+	self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+	[self.loadingIndicator setFrame:CGRectMake(0.5 * (320.0 - (diameterForSiteLoadingAnimation + widthForSiteLoadingText)),
+											   3 + (0.5 * (self.loadingView.frame.size.height - heightForSiteSummary - diameterForSiteLoadingAnimation)),
+											   diameterForSiteLoadingAnimation,
+											   diameterForSiteLoadingAnimation)];
+	[self.loadingIndicator startAnimating];
+	[self.loadingView addSubview:self.loadingIndicator];
+
+	/* --	Set up loadingText	-- */
+	self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(self.loadingIndicator.frame.origin.x + diameterForSiteLoadingAnimation,
+																 3 + (0.5 * (self.loadingView.frame.size.height - heightForSiteSummary - heightForSiteLoadingText)),
+																 widthForSiteLoadingText,
+																 heightForSiteLoadingText)];
+	self.loadingText.backgroundColor = [UIColor clearColor];
+	self.loadingText.text = @"Trying Site...";
+	self.loadingText.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
+	self.loadingText.textColor = [UIColor blackColor];
+	self.loadingText.textAlignment = UITextAlignmentCenter;
+	[self.loadingView addSubview:self.loadingText];
+}
+
+- (void) resetCheckSite {
+	NSLog(@"called resetCheckSite");
+	
+	if (self.theWebView) {
+		[self.theWebView removeFromSuperview];
+		self.theWebView = nil;
+		[self.theWebView release];
+	}
+	self.theWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0,
+																  heightForNavBar - yOverhangForNavBar + heightForURLBar,
+																  320,
+																  480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
+	self.theWebView.backgroundColor = [UIColor clearColor];
+	self.theWebView.scalesPageToFit = YES;
+	self.theWebView.userInteractionEnabled = YES;
+	[self.view insertSubview:self.theWebView belowSubview:self.theSiteSummary];
+	
+}
 
 - (void) loadUrl:(NSString *)urlString {
 	NSLog(@"loadUrl: %@", urlString);
@@ -120,39 +169,15 @@
 		return;
 	}
 	self.lastTestedUrl = theUrlString;
-	[WebservicesController getSiteSummary:theUrlString forCountry:@"US" urlEncoding:@"none" apiVersion:@"FF1.0" callbackDelegate:self];
 	
+	[self resetCheckSite];
+	[self.theSiteSummary setStateLoading];
+
+	[WebservicesController getSiteSummary:theUrlString forCountry:@"US" urlEncoding:@"none" apiVersion:@"FF1.0" callbackDelegate:self];
+		
 	NSURL *theUrl = [NSURL URLWithString:urlString];
 	NSURLRequest *theRequest = [NSURLRequest requestWithURL:theUrl];
 	[self.theWebView loadRequest:theRequest];
-}
-
-- (void) showSiteSummary {
-	
-	// --	Haul the theSiteSummary up into view.
-	[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseOut
-					 animations:^{
-						 [self.theSiteSummary setFrame:CGRectMake(0,
-																  480 - 20 - 49 - heightForSiteSummary,
-																  320,
-																  heightForSiteSummary)];
-					 } completion:^(BOOL finished){
-					 }
-	 ];	
-}
-
-- (void) hideSiteSummary {
-	
-	// --	Shove the theSiteSummary down out of view.
-	[UIView animateWithDuration:0.4 delay:0 options:UIViewAnimationOptionCurveEaseOut
-					 animations:^{
-						 [self.theSiteSummary setFrame:CGRectMake(0,
-																  480 - 20 - 49,
-																  320,
-																  heightForSiteSummary)];
-					 } completion:^(BOOL finished){
-					 }
-	 ];
 }
 
 @end

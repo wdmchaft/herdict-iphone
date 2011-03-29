@@ -12,21 +12,44 @@
 		blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 
-#define heightForNavBar 44
-#define heightForURLBar 41
-#define overlapOnBars 4
-
-#define navBarColorDelta 0.142
-#define urlBarColorDelta 0.182
-
-#define heightForSiteSummary 117
-
+/* --	App theme	-- */
 #define themeRed	1//0.915//0.949
 #define themeGreen	0.974//0.906//0.937
 #define themeBlue	0.930//0.769//0.914
 
+/* --	VC_Base elements	-- */
+#define heightForNavBar 44
+#define yOverhangForNavBar 4
+#define navBarColorDelta 0.122
+#define urlBarColorDelta 0.152
+
+#define heightForURLBar 41
+
+#define yPaddingForBubbleMenuBody 3
+#define heightForBubbleMenuOption 33
+
 #define heightForTabTracker 7
 #define widthForTabTracker 9
+
+/* --	VC_CheckSite elements	-- */
+#define diameterForSiteLoadingAnimation 25
+#define widthForSiteLoadingText 120
+#define heightForSiteLoadingText 20
+
+/* --	SiteSummary elements	-- */
+#define heightForSiteSummary 149
+#define xOffsetForSiteSummaryHideTab 40
+#define widthForSiteSummaryHideTab 150
+#define heightForSiteSummaryHideTab 33
+#define textForSiteSummaryHideTabStateShowing @"Hide Summary"
+#define textForSiteSummaryHideTabStateHidden @"Show Summary"
+#define diameterForSiteSummaryLoadingAnimation 40
+#define widthForSiteSummaryLoadingText 180
+#define heightForSiteSummaryLoadingText 18
+
+#define viewIndexForTabTracker 0
+#define viewIndexForSiteSummary 1
+#define viewIndexForWebView 2
 
 //	Notes on UITableViewAnimations...
 //	Consider using reloadSections instead of deleteRowsAtIndexPaths.  The reload animation for deleteRowsAtIndexPaths doesn't look as good (deleted rows collapse upward while their contents appear to fall out the bottom).

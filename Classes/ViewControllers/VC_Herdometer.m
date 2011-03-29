@@ -28,9 +28,9 @@
 	
 	// --	Set up reportMapView.
 	self.reportMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0,
-																	 heightForNavBar - overlapOnBars + heightForURLBar,
+																	 heightForNavBar - yOverhangForNavBar + heightForURLBar,
 																	 320,
-																	 480 - 20 - (heightForNavBar - overlapOnBars + heightForURLBar) - 49)];
+																	 480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
 	self.reportMapView.delegate = self;
 	self.reportMapView.userInteractionEnabled = YES;
 	self.reportMapView.scrollEnabled = NO;

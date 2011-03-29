@@ -26,8 +26,7 @@
 @synthesize stroke;
 @synthesize tailHeight;
 @synthesize tailWidth;
-@synthesize tailBaseOffset;
-@synthesize tailTipOffset;
+@synthesize tailOffset;
 @synthesize cornerRad;
 @synthesize selfwidth;
 @synthesize selfheight;
@@ -38,12 +37,15 @@
     self = [super initWithFrame:theFrame];
 	if (self) {
 		
-		// --	Fix height, which was prob passed in as 0 in the init call.
-		CGFloat totalHeight = theTailHeight + theMessageHeight + 6 + 12 + ([theOptionsArray count] * 30);
+		CGFloat yPaddingForMessage = 0;
+		if (theMessageHeight > 0) {
+			yPaddingForMessage = yPaddingForBubbleMenuBody;
+		}
+		
 		[self setFrame:CGRectMake(self.frame.origin.x,
 								  self.frame.origin.y,
 								  self.frame.size.width,
-								  totalHeight)];
+								  theTailHeight + (yPaddingForBubbleMenuBody * 4) + theMessageHeight + yPaddingForMessage + ([theOptionsArray count] * heightForBubbleMenuOption))];
 		
 		self.alpha = 0;
 		self.backgroundColor = [UIColor clearColor];
@@ -51,19 +53,20 @@
 		self.userInteractionEnabled = YES;
 		
 		self.frameForShowMenu = self.frame;
-		
-		rotationWhenHidden = CATransform3DMakeRotation(-(M_PI * 0.25), 0, 0, 1);
+
+		self.selfwidth = self.frame.size.width;
+		self.selfheight = self.frame.size.height;	
 
 		self.tailHeight = theTailHeight;
-		tailWidth = self.frame.size.width * 0.167;
-		tailBaseOffset = self.frame.size.width * 0.7;
-		tailTipOffset = self.frame.size.width * 0.867;
-		
-		stroke = 2;
-		cornerRad = 5;
-		selfwidth = self.frame.size.width;
-		selfheight = self.frame.size.height;	
+		self.tailWidth = selfwidth * 0.175;
+		self.tailOffset = selfwidth * 0.725;
+				
+		self.cornerRad = 6.0;
+		self.rotationWhenHidden = CATransform3DMakeRotation(-(M_PI * 0.25), 0, 0, 1);
 
+		CGFloat xPaddingLeft = selfwidth * 0.04;
+		CGFloat xPaddingRight = selfwidth * 0.08;
+		
 		// --	Basic setup for self.selectionBackground.  The parent object will manipulate its backgroundColor and origin.y. 
 		self.selectionBackground = [[UIView alloc] initWithFrame:CGRectZero];
 		self.selectionBackground.tag = 0;
@@ -74,16 +77,16 @@
 		[self addSubview:self.selectionBackground];
 		
 		// --	Set up the Message.
-		self.theMessage = [[UITextView alloc] initWithFrame:CGRectMake(5,
-																	   tailHeight + 6,
-																	   self.frame.size.width - 12,
+		self.theMessage = [[UITextView alloc] initWithFrame:CGRectMake(xPaddingLeft,
+																	   tailHeight + yPaddingForMessage,
+																	   selfwidth - xPaddingRight,
 																	   theMessageHeight)];
 		self.theMessage.textColor = [UIColor whiteColor];
 		self.theMessage.backgroundColor = [UIColor clearColor];
 		self.theMessage.editable = NO;
 		self.theMessage.tag = 0;
 		self.theMessage.userInteractionEnabled = NO;
-		self.theMessage.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
+		self.theMessage.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
 		[self addSubview:self.theMessage];
 		
 		// --	Make sure there's no tag confusion.
@@ -92,12 +95,13 @@
 			aView.tag = 0;
 		}
 		
-		// --	Set up the Menu Options.
+		// --	Set up each Menu Option.
 		for (NSString *optionText in theOptionsArray) {
-			UITextView *menuOption = [[UITextView alloc] initWithFrame:CGRectMake(5,
-																				  tailHeight + 6 + theMessageHeight + (30 * [theOptionsArray indexOfObject:optionText]),
-																				  self.frame.size.width - 12,
-																				  30)];
+			UITextView *menuOption = [[UITextView alloc] initWithFrame:CGRectMake(xPaddingLeft,
+																				  tailHeight + yPaddingForBubbleMenuBody + theMessageHeight + yPaddingForMessage + (heightForBubbleMenuOption * [theOptionsArray indexOfObject:optionText]),
+																				  selfwidth - xPaddingRight,
+																				  heightForBubbleMenuOption)];
+			menuOption.contentMode = UIViewContentModeCenter;
 			menuOption.text = [NSString stringWithString:optionText];
 			menuOption.tag = [theOptionsArray indexOfObject:optionText] + 1;
 			menuOption.layer.cornerRadius = 4;
@@ -105,7 +109,7 @@
 			menuOption.backgroundColor = [UIColor clearColor];
 			menuOption.editable = NO;
 			menuOption.userInteractionEnabled = NO;
-			menuOption.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
+			menuOption.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
 			[self addSubview:menuOption];
 		}
 		
@@ -118,85 +122,84 @@
 
 - (void) drawRect:(CGRect)rect {
 	
+	// trig vars
+	CGFloat l				= 5.0;
+	CGFloat diameter		= l * (tailWidth / tailHeight);
+	CGFloat m				= (tailWidth * (diameter / 2.0)) / sqrt(pow(tailHeight, 2.0) + pow(tailWidth, 2.0));
+	CGFloat q				= m * (tailHeight / tailWidth);
+	CGFloat n				= (diameter / 2.0) - q;
+	
+	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextSetLineJoin(context, kCGLineJoinRound);
-	CGContextSetLineWidth(context, 1);
-	CGContextSetRGBStrokeColor(context, 0, 0, 0, 0.7); 
-	CGContextSetRGBFillColor(context, 0, 0, 0, 0.915);
+	CGContextSetLineWidth(context, 0);
+	CGContextSetRGBStrokeColor(context, 0, 0, 0, 0.4); 
+	CGContextSetRGBFillColor(context, 0, 0, 0, 0.85);
 
 	CGContextBeginPath(context);
 	
 	// --	Begin at top right corner of layer, i.e. tip of tail.
 	CGContextMoveToPoint(context,
-						 selfwidth	- tailTipOffset - stroke,
-						 0				+ stroke
+						 0,
+						 l
 						 );
-	// --	Diagonal line down left side of tail.
-	CGContextAddLineToPoint(context,
-							selfwidth - tailBaseOffset - tailWidth - stroke,
-							0			+ tailHeight		+ stroke
-							);
-	// --	Line to top left corner.
-	CGContextAddLineToPoint(context,
-							0			+ cornerRad			+ stroke,
-							0			+ tailHeight		+ stroke
-							);
-	// --	Arc around top left corner.
-	CGContextAddArcToPoint(context,
-						   0			+ stroke,
-						   0			+ tailHeight		+ stroke,
-						   0			+ stroke,
-						   0			+ tailHeight		+ cornerRad,
-						   cornerRad
-						   );
 	// --	Line to bottom left corner.
 	CGContextAddLineToPoint(context,
-							0			+ stroke,
-							selfheight	- cornerRad			- stroke
+							stroke,
+							selfheight - cornerRad
 							);
 	// --	Arc around bottom left corner.
 	CGContextAddArcToPoint(context,
-						   0			+ stroke,
-						   selfheight	- stroke,
-						   0			+ cornerRad			+ stroke,
-						   selfheight	- stroke,
+						   stroke,
+						   selfheight,
+						   cornerRad,
+						   selfheight,
 						   cornerRad
 						   );
 	// --	Line to bottom right corner.
 	CGContextAddLineToPoint(context,
-							selfwidth	- cornerRad			- stroke,
-							selfheight	- stroke
+							selfwidth - cornerRad,
+							selfheight
 							);
 	// --	Arc around bottom right corner.
 	CGContextAddArcToPoint(context,
-						   selfwidth	- stroke,
-						   selfheight	- stroke,
-						   selfwidth	- stroke,
-						   selfheight	- cornerRad			- stroke,
+						   selfwidth,
+						   selfheight,
+						   selfwidth,
+						   selfheight - cornerRad,
 						   cornerRad
 						   );
 	// --	Line to top right corner.
 	CGContextAddLineToPoint(context,
-							selfwidth	- stroke,
-							tailHeight + cornerRad		+ stroke
+							selfwidth,
+							tailHeight + cornerRad
 							);
 	// --	Arc around top right corner.
 	CGContextAddArcToPoint(context,
-						   selfwidth	- stroke,
-						   0			+ tailHeight		+ stroke,
-						   selfwidth	- cornerRad			- stroke,
-						   0			+ tailHeight		+ stroke,
+						   selfwidth,
+						   tailHeight,
+						   selfwidth - cornerRad,
+						   tailHeight,
 						   cornerRad);
 	// --	Add line to base of tail.
 	CGContextAddLineToPoint(context,
-							selfwidth	- tailBaseOffset	- stroke,
-							0			+ tailHeight		+ stroke
+							tailWidth,
+							tailHeight
 							);
-	// --	Add line to tip of tail.
+	// --	Add line to near tip of tail.
 	CGContextAddLineToPoint(context,
-							selfwidth - tailTipOffset - stroke,
-							0			+ stroke
+							diameter - n,
+							l - m
 							);
+	// --	Arc around tip.
+	CGContextAddArc(context,
+					(diameter / 2.0),
+					l,
+					(diameter / 2.0),
+					-asin(m / (diameter / 2.0)),
+					M_PI,
+					1
+					);
 	
 	CGContextClosePath(context);
 	CGContextDrawPath(context, kCGPathFillStroke);
@@ -294,7 +297,7 @@
 												   selectedOption.frame.size.height)]; 
 }
 
-- (void) removeSelectionBackground {
+- (void) hideSelectionBackground {
 	self.selectionBackground.backgroundColor = [UIColor clearColor];
 }
 

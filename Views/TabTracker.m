@@ -34,10 +34,11 @@
 	CGFloat selfwidth = self.frame.size.width;
 	CGFloat selfheight = self.frame.size.height;
 	
-	CGContextSetLineJoin(context, kCGLineJoinMiter);
+	CGContextSetLineJoin(context, kCGLineJoinRound);
 	CGContextSetLineWidth(context, 2);
-	CGContextSetRGBFillColor(context, 0, 0, 0, 0.915);
-	CGContextSetRGBStrokeColor(context, 0.6, 0.6, 0.9, 0.5);
+
+	CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 0.4);
+	CGContextSetRGBFillColor(context, 0, 0, 0, 0.85);
 	
 	CGContextBeginPath(context);	
 
@@ -62,29 +63,29 @@
 							selfheight
 							);
 	CGContextClosePath(context);
-	
-//	// --	Clip on the path.
-//	CGContextClip(context);
-	
-	CGContextClosePath(context);
+
 	CGContextDrawPath(context, kCGPathFillStroke);
+	
+	CGContextClip(context);
 }
 
 - (CGFloat) xOffset:(int)tabNumber {
 
 	CGFloat xOffset;
 	if (tabNumber == 0) {
-		xOffset = 48.0;
+		xOffset = 54.0;
 	} else if (tabNumber == 1) {
 		xOffset = 160.0;
 	} else if (tabNumber == 2) {
-		xOffset = 320.0 - 48.0;
+		xOffset = 320.0 - 54.0;
 	}
 	
 	return xOffset;
 }
 
 - (void) moveFromTab:(int)currentTabNum toTab:(int)selectedTabNum {
+	
+	NSLog(@"called [tabTracker moveFromTab...]");
 	
 	[self setCenter:CGPointMake([self xOffset:currentTabNum], self.center.y)];	
 	[UIView animateWithDuration:0.55 delay:0 options:UIViewAnimationOptionCurveEaseInOut

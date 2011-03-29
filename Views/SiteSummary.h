@@ -11,16 +11,18 @@
 
 @interface SiteSummary : UIView {
 
-	UIView *theBackground;
 	UITextView *textView1;
 	UITextView *textView2;
 	UILabel *hideLabel;
+	UIActivityIndicatorView *loadingIndicator;
+	UILabel *loadingText;
 		
 }
 
-@property (nonatomic, retain) UIView *theBackground;
 @property (nonatomic, retain) UITextView *textView1;
 @property (nonatomic, retain) UITextView *textView2;
 @property (nonatomic, retain) UILabel *hideLabel;
+@property (nonatomic, retain) UIActivityIndicatorView *loadingIndicator;
+@property (nonatomic, retain) UILabel *loadingText;
 
 @end

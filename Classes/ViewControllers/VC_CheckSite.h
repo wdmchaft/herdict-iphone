@@ -12,19 +12,27 @@
 
 @interface VC_CheckSite : VC_Base {
 
+	UIView *loadingView;
 	UIWebView *theWebView;
 	SiteSummary *theSiteSummary;
 	NSString *lastTestedUrl;
 	
+	UIActivityIndicatorView *loadingIndicator;
+	UILabel *loadingText;	
+	
 }
 
+@property (nonatomic, retain) UIView *loadingView;
 @property (nonatomic, retain) UIWebView *theWebView;
 @property (nonatomic, retain) SiteSummary *theSiteSummary;
 @property (nonatomic, retain) NSString *lastTestedUrl;
 
+@property (nonatomic, retain) UIActivityIndicatorView *loadingIndicator;
+@property (nonatomic, retain) UILabel *loadingText;
+
 - (void) loadUrl:(NSString *)urlString;
-- (void) showSiteSummary;
-- (void) hideSiteSummary;
+- (void) positionSiteSummaryInView;
+- (void) positionSiteSummaryOutOfView;
 
 - (void) getSiteSummaryCallbackHandler:(ASIHTTPRequest*)request;
 

@@ -28,7 +28,7 @@
 	self.view.backgroundColor = [UIColor blackColor];
 
 	/* --	Set up theUrlBar	-- */
-	self.theUrlBar = [[URLBar alloc] initWithFrame:CGRectMake(0,heightForNavBar - overlapOnBars,320,heightForURLBar)];
+	self.theUrlBar = [[URLBar alloc] initWithFrame:CGRectMake(0,heightForNavBar - yOverhangForNavBar,320,heightForURLBar)];
 	for (UIView *view in self.theUrlBar.subviews) {
 		if ([view isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
 			[view removeFromSuperview];
@@ -83,7 +83,7 @@
 	[urlMenuOptions addObject:[NSString stringWithString:@"Check Site"]];
 	[urlMenuOptions addObject:[NSString stringWithString:@"Submit a Report"]];
 	self.theUrlBarMenu = [[BubbleMenu alloc] initWithMessageHeight:0
-														 withFrame:CGRectMake(-65, heightForNavBar - overlapOnBars-18, 150, 0)
+														 withFrame:CGRectMake(-60, heightForNavBar - yOverhangForNavBar - 20, 170, 0)
 												  menuOptionsArray:urlMenuOptions
 														tailHeight:22
 													   anchorPoint:CGPointMake(0, 0)];
@@ -91,9 +91,9 @@
 	
 	/* --	Set up theScreen but don't show it yet		-- */
 	self.theScreen = [[Screen alloc] initWithFrame:CGRectMake(0,
-															  heightForNavBar - overlapOnBars + heightForURLBar,
+															  heightForNavBar - yOverhangForNavBar + heightForURLBar,
 															  320,
-															  480 - 20 - (heightForNavBar - overlapOnBars + heightForURLBar) - 49)];
+															  480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
 	self.theScreen.backgroundColor = [UIColor clearColor];
 	
 	/* --	Set up theTabTracker	-- */
@@ -103,7 +103,10 @@
 
 - (void) viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	NSLog(@"%@ viewWillAppear", self.title);	
+	NSLog(@"%@ viewWillAppear", self.title);
+	
+	[self.view bringSubviewToFront:self.theTabTracker];
+	
 }
 
 - (void)didReceiveMemoryWarning {
@@ -198,13 +201,13 @@
 }
 
 - (void) selectBubbleMenuOption:(UITextView *)selectedSubview {
-	NSLog(@"selectBubbleMenuOption: %i", selectedSubview.tag);
+//	NSLog(@"selectBubbleMenuOption: %i", selectedSubview.tag);
 	
 	BubbleMenu *theMenu = [selectedSubview superview];
 	
 	// --	Have the menu show the selection background (and schedule its removal as well as the menu's).
 	[theMenu showSelectionBackgroundForOption:selectedSubview.tag];
-	[NSTimer scheduledTimerWithTimeInterval:0.4 target:theMenu selector:@selector(removeSelectionBackground) userInfo:nil repeats:NO];				
+	[NSTimer scheduledTimerWithTimeInterval:0.25 target:theMenu selector:@selector(hideSelectionBackground) userInfo:nil repeats:NO];				
 	
 	if ([theMenu isEqual:self.theUrlBarMenu]) {
 		if ([self urlTyped]) {
@@ -224,7 +227,7 @@
 //	NSLog(@"entered urlTyped");
 
 	if ([self.theUrlBar.text length] == 0) {
-		//[self.theUrlBarMenu removeSelectionBackground];
+		//[self.theUrlBarMenu hideSelectionBackground];
 		UIAlertView *alertNoUrl = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter a URL." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
 		[alertNoUrl show];
 		[alertNoUrl release];

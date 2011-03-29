@@ -60,16 +60,16 @@
 #pragma mark UITabBarControllerDelegate methods
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-	NSLog(@"theController.delegate says.. shouldSelectViewController");
+//	NSLog(@"theController.delegate says.. shouldSelectViewController");
 
 	VC_Base *currentVc = theController.selectedViewController;
 	self.currentTab = [self.theController.viewControllers indexOfObject:currentVc];
 	VC_Base *selectedVc = viewController;
 
-	/* --	Make sure they aren't selecting the current VC						-- */
-	if ([selectedVc isEqual:currentVc]) {
-		return NO;
-	}
+//	/* --	Make sure they aren't selecting the current VC						-- */
+//	if ([selectedVc isEqual:currentVc]) {
+//		return NO;
+//	}
 	
 	/* --	Find out whether this selection is being made via the bubble menu	-- */
 	if (currentVc.theUrlBarMenu.alpha > 0) {
@@ -100,7 +100,7 @@
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-	NSLog(@"theController.delegate says.. didSelectViewController");
+//	NSLog(@"theController.delegate says.. didSelectViewController");
 
 	VC_Base *selectedVC = viewController;
 
