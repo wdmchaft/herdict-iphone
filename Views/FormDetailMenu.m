@@ -17,7 +17,8 @@
 @synthesize stroke;
 @synthesize tailHeight;
 @synthesize tailWidth;
-@synthesize tailOffset;
+@synthesize tailxOffsetForBase;
+@synthesize tailxOffsetForTip;
 @synthesize cornerRad;
 @synthesize selfwidth;
 @synthesize selfheight;
@@ -52,12 +53,13 @@
 		self.selfheight = self.frame.size.height;
 		
 		self.tailHeight = theTailHeight;
-		self.tailWidth = selfwidth * 0.175;
-		self.tailOffset = selfwidth * 0.725;
+		self.tailWidth = selfwidth * 0.4;
+		self.tailxOffsetForBase = selfwidth * 0.30;
+		self.tailxOffsetForTip = selfwidth * 0.5;
 		
 		self.cornerRad = 6.0;
 		
-		CGFloat xPaddingLeft = selfwidth * 0.04;
+		CGFloat xPaddingLeft = selfwidth * 0.065;
 		CGFloat xPaddingRight = selfwidth * 0.08;
 		
 		// --	Basic setup for self.selectionBackground.  The parent object will manipulate its backgroundColor and origin.y. 
@@ -129,13 +131,13 @@
 
 - (void) drawRect:(CGRect)rect {
 	
-	// trig vars
-	CGFloat l				= 5.0;
-	CGFloat diameter		= l * (tailWidth / tailHeight);
-	CGFloat m				= (tailWidth * (diameter / 2.0)) / sqrt(pow(tailHeight, 2.0) + pow(tailWidth, 2.0));
-	CGFloat q				= m * (tailHeight / tailWidth);
-	CGFloat n				= (diameter / 2.0) - q;
-	
+//	// trig vars
+//	CGFloat l				= 5.0;
+//	CGFloat diameter		= l * (tailWidth / tailHeight);
+//	CGFloat m				= (tailWidth * (diameter / 2.0)) / sqrt(pow(tailHeight, 2.0) + pow(tailWidth, 2.0));
+//	CGFloat q				= m * (tailHeight / tailWidth);
+//	CGFloat n				= (diameter / 2.0) - q;
+		
 	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextSetLineJoin(context, kCGLineJoinRound);
@@ -145,19 +147,37 @@
 	
 	CGContextBeginPath(context);
 	
-	// --	Begin at top right corner of layer, i.e. tip of tail.
+	// --	Begin at tail left side of tip.
 	CGContextMoveToPoint(context,
-						 0,
-						 l
+						 selfwidth * 0.5 - 1,
+						 0
 						 );
+	// --	Line to tail left base.
+	CGContextAddLineToPoint(context,
+							selfwidth - tailxOffsetForBase - tailWidth,
+							tailHeight
+							);
+	// --	Line to top left corner.
+	CGContextAddLineToPoint(context,
+							cornerRad,
+							tailHeight
+							);
+	// --	Arc around top left corner.
+	CGContextAddArcToPoint(context,
+						   0,
+						   tailHeight,
+						   0,
+						   tailHeight + cornerRad,
+						   cornerRad
+						   );
 	// --	Line to bottom left corner.
 	CGContextAddLineToPoint(context,
-							stroke,
+							0,
 							selfheight - cornerRad
 							);
 	// --	Arc around bottom left corner.
 	CGContextAddArcToPoint(context,
-						   stroke,
+						   0,
 						   selfheight,
 						   cornerRad,
 						   selfheight,
@@ -188,25 +208,16 @@
 						   selfwidth - cornerRad,
 						   tailHeight,
 						   cornerRad);
-	// --	Add line to base of tail.
+	// --	Add line to tail base.
 	CGContextAddLineToPoint(context,
-							tailWidth,
+							selfwidth - tailxOffsetForBase,
 							tailHeight
 							);
-	// --	Add line to near tip of tail.
+	// --	Add line to tail right of tip.
 	CGContextAddLineToPoint(context,
-							diameter - n,
-							l - m
+							selfwidth * 0.5 + 1,
+							0
 							);
-	// --	Arc around tip.
-	CGContextAddArc(context,
-					(diameter / 2.0),
-					l,
-					(diameter / 2.0),
-					-asin(m / (diameter / 2.0)),
-					M_PI,
-					1
-					);
 	
 	CGContextClosePath(context);
 	

@@ -117,11 +117,11 @@
 		[menuOptions addObject:anOption];
 	}
 	self.menuCategory = [[FormDetailMenu alloc] initWithMessageHeight:0
-																	  withFrame:CGRectMake(-110, heightForNavBar - yOverhangForNavBar -33, 270, 0)
+																	  withFrame:CGRectMake(-110, heightForNavBar - yOverhangForNavBar + 8, 270, 0)
 															   menuOptionsArray:menuOptions
-																	 tailHeight:25
+																	 tailHeight:18
 																	anchorPoint:CGPointMake(0, 0)];
-	self.menuCategory.theMessage.text = @"";	
+	self.menuCategory.theMessage.text = @"";
 	[self.t01arrayCategories insertObject:@"Tap to Select" atIndex:0];
 }
 
@@ -131,11 +131,10 @@
 	return 3;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	int num = 1;
 	if (section == self.sectionNowEditing) {
-		num = 2;
+		return 2;
 	}	
-	return num;
+	return 1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
@@ -144,15 +143,23 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-	UITableViewCell *cellAtPath = [self tableView:self.formTable cellForRowAtIndexPath:indexPath];
-	if ([cellAtPath isKindOfClass:[FormClearCell class]]) {
-		return 250.0;
+	CGFloat subtractFromRowHeight = 0.0;
+	if (indexPath.section == self.sectionNowEditing) {
+		subtractFromRowHeight = 40.0;
 	}
 	
-	if (indexPath.section < 2) {
-		return heightForFormStateCell;
+	UITableViewCell *cellAtPath = [self tableView:self.formTable cellForRowAtIndexPath:indexPath];
+	if ([cellAtPath isKindOfClass:[FormClearCell class]]) {
+//		NSLog(@"hFRAIP about to return %f", 250.0 + subtractFromRowHeight);
+		return 250.0 + subtractFromRowHeight;
 	}
-	return heightForFormStateCell - 1;
+
+	if (indexPath.section < 2) {
+//		NSLog(@"hFRAIP about to return %f", heightForFormStateCell - subtractFromRowHeight);
+		return heightForFormStateCell - subtractFromRowHeight;
+	}
+//	NSLog(@"hFRAIP about to return %f", heightForFormStateCell - subtractFromRowHeight - 1);	
+	return heightForFormStateCell - subtractFromRowHeight - 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -204,22 +211,28 @@
 
 		editCellWasOpen = YES;
 		
+		/* --	Have to set sectionNowEditing to -1 BEFORE the transactions coming up.. it's a flag for them	-- */
 		int sectionNowEditing_priorValue = self.sectionNowEditing;
-		NSIndexPath *pathForDeleteRow = [NSIndexPath indexPathForRow:(1) inSection:sectionNowEditing_priorValue];
+		self.sectionNowEditing = -1;		
 		
-		self.sectionNowEditing = -1;
+		NSIndexPath *stateCellPath = [NSIndexPath indexPathForRow:0 inSection:sectionNowEditing_priorValue];
+		CGFloat theHeight;
+		theHeight = [self tableView:self.formTable heightForRowAtIndexPath:stateCellPath];
+		FormStateCell *theStateCell = [self.formTable cellForRowAtIndexPath:stateCellPath];
+		[theStateCell arrangeSubviewsForNewHeight:theHeight];
+		
+		NSIndexPath *pathForDeleteRow = [NSIndexPath indexPathForRow:(1) inSection:sectionNowEditing_priorValue];
 
 		[self.formTable beginUpdates];
 		[self.formTable deleteRowsAtIndexPaths:[NSArray arrayWithObject:pathForDeleteRow] withRowAnimation:UITableViewRowAnimationNone];
 		[self.formTable endUpdates];
 		
-		[self.formTable beginUpdates];
-		[self.formTable reloadSections:[NSIndexSet indexSetWithIndex:sectionNowEditing_priorValue] withRowAnimation:UITableViewRowAnimationNone];
-		[self.formTable endUpdates];
+//		[self.formTable beginUpdates];
+//		[self.formTable reloadSections:[NSIndexSet indexSetWithIndex:sectionNowEditing_priorValue] withRowAnimation:UITableViewRowAnimationNone];
+//		[self.formTable endUpdates];
 		
 		return;
 	}
-	
 	self.sectionNowEditing = indexPath.section;
 
 	/* --	Disable form interaction	-- */
@@ -236,7 +249,13 @@
 
 
 - (void) addRow:(NSIndexPath *)pathForRow {
-		
+	
+	NSIndexPath *stateCellPath = [NSIndexPath indexPathForRow:0 inSection:pathForRow.section];
+
+	FormStateCell *theStateCell = [self.formTable cellForRowAtIndexPath:stateCellPath];
+
+	[theStateCell arrangeSubviewsForNewHeight:[self tableView:self.formTable heightForRowAtIndexPath:stateCellPath]];
+	 
 	FormDetailMenu *theMenu;
 	if ([pathForRow section] == 0) {
 		theMenu = self.menuCategory;
@@ -249,15 +268,13 @@
 	theMenu.alpha = 1;
 		
 	[self.formTable beginUpdates];
-	[self.formTable insertRowsAtIndexPaths:[NSArray arrayWithObject:pathForRow] withRowAnimation:UITableViewRowAnimationNone];
+	[self.formTable insertRowsAtIndexPaths:[NSArray arrayWithObject:pathForRow] withRowAnimation:UITableViewRowAnimationTop];
 	[self.formTable endUpdates];
 	
-	[self.formTable beginUpdates];
-	[self.formTable reloadSections:[NSIndexSet indexSetWithIndex:[pathForRow section]] withRowAnimation:UITableViewRowAnimationNone];
-	[self.formTable endUpdates];
-	
-	NSIndexPath *stateCellPath = [NSIndexPath indexPathForRow:0 inSection:pathForRow.section];
-	
+//	[self.formTable beginUpdates];
+//	[self.formTable reloadSections:[NSIndexSet indexSetWithIndex:[pathForRow section]] withRowAnimation:UITableViewRowAnimationNone];
+//	[self.formTable endUpdates];
+		
 	[self.formTable scrollToRowAtIndexPath:stateCellPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
@@ -276,32 +293,25 @@
 	[NSTimer scheduledTimerWithTimeInterval:0.2 target:theMenu selector:@selector(hideFormDetailMenu) userInfo:nil repeats:NO];
 	
 	if ([theMenu isEqual:self.menuAccessible]) {
-		BOOL siteIsAccessible_priorValue = self.siteIsAccessible;
 		if (selectedSubview.tag == 1) {
 			self.siteIsAccessible = YES;
-			// --	Study this... it works!
-			if (siteIsAccessible_priorValue == NO) {
-				[self.formTable beginUpdates];
-				[self.formTable deleteSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationRight];
-				[self.formTable endUpdates];
-				NSRange sectionsToReload = NSMakeRange(0,3);				
-				[self.formTable beginUpdates];
-				[self.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
-				[self.formTable endUpdates];
-			}
+			[self.formTable beginUpdates];
+			[self.formTable deleteSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationRight];
+			[self.formTable endUpdates];
+			NSRange sectionsToReload = NSMakeRange(0,3);				
+			[self.formTable beginUpdates];
+			[self.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
+			[self.formTable endUpdates];
 		}
 		if (selectedSubview.tag == 2) {
-			self.siteIsAccessible = NO;			
-			// --	Study this... it works!
-			if (siteIsAccessible_priorValue == YES) {
-				[self.formTable beginUpdates];
-				[self.formTable insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationLeft];
-				[self.formTable endUpdates];
-				NSRange sectionsToReload = NSMakeRange(0,4);
-				[self.formTable beginUpdates];
-				[self.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
-				[self.formTable endUpdates];				
-			}
+			self.siteIsAccessible = NO;
+			[self.formTable beginUpdates];
+			[self.formTable insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationLeft];
+			[self.formTable endUpdates];
+			NSRange sectionsToReload = NSMakeRange(0,4);
+			[self.formTable beginUpdates];
+			[self.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
+			[self.formTable endUpdates];				
 		}
 		[self performSelector:@selector(returnFromFormDive) withObject:nil afterDelay:0.4];
 		return;

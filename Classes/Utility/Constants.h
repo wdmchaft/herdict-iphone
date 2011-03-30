@@ -21,38 +21,38 @@
 #define menuThemeBlue 0.973
 
 /* --	VC_Base elements	-- */
-#define heightForNavBar 44
-#define yOverhangForNavBar 4
+#define heightForNavBar 44.0
+#define yOverhangForNavBar 4.0
 #define navBarColorDelta 0.102
 #define urlBarColorDelta 0.132
 
-#define heightForURLBar 41
+#define heightForURLBar 41.0
 
-#define yPaddingForBubbleMenuBody 3
-#define heightForBubbleMenuOption 33
+#define yPaddingForBubbleMenuBody 3.0
+#define heightForBubbleMenuOption 33.0
 
-#define heightForTabTracker 7
-#define widthForTabTracker 9
+#define heightForTabTracker 7.0
+#define widthForTabTracker 9.0
 
 /* --	VC_CheckSite elements	-- */
-#define diameterForSiteLoadingAnimation 25
-#define widthForSiteLoadingText 120
-#define heightForSiteLoadingText 20
+#define diameterForSiteLoadingAnimation 25.0
+#define widthForSiteLoadingText 120.0
+#define heightForSiteLoadingText 20.0
 
 /* --	SiteSummary elements	-- */
-#define heightForSiteSummary 149
-#define xOffsetForSiteSummaryHideTab 40
-#define widthForSiteSummaryHideTab 150
-#define heightForSiteSummaryHideTab 33
+#define heightForSiteSummary 149.0
+#define xOffsetForSiteSummaryHideTab 40.0
+#define widthForSiteSummaryHideTab 150.0
+#define heightForSiteSummaryHideTab 33.0
 #define textForSiteSummaryHideTabStateShowing @"Hide Summary"
 #define textForSiteSummaryHideTabStateHidden @"Show Summary"
-#define diameterForSiteSummaryLoadingAnimation 40
-#define widthForSiteSummaryLoadingText 180
-#define heightForSiteSummaryLoadingText 18
+#define diameterForSiteSummaryLoadingAnimation 40.0
+#define widthForSiteSummaryLoadingText 180.0
+#define heightForSiteSummaryLoadingText 18.0
 
 /* --	VC_ReportSite elements	-- */
-#define heightForFormStateCell 110
-#define diameterForFormStateCellIconView 48
+#define heightForFormStateCell 110.0
+#define diameterForFormStateCellIconView 48.0
 
 //	Notes on UITableViewAnimations...
 //	Consider using reloadSections instead of deleteRowsAtIndexPaths.  The reload animation for deleteRowsAtIndexPaths doesn't look as good (deleted rows collapse upward while their contents appear to fall out the bottom).

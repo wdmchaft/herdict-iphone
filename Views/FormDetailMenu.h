@@ -21,7 +21,8 @@
 	
 	CGFloat tailHeight;
 	CGFloat tailWidth;
-	CGFloat tailOffset;
+	CGFloat tailxOffsetForBase;
+	CGFloat tailxOffsetForTip;
 	
 	CGFloat stroke;
 	CGFloat cornerRad;
@@ -34,7 +35,8 @@
 @property (nonatomic) CGFloat stroke;
 @property (nonatomic) CGFloat tailHeight;
 @property (nonatomic) CGFloat tailWidth;
-@property (nonatomic) CGFloat tailOffset;
+@property (nonatomic) CGFloat tailxOffsetForBase;
+@property (nonatomic) CGFloat tailxOffsetForTip;
 @property (nonatomic) CGFloat cornerRad;
 @property (nonatomic) CGFloat selfwidth;
 @property (nonatomic) CGFloat selfheight;

@@ -14,14 +14,21 @@
 
 	UIImageView *theIconView;
 	
+	UIView *textPlate;
 	UILabel *cellLabel;
 	UILabel *cellDetailLabel;
+	
+	CGFloat theHeight;
 }
 
 @property (nonatomic, retain) UIImageView *theIconView;
 
+@property (nonatomic, retain) UIView *textPlate;
 @property (nonatomic, retain) UILabel *cellLabel;
 @property (nonatomic, retain) UILabel *cellDetailLabel;
 
+@property (nonatomic) CGFloat theHeight;
+
+- (void) arrangeSubviewsForNewHeight:(CGFloat)theNewHeight;
 
 @end

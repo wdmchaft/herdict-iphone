@@ -13,6 +13,7 @@
 
 @synthesize theIconView;
 
+@synthesize textPlate;
 @synthesize cellLabel;
 @synthesize cellDetailLabel;
 
@@ -36,28 +37,77 @@
 																		 diameterForFormStateCellIconView)];
 		[self addSubview:self.theIconView];
 		
+		self.textPlate = [[UIView alloc] initWithFrame:CGRectMake(0,
+																  (0.5 * (heightForFormStateCell - diameterForFormStateCellIconView)),
+																  320,
+																  diameterForFormStateCellIconView)];
+		self.textPlate.backgroundColor = [UIColor clearColor];
+		[self addSubview:self.textPlate];
+		
 		self.cellLabel = [[UILabel alloc] initWithFrame:CGRectMake(heightForFormStateCell,
-																   26,
+																   -3,
 																   320 - heightForFormStateCell,
 																   30)];
 		self.cellLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
 		self.cellLabel.textColor = [UIColor blackColor];
 		self.cellLabel.alpha = 0.85;
 		self.cellLabel.backgroundColor = [UIColor clearColor];
-		[self addSubview:self.cellLabel];
+		[self.textPlate addSubview:self.cellLabel];
 		
 		self.cellDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(heightForFormStateCell,
-																		 56,
+																		 25,
 																		 320 - heightForFormStateCell,
 																		 25)];
 		self.cellDetailLabel.font = [UIFont fontWithName:@"Helvetica" size:17];
 		self.cellDetailLabel.textColor = [UIColor grayColor];
 		self.cellDetailLabel.alpha = 0.85;
 		self.cellDetailLabel.backgroundColor = [UIColor clearColor];
-		[self addSubview:self.cellDetailLabel];		
+		[self.textPlate addSubview:self.cellDetailLabel];		
 	}
     
     return self;
+}
+
+- (void) arrangeSubviewsForNewHeight:(CGFloat)theNewHeight {
+//	NSLog(@"arrangeSubviewsForNewHeight: %f", theNewHeight);
+	
+	[UIView animateWithDuration:0.15
+					 animations:^{
+						 if (self.cellDetailLabel.alpha < 0.5) {
+							 self.cellDetailLabel.alpha = 1;
+						 } else {
+							 self.cellDetailLabel.alpha = 0;
+						 }
+					 }
+	 ];
+	
+	[UIView animateWithDuration:0.25
+					 animations:^{
+
+						 [self.theIconView setFrame:CGRectMake(0.5 * (heightForFormStateCell - diameterForFormStateCellIconView),
+															   (0.5 * (theNewHeight - diameterForFormStateCellIconView)),
+															   diameterForFormStateCellIconView,
+															   diameterForFormStateCellIconView)];
+
+						 //	Make sure textPlate, superview to cellLabel, knows the new height...
+						 [self.textPlate setFrame:CGRectMake(0.0,
+															 (0.5 * (theNewHeight - diameterForFormStateCellIconView)),
+															 320.0,
+															 diameterForFormStateCellIconView)];
+						 
+						 if (self.cellDetailLabel.alpha > 0.5) {
+							 [self.cellLabel setFrame:CGRectMake(heightForFormStateCell,
+																 -3.0,
+																 320.0 - heightForFormStateCell,
+																 30.0)];
+						 } else {
+							 [self.cellLabel setFrame:CGRectMake(heightForFormStateCell,
+																 (0.5 * (diameterForFormStateCellIconView - 30.0)),
+																 320.0 - heightForFormStateCell,
+																 30.0)];
+						 };
+					 }
+	 ];
 }
 
 - (void) drawRect:(CGRect)rect {
@@ -72,7 +122,7 @@
 	UIColor *color0 = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
 	UIColor *color1 = [UIColor colorWithRed:(barThemeRed - 0.022) green:(barThemeGreen - 0.022) blue:(barThemeBlue - 0.022)  alpha:1];	
 	UIColor *color2 = [UIColor colorWithRed:(barThemeRed - 0.062) green:(barThemeGreen - 0.062) blue:(barThemeBlue - 0.062)  alpha:1];
-	UIColor *color3 = [UIColor colorWithRed:(barThemeRed - 0.092) green:(barThemeGreen - 0.092) blue:(barThemeBlue - 0.092)  alpha:1.0];
+	UIColor *color3 = [UIColor colorWithRed:(barThemeRed - 0.092) green:(barThemeGreen - 0.092) blue:(barThemeBlue - 0.092)  alpha:0.9];
 	UIColor *color4 = [UIColor colorWithRed:(barThemeRed - 0.182) green:(barThemeGreen - 0.182) blue:(barThemeBlue - 0.182)  alpha:1];
 
 	locations[0] = 0.00;
@@ -91,7 +141,7 @@
 	
 	CGRect currentBounds = self.bounds;
 	CGPoint topCenter = CGPointMake(CGRectGetMidX(currentBounds), 0.0f);
-	CGPoint bottomCenter = CGPointMake(CGRectGetMidX(currentBounds), heightForFormStateCell);
+	CGPoint bottomCenter = CGPointMake(CGRectGetMidX(currentBounds), self.frame.size.height);
 	CGContextDrawLinearGradient(context, myGradient, topCenter, bottomCenter, 0);
 	
     CGGradientRelease(myGradient);
