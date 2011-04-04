@@ -24,8 +24,6 @@
 	FormDetailMenu *menuCategory;
 	FormDetailMenu *menuComments;
 	
-	UILabel *hideLabel;
-	
 	// --	Received from webservices.
 	NSMutableArray *t01arrayCategories;
 	
@@ -45,8 +43,6 @@
 @property (nonatomic, retain) FormDetailMenu *menuAccessible;
 @property (nonatomic, retain) FormDetailMenu *menuCategory;
 @property (nonatomic, retain) FormDetailMenu *menuComments;
-
-@property (nonatomic, retain) UILabel *hideLabel;
 
 @property (nonatomic, retain) NSMutableArray *t01arrayCategories;
 

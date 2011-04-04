@@ -19,8 +19,6 @@
 @synthesize menuCategory;
 @synthesize menuComments;
 
-@synthesize hideLabel;
-
 @synthesize t01arrayCategories;
 
 @synthesize siteIsAccessible;
@@ -42,15 +40,6 @@
 	
 	[WebservicesController getCategories:self];
 
-	self.hideLabel = [[UILabel alloc] initWithFrame:CGRectMake(270, heightForNavBar - yOverhangForNavBar + heightForURLBar + 7, 50, 14)];
-	self.hideLabel.backgroundColor = [UIColor clearColor];
-	self.hideLabel.textAlignment = UITextAlignmentCenter;
-	self.hideLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12];
-	self.hideLabel.textColor = [UIColor whiteColor];
-	self.hideLabel.text = @"Cancel";
-	self.hideLabel.userInteractionEnabled = NO;
-	//		[self.view addSubview:self.hideLabel];
-	
 	self.formTable = [[UITableView alloc] initWithFrame:CGRectMake(0,
 																   heightForNavBar - yOverhangForNavBar + heightForURLBar,
 																   320,
@@ -59,21 +48,11 @@
 	self.formTable.backgroundColor = [UIColor clearColor];
 	self.formTable.scrollEnabled = NO;
 	self.formTable.delegate = self;
-	self.formTable.dataSource = self;
-	
+	self.formTable.dataSource = self;	
 	self.formTable.separatorStyle = UITableViewCellSeparatorStyleNone;
-	
-//	self.formTable.layer.masksToBounds = NO;
-//	self.formTable.layer.shadowOffset = CGSizeMake(0, 0);
-//	self.formTable.layer.shadowRadius = 5;
-//	self.formTable.layer.shadowOpacity = 0.8;
-//	self.formTable.layer.shouldRasterize = YES;
-////	self.formTable.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.formTable.bounds].CGPath;
-	
-	self.sectionNowEditing = -1;
-	
 	[self.view addSubview:self.formTable];
 	
+	self.sectionNowEditing = -1;
 	self.siteIsAccessible = NO;
 	self.keyCategory = 0;
 	
@@ -129,8 +108,10 @@
 	[self.t01arrayCategories insertObject:@"Tap to Select" atIndex:0];
 }
 
+
 #pragma mark -
 #pragma mark UITableViewDelegate, UITableViewDataSource
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 	return 3;
 }
@@ -210,31 +191,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	/* --	If an editCell is already showing	-- */
-	BOOL editCellWasOpen = NO;
 	if (self.sectionNowEditing > -1 && indexPath.row == 0) {
 
-		editCellWasOpen = YES;
-		
-		/* --	Have to set sectionNowEditing to -1 BEFORE the transactions coming up.. it's a flag for them	-- */
-		int sectionNowEditing_priorValue = self.sectionNowEditing;
-		self.sectionNowEditing = -1;
-		
-		NSIndexPath *stateCellPath = [NSIndexPath indexPathForRow:0 inSection:sectionNowEditing_priorValue];
-		CGFloat theHeight;
-		theHeight = [self tableView:self.formTable heightForRowAtIndexPath:stateCellPath];
-		FormStateCell *theStateCell = [self.formTable cellForRowAtIndexPath:stateCellPath];
-		[theStateCell arrangeSubviewsForNewHeight:theHeight];
-		
-		NSIndexPath *pathForDeleteRow = [NSIndexPath indexPathForRow:(1) inSection:sectionNowEditing_priorValue];
-
-		[self.formTable beginUpdates];
-		[self.formTable deleteRowsAtIndexPaths:[NSArray arrayWithObject:pathForDeleteRow] withRowAnimation:UITableViewRowAnimationNone];
-		[self.formTable endUpdates];
-		
-		for (int i = 0; i < [self.formTable numberOfSections]; i++) {
-			UITableViewCell *theCell = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];
-			[self.formTable bringSubviewToFront:theCell];
-		}
+		[self removeClearRow];		
+		[self removeDetailMenuAtRow:indexPath];
 		
 		return;
 	}
@@ -243,13 +203,8 @@
 	/* --	Disable form interaction	-- */
 	self.formTable.userInteractionEnabled = NO;
 
-	CGFloat insertDelay = 0;
-	if (editCellWasOpen) {
-		insertDelay = 0.35;
-	}
-	
 	NSIndexPath *pathForInsertRow = [NSIndexPath indexPathForRow:(1) inSection:indexPath.section];
-	[self performSelector:@selector(addRow:) withObject:pathForInsertRow afterDelay:insertDelay];	
+	[self performSelector:@selector(addRow:) withObject:pathForInsertRow afterDelay:0];	
 }
 
 
@@ -260,7 +215,42 @@
 	FormStateCell *theStateCell = [self.formTable cellForRowAtIndexPath:stateCellPath];
 
 	[theStateCell arrangeSubviewsForNewHeight:[self tableView:self.formTable heightForRowAtIndexPath:stateCellPath]];
-	 
+
+	[self addDetailMenuAtRow:pathForRow];
+	
+	[self.formTable beginUpdates];
+	[self.formTable insertRowsAtIndexPaths:[NSArray arrayWithObject:pathForRow] withRowAnimation:UITableViewRowAnimationTop];
+	[self.formTable endUpdates];
+	
+	[self.formTable scrollToRowAtIndexPath:stateCellPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+}
+
+- (void) removeClearRow {
+
+	/* --	Have to set sectionNowEditing to -1 BEFORE the transactions coming up.. it's a flag for them	-- */
+	int sectionNowEditing_priorValue = self.sectionNowEditing;
+	self.sectionNowEditing = -1;
+	
+	NSIndexPath *stateCellPath = [NSIndexPath indexPathForRow:0 inSection:sectionNowEditing_priorValue];
+	CGFloat theHeight;
+	theHeight = [self tableView:self.formTable heightForRowAtIndexPath:stateCellPath];
+	FormStateCell *theStateCell = [self.formTable cellForRowAtIndexPath:stateCellPath];
+	[theStateCell arrangeSubviewsForNewHeight:theHeight];
+	
+	NSIndexPath *pathForDeleteRow = [NSIndexPath indexPathForRow:(1) inSection:sectionNowEditing_priorValue];
+	
+	[self.formTable beginUpdates];
+	[self.formTable deleteRowsAtIndexPaths:[NSArray arrayWithObject:pathForDeleteRow] withRowAnimation:UITableViewRowAnimationNone];
+	[self.formTable endUpdates];
+	
+	for (int i = 0; i < [self.formTable numberOfSections]; i++) {
+		UITableViewCell *theCell = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];
+		[self.formTable bringSubviewToFront:theCell];
+	}	
+}
+
+- (void) addDetailMenuAtRow:(NSIndexPath *)pathForRow {
+
 	FormDetailMenu *theMenu;
 	if ([pathForRow section] == 0) {
 		theMenu = self.menuCategory;
@@ -270,14 +260,20 @@
 		theMenu = self.menuAccessible;
 	}
 	[self.view insertSubview:theMenu belowSubview:self.formTable];
-	theMenu.alpha = 1;
-	[theMenu addShadow];
-		
-	[self.formTable beginUpdates];
-	[self.formTable insertRowsAtIndexPaths:[NSArray arrayWithObject:pathForRow] withRowAnimation:UITableViewRowAnimationTop];
-	[self.formTable endUpdates];
+	[theMenu addShadow];	
+}
+
+- (void) removeDetailMenuAtRow:(NSIndexPath *)pathForRow {
 	
-	[self.formTable scrollToRowAtIndexPath:stateCellPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+	FormDetailMenu *theMenu;
+	if ([pathForRow section] == 0) {
+		theMenu = self.menuCategory;
+	} else if ([pathForRow section] == 1) {
+		theMenu = self.menuComments;
+	} else if ([pathForRow section] == 2) {
+		theMenu = self.menuAccessible;
+	}
+	[theMenu performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.3];
 }
 
 #pragma mark -

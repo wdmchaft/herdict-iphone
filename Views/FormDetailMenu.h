@@ -44,7 +44,10 @@
 
 - (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint;
 
-- (void) showSelectionBackgroundForOption:(int)optionNumber;
+- (CGPathRef) getPath;
+- (void) addShadow;
+
+- (void)showSelectionBackgroundForOption:(int)optionNumber;
 - (void)hideSelectionBackground;
 
 @end

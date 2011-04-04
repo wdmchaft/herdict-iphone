@@ -55,7 +55,6 @@
 
 - (CGPathRef) getPath {
 
-	CGFloat cornerRad = self.layer.cornerRadius;
 	CGFloat selfwidth = self.frame.size.width;
 	CGFloat selfheight = self.frame.size.height;
 		
@@ -89,9 +88,8 @@
 	return xOffset;
 }
 
-- (void) moveFromTab:(int)currentTabNum toTab:(int)selectedTabNum {
-	
-	NSLog(@"called [tabTracker moveFromTab...]");
+- (void) moveFromTab:(int)currentTabNum toTab:(int)selectedTabNum {	
+//	NSLog(@"called [tabTracker moveFromTab...]");
 	
 	[self setCenter:CGPointMake([self xOffset:currentTabNum], self.center.y)];	
 	[UIView animateWithDuration:0.55 delay:0 options:UIViewAnimationOptionCurveEaseInOut

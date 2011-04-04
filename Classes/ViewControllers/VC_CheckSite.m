@@ -144,7 +144,7 @@
 }
 
 - (void) resetCheckSite {
-	NSLog(@"called resetCheckSite");
+//	NSLog(@"called resetCheckSite");
 	
 	if (self.theWebView) {
 		[self.theWebView removeFromSuperview];

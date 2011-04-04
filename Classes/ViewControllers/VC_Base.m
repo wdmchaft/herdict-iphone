@@ -141,8 +141,9 @@
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+	NSLog(@"VC_Base viewWillAppear");
+
 	[super viewWillAppear:animated];
-	NSLog(@"%@ viewWillAppear", self.title);
 	
 	[self.view bringSubviewToFront:self.theUrlBar];
 	[self.view bringSubviewToFront:self.navBar];

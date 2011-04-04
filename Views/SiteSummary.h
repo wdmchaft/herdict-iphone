@@ -25,4 +25,9 @@
 @property (nonatomic, retain) UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, retain) UILabel *loadingText;
 
+- (void)positionSiteSummaryInView;
+- (void)positionSiteSummaryOutOfView;
+- (void) setStateLoading;
+- (void) setStateLoaded:(NSString *)theMessageString theColor:(int)theSheepColor;
+
 @end

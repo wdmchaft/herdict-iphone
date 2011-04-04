@@ -32,6 +32,9 @@
 @property (nonatomic, retain) UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, retain) UILabel *loadingText;
 
+- (void) setUpSiteLoadingMessage;
+- (void) resetCheckSite;
+
 - (void) loadUrl:(NSString *)urlString;
 - (void) positionSiteSummaryInView;
 - (void) positionSiteSummaryOutOfView;

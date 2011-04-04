@@ -39,7 +39,6 @@
 								  self.frame.size.width,
 								  theTailHeight + (yPaddingForBubbleMenuBody * 4) + theMessageHeight + yPaddingForMessage + ([theOptionsArray count] * heightForBubbleMenuOption))];
 		
-		self.alpha = 0;
 		self.backgroundColor = [UIColor clearColor];
 		self.layer.anchorPoint = theAnchorPoint;
 		self.userInteractionEnabled = YES;

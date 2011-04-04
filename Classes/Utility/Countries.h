@@ -18,6 +18,7 @@
 
 @property (nonatomic, retain) NSMutableArray *t02arrayCountries;
 
++ (Countries *) sharedSingleton;
 - (void) getCountriesCallbackHandler:(ASIHTTPRequest*)request;
 
 @end
