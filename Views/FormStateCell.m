@@ -16,12 +16,14 @@
 @synthesize textPlate;
 @synthesize cellLabel;
 @synthesize cellDetailLabel;
-
+@synthesize theDelegate;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+		
+		self.userInteractionEnabled = YES;
 		
 		/* --	Get rid of the default UITableViewCell backgroundView	-- */
 		UIView *backView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
@@ -50,17 +52,17 @@
 																   30)];
 		self.cellLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
 		self.cellLabel.textColor = [UIColor blackColor];
-		self.cellLabel.alpha = 0.85;
+		self.cellLabel.alpha = 1;
 		self.cellLabel.backgroundColor = [UIColor clearColor];
 		[self.textPlate addSubview:self.cellLabel];
 		
 		self.cellDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(heightForFormStateCell,
 																		 25,
-																		 320 - heightForFormStateCell,
+																		 320 - heightForFormStateCell - 30,
 																		 25)];
 		self.cellDetailLabel.font = [UIFont fontWithName:@"Helvetica" size:17];
 		self.cellDetailLabel.textColor = [UIColor grayColor];
-		self.cellDetailLabel.alpha = 0.85;
+		self.cellDetailLabel.alpha = 1;
 		self.cellDetailLabel.backgroundColor = [UIColor clearColor];
 		[self.textPlate addSubview:self.cellDetailLabel];
 		
@@ -73,6 +75,13 @@
 	}
     
     return self;
+}
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	//NSLog(@"touchesBegan on the FormStateCell");
+	
+	[self.theDelegate touchesBegan:touches withEvent:event];
+	[self.superview touchesBegan:touches withEvent:event];
 }
 
 - (void) arrangeSubviewsForNewHeight:(CGFloat)theNewHeight {
@@ -118,7 +127,7 @@
 //																 320.0 - heightForFormStateCell,
 //																 30.0)];
 //							 self.cellLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
-							 //	Make sure textPlate, superview to cellLabel, knows the new values...
+//							 //	Make sure textPlate, superview to cellLabel, knows the new values...
 //							 [self.textPlate setFrame:CGRectMake(0.0,
 //																 (0.5 * (theNewHeight - diameterForFormStateCellIconView_shrunk)),
 //																 320.0,

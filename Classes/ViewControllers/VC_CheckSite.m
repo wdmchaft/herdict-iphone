@@ -70,7 +70,7 @@
 	// --	We handle the site summary content right here - theSiteView and theSiteView.SiteSummary never have to know about it.
 	NSString *countryCode = [siteSummaryDictionary objectForKey:@"countryCode"];
 	NSString *countryString = [NSString string];
-	for (id item in [[Countries sharedSingleton] t02arrayCountries]) {
+	for (id item in [[HerdictArrays sharedSingleton] t02arrayCountries]) {
 		NSString *countryCodeFromArray = [item objectForKey:@"value"];
 		if ([countryCodeFromArray isEqualToString:countryCode]) {
 			countryString = [item objectForKey:@"label"];
@@ -144,7 +144,8 @@
 	
 	NSString *theUrlString = urlString;
 	theUrlString = [theUrlString stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	theUrlString = [theUrlString stringByReplacingOccurrencesOfString:@"www." withString:@""];		
+	theUrlString = [theUrlString stringByReplacingOccurrencesOfString:@"www." withString:@""];
+	
 	if ([theUrlString isEqualToString:self.lastTestedUrl]) {
 		NSLog(@"[self.theUrlString isEqualToString:self.lastTestedUrl]");
 		return;

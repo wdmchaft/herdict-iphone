@@ -28,7 +28,7 @@
 //}
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	NSLog(@"touchesBegan on the special view");
+	//NSLog(@"touchesBegan on the special view");
 	[self.superview touchesBegan:touches withEvent:event];
 }
 

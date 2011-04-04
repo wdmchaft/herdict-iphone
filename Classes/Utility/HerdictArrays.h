@@ -1,5 +1,5 @@
 //
-//  Countries.h
+//  HerdictArrays.h
 //  Herdict
 //
 //  Created by Christian Brink on 3/26/11.
@@ -10,15 +10,19 @@
 #import "ASIHTTPRequest.h"
 #import "WebservicesController.h"
 
-@interface Countries : NSObject {
+@interface HerdictArrays : NSObject {
 
+	NSMutableArray *t01arrayCategories;
 	NSMutableArray *t02arrayCountries;	
 
 }
 
+@property (nonatomic, retain) NSMutableArray *t01arrayCategories;
 @property (nonatomic, retain) NSMutableArray *t02arrayCountries;
 
-+ (Countries *) sharedSingleton;
++ (HerdictArrays *) sharedSingleton;
+
+- (void) getCategoriesCallbackHandler:(ASIHTTPRequest *)request;
 - (void) getCountriesCallbackHandler:(ASIHTTPRequest*)request;
 
 @end

@@ -1,26 +1,31 @@
 //
-//  Countries.m
+//  HerdictArrays.m
 //  Herdict
 //
 //  Created by Christian Brink on 3/26/11.
 //  Copyright 2011 Herdict. All rights reserved.
 //
 
-#import "Countries.h"
+#import "HerdictArrays.h"
 
 
-@implementation Countries
+@implementation HerdictArrays
 
+@synthesize t01arrayCategories;
 @synthesize t02arrayCountries;
 
-+ (Countries *) sharedSingleton {
-	static Countries *sharedSingleton;
++ (HerdictArrays *) sharedSingleton {
+	static HerdictArrays *sharedSingleton;
 	
 	@synchronized(self) {
 		if (!sharedSingleton)
-			sharedSingleton = [[Countries alloc] init];		
+			sharedSingleton = [[HerdictArrays alloc] init];		
 		return sharedSingleton;
 	}
+}
+
+- (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {	
+	self.t01arrayCategories = [WebservicesController getArrayFromJSONData:[request responseData]];
 }
 
 - (void) getCountriesCallbackHandler:(ASIHTTPRequest*)request {
@@ -38,5 +43,6 @@
 	}
 	NSLog(@"[self.t02arrayCountries count]: %i", [self.t02arrayCountries count]);	
 }
+
 
 @end

@@ -78,7 +78,7 @@
 
 + (void)reportUrl:(NSString *)theEncodedUrl reportType:(NSString *)theReportType country:(NSString *)theCountry userISP:(NSString *)theIsp userLocation:(NSString *)theLocation interest:(NSString *)theInterest reason:(NSString *)theReason sourceId:(NSString *)theSourceId tag:(NSString *)theTag comments:(NSString *)theComments defaultCountryCode:(NSString *)theDCC defaultispDefaultName:(NSString *)theDIN callbackDelegate:(id)theDelegate {
 	
-	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/report&report.url=%@&report.country.shortName=%@&report.ispDefaultName=%@&report.location=%@&report.interest=%@&report.reason=%@&report.sourceId=%@&report.tag=%@&report.comments=%@&defaultCountryCode=%@&defaultispDefaultName=%@&encoding=%@",
+	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/report?%@&report.url=%@&report.country.shortName=%@&report.ispDefaultName=%@&report.location=%@&report.interest=%@&report.reason=%@&report.sourceId=%@&report.tag=%@&report.comments=%@&defaultCountryCode=%@&defaultispDefaultName=%@&encoding=%@",
 						   theReportType,
 						   theEncodedUrl,
 						   theCountry,
@@ -91,7 +91,7 @@
 						   theComments,
 						   theDCC,
 						   theDIN];
-	[self asynchGETRequest:urlString callbackDelegate:theDelegate callbackSelector:@selector(reportUrlStatusCallbackHandler:)];	
+	[self asynchGETRequest:urlString callbackDelegate:theDelegate callbackSelector:@selector(reportUrlStatusCallbackHandler:)];
 }
 
 

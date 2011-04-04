@@ -31,7 +31,7 @@
 
 #define heightForURLBar 41.0
 
-#define yPaddingForBubbleMenuBody 3.0
+#define yPaddingForBubbleMenuBody 3.0f
 #define heightForBubbleMenuOption 33.0
 
 #define heightForTabTracker 11.0

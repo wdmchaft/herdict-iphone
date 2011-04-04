@@ -27,7 +27,7 @@
 		
 	self.layer.masksToBounds = NO;
 	self.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
-	self.layer.shadowRadius = 3.0f;
+	self.layer.shadowRadius = 1.0f;
 	self.layer.shadowOpacity = 0.8f;
 	self.layer.shouldRasterize = YES;
 	self.layer.shadowPath = [self getPath];	

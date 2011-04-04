@@ -12,20 +12,15 @@
 
 @interface FormMenuComments : UIView {
 	
-	UITextView *theMessage;
 	UITextView *theComments;
-	
-	NSMutableArray *menuOptions;
-	UIView *selectionBackground;
 	
 	CGFloat selfwidth;
 	CGFloat selfheight;
 	
 	CGFloat xPaddingLeft;
 	CGFloat xPaddingRight;
-	CGFloat yPaddingForMessage;
+	CGFloat yPaddingForCutout;
 	
-	CGFloat messageHeight;
 	CGFloat tailHeight;
 	CGFloat tailWidth;
 	CGFloat tailxOffsetForBase;
@@ -41,20 +36,15 @@
 	CGFloat cornerRad;
 }
 
-@property (nonatomic, retain) UITextView *theMessage;
 @property (nonatomic, retain) UITextView *theComments;
-
-@property (nonatomic, retain) NSMutableArray *menuOptions;
-@property (nonatomic, retain) UIView *selectionBackground;
 
 @property (nonatomic) CGFloat selfwidth;
 @property (nonatomic) CGFloat selfheight;
 
 @property (nonatomic) CGFloat xPaddingLeft;
 @property (nonatomic) CGFloat xPaddingRight;
-@property (nonatomic) CGFloat yPaddingForMessage;
+@property (nonatomic) CGFloat yPaddingForCutout;
 
-@property (nonatomic) CGFloat messageHeight;
 @property (nonatomic) CGFloat tailHeight;
 @property (nonatomic) CGFloat tailWidth;
 @property (nonatomic) CGFloat tailxOffsetForBase;
@@ -71,7 +61,7 @@
 
 
 
-- (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame tailHeight:(CGFloat)theTailHeight;
+- (id)initWithCutoutHeight:(CGFloat)theCutoutHeight withFrame:(CGRect)theFrame tailHeight:(CGFloat)theTailHeight;
 
 - (CGPathRef) getPath;
 - (void) addShadow;

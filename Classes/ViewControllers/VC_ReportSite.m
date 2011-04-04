@@ -15,11 +15,12 @@
 
 @synthesize sectionNowEditing;
 
-@synthesize menuAccessible;
+@synthesize menuCategoryDefaultSelection;
 @synthesize menuCategory;
+@synthesize menuCommentsDefaultSelection;
 @synthesize menuComments;
+@synthesize menuAccessible;
 
-@synthesize t01arrayCategories;
 
 @synthesize siteIsAccessible;
 @synthesize keyCategory;
@@ -38,17 +39,16 @@
 
 	self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
 	
-	[WebservicesController getCategories:self];
-
 	self.formTable = [[UITableView alloc] initWithFrame:CGRectMake(0,
 																   heightForNavBar - yOverhangForNavBar + heightForURLBar,
 																   320,
 																   heightForFormStateCell * 4)
 												  style:UITableViewStylePlain];
 	self.formTable.backgroundColor = [UIColor clearColor];
+	self.formTable.userInteractionEnabled = YES;
 	self.formTable.scrollEnabled = NO;
 	self.formTable.delegate = self;
-	self.formTable.dataSource = self;	
+	self.formTable.dataSource = self;
 	self.formTable.separatorStyle = UITableViewCellSeparatorStyleNone;
 	[self.view addSubview:self.formTable];
 	
@@ -57,26 +57,22 @@
 	self.keyCategory = 0;
 	
 	// --	menuCategory
-	[self setUpT01ArrayCategories];
 	self.menuCategory = [[FormMenuCategory alloc] initWithMessageHeight:0
 															  withFrame:CGRectMake(25, heightForNavBar - yOverhangForNavBar + heightForURLBar + 10, 270, 0)
 															 tailHeight:0];
 	self.menuCategory.theMessage.text = @"";
-
+	self.menuCategoryDefaultSelection = [NSString stringWithString:@"Tap to Select"];
+	[self setUpMenuCategory];
+	
 	// --	menuComments
-	self.menuComments = [[FormMenuComments alloc] initWithMessageHeight:0.0f
-															  withFrame:CGRectMake(25, heightForNavBar - yOverhangForNavBar + heightForURLBar + heightForFormStateCell + 2, 270, 0)
+	self.menuComments = [[FormMenuComments alloc] initWithCutoutHeight:112.0f
+															  withFrame:CGRectMake(20, heightForNavBar - yOverhangForNavBar + heightForURLBar + 20, 280, 0)
 															 tailHeight:0];
-	self.menuComments.theMessage.text = @"";
+	self.menuComments.theComments.delegate = self;
+	self.menuCommentsDefaultSelection = [NSString stringWithString:@"Tap to Type"];
 	
 	// --	menuAccessible
-	NSMutableArray *menuAccessibleOptions = [NSMutableArray array];
-	[menuAccessibleOptions addObject:[NSString stringWithString:@"Yes"]];
-	[menuAccessibleOptions addObject:[NSString stringWithString:@"No"]];
-	self.menuAccessible = [[FormMenuCategory alloc] initWithMessageHeight:32
-														  withFrame:CGRectMake(-110, heightForNavBar - yOverhangForNavBar + 60, 270, 0)
-														 tailHeight:25];
-	self.menuAccessible.theMessage.text = @"Can you access this site?";
+	self.menuAccessible = [[FormMenuAccessible alloc] initWithFrame:CGRectMake(heightForFormStateCell, 28.0, 126.0, heightForMenuCategoryOption)];
 }
 
 
@@ -92,25 +88,25 @@
     [super dealloc];
 }
 
-
-#pragma mark -
-#pragma mark Herdict API callbacks
-
-- (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {
-
-	self.t01arrayCategories = [WebservicesController getArrayFromJSONData:[request responseData]];
-	[self setUpT01ArrayCategories];
-}
-
-- (void) setUpT01ArrayCategories {	
-	[self.t01arrayCategories insertObject:[NSDictionary dictionaryWithObject:@"Tap to Select" forKey:@"label"] atIndex:0];
+- (void) setUpMenuCategory {
+	[[[HerdictArrays sharedSingleton] t01arrayCategories] insertObject:[NSDictionary dictionaryWithObject:self.menuCategoryDefaultSelection forKey:@"label"] atIndex:0];
 	NSMutableArray *menuOptions = [NSMutableArray array];
-	for (id item in self.t01arrayCategories) {
+	for (id item in [[HerdictArrays sharedSingleton] t01arrayCategories]) {
 		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
 		[menuOptions addObject:anOption];
 	}	
 	[self.menuCategory setUpMenuOptionsArray:menuOptions];
-//	NSLog(@"self.t01arrayCategories: %@", self.t01arrayCategories);
+	NSLog(@"[[HerdictArrays sharedSingleton] t01arrayCategories]: %@", [[HerdictArrays sharedSingleton] t01arrayCategories]);
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+		self.comments = textView.text;
+		[self selectFormMenuOption:nil];
+        return FALSE;
+    }
+    return TRUE;
 }
 
 #pragma mark -
@@ -161,38 +157,45 @@
 
 	FormStateCell *cell = [[[FormStateCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellState"] autorelease];
 		
-	// --	'Is the Site Accessible?'.
-	if (indexPath.section == 2) {
-		UIImage *iconImage = [UIImage imageNamed:@"146-gavel@2x.png"];
-		cell.theIconView.image = iconImage;
-		cell.cellLabel.text = @"Site Accessible";
-		if (self.siteIsAccessible) {
-			cell.cellDetailLabel.text = @"Yes";
-		} else {
-			cell.cellDetailLabel.text = @"No";
-		}
-		return cell;
-	}
 	if (indexPath.section == 0) {
 		UIImage *iconImage = [UIImage imageNamed:@"15-tags@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Site Category";
-		cell.cellDetailLabel.text = [[self.t01arrayCategories objectAtIndex:self.keyCategory] objectForKey:@"label"];
-		
+		NSString *stringFromArray = [[[[HerdictArrays sharedSingleton] t01arrayCategories] objectAtIndex:self.keyCategory] objectForKey:@"label"];
+		if ([stringFromArray length] > 0) {
+			cell.cellDetailLabel.text = stringFromArray;
+		} else {
+			cell.cellDetailLabel.text = self.menuCategoryDefaultSelection;
+		}
 		return cell;
 	}
 	if (indexPath.section == 1) {
 		UIImage *iconImage = [UIImage imageNamed:@"09-chat-2@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Comments";
-		cell.cellDetailLabel.text = self.comments;
+		if ([self.comments length] > 0) {
+			cell.cellDetailLabel.text = self.comments;
+		} else {
+			cell.cellDetailLabel.text = self.menuCommentsDefaultSelection;
+		}
+		cell.cellDetailLabel.alpha = 1;
+		return cell;
+	}
+	if (indexPath.section == 2) {
+		UIImage *iconImage = [UIImage imageNamed:@"146-gavel@2x.png"];
+		cell.theIconView.image = iconImage;
+		[cell.cellLabel setCenter:CGPointMake(cell.cellLabel.center.x, cell.cellLabel.center.y - 4)];
+		cell.cellLabel.text = @"Site Accessible?";
+		cell.cellDetailLabel.alpha = 0;
+		[cell.textPlate insertSubview:self.menuAccessible atIndex:0];
+		cell.theDelegate = self; 
 		return cell;
 	}
 	return 0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+	
 	/* --	If an editCell is already showing	-- */
 	if (self.sectionNowEditing > -1 && indexPath.row == 0) {
 
@@ -201,6 +204,11 @@
 		
 		return;
 	}
+
+	if (indexPath.section == 2) {
+		return;
+	}
+	
 	self.sectionNowEditing = indexPath.section;
 
 	NSIndexPath *pathForInsertRow = [NSIndexPath indexPathForRow:(1) inSection:indexPath.section];
@@ -223,6 +231,10 @@
 	[self.formTable endUpdates];
 	
 	[self.formTable scrollToRowAtIndexPath:pathForRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
+	
+	FormStateCell *cell = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+	[cell.textPlate insertSubview:self.menuAccessible atIndex:0];
+
 }
 
 - (void) removeClearRow {
@@ -246,22 +258,31 @@
 	for (int i = 0; i < [self.formTable numberOfSections]; i++) {
 		UITableViewCell *theCell = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];
 		[self.formTable bringSubviewToFront:theCell];
-	}	
+	}
+	
+	FormStateCell *cell = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+	[cell.textPlate insertSubview:self.menuAccessible atIndex:0];
 }
 
 - (void) addDetailMenuAtRow:(NSIndexPath *)pathForRow {
 
 	FormMenuCategory *theMenu;
 	if ([pathForRow section] == 0) {
+		[self setUpMenuCategory];
 		theMenu = self.menuCategory;
 	} else if ([pathForRow section] == 1) {
 		theMenu = self.menuComments;
-	} else if ([pathForRow section] == 2) {
-		theMenu = self.menuAccessible;
 	}
 	[self.view insertSubview:theMenu belowSubview:self.formTable];
 	[theMenu addShadow];
 	[self.view performSelector:@selector(bringSubviewToFront:) withObject:theMenu afterDelay:0.3];
+	if ([theMenu isEqual:self.menuComments]) {
+		[self.menuComments.theComments becomeFirstResponder];
+	}
+	
+	FormStateCell *cell = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+	[cell.textPlate insertSubview:self.menuAccessible atIndex:0];
+
 }
 
 - (void) removeDetailMenu {
@@ -271,17 +292,18 @@
 
 	[self.view performSelector:@selector(sendSubviewToBack:) withObject:self.menuComments afterDelay:0];
 	[self.menuComments performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.3];
+	
+	FormStateCell *cell = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+	[cell.textPlate insertSubview:self.menuAccessible atIndex:0];
 
-	[self.view performSelector:@selector(sendSubviewToBack:) withObject:self.menuAccessible afterDelay:0];
-	[self.menuAccessible performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.3];	
 }
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	NSLog(@"touchesBegan on %@", self);
+	//NSLog(@"touchesBegan on %@", self);
 	
 	UITouch *touch = [touches anyObject];
 	
-	// --	If it's in any of our BubbleMenu views....
+	// --	If it's in any of self.view's own BubbleMenu views....
 	for (UIView *theMenu in [self.view subviews]) {
 		if ([theMenu isKindOfClass:[FormMenuCategory class]]) {
 			if ([theMenu pointInside:[touch locationInView:theMenu] withEvent:nil]) {
@@ -290,10 +312,22 @@
 				for (UIView *theSubview in [theMenu subviews]) {
 					if (theSubview.tag > 0) {
 						if ([theSubview pointInside:[touch locationInView:theSubview] withEvent:nil]) {
-							[self performSelector:@selector(selectFormMenuCategoryOption:) withObject:theSubview afterDelay:0];
+							[self performSelector:@selector(selectFormMenuOption:) withObject:theSubview afterDelay:0];
 							return;
 						}
 					}
+				}
+			}
+		}
+	}
+	// --	If it's in menuAccessible....
+	if ([self.menuAccessible pointInside:[touch locationInView:self.menuAccessible] withEvent:nil]) {				
+		// --	If it 's in any of this BubbleMenu's tagged views...
+		for (UIView *theSubview in [self.menuAccessible subviews]) {
+			if (theSubview.tag > 0) {
+				if ([theSubview pointInside:[touch locationInView:theSubview] withEvent:nil]) {
+					[self performSelector:@selector(selectFormMenuOption:) withObject:theSubview afterDelay:0];
+					return;
 				}
 			}
 		}
@@ -303,8 +337,8 @@
 #pragma mark -
 #pragma mark Form 'Dives'
 
-- (void) selectFormMenuCategoryOption:(UITextView *)selectedSubview {
-	NSLog(@"selectFormMenuCategoryOption.. view with tag: %i", selectedSubview.tag);
+- (void) selectFormMenuOption:(UITextView *)selectedSubview {
+	//NSLog(@"selectFormMenuOption.. view with tag: %i", selectedSubview.tag);
 	
 	FormMenuCategory *theMenu = [selectedSubview superview];
 	
@@ -318,19 +352,65 @@
 		} else {
 			self.siteIsAccessible = NO;
 		}
+		NSLog(@"self.siteIsAccessible: %@", self.siteIsAccessible ? @"YES" : @"NO");
+		[self initiateReportCallout];
+		return;
 	} else if ([theMenu isEqual:self.menuCategory]) {
 		self.keyCategory = selectedSubview.tag;		
 		if (self.keyCategory > 0) {
-			NSMutableDictionary *theDict = [self.t01arrayCategories objectAtIndex:self.keyCategory];
+			NSMutableDictionary *theDict = [[[HerdictArrays sharedSingleton] t01arrayCategories] objectAtIndex:self.keyCategory];
 			FormStateCell *categoryMenu = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 			categoryMenu.cellDetailLabel.text = [theDict objectForKey:@"label"];
 		}
-	} else if ([theMenu isEqual:self.menuComments]) {
-		//		self.comments = selectedSubview.tag;
 	}
+	// --	Show any updated Comments string.
+	FormStateCell *cellStateComment = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
+	if ([self.comments length] > 0) {
+		cellStateComment.cellDetailLabel.text = self.comments;
+	} else {
+		cellStateComment.cellDetailLabel.text = self.menuCommentsDefaultSelection;
+	}
+	
 	[self performSelector:@selector(removeClearRow) withObject:nil afterDelay:0.1];
 	[self performSelector:@selector(removeDetailMenu) withObject:nil afterDelay:0.1];
 }
 
+- (void) initiateReportCallout {
 
+	NSString *theUrl = [[self.tabBarController.delegate theUrlBar] text]; 
+	theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+	theUrl = [theUrl stringByReplacingOccurrencesOfString:@"www." withString:@""];
+	theUrl = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)theUrl, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
+	
+	NSString *theReportType = [NSString string];
+	if (self.siteIsAccessible) {
+		theReportType = @"siteAccessible";
+	} else {
+		theReportType = @"siteInaccessible";
+	}
+	
+	NSString *theCountry = [[NetworkInfo sharedSingleton] detected_countryCode];
+	
+	NSString *theDetectedIspName = [[NetworkInfo sharedSingleton] detected_ispName];
+	theDetectedIspName = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)theDetectedIspName, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
+
+	NSString *theLocation = [NSString string];
+	NSString *theInterest = [NSString string];
+	NSString *theReason = [NSString string];
+	NSString *theSourceId = [NSString string];
+	
+	NSString *theTag = [[[[HerdictArrays sharedSingleton] t01arrayCategories] objectAtIndex:self.keyCategory] objectForKey:@"value"];
+	if ([theTag isEqualToString:self.menuCategoryDefaultSelection]) {
+		theTag = @"";
+	}
+	
+	NSString *theComments = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self.comments, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
+	
+	[WebservicesController reportUrl:theUrl reportType:theReportType country:theCountry userISP:theDetectedIspName userLocation:theLocation interest:theInterest reason:theReason sourceId:theSourceId tag:theTag comments:theComments defaultCountryCode:theCountry defaultispDefaultName:theDetectedIspName callbackDelegate:self];
+}
+
+- (void) reportUrlStatusCallbackHandler:(ASIHTTPRequest *)request {
+
+	
+}
 @end

@@ -43,12 +43,14 @@
 	[self.view setCenter:CGPointMake(self.view.center.x, self.view.center.y - 20)];
 	
 	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-	
-	[WebservicesController getIp:[NetworkInfo sharedSingleton]];
-	
+		
 	self.theController = [[UITabBarController alloc] init];
 	self.theController.delegate = self;
 	
+	[WebservicesController getCategories:[HerdictArrays sharedSingleton]];
+	[WebservicesController getCountries:[HerdictArrays sharedSingleton]]; 
+	[WebservicesController getIp:[NetworkInfo sharedSingleton]];
+
 	/* --	Set up theController	-- */
 	self.vcHerdometer = [[VC_Herdometer alloc] init];
 	UIImage *iconHerdometer = [UIImage imageNamed:@"07-map-marker.png"];
@@ -66,7 +68,7 @@
 	theController.viewControllers = controllers;
 	[self.theController.view setFrame:CGRectMake(0, 0, 320, 460)];
 	[self.view addSubview:self.theController.view];
-	
+		
 	/* --	Set up theTabTracker	-- */
 	self.theTabTracker = [[TabTracker alloc] initAtTab:0];
 	[self.view addSubview:self.theTabTracker];
@@ -204,6 +206,9 @@
 		return NO;
 	}
 	
+	if ([currentVc isEqual:self.vcReportSite]) {
+		[self.vcReportSite selectFormMenuOption:nil];
+	}
 	return YES;
 }
 
@@ -289,7 +294,7 @@
 
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	NSLog(@"touchesBegan on %@", self);
+	//NSLog(@"touchesBegan on %@", self);
 	
 	UITouch *touch = [touches anyObject];
 	

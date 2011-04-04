@@ -42,8 +42,8 @@
 		self.xPaddingLeft = self.selfwidth * 0.065;
 		self.xPaddingRight = self.selfwidth * 0.08;
 
-		self.yPaddingForMessage = 0;
-		if (theMessageHeight > 0) {
+		self.yPaddingForMessage = 0.0;
+		if (theMessageHeight > 0.0) {
 			self.yPaddingForMessage = yPaddingForBubbleMenuBody;
 		}
 		
@@ -53,7 +53,7 @@
 		self.tailxOffsetForBase = self.selfwidth * 0.30;
 		self.tailxOffsetForTip = self.selfwidth * 0.5;
 		
-		self.selfheight = self.tailHeight + (yPaddingForBubbleMenuBody * 4) + self.messageHeight + self.yPaddingForMessage;
+		self.selfheight = self.tailHeight + (yPaddingForBubbleMenuBody * 4.0) + self.messageHeight + self.yPaddingForMessage;
 		
 		[self setFrame:CGRectMake(self.frame.origin.x,
 								  self.frame.origin.y,
@@ -101,8 +101,8 @@
 
 - (void) setUpMenuOptionsArray:(NSMutableArray *)theOptionsArray {
 
-	self.selfheight = self.tailHeight + (yPaddingForBubbleMenuBody * 4) + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * ([theOptionsArray count] - 1));	
-	NSLog(@"setUpMenuOptionsArray just set self.selfheight to: %f", self.selfheight);
+	NSLog(@"setUpMenuOptionsArray");
+	self.selfheight = self.tailHeight + (yPaddingForBubbleMenuBody * 4) + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * ([theOptionsArray count] - 2));	
 	
 	[self setFrame:CGRectMake(self.frame.origin.x,
 							  self.frame.origin.y,
@@ -120,7 +120,7 @@
 	for (NSString *optionText in theOptionsArray) {
 		if ([theOptionsArray indexOfObject:optionText] > 0) {
 			UITextView *menuOption = [[[UITextView alloc] initWithFrame:CGRectMake(self.xPaddingLeft,
-																				  self.tailHeight + yPaddingForBubbleMenuBody + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * (-1 + [theOptionsArray indexOfObject:optionText])),
+																				  self.tailHeight + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * (-2 + [theOptionsArray indexOfObject:optionText])),
 																				  self.selfwidth - self.xPaddingRight,
 																				  heightForMenuCategoryOption)] autorelease];
 			menuOption.contentMode = UIViewContentModeCenter;
@@ -154,7 +154,7 @@
 	
 	self.selectionBackground.backgroundColor = UIColorFromRGB(0x5AabF7);
 	[self.selectionBackground setFrame:CGRectMake(selectedOption.frame.origin.x - 6,
-												  selectedOption.frame.origin.y + 4,
+												  selectedOption.frame.origin.y + 5,
 												  selectedOption.frame.size.width,
 												  selectedOption.frame.size.height)]; 
 }

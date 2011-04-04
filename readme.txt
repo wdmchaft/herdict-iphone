@@ -1,9 +1,6 @@
 current todo:
 
 - VC_ReportSite:
-	menuComments: design the UITextField menu, with a button "Back" and a button "Done/Next"
-	menuAccessible: add the 2 buttons
-	hook it up to actually do the 'report site' callouts
 	UIAlert when you're done, and dump user out on Check Site
 - Hook up the ModalVCs for for 'Info' and 'My ISP'.
 - Give theSiteSummary access to theCountry... lost it somehow.
