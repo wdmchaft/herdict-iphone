@@ -87,29 +87,6 @@
 	[self.theSiteSummary positionSiteSummaryInView];
 }
 
-- (void) searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	[super searchBarTextDidBeginEditing:searchBar];
-	
-	[self.theSiteSummary positionSiteSummaryOutOfView];
-}
-
-#pragma mark -
-#pragma mark UITouch
-
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	[super touchesBegan:touches withEvent:event];
-	
-	UITouch *touch = [touches anyObject];
-	
-	if ([self.theSiteSummary pointInside:[touch locationInView:self.theSiteSummary] withEvent:nil]) {
-		if ([self.theSiteSummary.hideLabel.text isEqualToString:textForSiteSummaryHideTabStateShowing]) {
-			[self.theSiteSummary positionSiteSummaryOutOfView];
-		} else {
-			[self.theSiteSummary positionSiteSummaryInView];
-		}
-		return;
-	}
-}
 
 - (void) setUpSiteLoadingMessage {
 

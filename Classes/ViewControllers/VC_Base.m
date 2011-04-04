@@ -267,11 +267,15 @@
 	self.navItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonCancelTyping] autorelease];
 	
 	[self.theUrlBarMenu showBubbleMenuWithAnimation:[NSNumber numberWithBool:YES]];
+	
+	// --	add theScreen - this catches touches on reportMapView, so user doesn't have to tap Cancel to dismiss theUrlBar.
 	[self.view addSubview:self.theScreen];
 	[self.view bringSubviewToFront:self.theScreen];
 
 	[self.vcHerdometer.timerInititiateAnnotateReport invalidate];
 	[self.vcHerdometer.reportMapView removeAnnotation:self.vcHerdometer.theAnnotation];
+	
+	[self.vcCheckSite.theSiteSummary positionSiteSummaryOutOfView];	
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
@@ -306,6 +310,14 @@
 			}
 		}
 	}
+	if ([self.vcCheckSite.theSiteSummary pointInside:[touch locationInView:self.vcCheckSite.theSiteSummary] withEvent:nil]) {
+		if ([self.vcCheckSite.theSiteSummary.hideLabel.text isEqualToString:textForSiteSummaryHideTabStateShowing]) {
+			[self.vcCheckSite.theSiteSummary positionSiteSummaryOutOfView];
+		} else {
+			[self.vcCheckSite.theSiteSummary positionSiteSummaryInView];
+		}
+		return;
+	}	
 	if ([self.theUrlBar isFirstResponder]) {
 		if (![self.theUrlBar pointInside:[touch locationInView:self.theUrlBar] withEvent:nil]) {		
 			[self.theUrlBar resignFirstResponder];

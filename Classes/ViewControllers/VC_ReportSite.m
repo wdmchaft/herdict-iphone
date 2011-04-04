@@ -193,15 +193,12 @@
 	/* --	If an editCell is already showing	-- */
 	if (self.sectionNowEditing > -1 && indexPath.row == 0) {
 
-		[self removeClearRow];		
-		[self removeDetailMenuAtRow:indexPath];
+		[self removeClearRow];
+		[self removeDetailMenu];
 		
 		return;
 	}
 	self.sectionNowEditing = indexPath.section;
-
-	/* --	Disable form interaction	-- */
-	self.formTable.userInteractionEnabled = NO;
 
 	NSIndexPath *pathForInsertRow = [NSIndexPath indexPathForRow:(1) inSection:indexPath.section];
 	[self performSelector:@selector(addRow:) withObject:pathForInsertRow afterDelay:0];	
@@ -260,20 +257,20 @@
 		theMenu = self.menuAccessible;
 	}
 	[self.view insertSubview:theMenu belowSubview:self.formTable];
-	[theMenu addShadow];	
+	[theMenu addShadow];
+	[self.view performSelector:@selector(bringSubviewToFront:) withObject:theMenu afterDelay:0.3];
 }
 
-- (void) removeDetailMenuAtRow:(NSIndexPath *)pathForRow {
+- (void) removeDetailMenu {
 	
-	FormDetailMenu *theMenu;
-	if ([pathForRow section] == 0) {
-		theMenu = self.menuCategory;
-	} else if ([pathForRow section] == 1) {
-		theMenu = self.menuComments;
-	} else if ([pathForRow section] == 2) {
-		theMenu = self.menuAccessible;
-	}
-	[theMenu performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.3];
+	[self.view performSelector:@selector(sendSubviewToBack:) withObject:self.menuCategory afterDelay:0];
+	[self.menuCategory performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.3];
+
+	[self.view performSelector:@selector(sendSubviewToBack:) withObject:self.menuComments afterDelay:0];
+	[self.menuComments performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.3];
+
+	[self.view performSelector:@selector(sendSubviewToBack:) withObject:self.menuAccessible afterDelay:0];
+	[self.menuAccessible performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.3];	
 }
 
 #pragma mark -

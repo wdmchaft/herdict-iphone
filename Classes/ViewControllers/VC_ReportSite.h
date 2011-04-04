@@ -52,5 +52,8 @@
 
 
 - (void) getCategoriesCallbackHandler:(ASIHTTPRequest *)request;
+- (void) removeClearRow;
+- (void) addDetailMenu;
+- (void)removeDetailMenuAtRow:(NSIndexPath *)pathForRow;
 
 @end

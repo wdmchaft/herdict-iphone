@@ -36,8 +36,6 @@
 - (void) resetCheckSite;
 
 - (void) loadUrl:(NSString *)urlString;
-- (void) positionSiteSummaryInView;
-- (void) positionSiteSummaryOutOfView;
 
 - (void) getSiteSummaryCallbackHandler:(ASIHTTPRequest*)request;
 

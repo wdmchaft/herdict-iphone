@@ -58,23 +58,7 @@
 	locations[1] = 0.94;
 	[colors addObject:(id)[color1 CGColor]];
 	locations[2] = 1.00;
-	[colors addObject:(id)[color2 CGColor]];
-	
-	
-//	UIColor *color0 = [UIColor colorWithRed:(barThemeRed - 0.392) green:(barThemeGreen - 0.392) blue:(barThemeBlue - 0.392)  alpha:1.0];
-//	UIColor *color1 = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
-//	UIColor *color2 = [UIColor colorWithRed:(barThemeRed - 0.252) green:(barThemeGreen - 0.252) blue:(barThemeBlue - 0.252)  alpha:1.0];
-//	
-//	locations[0] = 0.0;
-//	[colors addObject:(id)[color0 CGColor]];
-//	locations[1] = 0.02;
-//	[colors addObject:(id)[color1 CGColor]];
-//	locations[2] = 0.2;
-//	[colors addObject:(id)[color1 CGColor]];
-//	locations[3] = 0.98;
-//	[colors addObject:(id)[color2 CGColor]];
-//	locations[4] = 1.0;
-//	[colors addObject:(id)[color0 CGColor]];
+	[colors addObject:(id)[color2 CGColor]];	
 	
 	myGradient = CGGradientCreateWithColors(space, (CFArrayRef)colors, locations);
 	CGColorSpaceRelease(space);

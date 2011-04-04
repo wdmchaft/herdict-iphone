@@ -48,6 +48,8 @@
 
 - (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint;
 
+- (CGPathRef) getPath;
+
 - (void)showBubbleMenuWithAnimation:(NSNumber *)animation;
 - (void)hideBubbleMenu;
 - (void)rotateForUse;
