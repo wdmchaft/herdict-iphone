@@ -8,36 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-#import "WebservicesController.h"
-#import "NetworkInfo.h"
+#import "VC_Base.h"
 
-#import "VC_Herdometer.h"
-#import "VC_CheckSite.h"
-#import "VC_ReportSite.h"
-
-#import "TabTracker.h"
-
-@interface HerdictAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
+@interface HerdictAppDelegate : NSObject <UIApplicationDelegate> {
 
     UIWindow *window;
-    UITabBarController *theController;
-
-	NSString *currentUrl;
-	BOOL selectionMadeViaBubbleMenu;
-	int currentTab;
-	
-	TabTracker *theTabTracker;
+	VC_Base *vcBase;
 	
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet UITabBarController *theController;
-
-@property (nonatomic, retain) NSString *currentUrl;
-@property (nonatomic) BOOL selectionMadeViaBubbleMenu;
-@property (nonatomic) int currentTab;
-
-@property (nonatomic, retain) TabTracker *theTabTracker;
-
+@property (nonatomic, retain) VC_Base *vcBase;
 
 @end

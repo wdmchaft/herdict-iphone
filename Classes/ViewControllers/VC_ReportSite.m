@@ -37,6 +37,8 @@
 	[super viewDidLoad];
 
 	self.title = @"Report Site";
+
+	self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
 	
 	[WebservicesController getCategories:self];
 

@@ -6,11 +6,13 @@
 //  Copyright 2011 Herdict. All rights reserved.
 //
 
-#import "VC_Base.h"
+#import "Constants.h"
+#import "WebservicesController.h"
+#import "Countries.h"
 #import "SiteSummary.h"
 
 
-@interface VC_CheckSite : VC_Base {
+@interface VC_CheckSite : UIViewController {
 
 	UIView *loadingView;
 	UIWebView *theWebView;

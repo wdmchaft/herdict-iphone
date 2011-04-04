@@ -22,10 +22,55 @@
 
 @synthesize theScreen;
 
+// formerly on appDelegate
+@synthesize theController;
+
+@synthesize currentUrl;
+@synthesize selectionMadeViaBubbleMenu;
+@synthesize currentTab;
+
+@synthesize theTabTracker;
+
+@synthesize vcHerdometer;
+@synthesize vcCheckSite;
+@synthesize vcReportSite;
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+	[self.view setCenter:CGPointMake(self.view.center.x, self.view.center.y - 20)];
+	
+	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+	
+	[WebservicesController getIp:[NetworkInfo sharedSingleton]];
+	
+	self.theController = [[UITabBarController alloc] init];
+	self.theController.delegate = self;
+	
+	/* --	Set up theController	-- */
+	self.vcHerdometer = [[VC_Herdometer alloc] init];
+	UIImage *iconHerdometer = [UIImage imageNamed:@"07-map-marker.png"];
+	UITabBarItem *itemHerdometer = [[[UITabBarItem alloc] initWithTitle:@"Herdometer" image:iconHerdometer tag:0] autorelease];
+	self.vcHerdometer.tabBarItem = itemHerdometer;
+	self.vcCheckSite = [[VC_CheckSite alloc] init];
+	UIImage *iconCheckSite = [UIImage imageNamed:@"06-magnify.png"];
+	UITabBarItem *itemCheckSite = [[[UITabBarItem alloc] initWithTitle:@"Check Site" image:iconCheckSite tag:1] autorelease];
+	self.vcCheckSite.tabBarItem = itemCheckSite;	
+	self.vcReportSite = [[VC_ReportSite alloc] init];
+	UIImage *iconReportSite = [UIImage imageNamed:@"179-notepad.png"];
+	UITabBarItem *itemReportSite = [[[UITabBarItem alloc] initWithTitle:@"Report Site" image:iconReportSite tag:2] autorelease];
+	self.vcReportSite.tabBarItem = itemReportSite;
+	NSArray *controllers = [NSArray arrayWithObjects:self.vcHerdometer, self.vcCheckSite, self.vcReportSite, nil];
+	theController.viewControllers = controllers;
+	[self.theController.view setFrame:CGRectMake(0, 0, 320, 460)];
+	[self.view addSubview:self.theController.view];
+	
+	/* --	Set up theTabTracker	-- */
+	self.theTabTracker = [[TabTracker alloc] initAtTab:0];
+	[self.view addSubview:self.theTabTracker];
+	[self.view bringSubviewToFront:self.theTabTracker];		
 	
 	/* --	Set up theUrlBar	-- */
 	self.theUrlBar = [[URLBar alloc] initWithFrame:CGRectMake(0,heightForNavBar - yOverhangForNavBar,320,heightForURLBar)];
@@ -49,11 +94,7 @@
 	[self.navBar pushNavigationItem:navItem animated:NO];
 	UIImage *herdictBadgeImage = [UIImage imageNamed:@"herdict_badge"];
 	UIImageView *herdictBadgeImageView = [[[UIImageView alloc] initWithImage:herdictBadgeImage] autorelease];
-	[herdictBadgeImageView setFrame:CGRectMake(
-											   95,
-											   -1,
-											   130,
-											   48)];
+	[herdictBadgeImageView setFrame:CGRectMake(95, -1, 130, 48)];
 	navItem.titleView = herdictBadgeImageView;
 
 	/* --	Set up navBar buttons	-- */
@@ -95,9 +136,8 @@
 	self.theScreen = [[Screen alloc] initWithFrame:CGRectMake(0,
 															  heightForNavBar - yOverhangForNavBar + heightForURLBar,
 															  320,
-															  480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
-	self.theScreen.backgroundColor = [UIColor clearColor];
-		
+															  480 - heightForStatusBar_nonBaseViews - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 20)];
+	self.theScreen.backgroundColor = [UIColor clearColor];		
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -126,6 +166,75 @@
 	[theUrlBar release];		
 
     [super dealloc];
+}
+
+#pragma mark -
+#pragma mark UITabBarControllerDelegate methods
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+	//	NSLog(@"theController.delegate says.. shouldSelectViewController");
+	
+	UIViewController *currentVc = theController.selectedViewController;
+	self.currentTab = [self.theController.viewControllers indexOfObject:currentVc];
+	UIViewController *selectedVc = viewController;
+	
+	/* --	Find out whether this selection is being made via the bubble menu	-- */
+	if (self.theUrlBarMenu.alpha > 0) {
+		self.selectionMadeViaBubbleMenu = YES;
+	} else {
+		self.selectionMadeViaBubbleMenu = NO;
+	}
+	
+	/* --	Grab theUrlBar.text													-- */
+	NSString *current = [self fixUpTypedUrl];
+	if ([current length] == 0) {
+		self.currentUrl = nil;
+	} else {
+		self.currentUrl = [NSString stringWithString:current];
+	}
+	
+	/* --	If they are selecting Herdometer, just let them go there			-- */
+	if ([selectedVc isKindOfClass:[VC_Herdometer class]]) {
+		return YES;
+	}
+	
+	/* --	Otherwise...														-- */	
+	if (![self urlTyped]) {
+		return NO;
+	}
+	
+	return YES;
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+	//	NSLog(@"theController.delegate says.. didSelectViewController");
+	
+	UIViewController *selectedVC = viewController;
+	
+	/* --	Match the dismissed VC's theUrlBar.text state						-- */
+	NSString *current;
+	if (self.currentUrl) {
+		current = [NSString stringWithString:self.currentUrl];
+	} else {
+		current = [NSString stringWithString:@""];
+	}
+	[self.theUrlBar setText:current];
+	
+	/* --	Match the dismissed VC's menu state									-- */
+	int menuOption = [self.theController.viewControllers indexOfObject:selectedVC];
+	if (self.selectionMadeViaBubbleMenu && menuOption > 0) {
+		[self.theUrlBarMenu showBubbleMenuWithAnimation:[NSNumber numberWithBool:NO]];
+		[self.theUrlBarMenu showSelectionBackgroundForOption:menuOption];
+		[self.theUrlBarMenu hideBubbleMenu];
+	}
+	
+	/* --	Match the dismissed VC's theTabTracker state						-- */
+	[self.theTabTracker moveFromTab:self.currentTab toTab:[self.theController.viewControllers indexOfObject:selectedVC]];
+	
+	/* --	If it's vcCheckSite...												-- */
+	if ([selectedVC isKindOfClass:[VC_CheckSite class]]) {
+		[selectedVC loadUrl:self.theUrlBar.text];
+	}
 }
 
 
@@ -159,12 +268,18 @@
 	[self.theUrlBarMenu showBubbleMenuWithAnimation:[NSNumber numberWithBool:YES]];
 	[self.view addSubview:self.theScreen];
 	[self.view bringSubviewToFront:self.theScreen];
+
+	[self.vcHerdometer.timerInititiateAnnotateReport invalidate];
+	[self.vcHerdometer.reportMapView removeAnnotation:self.vcHerdometer.theAnnotation];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
 	self.navItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonWiFi] autorelease];
 	[NSTimer scheduledTimerWithTimeInterval:0.00 target:self.theUrlBarMenu selector:@selector(hideBubbleMenu) userInfo:nil repeats:NO];
 	[self.theScreen removeFromSuperview];
+
+	[self.vcHerdometer.timerInititiateAnnotateReport invalidate];
+	self.vcHerdometer.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self.vcHerdometer selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
 }
 
 
@@ -172,8 +287,6 @@
 	NSLog(@"touchesBegan on %@", self);
 	
 	UITouch *touch = [touches anyObject];
-	
-	CGPoint touchPoint;
 	
 	// --	If it's in any of our BubbleMenu views....
 	for (UIView *theMenu in [self.view subviews]) {
@@ -213,10 +326,9 @@
 			[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];		
 
 			/* --	Use self.tabBarController to manage the switch... have to hand-hold it a little	-- */
-			UITabBarController *theCon = self.tabBarController;
-			if ([theCon.delegate tabBarController:theCon shouldSelectViewController:[theCon.viewControllers objectAtIndex:selectedSubview.tag]]) {
-				self.tabBarController.selectedIndex = selectedSubview.tag;
-				[theCon.delegate tabBarController:theCon didSelectViewController:[theCon.viewControllers objectAtIndex:selectedSubview.tag]];
+			if ([self tabBarController:self.theController shouldSelectViewController:[self.theController.viewControllers objectAtIndex:selectedSubview.tag]]) {
+				self.theController.selectedIndex = selectedSubview.tag;
+				[self tabBarController:self.theController didSelectViewController:[self.theController.viewControllers objectAtIndex:selectedSubview.tag]];
 			}
 		}
 	}

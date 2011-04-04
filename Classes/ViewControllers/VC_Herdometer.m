@@ -23,14 +23,16 @@
 	NSLog(@"VC_Herdometer viewDidLoad");
 
 	[super viewDidLoad];
-	
+		
+	self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+
 	self.title = @"Herdometer";
 	
 	// --	Set up reportMapView.
 	self.reportMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0,
 																	 heightForNavBar - yOverhangForNavBar + heightForURLBar,
 																	 320,
-																	 480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
+																	 480 - heightForStatusBar_nonBaseViews - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
 	self.reportMapView.delegate = self;
 	self.reportMapView.userInteractionEnabled = YES;
 	self.reportMapView.scrollEnabled = NO;
@@ -346,20 +348,5 @@
 	return reportAnnotationView;
 }
 				
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
-	[super searchBarTextDidBeginEditing:self.theUrlBar];
-	
-	[self.timerInititiateAnnotateReport invalidate];
-	[self.reportMapView removeAnnotation:self.theAnnotation];
-
-}
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-	[super searchBarTextDidEndEditing:self.theUrlBar];
-	
-	[self.timerInititiateAnnotateReport invalidate];
-	self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
-}
 
 @end

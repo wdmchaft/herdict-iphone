@@ -25,11 +25,13 @@
 
 	self.title = @"Check Site";
 	
+	self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+
 	[self setUpSiteLoadingMessage];
 	[self resetCheckSite];
 	
 	self.theSiteSummary = [[SiteSummary alloc] initWithFrame:CGRectMake(0,
-																		480 - 20 - 49 - heightForSiteSummaryHideTab,
+																		480 - heightForStatusBar_real - 49 - heightForSiteSummaryHideTab,
 																		320,
 																		heightForSiteSummary + 5)];
 	[self.view insertSubview:self.theSiteSummary aboveSubview:self.theWebView];	
@@ -115,7 +117,7 @@
 	self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(0,
 																heightForNavBar - yOverhangForNavBar + heightForURLBar,
 																320,
-																480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
+																480 - heightForStatusBar_nonBaseViews - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
 	self.loadingView.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
 	[self.view addSubview:self.loadingView];
 
@@ -152,7 +154,7 @@
 	self.theWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0,
 																  heightForNavBar - yOverhangForNavBar + heightForURLBar,
 																  320,
-																  480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
+																  480 - heightForStatusBar_nonBaseViews - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
 	self.theWebView.backgroundColor = [UIColor clearColor];
 	self.theWebView.scalesPageToFit = YES;
 	self.theWebView.userInteractionEnabled = YES;

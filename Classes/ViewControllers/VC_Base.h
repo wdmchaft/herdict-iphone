@@ -13,7 +13,11 @@
 
 #import "WebservicesController.h"
 #import "NetworkInfo.h"
-#import "Countries.h"
+
+#import "VC_Herdometer.h"
+#import "VC_CheckSite.h"
+#import "VC_ReportSite.h"
+#import "TabTracker.h"
 
 #import "CustomNavBar.h"
 #import "CustomUIButton.h"
@@ -22,7 +26,8 @@
 #import "Screen.h"
 
 
-@interface VC_Base : UIViewController <UINavigationBarDelegate, UIAlertViewDelegate, UISearchBarDelegate> {
+
+@interface VC_Base : UIViewController <UITabBarControllerDelegate, UINavigationBarDelegate, UIAlertViewDelegate, UISearchBarDelegate> {
 
 	/* --	Nav Bar	-- */
 	UIView *blackBackgroundForNavBar;
@@ -38,6 +43,20 @@
 	
 	Screen *theScreen;
 	
+	
+	// formerly in appDelegate
+	UITabBarController *theController;
+	
+	NSString *currentUrl;
+	BOOL selectionMadeViaBubbleMenu;
+	int currentTab;
+	
+	TabTracker *theTabTracker;
+	
+	VC_Herdometer *vcHerdometer;
+	VC_CheckSite *vcCheckSite;
+	VC_ReportSite *vcReportSite;
+	
 }
 
 @property (nonatomic, retain) UIView *blackBackgroundForNavBar;
@@ -51,6 +70,20 @@
 @property (nonatomic, retain) BubbleMenu *theUrlBarMenu;
 
 @property (nonatomic, retain) Screen *theScreen;
+
+// formerly in appDelegate
+@property (nonatomic, retain) IBOutlet UITabBarController *theController;
+
+@property (nonatomic, retain) NSString *currentUrl;
+@property (nonatomic) BOOL selectionMadeViaBubbleMenu;
+@property (nonatomic) int currentTab;
+
+@property (nonatomic, retain) TabTracker *theTabTracker;
+
+@property (nonatomic, retain) VC_Herdometer *vcHerdometer;
+@property (nonatomic, retain) VC_CheckSite *vcCheckSite;
+@property (nonatomic, retain) VC_ReportSite *vcReportSite;
+
 
 
 - (BOOL) urlTyped;

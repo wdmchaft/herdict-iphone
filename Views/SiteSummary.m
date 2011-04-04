@@ -167,7 +167,7 @@
 	[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
 						 [self setFrame:CGRectMake(0,
-												   480 - 20 - 49 - heightForSiteSummary,
+												   480 - heightForStatusBar_real - 49 - heightForSiteSummary,
 												   320,
 												   heightForSiteSummary + 5)];
 					 } completion:^(BOOL finished){
@@ -196,7 +196,7 @@
 	[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
 						 [self setFrame:CGRectMake(0,
-												   480 - 20 - 49 - heightForSiteSummaryHideTab,
+												   480 - heightForStatusBar_real - 49 - heightForSiteSummaryHideTab,
 												   320,
 												   heightForSiteSummary + 5)];
 					 } completion:^(BOOL finished){

@@ -1,6 +1,5 @@
 current todo:
 
-- For performance...  put navBar, theUrlBar, theUrlMenu all on AppDelegate, i.e. preloaded as an overlay.
 - VC_ReportSite:
 	menuComments: design the UITextField menu, with a button "Back" and a button "Done/Next"
 	menuAccessible: add the 2 buttons

@@ -6,14 +6,15 @@
 //  Copyright 2011 Herdict. All rights reserved.
 //
 
-#import "VC_Base.h"
-
+#import "ASIHTTPRequest.h"
+#import "Constants.h"
+#import "WebservicesController.h"
 #import "FormStateCell.h"
 #import "FormClearCell.h"
 #import "FormDetailMenu.h"
 
 
-@interface VC_ReportSite : VC_Base <UITableViewDelegate, UITableViewDataSource> {
+@interface VC_ReportSite : UIViewController <UITableViewDelegate, UITableViewDataSource> {
 
 	UITableView *formTable;
 	

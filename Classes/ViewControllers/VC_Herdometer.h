@@ -6,8 +6,6 @@
 //  Copyright 2011 Herdict. All rights reserved.
 //
 
-#import "VC_Base.h"
-
 #import "Constants.h"
 #import "WebservicesController.h"
 
@@ -16,7 +14,7 @@
 #import "ASIHTTPRequest.h"
 #import "TouchXML.h"
 
-@interface VC_Herdometer : VC_Base <MKMapViewDelegate> {
+@interface VC_Herdometer : UIViewController <MKMapViewDelegate> {
 
 	/* -- Herdometer -- */
 	MKMapView *reportMapView;

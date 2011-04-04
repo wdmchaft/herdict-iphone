@@ -11,127 +11,25 @@
 @implementation HerdictAppDelegate
 
 @synthesize window;
-@synthesize theController;
-
-@synthesize currentUrl;
-@synthesize selectionMadeViaBubbleMenu;
-@synthesize currentTab;
-
-@synthesize theTabTracker;
+@synthesize vcBase;
 
 
 #pragma mark -
 #pragma mark Application lifecycle
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-	
-	[WebservicesController getIp:[NetworkInfo sharedSingleton]];
-	
-	self.theController = [[UITabBarController alloc] init];
-	self.theController.delegate = self;
-	
-	/* --	Set up the VCs	-- */
-	VC_Herdometer *vcHerdometer = [[VC_Herdometer alloc] init];
-	UIImage *iconHerdometer = [UIImage imageNamed:@"07-map-marker.png"];
-	UITabBarItem *itemHerdometer = [[[UITabBarItem alloc] initWithTitle:@"Herdometer" image:iconHerdometer tag:0] autorelease];
-	vcHerdometer.tabBarItem = itemHerdometer;
-	VC_CheckSite *vcCheckSite = [[VC_CheckSite alloc] init];
-	UIImage *iconCheckSite = [UIImage imageNamed:@"06-magnify.png"];
-	UITabBarItem *itemCheckSite = [[[UITabBarItem alloc] initWithTitle:@"Check Site" image:iconCheckSite tag:1] autorelease];
-	vcCheckSite.tabBarItem = itemCheckSite;	
-	VC_ReportSite *vcReportSite = [[VC_ReportSite alloc] init];
-	UIImage *iconReportSite = [UIImage imageNamed:@"179-notepad.png"];
-	UITabBarItem *itemReportSite = [[[UITabBarItem alloc] initWithTitle:@"Report Site" image:iconReportSite tag:2] autorelease];
-	vcReportSite.tabBarItem = itemReportSite;
-	NSArray *controllers = [NSArray arrayWithObjects:vcHerdometer, vcCheckSite, vcReportSite, nil];
-	theController.viewControllers = controllers;
-	[self.window addSubview:self.theController.view];
-	
-	/* --	Set up theTabTracker	-- */
-	self.theTabTracker = [[TabTracker alloc] initAtTab:0];
-	[self.window addSubview:self.theTabTracker];
-	[self.window bringSubviewToFront:self.theTabTracker];
 
+	// --	Set up vcBase.
+	self.vcBase = [[VC_Base alloc] init];
+	[self.vcBase.view setFrame:CGRectMake(0, 20, 320, 460)];
+	[self.window addSubview:self.vcBase.view];
+	
 	// --	Show the window.
     [self.window makeKeyAndVisible];
-
-	[vcHerdometer release];
-	[vcCheckSite release];
-	[vcReportSite release];
 
     return YES;
 }
 
-#pragma mark -
-#pragma mark UITabBarControllerDelegate methods
-
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-//	NSLog(@"theController.delegate says.. shouldSelectViewController");
-
-	VC_Base *currentVc = theController.selectedViewController;
-	self.currentTab = [self.theController.viewControllers indexOfObject:currentVc];
-	VC_Base *selectedVc = viewController;
-
-	/* --	Find out whether this selection is being made via the bubble menu	-- */
-	if (currentVc.theUrlBarMenu.alpha > 0) {
-		self.selectionMadeViaBubbleMenu = YES;
-	} else {
-		self.selectionMadeViaBubbleMenu = NO;
-	}
-		
-	/* --	Grab theUrlBar.text													-- */
-	NSString *current = [currentVc fixUpTypedUrl];
-	if ([current length] == 0) {
-		self.currentUrl = nil;
-	} else {
-		self.currentUrl = [NSString stringWithString:current];
-	}
-	
-	/* --	If they are selecting Herdometer, just let them go there			-- */
-	if ([selectedVc isKindOfClass:[VC_Herdometer class]]) {
-		return YES;
-	}
-
-	/* --	Otherwise...														-- */	
-	if (![currentVc urlTyped]) {
-		return NO;
-	}
-	
-	return YES;
-}
-
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-//	NSLog(@"theController.delegate says.. didSelectViewController");
-
-	VC_Base *selectedVC = viewController;
-
-	/* --	Match the dismissed VC's theUrlBar.text state						-- */
-	NSString *current;
-	if (self.currentUrl) {
-		current = [NSString stringWithString:self.currentUrl];
-	} else {
-		current = [NSString stringWithString:@""];
-	}
-	[selectedVC.theUrlBar setText:current];
-
-	/* --	Match the dismissed VC's menu state									-- */
-	int menuOption = [self.theController.viewControllers indexOfObject:selectedVC];
-	if (self.selectionMadeViaBubbleMenu && menuOption > 0) {
-		[selectedVC.theUrlBarMenu showBubbleMenuWithAnimation:[NSNumber numberWithBool:NO]];
-		[selectedVC.theUrlBarMenu showSelectionBackgroundForOption:menuOption];
-		[selectedVC.theUrlBarMenu hideBubbleMenu];
-	}
-	
-	/* --	Match the dismissed VC's theTabTracker state						-- */
-	[self.theTabTracker moveFromTab:self.currentTab toTab:[self.theController.viewControllers indexOfObject:selectedVC]];
-	
-	/* --	If it's vcCheckSite...												-- */
-	if ([selectedVC isKindOfClass:[VC_CheckSite class]]) {
-		[selectedVC loadUrl:selectedVC.theUrlBar.text];
-	}
-}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     /*

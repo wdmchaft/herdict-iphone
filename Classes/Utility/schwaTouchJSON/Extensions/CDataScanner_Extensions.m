@@ -106,7 +106,7 @@ for (const u_int8_t *C = start; C < current; ++C)
 
 NSUInteger theCharacter = current - theLineStart;
 
-NSRange theStartRange = NSIntersectionRange((NSRange){ .location = MAX((NSInteger)self.scanLocation - 20, 0), .length = 20 + (NSInteger)self.scanLocation - 20 }, (NSRange){ .location = 0, .length = self.data.length });
+NSRange theStartRange = NSIntersectionRange((NSRange){ .location = MAX((NSInteger)self.scanLocation - 20, 0), .length = 20 + (NSInteger)self.scanLocation - 20}, (NSRange){ .location = 0, .length = self.data.length });
 NSRange theEndRange = NSIntersectionRange((NSRange){ .location = self.scanLocation, .length = 20 }, (NSRange){ .location = 0, .length = self.data.length });
 
 

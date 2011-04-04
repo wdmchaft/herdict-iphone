@@ -21,6 +21,9 @@
 #define menuThemeBlue 0.973
 
 /* --	VC_Base elements	-- */
+#define heightForStatusBar_nonBaseViews 0
+#define heightForStatusBar_real 20.0
+
 #define heightForNavBar 44.0
 #define yOverhangForNavBar 4.0
 #define navBarColorDelta 0.102
