@@ -124,7 +124,7 @@
 	UITextView *selectedOption = [self viewWithTag:optionNumber];
 	
 	self.selectionBackground.backgroundColor = UIColorFromRGB(0x5AabF7);
-	[self.selectionBackground setFrame:CGRectMake(selectedOption.frame.origin.x,
+	[self.selectionBackground setFrame:CGRectMake(selectedOption.frame.origin.x - 6,
 												  selectedOption.frame.origin.y + 3,
 												  selectedOption.frame.size.width,
 												  selectedOption.frame.size.height)]; 

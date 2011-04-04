@@ -137,7 +137,7 @@
 															  heightForNavBar - yOverhangForNavBar + heightForURLBar,
 															  320,
 															  480 - heightForStatusBar_nonBaseViews - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 20)];
-	self.theScreen.backgroundColor = [UIColor clearColor];		
+	self.theScreen.backgroundColor = [UIColor clearColor];	
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -179,14 +179,14 @@
 	self.currentTab = [self.theController.viewControllers indexOfObject:currentVc];
 	UIViewController *selectedVc = viewController;
 	
-	/* --	Find out whether this selection is being made via the bubble menu	-- */
+	// --	Find out whether this selection is being made via the bubble menu
 	if (self.theUrlBarMenu.alpha > 0) {
 		self.selectionMadeViaBubbleMenu = YES;
 	} else {
 		self.selectionMadeViaBubbleMenu = NO;
 	}
 	
-	/* --	Grab theUrlBar.text													-- */
+	// --	Grab theUrlBar.text
 	NSString *current = [self fixUpTypedUrl];
 	if ([current length] == 0) {
 		self.currentUrl = nil;
@@ -194,12 +194,12 @@
 		self.currentUrl = [NSString stringWithString:current];
 	}
 	
-	/* --	If they are selecting Herdometer, just let them go there			-- */
+	// --	If they are selecting Herdometer, just let them go there
 	if ([selectedVc isKindOfClass:[VC_Herdometer class]]) {
 		return YES;
 	}
 	
-	/* --	Otherwise...														-- */	
+	// --	Otherwise...
 	if (![self urlTyped]) {
 		return NO;
 	}
@@ -322,7 +322,7 @@
 		if (![self.theUrlBar pointInside:[touch locationInView:self.theUrlBar] withEvent:nil]) {		
 			[self.theUrlBar resignFirstResponder];
 		}
-	}
+	}	
 }
 
 - (void) selectBubbleMenuOption:(UITextView *)selectedSubview {

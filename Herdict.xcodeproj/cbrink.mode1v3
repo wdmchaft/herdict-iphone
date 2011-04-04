@@ -287,7 +287,7 @@
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 212}, {230, 709}}</string>
+							<string>{{0, 180}, {230, 709}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -324,7 +324,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>VC_ReportSite.h</string>
+								<string>VC_ReportSite.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -332,11 +332,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>VC_ReportSite.h</string>
+										<string>VC_ReportSite.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>A6453FAB13496AB700103631</string>
+										<string>A64540121349704C00103631</string>
 										<key>history</key>
 										<array>
 											<string>A64D9C801342D95700D8B036</string>
@@ -346,7 +346,6 @@
 											<string>A6453E221349534100103631</string>
 											<string>A6453E521349558200103631</string>
 											<string>A6453E57134955B500103631</string>
-											<string>A6453E82134958F800103631</string>
 											<string>A6453EC513495B9D00103631</string>
 											<string>A6453EDD13495EC400103631</string>
 											<string>A6453EE013495EC400103631</string>
@@ -355,19 +354,20 @@
 											<string>A6453EEF13495F0100103631</string>
 											<string>A6453F0113495F4100103631</string>
 											<string>A6453F051349625800103631</string>
-											<string>A6453F0C134963D700103631</string>
 											<string>A6453F2C1349664700103631</string>
 											<string>A6453F49134966B100103631</string>
 											<string>A6453F4A134966B100103631</string>
 											<string>A6453F4B134966B100103631</string>
 											<string>A6453F51134966E400103631</string>
-											<string>A6453F81134968DA00103631</string>
 											<string>A6453F901349694400103631</string>
 											<string>A6453F911349694400103631</string>
 											<string>A6453FA1134969E300103631</string>
-											<string>A6453FA513496A9F00103631</string>
-											<string>A6453FAA13496AB700103631</string>
-											<string>A6453F371349666600103631</string>
+											<string>A6453FB613496BA800103631</string>
+											<string>A6453FB713496BA800103631</string>
+											<string>A6453FC913496D3C00103631</string>
+											<string>A6453FDA13496DB300103631</string>
+											<string>A645400F1349701E00103631</string>
+											<string>A64540101349701E00103631</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -565,7 +565,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>A6453FAC13496AB700103631</string>
 		<string>A6453C361347E10700103631</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>A6453B111347AA9500103631</string>
@@ -809,8 +808,6 @@
 							<key>Dock</key>
 							<array>
 								<dict>
-									<key>BecomeActive</key>
-									<true/>
 									<key>ContentConfiguration</key>
 									<dict>
 										<key>PBXProjectModuleGUID</key>
@@ -837,6 +834,8 @@
 							<string>318pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>

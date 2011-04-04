@@ -1,7 +1,6 @@
 current todo:
 
 - VC_ReportSite:
-	use a theScreen to get it all clickable
 	menuComments: design the UITextField menu, with a button "Back" and a button "Done/Next"
 	menuAccessible: add the 2 buttons
 	hook it up to actually do the 'report site' callouts

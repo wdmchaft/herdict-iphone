@@ -31,8 +31,6 @@
 	BOOL siteIsAccessible;
 	int keyCategory;
 	NSString *comments;
-	
-	
 }
 
 @property (nonatomic, retain) UITableView *formTable;

@@ -273,10 +273,35 @@
 	[self.menuAccessible performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.3];	
 }
 
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	NSLog(@"touchesBegan on %@", self);
+	
+	UITouch *touch = [touches anyObject];
+	
+	// --	If it's in any of our BubbleMenu views....
+	for (UIView *theMenu in [self.view subviews]) {
+		if ([theMenu isKindOfClass:[FormDetailMenu class]]) {
+			if ([theMenu pointInside:[touch locationInView:theMenu] withEvent:nil]) {
+				
+				// --	If it 's in any of this BubbleMenu's tagged views...
+				for (UIView *theSubview in [theMenu subviews]) {
+					if (theSubview.tag > 0) {
+						if ([theSubview pointInside:[touch locationInView:theSubview] withEvent:nil]) {
+							[self performSelector:@selector(selectFormDetailMenuOption:) withObject:theSubview afterDelay:0];
+							return;
+						}
+					}
+				}
+			}
+		}
+	}	
+}
+
 #pragma mark -
 #pragma mark Form 'Dives'
 
 - (void) selectFormDetailMenuOption:(UITextView *)selectedSubview {
+	NSLog(@"selectFormDetailMenuOption.. view with tag: %i", selectedSubview.tag);
 	
 	FormDetailMenu *theMenu = [selectedSubview superview];
 	
@@ -284,66 +309,23 @@
 	[theMenu showSelectionBackgroundForOption:selectedSubview.tag];
 	[NSTimer scheduledTimerWithTimeInterval:0.25 target:theMenu selector:@selector(hideSelectionBackground) userInfo:nil repeats:NO];				
 	
-	// --	Schedule hiding of bubble menu.
-	[NSTimer scheduledTimerWithTimeInterval:0.2 target:theMenu selector:@selector(hideFormDetailMenu) userInfo:nil repeats:NO];
-	
 	if ([theMenu isEqual:self.menuAccessible]) {
 		if (selectedSubview.tag == 1) {
 			self.siteIsAccessible = YES;
-			[self.formTable beginUpdates];
-			[self.formTable deleteSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationRight];
-			[self.formTable endUpdates];
-			NSRange sectionsToReload = NSMakeRange(0,3);				
-			[self.formTable beginUpdates];
-			[self.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
-			[self.formTable endUpdates];
-		}
-		if (selectedSubview.tag == 2) {
+		} else {
 			self.siteIsAccessible = NO;
-			[self.formTable beginUpdates];
-			[self.formTable insertSections:[NSIndexSet indexSetWithIndex:1] withRowAnimation:UITableViewRowAnimationLeft];
-			[self.formTable endUpdates];
-			NSRange sectionsToReload = NSMakeRange(0,4);
-			[self.formTable beginUpdates];
-			[self.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
-			[self.formTable endUpdates];				
 		}
-		[self performSelector:@selector(returnFromFormDive) withObject:nil afterDelay:0.4];
-		return;
 	}
 	if ([theMenu isEqual:self.menuCategory]) {
-		self.keyCategory = selectedSubview.tag;
-		NSRange sectionsToReload = NSMakeRange(2,1);
-		if (self.siteIsAccessible) {
-			sectionsToReload = NSMakeRange(1, 0);
-		}
-		[self.formTable beginUpdates];
-		[self.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
-		[self.formTable endUpdates];
-		
-		[self performSelector:@selector(returnFromFormDive) withObject:nil afterDelay:0.4];
-		return;
+		self.keyCategory = selectedSubview.tag;		
 
 	}
 	if ([theMenu isEqual:self.menuComments]) {
 		//		self.comments = selectedSubview.tag;
-		//		NSRange sectionsToReload = NSMakeRange(7,1);
-		//		[self.formTable beginUpdates];
-		//		[self.formTable reloadSections:[NSIndexSet indexSetWithIndexesInRange:sectionsToReload] withRowAnimation:UITableViewRowAnimationNone];
-		//		[self.formTable endUpdates];
-
-		[self performSelector:@selector(returnFromFormDive) withObject:nil afterDelay:0.4];
-		return;
 	}
 	[super selectFormDetailMenuOption:selectedSubview];
-}
-
-
-- (void) returnFromFormDive {
-	
-	// --	Enable form interaction.
-	self.formTable.userInteractionEnabled = YES;
-	
+	[self performSelector:@selector(removeClearRow) withObject:nil afterDelay:0.2];
+	[self performSelector:@selector(removeDetailMenu) withObject:nil afterDelay:0.2];
 }
 
 
