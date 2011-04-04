@@ -33,6 +33,8 @@
 		self.layer.shadowOffset = CGSizeMake(0, 0);
 		self.layer.shadowRadius = 5;
 		self.layer.shadowOpacity = 0.8;
+		self.layer.shouldRasterize = YES;
+		self.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.bounds].CGPath;
     }
     return self;
 }

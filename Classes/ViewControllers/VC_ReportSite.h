@@ -11,7 +11,6 @@
 #import "FormStateCell.h"
 #import "FormClearCell.h"
 #import "FormDetailMenu.h"
-#import "HeightForRow.h"
 
 
 @interface VC_ReportSite : VC_Base <UITableViewDelegate, UITableViewDataSource> {

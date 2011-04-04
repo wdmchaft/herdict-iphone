@@ -61,10 +61,12 @@
 	
 	self.formTable.separatorStyle = UITableViewCellSeparatorStyleNone;
 	
-	self.formTable.layer.masksToBounds = NO;
-	self.formTable.layer.shadowOffset = CGSizeMake(0, 0);
-	self.formTable.layer.shadowRadius = 5;
-	self.formTable.layer.shadowOpacity = 0.8;
+//	self.formTable.layer.masksToBounds = NO;
+//	self.formTable.layer.shadowOffset = CGSizeMake(0, 0);
+//	self.formTable.layer.shadowRadius = 5;
+//	self.formTable.layer.shadowOpacity = 0.8;
+//	self.formTable.layer.shouldRasterize = YES;
+////	self.formTable.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.formTable.bounds].CGPath;
 	
 	self.sectionNowEditing = -1;
 	
@@ -213,7 +215,7 @@
 		
 		/* --	Have to set sectionNowEditing to -1 BEFORE the transactions coming up.. it's a flag for them	-- */
 		int sectionNowEditing_priorValue = self.sectionNowEditing;
-		self.sectionNowEditing = -1;		
+		self.sectionNowEditing = -1;
 		
 		NSIndexPath *stateCellPath = [NSIndexPath indexPathForRow:0 inSection:sectionNowEditing_priorValue];
 		CGFloat theHeight;
@@ -227,9 +229,10 @@
 		[self.formTable deleteRowsAtIndexPaths:[NSArray arrayWithObject:pathForDeleteRow] withRowAnimation:UITableViewRowAnimationNone];
 		[self.formTable endUpdates];
 		
-//		[self.formTable beginUpdates];
-//		[self.formTable reloadSections:[NSIndexSet indexSetWithIndex:sectionNowEditing_priorValue] withRowAnimation:UITableViewRowAnimationNone];
-//		[self.formTable endUpdates];
+		for (int i = 0; i < [self.formTable numberOfSections]; i++) {
+			UITableViewCell *theCell = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:i]];
+			[self.formTable bringSubviewToFront:theCell];
+		}
 		
 		return;
 	}
@@ -266,15 +269,12 @@
 	}
 	[self.view insertSubview:theMenu belowSubview:self.formTable];
 	theMenu.alpha = 1;
+	[theMenu addShadow];
 		
 	[self.formTable beginUpdates];
 	[self.formTable insertRowsAtIndexPaths:[NSArray arrayWithObject:pathForRow] withRowAnimation:UITableViewRowAnimationTop];
 	[self.formTable endUpdates];
 	
-//	[self.formTable beginUpdates];
-//	[self.formTable reloadSections:[NSIndexSet indexSetWithIndex:[pathForRow section]] withRowAnimation:UITableViewRowAnimationNone];
-//	[self.formTable endUpdates];
-		
 	[self.formTable scrollToRowAtIndexPath:stateCellPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 

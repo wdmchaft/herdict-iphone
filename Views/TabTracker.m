@@ -15,8 +15,8 @@
 - (id)initAtTab:(int)tabNumber {
     
 	/* --	Decide frame here	-- */
-	CGRect frame = CGRectMake([self xOffset:tabNumber],
-							  480 - 20 - 49 - (heightForTabTracker - 4),
+	CGRect frame = CGRectMake([self xOffset:tabNumber] - (widthForTabTracker / 2.0f),
+							  480.0f - 49.0f - (heightForTabTracker - 2.0f),
 							  widthForTabTracker,
 							  heightForTabTracker);	
 	
@@ -24,66 +24,66 @@
     if (self) {
 		self.backgroundColor = [UIColor clearColor];
 	}
-	
+		
 	self.layer.masksToBounds = NO;
-	self.layer.shadowOffset = CGSizeMake(0, 0);
-	self.layer.shadowRadius = 5;
-	self.layer.shadowOpacity = 0.8;
+	self.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+	self.layer.shadowRadius = 3.0f;
+	self.layer.shadowOpacity = 0.8f;
+	self.layer.shouldRasterize = YES;
+	self.layer.shadowPath = [self getPath];	
 	
     return self;
 }
 
 - (void)drawRect:(CGRect)rect {
+	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
-	CGFloat cornerRad = self.layer.cornerRadius;
-	CGFloat selfwidth = self.frame.size.width;
-	CGFloat selfheight = self.frame.size.height;
-	
 	CGContextSetLineJoin(context, kCGLineJoinRound);
-	CGContextSetLineWidth(context, 2);
+	CGContextSetLineWidth(context, 2.0f);
 
-	CGContextSetRGBStrokeColor(context, 0.0, 0.0, 0.0, 0.4);
-	CGContextSetRGBFillColor(context, 0, 0, 0, 0.85);
+	CGContextSetRGBStrokeColor(context, 0.2f, 0.2f, 0.2f, 1.0f);
+//	CGContextSetRGBFillColor(context, 0.2f, 0.2f, 0.2f, 1.0f);
+	CGContextSetRGBFillColor(context, 0.1f, 0.1f, 0.1f, 1.1f);
 	
-	CGContextBeginPath(context);	
-
-	// --	Begin at bottom right corner.
-	CGContextMoveToPoint(context,
-						 selfwidth,
-						 selfheight
-						 );
-	// --	Line to top middle corner.
-	CGContextAddLineToPoint(context,
-							selfwidth / 2,
-							0
-							);
-	// --	Line to bottom left corner.
-	CGContextAddLineToPoint(context,
-						   0,
-						   selfheight
-						   );
-	// --	Line to bottom right corner.
-	CGContextAddLineToPoint(context,
-							selfwidth,
-							selfheight
-							);
-	CGContextClosePath(context);
-
+	CGContextAddPath(context, [self getPath]);
+	
 	CGContextDrawPath(context, kCGPathFillStroke);
 	
 	CGContextClip(context);
+}
+
+- (CGPathRef) getPath {
+
+	CGFloat cornerRad = self.layer.cornerRadius;
+	CGFloat selfwidth = self.frame.size.width;
+	CGFloat selfheight = self.frame.size.height;
+		
+	CGMutablePathRef thePath = CGPathCreateMutable();
+	
+	// --	Begin at bottom right corner.
+	CGPathMoveToPoint(thePath, NULL, selfwidth, selfheight);
+	// --	Line to top middle corner.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth / 2, 0.0f);
+	// --	Line to bottom left corner.
+	CGPathAddLineToPoint(thePath, NULL, 0.0f, selfheight);
+	// --	Line to bottom right corner.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth, selfheight);
+	CGPathCloseSubpath(thePath);
+	
+	return thePath;
+	
 }
 
 - (CGFloat) xOffset:(int)tabNumber {
 
 	CGFloat xOffset;
 	if (tabNumber == 0) {
-		xOffset = 54.0;
+		xOffset = 54.0f;
 	} else if (tabNumber == 1) {
-		xOffset = 160.0;
+		xOffset = 160.0f;
 	} else if (tabNumber == 2) {
-		xOffset = 320.0 - 54.0;
+		xOffset = 320.0f - 54.0f;
 	}
 	
 	return xOffset;

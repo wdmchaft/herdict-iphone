@@ -20,7 +20,6 @@
 #import "URLBar.h"
 #import "BubbleMenu.h"
 #import "Screen.h"
-#import "TabTracker.h"
 
 
 @interface VC_Base : UIViewController <UINavigationBarDelegate, UIAlertViewDelegate, UISearchBarDelegate> {
@@ -38,7 +37,6 @@
 	BubbleMenu *theUrlBarMenu;
 	
 	Screen *theScreen;
-	TabTracker *theTabTracker;
 	
 }
 
@@ -53,7 +51,6 @@
 @property (nonatomic, retain) BubbleMenu *theUrlBarMenu;
 
 @property (nonatomic, retain) Screen *theScreen;
-@property (nonatomic, retain) TabTracker *theTabTracker;
 
 
 - (BOOL) urlTyped;

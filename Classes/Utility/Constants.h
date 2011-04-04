@@ -31,8 +31,8 @@
 #define yPaddingForBubbleMenuBody 3.0
 #define heightForBubbleMenuOption 33.0
 
-#define heightForTabTracker 7.0
-#define widthForTabTracker 9.0
+#define heightForTabTracker 11.0
+#define widthForTabTracker 16.0
 
 /* --	VC_CheckSite elements	-- */
 #define diameterForSiteLoadingAnimation 25.0
@@ -46,8 +46,8 @@
 #define heightForSiteSummaryHideTab 33.0
 #define textForSiteSummaryHideTabStateShowing @"Hide Summary"
 #define textForSiteSummaryHideTabStateHidden @"Show Summary"
-#define diameterForSiteSummaryLoadingAnimation 40.0
-#define widthForSiteSummaryLoadingText 180.0
+#define diameterForSiteSummaryLoadingAnimation 25.0
+#define widthForSiteSummaryLoadingText 158.0  // perfect for text "Getting Summary..." in Helvetica 18.
 #define heightForSiteSummaryLoadingText 18.0
 
 /* --	VC_ReportSite elements	-- */

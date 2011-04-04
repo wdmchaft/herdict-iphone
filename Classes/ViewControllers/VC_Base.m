@@ -21,7 +21,6 @@
 @synthesize theUrlBarMenu;
 
 @synthesize theScreen;
-@synthesize theTabTracker;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -98,10 +97,7 @@
 															  320,
 															  480 - 20 - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
 	self.theScreen.backgroundColor = [UIColor clearColor];
-	
-	/* --	Set up theTabTracker	-- */
-	self.theTabTracker = [[TabTracker alloc] initAtTab:[self.tabBarController.viewControllers indexOfObject:self]];
-	[self.view addSubview:self.theTabTracker];
+		
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -110,8 +106,6 @@
 	
 	[self.view bringSubviewToFront:self.theUrlBar];
 	[self.view bringSubviewToFront:self.navBar];
-	[self.view bringSubviewToFront:self.theTabTracker];
-	
 }
 
 - (void)didReceiveMemoryWarning {

@@ -29,7 +29,9 @@
 		self.layer.masksToBounds = NO;
 		self.layer.shadowOffset = CGSizeMake(0, 0);
 		self.layer.shadowRadius = 5;
-		self.layer.shadowOpacity = 0.8;		
+		self.layer.shadowOpacity = 0.8;	
+		self.layer.shouldRasterize = YES;
+		self.layer.shadowPath = [self getPath];
 		
 		self.textView1 = [[UITextView alloc] initWithFrame:CGRectMake(32, 5 + heightForSiteSummaryHideTab, 280, 55)];
 		self.textView1.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
@@ -46,7 +48,7 @@
 		self.textView2.textColor = [UIColor whiteColor];
 		self.textView2.editable = NO;
 		self.textView2.userInteractionEnabled = NO;
-		[self addSubview:self.textView2];
+	//	[self addSubview:self.textView2];
 		
 		self.hideLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab,
 																   0,
@@ -61,18 +63,23 @@
 		[self addSubview:self.hideLabel];
 
 		/* --	Set up loadingIndicator and loadingText	-- */
-		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
-		[self.loadingIndicator setFrame:CGRectMake(0.5 * (self.frame.size.width - (diameterForSiteSummaryLoadingAnimation + widthForSiteSummaryLoadingText)),
-												   0.5 * (heightForSiteSummary - diameterForSiteSummaryLoadingAnimation),
+		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+		[self.loadingIndicator setFrame:CGRectMake(0.5 * (self.frame.size.width - (diameterForSiteSummaryLoadingAnimation + 11 + widthForSiteSummaryLoadingText)),
+												   heightForSiteSummaryHideTab + 0.5 * (heightForSiteSummary - heightForSiteSummaryHideTab - diameterForSiteSummaryLoadingAnimation),
 												   diameterForSiteSummaryLoadingAnimation,
 												   diameterForSiteSummaryLoadingAnimation)];
+		self.loadingIndicator.backgroundColor = [UIColor clearColor];
 		[self.loadingIndicator startAnimating];
-		self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(self.loadingIndicator.frame.origin.x + diameterForSiteSummaryLoadingAnimation,
-																	 0.5 * (heightForSiteSummary - widthForSiteSummaryLoadingText),
+		self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(11 + self.loadingIndicator.frame.origin.x + diameterForSiteSummaryLoadingAnimation,
+																	 1 + heightForSiteSummaryHideTab + 0.5 * (heightForSiteSummary - heightForSiteSummaryHideTab - diameterForSiteSummaryLoadingAnimation),
 																	 widthForSiteSummaryLoadingText,
-																	 heightForSiteSummaryLoadingText)];
-		self.loadingText.text = @"Requesting Herdict Summary";
-		self.loadingText.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
+																	 heightForSiteSummaryLoadingText + 5)];
+		self.loadingText.text = @"Getting Summary...";
+		self.loadingText.font = [UIFont fontWithName:@"Helvetica" size:18];
+		self.loadingText.shadowOffset = CGSizeMake(0, 1);
+		self.loadingText.shadowColor = UIColorFromRGB(0x404040);
+
+		self.loadingText.backgroundColor = [UIColor clearColor];
 		self.loadingText.textColor = [UIColor whiteColor];
     }
     return self;
@@ -82,89 +89,51 @@
 
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
-	CGFloat offsetForStroke = 1;
-	CGFloat cornerRad = 4;
-	CGFloat selfwidth = self.frame.size.width;
-	CGFloat selfheight = self.frame.size.height;
-	
 	CGContextSetLineJoin(context, kCGLineJoinRound);
 	CGContextSetLineWidth(context, 2);
 
 	CGContextSetRGBStrokeColor(context, 0, 0, 0, 0.4);
 	CGContextSetRGBFillColor(context, 0, 0, 0, 0.7);
 	
-	CGContextBeginPath(context);
-	
-	// --	Begin at right edge.
-	CGContextMoveToPoint(context,
-						 selfwidth + 2,
-						 heightForSiteSummaryHideTab
-						 );
-	// --	Line to hideTab bottom right corner.
-	CGContextAddLineToPoint(context,
-							selfwidth - xOffsetForSiteSummaryHideTab,
-							heightForSiteSummaryHideTab
-							);
-	// --	Line to hideTab top right corner.
-	CGContextAddLineToPoint(context,
-							selfwidth - xOffsetForSiteSummaryHideTab,
-							cornerRad
-							);
-	// --	Arc around hideTab top right corner.
-	CGContextAddArcToPoint(context,
-						   selfwidth - xOffsetForSiteSummaryHideTab,
-						   0 + offsetForStroke,
-						   selfwidth - xOffsetForSiteSummaryHideTab - cornerRad,
-						   0 + offsetForStroke,
-						   cornerRad
-						   );
-	// --	Line to hideTab top left corner.
-	CGContextAddLineToPoint(context,
-							selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab + cornerRad,
-							0 + offsetForStroke
-							);
-	// --	Arc around hideTab top left corner.
-	CGContextAddArcToPoint(context,
-						   selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab,
-						   0 + offsetForStroke,
-						   selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab,
-						   cornerRad,
-						   cornerRad
-						   );
-	// --	Line to hideTab bottom left corner.
-	CGContextAddLineToPoint(context,
-							selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab,
-							heightForSiteSummaryHideTab
-							);
-	// --	Line to left edge.
-	CGContextAddLineToPoint(context,
-							0 - 2,
-							heightForSiteSummaryHideTab
-							);
-	// --	Line to bottom left corner.
-	CGContextAddLineToPoint(context,
-						   0 - offsetForStroke,
-						   selfheight + 2
-						   );
-	// --	Line to bottom right corner.
-	CGContextAddLineToPoint(context,
-							selfwidth + offsetForStroke,
-							selfheight + 2
-							);
-	// --	Line to right edge.
-	CGContextAddLineToPoint(context,
-							selfwidth + 2,
-							heightForSiteSummaryHideTab
-							);
-	
-	CGContextClosePath(context);
+	CGContextAddPath(context, [self getPath]);
 
-	CGContextDrawPath(context, kCGPathFillStroke);	
-
-//	CGContextClip(context);
-	
+	CGContextDrawPath(context, kCGPathFillStroke);		
 }
 
+- (CGPathRef) getPath {
+
+	CGFloat offsetForStroke = 1;
+	CGFloat cornerRad = 4;
+	CGFloat selfwidth = self.frame.size.width;
+	CGFloat selfheight = self.frame.size.height;
+	
+	CGMutablePathRef thePath = CGPathCreateMutable();
+	
+	// --	Begin at right edge.
+	CGPathMoveToPoint(thePath, NULL, selfwidth + 2, heightForSiteSummaryHideTab);
+	// --	Line to hideTab bottom right corner.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab, heightForSiteSummaryHideTab);
+	// --	Line to hideTab top right corner.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab, cornerRad);
+	// --	Arc around hideTab top right corner.
+	CGPathAddArcToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab, 0 + offsetForStroke, selfwidth - xOffsetForSiteSummaryHideTab - cornerRad, 0 + offsetForStroke, cornerRad);
+	// --	Line to hideTab top left corner.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab + cornerRad, 0 + offsetForStroke);
+	// --	Arc around hideTab top left corner.
+	CGPathAddArcToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, 0 + offsetForStroke, selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, cornerRad, cornerRad);
+	// --	Line to hideTab bottom left corner.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, heightForSiteSummaryHideTab);
+	// --	Line to left edge.
+	CGPathAddLineToPoint(thePath, NULL, 0 - 2, heightForSiteSummaryHideTab);
+	// --	Line to bottom left corner.
+	CGPathAddLineToPoint(thePath, NULL, 0 - offsetForStroke, selfheight + 2);
+	// --	Line to bottom right corner.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth + offsetForStroke, selfheight + 2);
+	// --	Line to right edge.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth + 2, heightForSiteSummaryHideTab);
+	
+	return thePath;
+}
 
 - (void) setStateLoading {
 

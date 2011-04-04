@@ -62,7 +62,14 @@
 		self.cellDetailLabel.textColor = [UIColor grayColor];
 		self.cellDetailLabel.alpha = 0.85;
 		self.cellDetailLabel.backgroundColor = [UIColor clearColor];
-		[self.textPlate addSubview:self.cellDetailLabel];		
+		[self.textPlate addSubview:self.cellDetailLabel];
+		
+		self.layer.masksToBounds = NO;
+		self.layer.shadowOffset = CGSizeMake(0, 0);
+		self.layer.shadowRadius = 5;
+		self.layer.shadowOpacity = 0.8;
+		self.layer.shouldRasterize = YES;
+//		self.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.bounds].CGPath;		
 	}
     
     return self;
@@ -71,16 +78,21 @@
 - (void) arrangeSubviewsForNewHeight:(CGFloat)theNewHeight {
 //	NSLog(@"arrangeSubviewsForNewHeight: %f", theNewHeight);
 	
-	[UIView animateWithDuration:0.15
-					 animations:^{
-						 if (self.cellDetailLabel.alpha < 0.5) {
-							 self.cellDetailLabel.alpha = 1;
-						 } else {
+	if (self.cellDetailLabel.alpha > 0.5) {
+		[UIView animateWithDuration:0.05
+						 animations:^{
 							 self.cellDetailLabel.alpha = 0;
 						 }
-					 }
-	 ];
-	
+		 ];
+	} else {
+		[UIView animateWithDuration:0.075 delay:0.125 options:nil
+						 animations:^{
+							 self.cellDetailLabel.alpha = 1;
+						 } completion:^(BOOL finished){
+						 }
+		 ];
+	}
+		
 	[UIView animateWithDuration:0.25
 					 animations:^{
 
@@ -120,19 +132,19 @@
 	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
 	NSMutableArray *colors = [NSMutableArray arrayWithCapacity:5];
 	UIColor *color0 = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
-	UIColor *color1 = [UIColor colorWithRed:(barThemeRed - 0.022) green:(barThemeGreen - 0.022) blue:(barThemeBlue - 0.022)  alpha:1];	
-	UIColor *color2 = [UIColor colorWithRed:(barThemeRed - 0.062) green:(barThemeGreen - 0.062) blue:(barThemeBlue - 0.062)  alpha:1];
-	UIColor *color3 = [UIColor colorWithRed:(barThemeRed - 0.092) green:(barThemeGreen - 0.092) blue:(barThemeBlue - 0.092)  alpha:0.9];
+//	UIColor *color1 = [UIColor colorWithRed:(barThemeRed - 0.022) green:(barThemeGreen - 0.022) blue:(barThemeBlue - 0.022)  alpha:1];	
+//	UIColor *color2 = [UIColor colorWithRed:(barThemeRed - 0.062) green:(barThemeGreen - 0.062) blue:(barThemeBlue - 0.062)  alpha:1];
+//	UIColor *color3 = [UIColor colorWithRed:(barThemeRed - 0.092) green:(barThemeGreen - 0.092) blue:(barThemeBlue - 0.092)  alpha:0.9];
 	UIColor *color4 = [UIColor colorWithRed:(barThemeRed - 0.182) green:(barThemeGreen - 0.182) blue:(barThemeBlue - 0.182)  alpha:1];
 
 	locations[0] = 0.00;
 	[colors addObject:(id)[color0 CGColor]];
 	locations[1] = 0.4;
-	[colors addObject:(id)[color1 CGColor]];
+	[colors addObject:(id)[color0 CGColor]];
 	locations[2] = 0.8;
-	[colors addObject:(id)[color2 CGColor]];
+	[colors addObject:(id)[color0 CGColor]];
 	locations[3] = 0.94;
-	[colors addObject:(id)[color3 CGColor]];	
+	[colors addObject:(id)[color0 CGColor]];	
 	locations[4] = 1.0;
 	[colors addObject:(id)[color4 CGColor]];
 	

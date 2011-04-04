@@ -17,6 +17,8 @@
 @synthesize selectionMadeViaBubbleMenu;
 @synthesize currentTab;
 
+@synthesize theTabTracker;
+
 
 #pragma mark -
 #pragma mark Application lifecycle
@@ -45,8 +47,14 @@
 	vcReportSite.tabBarItem = itemReportSite;
 	NSArray *controllers = [NSArray arrayWithObjects:vcHerdometer, vcCheckSite, vcReportSite, nil];
 	theController.viewControllers = controllers;
-
 	[self.window addSubview:self.theController.view];
+	
+	/* --	Set up theTabTracker	-- */
+	self.theTabTracker = [[TabTracker alloc] initAtTab:0];
+	[self.window addSubview:self.theTabTracker];
+	[self.window bringSubviewToFront:self.theTabTracker];
+
+	// --	Show the window.
     [self.window makeKeyAndVisible];
 
 	[vcHerdometer release];
@@ -66,11 +74,6 @@
 	self.currentTab = [self.theController.viewControllers indexOfObject:currentVc];
 	VC_Base *selectedVc = viewController;
 
-//	/* --	Make sure they aren't selecting the current VC						-- */
-//	if ([selectedVc isEqual:currentVc]) {
-//		return NO;
-//	}
-	
 	/* --	Find out whether this selection is being made via the bubble menu	-- */
 	if (currentVc.theUrlBarMenu.alpha > 0) {
 		self.selectionMadeViaBubbleMenu = YES;
@@ -122,7 +125,7 @@
 	}
 	
 	/* --	Match the dismissed VC's theTabTracker state						-- */
-	[selectedVC.theTabTracker moveFromTab:self.currentTab toTab:[self.theController.viewControllers indexOfObject:selectedVC]];
+	[self.theTabTracker moveFromTab:self.currentTab toTab:[self.theController.viewControllers indexOfObject:selectedVC]];
 	
 	/* --	If it's vcCheckSite...												-- */
 	if ([selectedVC isKindOfClass:[VC_CheckSite class]]) {

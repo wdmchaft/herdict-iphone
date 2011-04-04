@@ -15,6 +15,8 @@
 #import "VC_CheckSite.h"
 #import "VC_ReportSite.h"
 
+#import "TabTracker.h"
+
 @interface HerdictAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
 
     UIWindow *window;
@@ -24,6 +26,8 @@
 	BOOL selectionMadeViaBubbleMenu;
 	int currentTab;
 	
+	TabTracker *theTabTracker;
+	
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
@@ -32,6 +36,8 @@
 @property (nonatomic, retain) NSString *currentUrl;
 @property (nonatomic) BOOL selectionMadeViaBubbleMenu;
 @property (nonatomic) int currentTab;
+
+@property (nonatomic, retain) TabTracker *theTabTracker;
 
 
 @end

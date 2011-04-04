@@ -15,7 +15,8 @@
 
 }
 
-- (TabTracker *) initAtTab:(int)tabNumber;
+- (void) showAtTab:(int)tabNumber;
 - (CGFloat) xOffset:(int)tabNumber;
+- (void) moveFromTab:(int)currentTabNum toTab:(int)selectedTabNum;
 
 @end

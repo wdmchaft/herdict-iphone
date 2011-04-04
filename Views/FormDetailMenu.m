@@ -43,12 +43,7 @@
 		self.backgroundColor = [UIColor clearColor];
 		self.layer.anchorPoint = theAnchorPoint;
 		self.userInteractionEnabled = YES;
-		
-		self.layer.masksToBounds = NO;
-		self.layer.shadowOffset = CGSizeMake(0, 0);
-		self.layer.shadowRadius = 5;
-		self.layer.shadowOpacity = 0.8;
-		
+				
 		self.selfwidth = self.frame.size.width;
 		self.selfheight = self.frame.size.height;
 		
@@ -114,6 +109,18 @@
 	
 }
 
+- (void) addShadow {
+	
+	self.layer.masksToBounds = NO;
+	self.layer.shadowColor = [UIColor blackColor].CGColor;
+	self.layer.shadowOffset = CGSizeZero;
+	self.layer.shadowRadius = 5.0f;
+	self.layer.shadowOpacity = 0.8f;
+	self.layer.shouldRasterize = YES;
+	
+	self.layer.shadowPath = [self getPath];
+}
+
 - (void) showSelectionBackgroundForOption:(int)optionNumber {
 	UITextView *selectedOption = [self viewWithTag:optionNumber];
 	
@@ -129,15 +136,48 @@
 }
 
 
-- (void) drawRect:(CGRect)rect {
+- (CGPathRef) getPath {
+
+	//	// trig vars
+	//	CGFloat l				= 5.0;
+	//	CGFloat diameter		= l * (tailWidth / tailHeight);
+	//	CGFloat m				= (tailWidth * (diameter / 2.0)) / sqrt(pow(tailHeight, 2.0) + pow(tailWidth, 2.0));
+	//	CGFloat q				= m * (tailHeight / tailWidth);
+	//	CGFloat n				= (diameter / 2.0) - q;	
 	
-//	// trig vars
-//	CGFloat l				= 5.0;
-//	CGFloat diameter		= l * (tailWidth / tailHeight);
-//	CGFloat m				= (tailWidth * (diameter / 2.0)) / sqrt(pow(tailHeight, 2.0) + pow(tailWidth, 2.0));
-//	CGFloat q				= m * (tailHeight / tailWidth);
-//	CGFloat n				= (diameter / 2.0) - q;
-		
+	CGMutablePathRef thePath = CGPathCreateMutable();
+	
+	// --	Begin at tail left side of tip.
+	CGPathMoveToPoint(thePath, NULL, selfwidth * 0.5 - 1.0f, 0.0f);
+	// --	Line to tail left base.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth - tailxOffsetForBase - tailWidth, tailHeight);
+	// --	Line to top left corner.
+	CGPathAddLineToPoint(thePath, NULL, cornerRad, tailHeight);
+	// --	Arc around top left corner.
+	CGPathAddArcToPoint(thePath, NULL, 0.0f, tailHeight, 0.0f, tailHeight + cornerRad, cornerRad);
+	// --	Line to bottom left corner.
+	CGPathAddLineToPoint(thePath, NULL, 0.0f, selfheight - cornerRad);
+	// --	Arc around bottom left corner.
+	CGPathAddArcToPoint(thePath, NULL, 0.0f, selfheight, cornerRad, selfheight, cornerRad);
+	// --	Line to bottom right corner.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth - cornerRad, selfheight);
+	// --	Arc around bottom right corner.
+	CGPathAddArcToPoint(thePath, NULL, selfwidth, selfheight, selfwidth, selfheight - cornerRad, cornerRad);
+	// --	Line to top right corner.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth, tailHeight + cornerRad);
+	// --	Arc around top right corner.
+	CGPathAddArcToPoint(thePath, NULL, selfwidth, tailHeight, selfwidth - cornerRad, tailHeight, cornerRad);
+	// --	Add line to tail base.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth - tailxOffsetForBase, tailHeight);
+	// --	Add line to tail right of tip.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth * 0.5 + 1.0f, 0.0f);
+	
+	CGPathCloseSubpath(thePath);
+	
+	return thePath;
+}
+
+- (void) drawRect:(CGRect)rect {
 	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextSetLineJoin(context, kCGLineJoinRound);
@@ -145,81 +185,8 @@
 	CGContextSetRGBStrokeColor(context, 0, 0, 0, 0.4); 
 	CGContextSetRGBFillColor(context, 0, 0, 0, 0.7);
 	
-	CGContextBeginPath(context);
-	
-	// --	Begin at tail left side of tip.
-	CGContextMoveToPoint(context,
-						 selfwidth * 0.5 - 1,
-						 0
-						 );
-	// --	Line to tail left base.
-	CGContextAddLineToPoint(context,
-							selfwidth - tailxOffsetForBase - tailWidth,
-							tailHeight
-							);
-	// --	Line to top left corner.
-	CGContextAddLineToPoint(context,
-							cornerRad,
-							tailHeight
-							);
-	// --	Arc around top left corner.
-	CGContextAddArcToPoint(context,
-						   0,
-						   tailHeight,
-						   0,
-						   tailHeight + cornerRad,
-						   cornerRad
-						   );
-	// --	Line to bottom left corner.
-	CGContextAddLineToPoint(context,
-							0,
-							selfheight - cornerRad
-							);
-	// --	Arc around bottom left corner.
-	CGContextAddArcToPoint(context,
-						   0,
-						   selfheight,
-						   cornerRad,
-						   selfheight,
-						   cornerRad
-						   );
-	// --	Line to bottom right corner.
-	CGContextAddLineToPoint(context,
-							selfwidth - cornerRad,
-							selfheight
-							);
-	// --	Arc around bottom right corner.
-	CGContextAddArcToPoint(context,
-						   selfwidth,
-						   selfheight,
-						   selfwidth,
-						   selfheight - cornerRad,
-						   cornerRad
-						   );
-	// --	Line to top right corner.
-	CGContextAddLineToPoint(context,
-							selfwidth,
-							tailHeight + cornerRad
-							);
-	// --	Arc around top right corner.
-	CGContextAddArcToPoint(context,
-						   selfwidth,
-						   tailHeight,
-						   selfwidth - cornerRad,
-						   tailHeight,
-						   cornerRad);
-	// --	Add line to tail base.
-	CGContextAddLineToPoint(context,
-							selfwidth - tailxOffsetForBase,
-							tailHeight
-							);
-	// --	Add line to tail right of tip.
-	CGContextAddLineToPoint(context,
-							selfwidth * 0.5 + 1,
-							0
-							);
-	
-	CGContextClosePath(context);
+	CGPathRef thePath = [self getPath];
+	CGContextAddPath(context, thePath);
 	
 	CGContextDrawPath(context, kCGPathFillStroke);
 }

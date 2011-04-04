@@ -52,11 +52,6 @@
 		self.layer.anchorPoint = theAnchorPoint;
 		self.userInteractionEnabled = YES;
 		
-		self.layer.masksToBounds = NO;
-		self.layer.shadowOffset = CGSizeMake(0, 0);
-		self.layer.shadowRadius = 5;
-		self.layer.shadowOpacity = 0.8;
-		
 		self.frameForShowMenu = self.frame;
 
 		self.selfwidth = self.frame.size.width;
@@ -125,92 +120,68 @@
 	
 }
 
+- (void) addShadow {
+
+	self.layer.masksToBounds = NO;
+	self.layer.shadowOffset = CGSizeZero;
+	self.layer.shadowRadius = 5;
+	self.layer.shadowOpacity = 0.8;
+	self.layer.shouldRasterize = YES;
+	self.layer.shadowPath = [self getPath];
+	
+}
+
 - (void) drawRect:(CGRect)rect {
-	
-	// trig vars
-	CGFloat l				= 5.0;
-	CGFloat diameter		= l * (tailWidth / tailHeight);
-	CGFloat m				= (tailWidth * (diameter / 2.0)) / sqrt(pow(tailHeight, 2.0) + pow(tailWidth, 2.0));
-	CGFloat q				= m * (tailHeight / tailWidth);
-	CGFloat n				= (diameter / 2.0) - q;
-	
-	
+		
 	CGContextRef context = UIGraphicsGetCurrentContext();
+
+	CGContextAddPath(context, [self getPath]);
+	
 	CGContextSetLineJoin(context, kCGLineJoinRound);
 	CGContextSetLineWidth(context, 0);
 	CGContextSetRGBStrokeColor(context, 0, 0, 0, 0.4); 
 	CGContextSetRGBFillColor(context, 0, 0, 0, 0.7);
 
-	CGContextBeginPath(context);
-	
-	// --	Begin at top right corner of layer, i.e. tip of tail.
-	CGContextMoveToPoint(context,
-						 0,
-						 l
-						 );
-	// --	Line to bottom left corner.
-	CGContextAddLineToPoint(context,
-							stroke,
-							selfheight - cornerRad
-							);
-	// --	Arc around bottom left corner.
-	CGContextAddArcToPoint(context,
-						   stroke,
-						   selfheight,
-						   cornerRad,
-						   selfheight,
-						   cornerRad
-						   );
-	// --	Line to bottom right corner.
-	CGContextAddLineToPoint(context,
-							selfwidth - cornerRad,
-							selfheight
-							);
-	// --	Arc around bottom right corner.
-	CGContextAddArcToPoint(context,
-						   selfwidth,
-						   selfheight,
-						   selfwidth,
-						   selfheight - cornerRad,
-						   cornerRad
-						   );
-	// --	Line to top right corner.
-	CGContextAddLineToPoint(context,
-							selfwidth,
-							tailHeight + cornerRad
-							);
-	// --	Arc around top right corner.
-	CGContextAddArcToPoint(context,
-						   selfwidth,
-						   tailHeight,
-						   selfwidth - cornerRad,
-						   tailHeight,
-						   cornerRad);
-	// --	Add line to base of tail.
-	CGContextAddLineToPoint(context,
-							tailWidth,
-							tailHeight
-							);
-	// --	Add line to near tip of tail.
-	CGContextAddLineToPoint(context,
-							diameter - n,
-							l - m
-							);
-	// --	Arc around tip.
-	CGContextAddArc(context,
-					(diameter / 2.0),
-					l,
-					(diameter / 2.0),
-					-asin(m / (diameter / 2.0)),
-					M_PI,
-					1
-					);
-	
-	CGContextClosePath(context);
 
 	CGContextDrawPath(context, kCGPathFillStroke);
 }
 
+- (CGPathRef) getPath {
+
+	// trig vars
+	CGFloat l				= 5.0;
+	CGFloat diameter		= l * (tailWidth / tailHeight);
+	CGFloat m				= (tailWidth * (diameter / 2.0)) / sqrt(pow(tailHeight, 2.0) + pow(tailWidth, 2.0));
+	CGFloat q				= m * (tailHeight / tailWidth);
+	CGFloat n				= (diameter / 2.0) - q;	
+	
+	CGMutablePathRef thePath = CGPathCreateMutable();
+	
+	// --	Begin at top right corner of layer, i.e. tip of tail.
+	CGPathMoveToPoint(thePath, NULL, 0, l);
+	// --	Line to bottom left corner.
+	CGPathAddLineToPoint(thePath, NULL, stroke, selfheight - cornerRad);
+	// --	Arc around bottom left corner.
+	CGPathAddArcToPoint(thePath, NULL, stroke, selfheight, cornerRad, selfheight, cornerRad);
+	// --	Line to bottom right corner.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth - cornerRad, selfheight);
+	// --	Arc around bottom right corner.
+	CGPathAddArcToPoint(thePath, NULL, selfwidth, selfheight, selfwidth, selfheight - cornerRad, cornerRad);
+	// --	Line to top right corner.
+	CGPathAddLineToPoint(thePath, NULL, selfwidth, tailHeight + cornerRad);
+	// --	Arc around top right corner.
+	CGPathAddArcToPoint(thePath, NULL, selfwidth, tailHeight, selfwidth - cornerRad, tailHeight, cornerRad);
+	// --	Add line to base of tail.
+	CGPathAddLineToPoint(thePath, NULL, tailWidth, tailHeight);
+	// --	Add line to near tip of tail.
+	CGPathAddLineToPoint(thePath, NULL, diameter - n, l - m);
+	// --	Arc around tip.
+	CGPathAddArc(thePath, NULL, (diameter / 2.0), l, (diameter / 2.0), -asin(m / (diameter / 2.0)), M_PI, 1);
+	
+	CGPathCloseSubpath(thePath);	
+	
+	return thePath;
+}
 
 - (void) showBubbleMenuWithAnimation:(NSNumber *)withAnimation {
 	
@@ -233,6 +204,9 @@
 		self.layer.transform = theTransform;
 		self.alpha = 1;
 	}
+	
+	//	Add shadows only after the view is actually added...  shadow is on self.layer, which isn't drawn until then.
+	[self addShadow];
 }
 
 - (void) hideBubbleMenu {
