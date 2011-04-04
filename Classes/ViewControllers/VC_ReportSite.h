@@ -11,7 +11,8 @@
 #import "WebservicesController.h"
 #import "FormStateCell.h"
 #import "FormClearCell.h"
-#import "FormDetailMenu.h"
+#import "FormMenuCategory.h"
+#import "FormMenuComments.h"
 
 
 @interface VC_ReportSite : UIViewController <UITableViewDelegate, UITableViewDataSource> {
@@ -20,14 +21,14 @@
 	
 	int sectionNowEditing;	
 	
-	FormDetailMenu *menuAccessible;
-	FormDetailMenu *menuCategory;
-	FormDetailMenu *menuComments;
+	FormMenuCategory *menuAccessible;
+	FormMenuCategory *menuCategory;
+	FormMenuComments *menuComments;
 	
-	// --	Received from webservices.
+	// --	from Herdict API
 	NSMutableArray *t01arrayCategories;
 	
-	// --	User-modified.
+	// --	User input
 	BOOL siteIsAccessible;
 	int keyCategory;
 	NSString *comments;
@@ -36,11 +37,9 @@
 @property (nonatomic, retain) UITableView *formTable;
 @property (nonatomic) int sectionNowEditing;
 
-
-/* --	For each of these make sure to call super	- */
-@property (nonatomic, retain) FormDetailMenu *menuAccessible;
-@property (nonatomic, retain) FormDetailMenu *menuCategory;
-@property (nonatomic, retain) FormDetailMenu *menuComments;
+@property (nonatomic, retain) FormMenuCategory *menuAccessible;
+@property (nonatomic, retain) FormMenuCategory *menuCategory;
+@property (nonatomic, retain) FormMenuComments *menuComments;
 
 @property (nonatomic, retain) NSMutableArray *t01arrayCategories;
 
@@ -49,9 +48,11 @@
 @property (nonatomic, retain) NSString *comments;
 
 
+- (void) setUpT01ArrayCategories;
 - (void) getCategoriesCallbackHandler:(ASIHTTPRequest *)request;
+- (void) addRow:(NSIndexPath *)pathForRow;
 - (void) removeClearRow;
-- (void) addDetailMenu;
-- (void)removeDetailMenuAtRow:(NSIndexPath *)pathForRow;
+- (void) addDetailMenuAtRow:(NSIndexPath *)pathForRow;
+- (void) removeDetailMenu;
 
 @end

@@ -31,16 +31,16 @@
 
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
 		
-		self.theIconView = [[UIImageView alloc] initWithFrame:CGRectMake((0.5 * (heightForFormStateCell - diameterForFormStateCellIconView)),
-																		 (0.5 * (heightForFormStateCell - diameterForFormStateCellIconView)),
-																		 diameterForFormStateCellIconView,
-																		 diameterForFormStateCellIconView)];
+		self.theIconView = [[UIImageView alloc] initWithFrame:CGRectMake((0.5 * (heightForFormStateCell - diameterForFormStateCellIconView_full)),
+																		 (0.5 * (heightForFormStateCell - diameterForFormStateCellIconView_full)),
+																		 diameterForFormStateCellIconView_full,
+																		 diameterForFormStateCellIconView_full)];
 		[self addSubview:self.theIconView];
 		
 		self.textPlate = [[UIView alloc] initWithFrame:CGRectMake(0,
-																  (0.5 * (heightForFormStateCell - diameterForFormStateCellIconView)),
+																  (0.5 * (heightForFormStateCell - diameterForFormStateCellIconView_full)),
 																  320,
-																  diameterForFormStateCellIconView)];
+																  diameterForFormStateCellIconView_full)];
 		self.textPlate.backgroundColor = [UIColor clearColor];
 		[self addSubview:self.textPlate];
 		
@@ -79,47 +79,67 @@
 //	NSLog(@"arrangeSubviewsForNewHeight: %f", theNewHeight);
 	
 	if (self.cellDetailLabel.alpha > 0.5) {
-		[UIView animateWithDuration:0.05
+		[UIView animateWithDuration:0.15 delay:0.0 options:nil
 						 animations:^{
-							 self.cellDetailLabel.alpha = 0;
+//							 self.cellLabel.alpha = 0;
+//							 self.cellDetailLabel.alpha = 0;
+//							 self.theIconView.alpha = 0;
+						 } completion:^(BOOL finished){
+//							 [self.cellLabel setFrame:CGRectMake(heightForFormStateCell - 5.0,
+//																 (0.5 * (diameterForFormStateCellIconView_shrunk - 5.0)),
+//																 self.frame.size.width,
+//																 20.0)];
+//							 self.cellLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
+//							 [self.textPlate setFrame:CGRectMake(0.0,
+//																 (0.5 * (theNewHeight - diameterForFormStateCellIconView_full)),
+//																 320.0,
+//																 diameterForFormStateCellIconView_full)];
+							 //		[UIView animateWithDuration:0.3
+							 //						 animations:^{
+							 //							 [self.theIconView setFrame:CGRectMake(0.5 * (heightForFormStateCell - diameterForFormStateCellIconView_full),
+							 //																   (0.5 * (theNewHeight - diameterForFormStateCellIconView_full)),
+							 //																   diameterForFormStateCellIconView_full,
+							 //																   diameterForFormStateCellIconView_full)];							 
 						 }
 		 ];
-	} else {
-		[UIView animateWithDuration:0.075 delay:0.125 options:nil
+		[UIView animateWithDuration:0.1 delay:0.25 options:nil
 						 animations:^{
-							 self.cellDetailLabel.alpha = 1;
+//							 self.cellLabel.alpha = 1;
 						 } completion:^(BOOL finished){
 						 }
+		 ];		
+	} else {
+		[UIView animateWithDuration:0.075 delay:0.0 options:nil
+						 animations:^{
+//							 self.cellLabel.alpha = 0;
+						 } completion:^(BOOL finished){
+//							 [self.cellLabel setFrame:CGRectMake(heightForFormStateCell,
+//																 -3.0,
+//																 320.0 - heightForFormStateCell,
+//																 30.0)];
+//							 self.cellLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
+							 //	Make sure textPlate, superview to cellLabel, knows the new values...
+//							 [self.textPlate setFrame:CGRectMake(0.0,
+//																 (0.5 * (theNewHeight - diameterForFormStateCellIconView_shrunk)),
+//																 320.0,
+//																 diameterForFormStateCellIconView_shrunk)];
+							 //		[UIView animateWithDuration:0.3
+							 //						 animations:^{
+							 //							 [self.theIconView setFrame:CGRectMake(0.5 * (heightForFormStateCell - diameterForFormStateCellIconView_shrunk),
+							 //																   (0.5 * (theNewHeight - diameterForFormStateCellIconView_shrunk)),
+							 //																   diameterForFormStateCellIconView_shrunk,
+							 //																   diameterForFormStateCellIconView_shrunk)];							 
+						 }
 		 ];
+		[UIView animateWithDuration:0.075 delay:0.2 options:nil
+						 animations:^{
+//							 self.cellLabel.alpha = 1;
+//							 self.cellDetailLabel.alpha = 1;
+//							 self.theIconView.alpha = 1;
+						 } completion:^(BOOL finished) {
+						 }
+		 ];		
 	}
-		
-	[UIView animateWithDuration:0.25
-					 animations:^{
-
-						 [self.theIconView setFrame:CGRectMake(0.5 * (heightForFormStateCell - diameterForFormStateCellIconView),
-															   (0.5 * (theNewHeight - diameterForFormStateCellIconView)),
-															   diameterForFormStateCellIconView,
-															   diameterForFormStateCellIconView)];
-
-						 //	Make sure textPlate, superview to cellLabel, knows the new height...
-						 [self.textPlate setFrame:CGRectMake(0.0,
-															 (0.5 * (theNewHeight - diameterForFormStateCellIconView)),
-															 320.0,
-															 diameterForFormStateCellIconView)];
-						 
-						 if (self.cellDetailLabel.alpha > 0.5) {
-							 [self.cellLabel setFrame:CGRectMake(heightForFormStateCell,
-																 -3.0,
-																 320.0 - heightForFormStateCell,
-																 30.0)];
-						 } else {
-							 [self.cellLabel setFrame:CGRectMake(heightForFormStateCell,
-																 (0.5 * (diameterForFormStateCellIconView - 30.0)),
-																 320.0 - heightForFormStateCell,
-																 30.0)];
-						 };
-					 }
-	 ];
 }
 
 - (void) drawRect:(CGRect)rect {

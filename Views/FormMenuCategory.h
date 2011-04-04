@@ -1,5 +1,5 @@
 //
-//  FormDetailMenu.h
+//  FormMenuCategory.h
 //  Herdict
 //
 //  Created by Christian Brink on 3/19/11.
@@ -10,15 +10,21 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Constants.h"
 
-@interface FormDetailMenu : UIView {
+@interface FormMenuCategory : UIView {
 	
+	UIView *selectionBackground;
+
 	UITextView *theMessage;
 	NSMutableArray *menuOptions;
-	UIView *selectionBackground;
-	
+		
 	CGFloat selfwidth;
 	CGFloat selfheight;
 	
+	CGFloat xPaddingLeft;
+	CGFloat xPaddingRight;
+	CGFloat yPaddingForMessage;
+	
+	CGFloat messageHeight;
 	CGFloat tailHeight;
 	CGFloat tailWidth;
 	CGFloat tailxOffsetForBase;
@@ -28,21 +34,29 @@
 	CGFloat cornerRad;
 }
 
-@property (nonatomic, retain) UITextView *theMessage;
-@property (nonatomic, retain) NSMutableArray *menuOptions;
 @property (nonatomic, retain) UIView *selectionBackground;
 
-@property (nonatomic) CGFloat stroke;
+@property (nonatomic, retain) UITextView *theMessage;
+@property (nonatomic, retain) NSMutableArray *menuOptions;
+
+@property (nonatomic) CGFloat selfwidth;
+@property (nonatomic) CGFloat selfheight;
+
+@property (nonatomic) CGFloat xPaddingLeft;
+@property (nonatomic) CGFloat xPaddingRight;
+@property (nonatomic) CGFloat yPaddingForMessage;
+
+@property (nonatomic) CGFloat messageHeight;
 @property (nonatomic) CGFloat tailHeight;
 @property (nonatomic) CGFloat tailWidth;
 @property (nonatomic) CGFloat tailxOffsetForBase;
 @property (nonatomic) CGFloat tailxOffsetForTip;
+
+@property (nonatomic) CGFloat stroke;
 @property (nonatomic) CGFloat cornerRad;
-@property (nonatomic) CGFloat selfwidth;
-@property (nonatomic) CGFloat selfheight;
 
-
-- (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint;
+- (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame tailHeight:(CGFloat)theTailHeight;
+- (void)setUpMenuOptionsArray:(NSMutableArray *)theOptionsArray;
 
 - (CGPathRef) getPath;
 - (void) addShadow;

@@ -56,15 +56,26 @@
 	self.siteIsAccessible = NO;
 	self.keyCategory = 0;
 	
+	// --	menuCategory
+	[self setUpT01ArrayCategories];
+	self.menuCategory = [[FormMenuCategory alloc] initWithMessageHeight:0
+															  withFrame:CGRectMake(25, heightForNavBar - yOverhangForNavBar + heightForURLBar + 10, 270, 0)
+															 tailHeight:0];
+	self.menuCategory.theMessage.text = @"";
+
+	// --	menuComments
+	self.menuComments = [[FormMenuComments alloc] initWithMessageHeight:0.0f
+															  withFrame:CGRectMake(25, heightForNavBar - yOverhangForNavBar + heightForURLBar + heightForFormStateCell + 2, 270, 0)
+															 tailHeight:0];
+	self.menuComments.theMessage.text = @"";
+	
 	// --	menuAccessible
 	NSMutableArray *menuAccessibleOptions = [NSMutableArray array];
 	[menuAccessibleOptions addObject:[NSString stringWithString:@"Yes"]];
 	[menuAccessibleOptions addObject:[NSString stringWithString:@"No"]];
-	self.menuAccessible = [[FormDetailMenu alloc] initWithMessageHeight:32
+	self.menuAccessible = [[FormMenuCategory alloc] initWithMessageHeight:32
 														  withFrame:CGRectMake(-110, heightForNavBar - yOverhangForNavBar + 60, 270, 0)
-												   menuOptionsArray:menuAccessibleOptions
-														 tailHeight:25
-														anchorPoint:CGPointMake(0, 0)];
+														 tailHeight:25];
 	self.menuAccessible.theMessage.text = @"Can you access this site?";
 }
 
@@ -86,28 +97,21 @@
 #pragma mark Herdict API callbacks
 
 - (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {
+
 	self.t01arrayCategories = [WebservicesController getArrayFromJSONData:[request responseData]];
-	
-	// TODO this is only because the scroll view isn't working
-	for (int i = 0; i < 5; i++) {
-		[self.t01arrayCategories removeLastObject];
-	}
-	
-	// Set up the Bubble Menu that uses this array
+	[self setUpT01ArrayCategories];
+}
+
+- (void) setUpT01ArrayCategories {	
+	[self.t01arrayCategories insertObject:[NSDictionary dictionaryWithObject:@"Tap to Select" forKey:@"label"] atIndex:0];
 	NSMutableArray *menuOptions = [NSMutableArray array];
 	for (id item in self.t01arrayCategories) {
 		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
 		[menuOptions addObject:anOption];
-	}
-	self.menuCategory = [[FormDetailMenu alloc] initWithMessageHeight:0
-																	  withFrame:CGRectMake(-110, heightForNavBar - yOverhangForNavBar + 8, 270, 0)
-															   menuOptionsArray:menuOptions
-																	 tailHeight:18
-																	anchorPoint:CGPointMake(0, 0)];
-	self.menuCategory.theMessage.text = @"";
-	[self.t01arrayCategories insertObject:@"Tap to Select" atIndex:0];
+	}	
+	[self.menuCategory setUpMenuOptionsArray:menuOptions];
+//	NSLog(@"self.t01arrayCategories: %@", self.t01arrayCategories);
 }
-
 
 #pragma mark -
 #pragma mark UITableViewDelegate, UITableViewDataSource
@@ -130,13 +134,13 @@
 
 	CGFloat subtractFromRowHeight = 0.0;
 	if (indexPath.section == self.sectionNowEditing) {
-		subtractFromRowHeight = 40.0;
+		subtractFromRowHeight = heightToSubtractWhenFormStateCellShrinks;
 	}
 	
 	UITableViewCell *cellAtPath = [self tableView:self.formTable cellForRowAtIndexPath:indexPath];
 	if ([cellAtPath isKindOfClass:[FormClearCell class]]) {
 //		NSLog(@"hFRAIP about to return %f", 250.0 + subtractFromRowHeight);
-		return 250.0 + subtractFromRowHeight;
+		return heightForFormClearCell + subtractFromRowHeight;
 	}
 
 	if (indexPath.section < 2) {
@@ -173,11 +177,8 @@
 		UIImage *iconImage = [UIImage imageNamed:@"15-tags@2x.png"];
 		cell.theIconView.image = iconImage;
 		cell.cellLabel.text = @"Site Category";
-		cell.cellDetailLabel.text = @"Tap to Select";
-		if (self.keyCategory > 0) {
-			NSMutableDictionary *theDict = [self.t01arrayCategories objectAtIndex:self.keyCategory];
-			cell.cellDetailLabel.text = [theDict objectForKey:@"label"];
-		}
+		cell.cellDetailLabel.text = [[self.t01arrayCategories objectAtIndex:self.keyCategory] objectForKey:@"label"];
+		
 		return cell;
 	}
 	if (indexPath.section == 1) {
@@ -187,7 +188,9 @@
 		cell.cellDetailLabel.text = self.comments;
 		return cell;
 	}
+	return 0;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
 	/* --	If an editCell is already showing	-- */
@@ -211,7 +214,7 @@
 
 	FormStateCell *theStateCell = [self.formTable cellForRowAtIndexPath:stateCellPath];
 
-	[theStateCell arrangeSubviewsForNewHeight:[self tableView:self.formTable heightForRowAtIndexPath:stateCellPath]];
+//	[theStateCell arrangeSubviewsForNewHeight:[self tableView:self.formTable heightForRowAtIndexPath:stateCellPath]];
 
 	[self addDetailMenuAtRow:pathForRow];
 	
@@ -219,7 +222,7 @@
 	[self.formTable insertRowsAtIndexPaths:[NSArray arrayWithObject:pathForRow] withRowAnimation:UITableViewRowAnimationTop];
 	[self.formTable endUpdates];
 	
-	[self.formTable scrollToRowAtIndexPath:stateCellPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+	[self.formTable scrollToRowAtIndexPath:pathForRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void) removeClearRow {
@@ -248,7 +251,7 @@
 
 - (void) addDetailMenuAtRow:(NSIndexPath *)pathForRow {
 
-	FormDetailMenu *theMenu;
+	FormMenuCategory *theMenu;
 	if ([pathForRow section] == 0) {
 		theMenu = self.menuCategory;
 	} else if ([pathForRow section] == 1) {
@@ -280,14 +283,14 @@
 	
 	// --	If it's in any of our BubbleMenu views....
 	for (UIView *theMenu in [self.view subviews]) {
-		if ([theMenu isKindOfClass:[FormDetailMenu class]]) {
+		if ([theMenu isKindOfClass:[FormMenuCategory class]]) {
 			if ([theMenu pointInside:[touch locationInView:theMenu] withEvent:nil]) {
 				
 				// --	If it 's in any of this BubbleMenu's tagged views...
 				for (UIView *theSubview in [theMenu subviews]) {
 					if (theSubview.tag > 0) {
 						if ([theSubview pointInside:[touch locationInView:theSubview] withEvent:nil]) {
-							[self performSelector:@selector(selectFormDetailMenuOption:) withObject:theSubview afterDelay:0];
+							[self performSelector:@selector(selectFormMenuCategoryOption:) withObject:theSubview afterDelay:0];
 							return;
 						}
 					}
@@ -300,10 +303,10 @@
 #pragma mark -
 #pragma mark Form 'Dives'
 
-- (void) selectFormDetailMenuOption:(UITextView *)selectedSubview {
-	NSLog(@"selectFormDetailMenuOption.. view with tag: %i", selectedSubview.tag);
+- (void) selectFormMenuCategoryOption:(UITextView *)selectedSubview {
+	NSLog(@"selectFormMenuCategoryOption.. view with tag: %i", selectedSubview.tag);
 	
-	FormDetailMenu *theMenu = [selectedSubview superview];
+	FormMenuCategory *theMenu = [selectedSubview superview];
 	
 	// --	Have the menu show the selection background (and schedule its removal as well as the menu's).
 	[theMenu showSelectionBackgroundForOption:selectedSubview.tag];
@@ -315,17 +318,18 @@
 		} else {
 			self.siteIsAccessible = NO;
 		}
-	}
-	if ([theMenu isEqual:self.menuCategory]) {
+	} else if ([theMenu isEqual:self.menuCategory]) {
 		self.keyCategory = selectedSubview.tag;		
-
-	}
-	if ([theMenu isEqual:self.menuComments]) {
+		if (self.keyCategory > 0) {
+			NSMutableDictionary *theDict = [self.t01arrayCategories objectAtIndex:self.keyCategory];
+			FormStateCell *categoryMenu = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+			categoryMenu.cellDetailLabel.text = [theDict objectForKey:@"label"];
+		}
+	} else if ([theMenu isEqual:self.menuComments]) {
 		//		self.comments = selectedSubview.tag;
 	}
-	[super selectFormDetailMenuOption:selectedSubview];
-	[self performSelector:@selector(removeClearRow) withObject:nil afterDelay:0.2];
-	[self performSelector:@selector(removeDetailMenu) withObject:nil afterDelay:0.2];
+	[self performSelector:@selector(removeClearRow) withObject:nil afterDelay:0.1];
+	[self performSelector:@selector(removeDetailMenu) withObject:nil afterDelay:0.1];
 }
 
 

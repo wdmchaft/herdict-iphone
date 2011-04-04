@@ -55,7 +55,11 @@
 
 /* --	VC_ReportSite elements	-- */
 #define heightForFormStateCell 110.0
-#define diameterForFormStateCellIconView 48.0
+#define diameterForFormStateCellIconView_full 48.0
+#define diameterForFormStateCellIconView_shrunk 30.0
+#define heightForFormClearCell 330.0;
+#define heightForMenuCategoryOption 27.0
+#define heightToSubtractWhenFormStateCellShrinks 0.0
 
 //	Notes on UITableViewAnimations...
 //	Consider using reloadSections instead of deleteRowsAtIndexPaths.  The reload animation for deleteRowsAtIndexPaths doesn't look as good (deleted rows collapse upward while their contents appear to fall out the bottom).
