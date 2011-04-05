@@ -39,6 +39,10 @@
     return self;
 }
 
+- (void)dealloc {
+    [super dealloc];
+}
+
 - (void) drawRect:(CGRect)rect {
 	
 	CGContextRef context = UIGraphicsGetCurrentContext();
@@ -72,11 +76,6 @@
     CGColorSpaceRelease(space);
 
 	CGContextDrawPath(context, kCGPathStroke);
-}
-
-
-- (void)dealloc {
-    [super dealloc];
 }
 
 

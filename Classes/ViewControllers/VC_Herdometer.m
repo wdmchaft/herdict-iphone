@@ -60,11 +60,9 @@
 }
 
 - (void) dealloc {
-	
-	[reportsFromFeed release];
-	[reportMapView release];
+	[timerInititiateAnnotateReport release];
 	[theAnnotation release];
-	
+	[reportMapView release];	
 	[super dealloc];
 }
 

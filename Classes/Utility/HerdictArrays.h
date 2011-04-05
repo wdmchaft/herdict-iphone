@@ -12,11 +12,13 @@
 
 @interface HerdictArrays : NSObject {
 
+	NSString *menuCategoryDefaultSelection;
 	NSMutableArray *t01arrayCategories;
 	NSMutableArray *t02arrayCountries;	
 
 }
 
+@property (nonatomic, retain) NSString *menuCategoryDefaultSelection;
 @property (nonatomic, retain) NSMutableArray *t01arrayCategories;
 @property (nonatomic, retain) NSMutableArray *t02arrayCountries;
 

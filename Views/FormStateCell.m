@@ -73,8 +73,15 @@
 		self.layer.shouldRasterize = YES;
 //		self.layer.shadowPath = [UIBezierPath bezierPathWithRect:self.bounds].CGPath;		
 	}
-    
     return self;
+}
+
+- (void)dealloc {
+	[cellDetailLabel release];
+	[cellLabel release];
+	[textPlate release];
+	[theIconView release];
+    [super dealloc];
 }
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -190,10 +197,5 @@
 	
 	CGContextDrawPath(context, kCGPathStroke);
 }
-
-- (void)dealloc {
-    [super dealloc];
-}
-
 
 @end

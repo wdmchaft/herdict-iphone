@@ -32,7 +32,7 @@
 		self.cornerRad = 4.0;
 		self.layer.masksToBounds = YES;
 		
-		CGFloat ourAlpha = 0.35; 
+		CGFloat ourAlpha = 0.75; 
 		
 		// --	Make sure there's no tag confusion.
 		self.tag = 0;
@@ -82,7 +82,6 @@
 		self.button2.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];		
 		[self addSubview:self.button2];	
 		
-		
 	}
     return self;
 }
@@ -103,6 +102,12 @@
 }
 
 - (void)dealloc {
+	[theScreen release];
+	[selectionBackground release];
+	[button2 release];
+	[backgroundPlate2 release];
+	[button1 release];
+	[backgroundPlate1 release];
     [super dealloc];
 }
 

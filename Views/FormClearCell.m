@@ -29,6 +29,9 @@
     return self;
 }
 
+- (void)dealloc {
+    [super dealloc];
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     
@@ -36,11 +39,5 @@
     
     // Configure the view for the selected state.
 }
-
-
-- (void)dealloc {
-    [super dealloc];
-}
-
 
 @end

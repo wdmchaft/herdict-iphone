@@ -115,9 +115,13 @@
 		
 		[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(hideBubbleMenu) userInfo:nil repeats:NO];
 	}
-
     return self;
-	
+}
+
+- (void)dealloc {
+	[selectionBackground release];
+	[theMessage release];	
+    [super dealloc];
 }
 
 - (void) addShadow {
@@ -262,10 +266,6 @@
 	theAnimation.duration = 0.25;
 	
 	[self.layer addAnimation:theAnimation forKey:@"scale"];
-}
-
-- (void)dealloc {
-    [super dealloc];
 }
 
 - (void) showSelectionBackgroundForOption:(int)optionNumber {

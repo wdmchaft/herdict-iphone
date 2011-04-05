@@ -19,14 +19,13 @@
 #import "HerdictArrays.h"
 
 
-@interface VC_ReportSite : UIViewController <FormStateCellDelegate, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate> {
+@interface VC_ReportSite : UIViewController <UIAlertViewDelegate, FormStateCellDelegate, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate> {
 
 	UITableView *formTable;
 	
 	int sectionNowEditing;	
 	
 	FormMenuCategory *menuCategory;
-	NSString *menuCategoryDefaultSelection;
 	FormMenuComments *menuComments;
 	NSString *menuCommentsDefaultSelection;
 	FormMenuAccessible *menuAccessible;
@@ -41,7 +40,6 @@
 @property (nonatomic) int sectionNowEditing;
 
 @property (nonatomic, retain) FormMenuCategory *menuCategory;
-@property (nonatomic, retain) NSString *menuCategoryDefaultSelection;
 @property (nonatomic, retain) FormMenuComments *menuComments;
 @property (nonatomic, retain) NSString *menuCommentsDefaultSelection;
 @property (nonatomic, retain) FormMenuAccessible *menuAccessible;
@@ -56,5 +54,6 @@
 - (void) addDetailMenuAtRow:(NSIndexPath *)pathForRow;
 - (void) removeDetailMenu;
 - (void) selectFormMenuOption:(UITextView *)selectedSubview;
+- (void) initiateReportCallout;
 
 @end

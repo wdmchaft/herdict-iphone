@@ -21,7 +21,6 @@
 	
 	UIActivityIndicatorView *loadingIndicator;
 	UILabel *loadingText;	
-	
 }
 
 @property (nonatomic, retain) UIView *loadingView;

@@ -55,13 +55,13 @@
     // e.g. self.myOutlet = nil;
 }
 - (void)dealloc {
-	
-	[theWebView release];
+	[loadingText release];
+	[loadingIndicator release];
 	[theSiteSummary release];
-
+	[theWebView release];
+	[loadingView release];
     [super dealloc];
 }
-
 
 - (void) getSiteSummaryCallbackHandler:(ASIHTTPRequest*)request {
 	

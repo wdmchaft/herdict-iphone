@@ -80,7 +80,7 @@
 
 
 - (void)dealloc {
-//    [tabBarController release];
+	[vcBase release];
     [window release];
     [super dealloc];
 }

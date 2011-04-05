@@ -44,6 +44,11 @@
     return self;
 }
 
+- (void)dealloc {
+	[selectionScreen release];
+    [super dealloc];
+}
+
 
 - (void) setSelected {
 
@@ -162,10 +167,6 @@
 	
 	CGContextDrawPath(context, kCGPathStroke);
 	
-}
-
-- (void)dealloc {
-    [super dealloc];
 }
 
 

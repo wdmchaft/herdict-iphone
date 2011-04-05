@@ -15,7 +15,6 @@
 
 @synthesize sectionNowEditing;
 
-@synthesize menuCategoryDefaultSelection;
 @synthesize menuCategory;
 @synthesize menuCommentsDefaultSelection;
 @synthesize menuComments;
@@ -61,7 +60,6 @@
 															  withFrame:CGRectMake(25, heightForNavBar - yOverhangForNavBar + heightForURLBar + 10, 270, 0)
 															 tailHeight:0];
 	self.menuCategory.theMessage.text = @"";
-	self.menuCategoryDefaultSelection = [NSString stringWithString:@"Tap to Select"];
 	[self setUpMenuCategory];
 	
 	// --	menuComments
@@ -85,18 +83,21 @@
     // e.g. self.myOutlet = nil;
 }
 - (void)dealloc {
+	[menuAccessible release];
+	[menuComments release];
+	[menuCategory release];
+	[formTable release];
     [super dealloc];
 }
 
 - (void) setUpMenuCategory {
-	[[[HerdictArrays sharedSingleton] t01arrayCategories] insertObject:[NSDictionary dictionaryWithObject:self.menuCategoryDefaultSelection forKey:@"label"] atIndex:0];
 	NSMutableArray *menuOptions = [NSMutableArray array];
 	for (id item in [[HerdictArrays sharedSingleton] t01arrayCategories]) {
 		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
 		[menuOptions addObject:anOption];
 	}	
 	[self.menuCategory setUpMenuOptionsArray:menuOptions];
-	NSLog(@"[[HerdictArrays sharedSingleton] t01arrayCategories]: %@", [[HerdictArrays sharedSingleton] t01arrayCategories]);
+//	NSLog(@"[[HerdictArrays sharedSingleton] t01arrayCategories]: %@", [[HerdictArrays sharedSingleton] t01arrayCategories]);
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
@@ -165,7 +166,7 @@
 		if ([stringFromArray length] > 0) {
 			cell.cellDetailLabel.text = stringFromArray;
 		} else {
-			cell.cellDetailLabel.text = self.menuCategoryDefaultSelection;
+			cell.cellDetailLabel.text = [[HerdictArrays sharedSingleton] menuCategoryDefaultSelection];
 		}
 		return cell;
 	}
@@ -239,6 +240,10 @@
 
 - (void) removeClearRow {
 
+	if (self.sectionNowEditing < 0) {
+		return;
+	}
+	
 	/* --	Have to set sectionNowEditing to -1 BEFORE the transactions coming up.. it's a flag for them	-- */
 	int sectionNowEditing_priorValue = self.sectionNowEditing;
 	self.sectionNowEditing = -1;
@@ -353,7 +358,15 @@
 			self.siteIsAccessible = NO;
 		}
 		NSLog(@"self.siteIsAccessible: %@", self.siteIsAccessible ? @"YES" : @"NO");
-		[self initiateReportCallout];
+
+		// --	Confirmation alertView.
+		NSString *theUrl = [[self.tabBarController.delegate theUrlBar] text];
+		theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+		theUrl = [theUrl stringByReplacingOccurrencesOfString:@"www." withString:@""];		
+		UIAlertView *alertConfirm = [[UIAlertView alloc] initWithTitle:@"Confirm" message:[NSString stringWithFormat:@"Report %@ %@?", theUrl, self.siteIsAccessible ? @"accessible" : @"inaccessible"] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Submit",nil];
+		[alertConfirm show];
+		[alertConfirm release];	
+		
 		return;
 	} else if ([theMenu isEqual:self.menuCategory]) {
 		self.keyCategory = selectedSubview.tag;		
@@ -373,6 +386,13 @@
 	
 	[self performSelector:@selector(removeClearRow) withObject:nil afterDelay:0.1];
 	[self performSelector:@selector(removeDetailMenu) withObject:nil afterDelay:0.1];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+
+	if ([alertView.title isEqualToString:@"Confirm"] && buttonIndex == 1) {
+		[self initiateReportCallout];		
+	}
 }
 
 - (void) initiateReportCallout {
@@ -400,17 +420,26 @@
 	NSString *theSourceId = [NSString string];
 	
 	NSString *theTag = [[[[HerdictArrays sharedSingleton] t01arrayCategories] objectAtIndex:self.keyCategory] objectForKey:@"value"];
-	if ([theTag isEqualToString:self.menuCategoryDefaultSelection]) {
+	if ([theTag isEqualToString:[[HerdictArrays sharedSingleton] menuCategoryDefaultSelection]]) {
 		theTag = @"";
 	}
 	
 	NSString *theComments = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self.comments, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
-	
+		
 	[WebservicesController reportUrl:theUrl reportType:theReportType country:theCountry userISP:theDetectedIspName userLocation:theLocation interest:theInterest reason:theReason sourceId:theSourceId tag:theTag comments:theComments defaultCountryCode:theCountry defaultispDefaultName:theDetectedIspName callbackDelegate:self];
 }
 
 - (void) reportUrlStatusCallbackHandler:(ASIHTTPRequest *)request {
-
+	NSLog(@"[request responseString]: %@", [request responseString]);
 	
+	if ([[request responseString] isEqualToString:@"SUCCESS"]) {
+		UIAlertView *alertThankYou = [[UIAlertView alloc] initWithTitle:@"Report Submitted" message:@"Thanks for participating!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Done",nil];
+		[alertThankYou show];
+		[alertThankYou release];
+	} else {
+		UIAlertView *alertError = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error submitting your report." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Done",nil];
+		[alertError show];
+		[alertError release];
+	}		
 }
 @end

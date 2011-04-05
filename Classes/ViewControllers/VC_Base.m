@@ -163,11 +163,20 @@
     // e.g. self.myOutlet = nil;
 }
 - (void)dealloc {
-
-	[buttonCancelTyping release];
+	[vcHerdometer release];
+	[vcCheckSite release];
+	[vcReportSite release];
+	[theTabTracker release];
+	[theController release];
+	[theScreen release];
 	[theUrlBarMenu release];
-	[theUrlBar release];		
-
+	[theUrlBar release];
+	[buttonWiFi release];
+	[buttonInfo release];
+	[buttonCancelTyping release];
+	[navItem release];
+	[navBar release];
+	[blackBackgroundForNavBar release];
     [super dealloc];
 }
 

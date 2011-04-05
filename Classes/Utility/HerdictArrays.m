@@ -11,8 +11,22 @@
 
 @implementation HerdictArrays
 
+@synthesize menuCategoryDefaultSelection;
 @synthesize t01arrayCategories;
 @synthesize t02arrayCountries;
+
+- (id) init {
+	self = [super init];
+	if (self) {
+		self.menuCategoryDefaultSelection = [NSString stringWithString:@"Tap to Select"];
+	}
+	return self;
+}
+
+- (void) dealloc {
+	[super dealloc];
+}
+
 
 + (HerdictArrays *) sharedSingleton {
 	static HerdictArrays *sharedSingleton;
@@ -26,6 +40,7 @@
 
 - (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {	
 	self.t01arrayCategories = [WebservicesController getArrayFromJSONData:[request responseData]];
+	[self.t01arrayCategories insertObject:[NSDictionary dictionaryWithObject:self.menuCategoryDefaultSelection forKey:@"label"] atIndex:0];
 }
 
 - (void) getCountriesCallbackHandler:(ASIHTTPRequest*)request {

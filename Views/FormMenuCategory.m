@@ -99,10 +99,16 @@
 	
 }
 
+- (void)dealloc {
+	[theMessage release];
+	[selectionBackground release];
+    [super dealloc];
+}
+
 - (void) setUpMenuOptionsArray:(NSMutableArray *)theOptionsArray {
 
 	NSLog(@"setUpMenuOptionsArray");
-	self.selfheight = self.tailHeight + (yPaddingForBubbleMenuBody * 4) + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * ([theOptionsArray count] - 2));	
+	self.selfheight = self.tailHeight + (yPaddingForBubbleMenuBody * 4) + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * ([theOptionsArray count] - 1));	
 	
 	[self setFrame:CGRectMake(self.frame.origin.x,
 							  self.frame.origin.y,
@@ -120,7 +126,7 @@
 	for (NSString *optionText in theOptionsArray) {
 		if ([theOptionsArray indexOfObject:optionText] > 0) {
 			UITextView *menuOption = [[[UITextView alloc] initWithFrame:CGRectMake(self.xPaddingLeft,
-																				  self.tailHeight + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * (-2 + [theOptionsArray indexOfObject:optionText])),
+																				  self.tailHeight + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * (-1 + [theOptionsArray indexOfObject:optionText])),
 																				  self.selfwidth - self.xPaddingRight,
 																				  heightForMenuCategoryOption)] autorelease];
 			menuOption.contentMode = UIViewContentModeCenter;
@@ -218,12 +224,5 @@
 	
 	CGContextDrawPath(context, kCGPathFillStroke);
 }
-
-
-- (void)dealloc {
-    [super dealloc];
-}
-
-
 
 @end

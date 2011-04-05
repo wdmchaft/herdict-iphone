@@ -85,6 +85,15 @@
     return self;
 }
 
+- (void)dealloc {
+	[loadingText release];
+	[loadingIndicator release];
+	[hideLabel release];
+	[textView2 release];
+	[textView1 release];
+    [super dealloc];
+}
+
 - (void) drawRect:(CGRect)rect {
 
 	CGContextRef context = UIGraphicsGetCurrentContext();
@@ -109,27 +118,17 @@
 	
 	CGMutablePathRef thePath = CGPathCreateMutable();
 	
-	// --	Begin at right edge.
+	// --	Begin at right edge to the right of hideTab, proceed counterclockwise.
 	CGPathMoveToPoint(thePath, NULL, selfwidth + 2, heightForSiteSummaryHideTab);
-	// --	Line to hideTab bottom right corner.
 	CGPathAddLineToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab, heightForSiteSummaryHideTab);
-	// --	Line to hideTab top right corner.
 	CGPathAddLineToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab, cornerRad);
-	// --	Arc around hideTab top right corner.
 	CGPathAddArcToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab, 0 + offsetForStroke, selfwidth - xOffsetForSiteSummaryHideTab - cornerRad, 0 + offsetForStroke, cornerRad);
-	// --	Line to hideTab top left corner.
 	CGPathAddLineToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab + cornerRad, 0 + offsetForStroke);
-	// --	Arc around hideTab top left corner.
 	CGPathAddArcToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, 0 + offsetForStroke, selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, cornerRad, cornerRad);
-	// --	Line to hideTab bottom left corner.
 	CGPathAddLineToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, heightForSiteSummaryHideTab);
-	// --	Line to left edge.
 	CGPathAddLineToPoint(thePath, NULL, 0 - 2, heightForSiteSummaryHideTab);
-	// --	Line to bottom left corner.
 	CGPathAddLineToPoint(thePath, NULL, 0 - offsetForStroke, selfheight + 2);
-	// --	Line to bottom right corner.
 	CGPathAddLineToPoint(thePath, NULL, selfwidth + offsetForStroke, selfheight + 2);
-	// --	Line to right edge.
 	CGPathAddLineToPoint(thePath, NULL, selfwidth + 2, heightForSiteSummaryHideTab);
 	
 	return thePath;
@@ -221,10 +220,5 @@
 	 ];
 	
 }
-
-- (void)dealloc {
-    [super dealloc];
-}
-
 
 @end

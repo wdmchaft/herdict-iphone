@@ -38,13 +38,8 @@
     self = [super initWithFrame:theFrame];
 	if (self) {
 		
-		self.cutoutSizeHeight = theCutoutHeight;
-		self.yPaddingForCutout = 0.0f;
-		if (self.cutoutSizeHeight > 0.0f) {
-			self.yPaddingForCutout = yPaddingForBubbleMenuBody + 3.0f;
-		}
-		
-		self.selfheight = theTailHeight + (self.yPaddingForCutout * 2.0) + self.cutoutSizeHeight;
+		self.cutoutSizeHeight = theCutoutHeight;		
+		self.selfheight = theTailHeight + (6.0 * 2.0) + self.cutoutSizeHeight;
 		
 		[self setFrame:CGRectMake(self.frame.origin.x,
 								  self.frame.origin.y,
@@ -64,9 +59,9 @@
 		self.tailxOffsetForTip = self.selfwidth * 0.5;
 		
 		self.cutoutCornerRad = 4.0f;
-		self.cutoutOriginX = self.xPaddingLeft;
-		self.cutoutOriginY = self.tailHeight + self.yPaddingForCutout;
-		self.cutoutSizeWidth = self.selfwidth - self.xPaddingLeft - self.xPaddingRight;
+		self.cutoutOriginX = 8.0f;
+		self.cutoutOriginY = 6.0f;
+		self.cutoutSizeWidth = self.selfwidth - (2.0 * self.cutoutOriginX);
 		
 		self.cornerRad = 6.0;
 		
@@ -79,10 +74,10 @@
 		self.theComments.backgroundColor = [UIColor clearColor];
 		self.theComments.editable = YES;
 		self.theComments.tag = 0;
-		self.theComments.scrollEnabled = NO;
+		self.theComments.scrollEnabled = YES;
 		self.theComments.returnKeyType = UIReturnKeyDone;
 		self.theComments.userInteractionEnabled = YES;
-		self.theComments.font = [UIFont fontWithName:@"Helvetica-Bold" size:18];
+		self.theComments.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
 		[self addSubview:self.theComments];
 		
 		// --	Make sure there's no tag confusion.
@@ -92,9 +87,12 @@
 		}
 				
 	}
-	
     return self;
-	
+}
+
+- (void)dealloc {
+	[theComments release];
+    [super dealloc];
 }
 
 - (void) addShadow {
@@ -163,41 +161,6 @@
 	CGContextAddPath(context, thePath);
 	
 	CGContextDrawPath(context, kCGPathFillStroke);
-	
-	//	// --	Exterior subpath.  Begin at tail left side of tip, proceed clockwise.
-	//	CGContextMoveToPoint(context, self.selfwidth * 0.5 - 1.0f, 0.0f);
-	//	CGContextAddLineToPoint(context, self.selfwidth - self.tailxOffsetForBase - self.tailWidth, self.tailHeight);
-	//	CGContextAddLineToPoint(context, self.cornerRad, self.tailHeight);
-	//	CGContextAddArcToPoint(context, 0.0f, self.tailHeight, 0.0f, self.tailHeight + self.cornerRad, self.cornerRad);
-	//	CGContextAddLineToPoint(context, 0.0f, self.selfheight - self.cornerRad);
-	//	CGContextAddArcToPoint(context, 0.0f, self.selfheight, self.cornerRad, self.selfheight, self.cornerRad);
-	//	CGContextAddLineToPoint(context, self.selfwidth - self.cornerRad, self.selfheight);
-	//	CGContextAddArcToPoint(context, self.selfwidth, self.selfheight, self.selfwidth, self.selfheight - self.cornerRad, self.cornerRad);
-	//	CGContextAddLineToPoint(context, self.selfwidth, self.tailHeight + self.cornerRad);
-	//	CGContextAddArcToPoint(context, self.selfwidth, self.tailHeight, self.selfwidth - self.cornerRad, self.tailHeight, self.cornerRad);
-	//	CGContextAddLineToPoint(context, self.selfwidth - self.tailxOffsetForBase, self.tailHeight);
-	//	CGContextAddLineToPoint(context, self.selfwidth * 0.5 + 1.0f, 0.0f);
-	//	CGContextClosePath(context);
-	//	
-	//	// --	Cutout subpath.  Begin below cutout's top left corner, proceed counterclockwise.
-	//	CGContextMoveToPoint(context, self.cutoutOriginX, self.cutoutOriginY + self.cutoutCornerRad);
-	//	CGContextAddLineToPoint(context, self.cutoutOriginX, self.cutoutOriginY + self.cutoutSizeHeight - self.cutoutCornerRad);
-	//	CGContextAddArcToPoint(context, self.cutoutOriginX, self.cutoutOriginY + self.cutoutSizeHeight, self.cutoutOriginX + self.cutoutCornerRad, self.cutoutOriginY + self.cutoutSizeHeight, self.cutoutCornerRad);
-	//	CGContextAddLineToPoint(context, self.cutoutOriginX + self.cutoutSizeWidth - self.cutoutCornerRad, self.cutoutOriginY + self.cutoutSizeHeight);
-	//	CGContextAddArcToPoint(context, self.cutoutOriginX + self.cutoutSizeWidth, self.cutoutOriginY + self.cutoutSizeHeight, self.cutoutOriginX + self.cutoutSizeWidth, self.cutoutOriginY + self.cutoutSizeHeight - self.cutoutCornerRad, self.cutoutCornerRad);
-	//	CGContextAddLineToPoint(context, self.cutoutOriginX + self.cutoutSizeWidth, self.cutoutOriginY + self.cutoutCornerRad);	
-	//	CGContextAddArcToPoint(context, self.cutoutOriginX + self.cutoutSizeWidth, self.cutoutOriginY, self.cutoutOriginX + self.cutoutSizeWidth - self.cutoutCornerRad, self.cutoutOriginY, self.cutoutCornerRad);
-	//	CGContextAddLineToPoint(context, self.cutoutOriginX + self.cutoutCornerRad, self.cutoutOriginY);
-	//	CGContextAddArcToPoint(context, self.cutoutOriginX, self.cutoutOriginY, self.cutoutOriginX, self.cutoutOriginY + self.cutoutCornerRad, self.cutoutCornerRad);	
-	//	CGContextClosePath(context);
-	
 }
-
-
-- (void)dealloc {
-    [super dealloc];
-}
-
-
 
 @end

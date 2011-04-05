@@ -15,8 +15,7 @@
 	NSString *ipAddress;
 	NSMutableDictionary *ipInfoDict;
 	NSString *detected_ispName;
-	NSString *detected_countryCode;
-	
+	NSString *detected_countryCode;	
 }
 
 @property (nonatomic, retain) NSString *ipAddress;

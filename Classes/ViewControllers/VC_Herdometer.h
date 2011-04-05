@@ -21,8 +21,7 @@
 	NSMutableArray *reportsFromFeed;
 	int indexOfCurrentReportToBeAnnotated;
 	ReportAnnotation *theAnnotation;
-	NSTimer *timerInititiateAnnotateReport;		
-	
+	NSTimer *timerInititiateAnnotateReport;			
 }
 
 @property (nonatomic, retain) MKMapView *reportMapView;

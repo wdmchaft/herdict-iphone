@@ -29,7 +29,7 @@
 
 @interface VC_Base : UIViewController <UITabBarControllerDelegate, UINavigationBarDelegate, UIAlertViewDelegate, UISearchBarDelegate> {
 
-	/* --	Nav Bar	-- */
+	// --	Nav Bar
 	UIView *blackBackgroundForNavBar;
 	CustomNavBar *navBar;
 	UINavigationItem *navItem;
@@ -37,14 +37,12 @@
 	CustomUIButton *buttonInfo;
 	CustomUIButton *buttonWiFi;
 	
-	/* --	URL Bar	-- */
+	// --	URL Bar
 	URLBar *theUrlBar;	
 	BubbleMenu *theUrlBarMenu;
 	
-	Screen *theScreen;
-	
-	
-	// formerly in appDelegate
+	Screen *theScreen;	
+
 	UITabBarController *theController;
 	
 	NSString *currentUrl;

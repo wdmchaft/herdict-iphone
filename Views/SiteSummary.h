@@ -15,8 +15,7 @@
 	UITextView *textView2;
 	UILabel *hideLabel;
 	UIActivityIndicatorView *loadingIndicator;
-	UILabel *loadingText;
-		
+	UILabel *loadingText;		
 }
 
 @property (nonatomic, retain) UITextView *textView1;

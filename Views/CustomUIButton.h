@@ -13,13 +13,9 @@
 @interface CustomUIButton : UIButton {
 	
 	UIView *selectionScreen;
-	
-//	UILabel *theTitle;
 }
 
 @property (nonatomic, retain) UIView *selectionScreen;
-
-//@property (nonatomic, retain) UILabel *theTitle;
 
 - (void)setSelected;
 - (void)setNotSelected;
