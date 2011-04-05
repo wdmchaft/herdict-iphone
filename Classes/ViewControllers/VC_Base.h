@@ -27,6 +27,8 @@
 
 @interface VC_Base : UIViewController <UITabBarControllerDelegate, UINavigationBarDelegate, UIAlertViewDelegate, UISearchBarDelegate> {
 
+	// --	About
+	
 	// --	Nav Bar
 	UIView *blackBackgroundForNavBar;
 	CustomNavBar *navBar;
@@ -38,7 +40,7 @@
 	// --	URL Bar
 	URLBar *theUrlBar;	
 	BubbleMenu *theUrlBarMenu;
-	NSString *currentUrl;
+	NSString *currentUrlFixedUp;
 	BOOL selectionMadeViaBubbleMenu;
 	
 	Screen *theScreen;
@@ -62,7 +64,7 @@
 
 @property (nonatomic, retain) URLBar *theUrlBar;
 @property (nonatomic, retain) BubbleMenu *theUrlBarMenu;
-@property (nonatomic, retain) NSString *currentUrl;
+@property (nonatomic, retain) NSString *currentUrlFixedUp;
 @property (nonatomic) BOOL selectionMadeViaBubbleMenu;
 
 @property (nonatomic, retain) Screen *theScreen;

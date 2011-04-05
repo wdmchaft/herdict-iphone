@@ -44,10 +44,12 @@
 - (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {	
 	self.t01arrayCategories = [[WebservicesController sharedSingleton] getArrayFromJSONData:[request responseData]];
 	[self.t01arrayCategories insertObject:[NSDictionary dictionaryWithObject:self.menuCategoryDefaultSelection forKey:@"label"] atIndex:0];
+	NSLog(@"t01arrayCategories: %@", t01arrayCategories);
 }
 
 - (void) getCountriesCallbackHandler:(ASIHTTPRequest*)request {
 	self.t02arrayCountries = [[WebservicesController sharedSingleton] getArrayFromJSONData:[request responseData]];	
+	NSLog(@"t02arrayCountries: %@", t02arrayCountries);
 	NSLog(@"[self.t02arrayCountries count]: %i", [self.t02arrayCountries count]);
 }
 

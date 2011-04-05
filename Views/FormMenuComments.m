@@ -12,8 +12,8 @@
 
 @synthesize theComments;
 
-@synthesize selfwidth;
-@synthesize selfheight;
+@synthesize selfWidth;
+@synthesize selfHeight;
 
 @synthesize xPaddingLeft;
 @synthesize xPaddingRight;
@@ -39,29 +39,29 @@
 	if (self) {
 		
 		self.cutoutSizeHeight = theCutoutHeight;		
-		self.selfheight = theTailHeight + (6.0 * 2.0) + self.cutoutSizeHeight;
+		self.selfHeight = theTailHeight + (6.0 * 2.0) + self.cutoutSizeHeight;
 		
 		[self setFrame:CGRectMake(self.frame.origin.x,
 								  self.frame.origin.y,
 								  self.frame.size.width,
-								  self.selfheight)];
+								  self.selfHeight)];
 		
 		self.backgroundColor = [UIColor clearColor];
 		self.userInteractionEnabled = YES;
 		
-		self.selfwidth = self.frame.size.width;
-		self.xPaddingLeft = self.selfwidth * 0.065;
-		self.xPaddingRight = self.selfwidth * 0.08;
+		self.selfWidth = self.frame.size.width;
+		self.xPaddingLeft = self.selfWidth * 0.065;
+		self.xPaddingRight = self.selfWidth * 0.08;
 		
 		self.tailHeight = theTailHeight;
-		self.tailWidth = self.selfwidth * 0.4;
-		self.tailxOffsetForBase = self.selfwidth * 0.30;
-		self.tailxOffsetForTip = self.selfwidth * 0.5;
+		self.tailWidth = self.selfWidth * 0.4;
+		self.tailxOffsetForBase = self.selfWidth * 0.30;
+		self.tailxOffsetForTip = self.selfWidth * 0.5;
 		
 		self.cutoutCornerRad = 4.0f;
 		self.cutoutOriginX = 8.0f;
 		self.cutoutOriginY = 6.0f;
-		self.cutoutSizeWidth = self.selfwidth - (2.0 * self.cutoutOriginX);
+		self.cutoutSizeWidth = self.selfWidth - (2.0 * self.cutoutOriginX);
 		
 		self.cornerRad = 6.0;
 		
@@ -120,18 +120,18 @@
 	CGMutablePathRef thePath = CGPathCreateMutable();
 	
 	// --	Exterior subpath.  Begin at tail left side of tip, proceed clockwise.
-	CGPathMoveToPoint(thePath, NULL, self.selfwidth * 0.5 - 1.0f, 0.0f);
-	CGPathAddLineToPoint(thePath, NULL, self.selfwidth - self.tailxOffsetForBase - self.tailWidth, self.tailHeight);
+	CGPathMoveToPoint(thePath, NULL, self.selfWidth * 0.5 - 1.0f, 0.0f);
+	CGPathAddLineToPoint(thePath, NULL, self.selfWidth - self.tailxOffsetForBase - self.tailWidth, self.tailHeight);
 	CGPathAddLineToPoint(thePath, NULL, self.cornerRad, self.tailHeight);
 	CGPathAddArcToPoint(thePath, NULL, 0.0f, self.tailHeight, 0.0f, self.tailHeight + self.cornerRad, self.cornerRad);
-	CGPathAddLineToPoint(thePath, NULL, 0.0f, self.selfheight - self.cornerRad);
-	CGPathAddArcToPoint(thePath, NULL, 0.0f, self.selfheight, self.cornerRad, self.selfheight, self.cornerRad);
-	CGPathAddLineToPoint(thePath, NULL, self.selfwidth - self.cornerRad, self.selfheight);
-	CGPathAddArcToPoint(thePath, NULL, self.selfwidth, self.selfheight, self.selfwidth, self.selfheight - self.cornerRad, self.cornerRad);
-	CGPathAddLineToPoint(thePath, NULL, self.selfwidth, self.tailHeight + self.cornerRad);
-	CGPathAddArcToPoint(thePath, NULL, self.selfwidth, self.tailHeight, self.selfwidth - self.cornerRad, self.tailHeight, self.cornerRad);
-	CGPathAddLineToPoint(thePath, NULL, self.selfwidth - self.tailxOffsetForBase, self.tailHeight);
-	CGPathAddLineToPoint(thePath, NULL, self.selfwidth * 0.5 + 1.0f, 0.0f);
+	CGPathAddLineToPoint(thePath, NULL, 0.0f, self.selfHeight - self.cornerRad);
+	CGPathAddArcToPoint(thePath, NULL, 0.0f, self.selfHeight, self.cornerRad, self.selfHeight, self.cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, self.selfWidth - self.cornerRad, self.selfHeight);
+	CGPathAddArcToPoint(thePath, NULL, self.selfWidth, self.selfHeight, self.selfWidth, self.selfHeight - self.cornerRad, self.cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, self.selfWidth, self.tailHeight + self.cornerRad);
+	CGPathAddArcToPoint(thePath, NULL, self.selfWidth, self.tailHeight, self.selfWidth - self.cornerRad, self.tailHeight, self.cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, self.selfWidth - self.tailxOffsetForBase, self.tailHeight);
+	CGPathAddLineToPoint(thePath, NULL, self.selfWidth * 0.5 + 1.0f, 0.0f);
 	CGPathCloseSubpath(thePath);
 	
 	// --	Cutout subpath.  Begin below cutout's top left corner, proceed counterclockwise.

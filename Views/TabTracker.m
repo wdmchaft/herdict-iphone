@@ -55,19 +55,19 @@
 
 - (CGPathRef) getPath {
 
-	CGFloat selfwidth = self.frame.size.width;
-	CGFloat selfheight = self.frame.size.height;
+	CGFloat selfWidth = self.frame.size.width;
+	CGFloat selfHeight = self.frame.size.height;
 		
 	CGMutablePathRef thePath = CGPathCreateMutable();
 	
 	// --	Begin at bottom right corner.
-	CGPathMoveToPoint(thePath, NULL, selfwidth, selfheight);
+	CGPathMoveToPoint(thePath, NULL, selfWidth, selfHeight);
 	// --	Line to top middle corner.
-	CGPathAddLineToPoint(thePath, NULL, selfwidth / 2, 0.0f);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth / 2, 0.0f);
 	// --	Line to bottom left corner.
-	CGPathAddLineToPoint(thePath, NULL, 0.0f, selfheight);
+	CGPathAddLineToPoint(thePath, NULL, 0.0f, selfHeight);
 	// --	Line to bottom right corner.
-	CGPathAddLineToPoint(thePath, NULL, selfwidth, selfheight);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth, selfHeight);
 	CGPathCloseSubpath(thePath);
 	
 	return thePath;

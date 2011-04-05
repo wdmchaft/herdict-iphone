@@ -1,5 +1,7 @@
 current todo:
 
+- Ship default herdictArrays as plists, overwrite when fresh arrays are received.
+- Find out whether I should be releasing subviews in viewDidUnload as opposed to dealloc.
 - Hook up the ModalVCs for for 'Info' and 'My ISP'.
 - Right now we are relying on web API callbacks happening in time to fill up arrays that I try to access either way.  Need to protect for that.
 	Alerts - No Connectivity

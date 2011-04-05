@@ -15,8 +15,10 @@
 @synthesize theMessage;
 @synthesize menuOptions;
 
-@synthesize selfwidth;
-@synthesize selfheight;
+@synthesize selfOriginX;
+@synthesize selfOriginY;
+@synthesize selfWidth;
+@synthesize selfHeight;
 
 @synthesize xPaddingLeft;
 @synthesize xPaddingRight;
@@ -36,11 +38,10 @@
 	
     self = [super initWithFrame:theFrame];
 	if (self) {
-		
-		self.selfwidth = self.frame.size.width;
 
-		self.xPaddingLeft = self.selfwidth * 0.065;
-		self.xPaddingRight = self.selfwidth * 0.08;
+		self.selfOriginX = theFrame.origin.x;
+		self.selfOriginY = theFrame.origin.y;
+		self.selfWidth = theFrame.size.width;
 
 		self.yPaddingForMessage = 0.0;
 		if (theMessageHeight > 0.0) {
@@ -49,16 +50,19 @@
 		
 		self.messageHeight = theMessageHeight;
 		self.tailHeight = theTailHeight;
-		self.tailWidth = self.selfwidth * 0.4;
-		self.tailxOffsetForBase = self.selfwidth * 0.30;
-		self.tailxOffsetForTip = self.selfwidth * 0.5;
+		self.tailWidth = self.selfWidth * 0.4;
+		self.tailxOffsetForBase = self.selfWidth * 0.30;
+		self.tailxOffsetForTip = self.selfWidth * 0.5;
 		
-		self.selfheight = self.tailHeight + (yPaddingForBubbleMenuBody * 4.0) + self.messageHeight + self.yPaddingForMessage;
-		
-		[self setFrame:CGRectMake(self.frame.origin.x,
-								  self.frame.origin.y,
-								  self.frame.size.width,
-								  self.selfheight)];
+		self.selfHeight = self.tailHeight + (yPaddingForBubbleMenuBody * 4.0) + self.messageHeight + self.yPaddingForMessage;
+
+		self.xPaddingLeft = self.selfWidth * 0.065;
+		self.xPaddingRight = self.selfWidth * 0.08;
+
+		[self setFrame:CGRectMake(self.selfOriginX,
+								  self.selfOriginY,
+								  self.selfWidth,
+								  self.selfHeight)];
 		
 		self.backgroundColor = [UIColor clearColor];
 		self.userInteractionEnabled = YES;
@@ -77,7 +81,7 @@
 		// --	Set up the Message.
 		self.theMessage = [[UITextView alloc] initWithFrame:CGRectMake(self.xPaddingLeft,
 																	   self.tailHeight + self.yPaddingForMessage,
-																	   self.selfwidth - self.xPaddingRight,
+																	   self.selfWidth - self.xPaddingRight,
 																	   theMessageHeight)];
 		self.theMessage.textColor = [UIColor whiteColor];
 		self.theMessage.backgroundColor = [UIColor clearColor];
@@ -92,11 +96,9 @@
 		for (UIView *aView in [self subviews]) {
 			aView.tag = 0;
 		}
-				
 	}
 	
     return self;
-	
 }
 
 - (void)dealloc {
@@ -106,14 +108,18 @@
 }
 
 - (void) setUpMenuOptionsArray:(NSMutableArray *)theOptionsArray {
+//	NSLog(@"[formMenuCategory setUpMenuOptionsArray], self.frame.size.height: %f", self.frame.size.height);
 
-	NSLog(@"setUpMenuOptionsArray");
-	self.selfheight = self.tailHeight + (yPaddingForBubbleMenuBody * 4) + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * ([theOptionsArray count] - 1));	
+	int theCount = 0;
+	if ([theOptionsArray count] - 1 > 0) {
+		theCount = [theOptionsArray count] - 1;
+	}
+	self.selfHeight = self.tailHeight + (yPaddingForBubbleMenuBody * 4) + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * theCount);	
 	
-	[self setFrame:CGRectMake(self.frame.origin.x,
-							  self.frame.origin.y,
-							  self.frame.size.width,
-							  self.selfheight)];
+	[self setFrame:CGRectMake(self.selfOriginX,
+							  self.selfOriginY,
+							  self.selfWidth,
+							  self.selfHeight)];
 	
 	// --	Scrap existing menu options.
 	for (UIView *aView in self.subviews) {
@@ -127,7 +133,7 @@
 		if ([theOptionsArray indexOfObject:optionText] > 0) {
 			UITextView *menuOption = [[[UITextView alloc] initWithFrame:CGRectMake(self.xPaddingLeft,
 																				  self.tailHeight + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * (-1 + [theOptionsArray indexOfObject:optionText])),
-																				  self.selfwidth - self.xPaddingRight,
+																				  self.selfWidth - self.xPaddingRight,
 																				  heightForMenuCategoryOption)] autorelease];
 			menuOption.contentMode = UIViewContentModeCenter;
 			menuOption.text = [NSString stringWithString:optionText];
@@ -141,6 +147,7 @@
 			[self addSubview:menuOption];
 		}
 	}
+//	NSLog(@"formMenuCategory leaving setUpMenuOptionsArray.  self.frame.size.height: %f", self.frame.size.height);
 }
 
 - (void) addShadow {
@@ -182,29 +189,29 @@
 	CGMutablePathRef thePath = CGPathCreateMutable();
 	
 	// --	Begin at tail left side of tip.
-	CGPathMoveToPoint(thePath, NULL, self.selfwidth * 0.5 - 1.0f, 0.0f);
+	CGPathMoveToPoint(thePath, NULL, self.selfWidth * 0.5 - 1.0f, 0.0f);
 	// --	Line to tail left base.
-	CGPathAddLineToPoint(thePath, NULL, self.selfwidth - self.tailxOffsetForBase - self.tailWidth, self.tailHeight);
+	CGPathAddLineToPoint(thePath, NULL, self.selfWidth - self.tailxOffsetForBase - self.tailWidth, self.tailHeight);
 	// --	Line to top left corner.
 	CGPathAddLineToPoint(thePath, NULL, self.cornerRad, self.tailHeight);
 	// --	Arc around top left corner.
 	CGPathAddArcToPoint(thePath, NULL, 0.0f, self.tailHeight, 0.0f, self.tailHeight + self.cornerRad, self.cornerRad);
 	// --	Line to bottom left corner.
-	CGPathAddLineToPoint(thePath, NULL, 0.0f, self.selfheight - self.cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, 0.0f, self.selfHeight - self.cornerRad);
 	// --	Arc around bottom left corner.
-	CGPathAddArcToPoint(thePath, NULL, 0.0f, self.selfheight, self.cornerRad, self.selfheight, self.cornerRad);
+	CGPathAddArcToPoint(thePath, NULL, 0.0f, self.selfHeight, self.cornerRad, self.selfHeight, self.cornerRad);
 	// --	Line to bottom right corner.
-	CGPathAddLineToPoint(thePath, NULL, self.selfwidth - self.cornerRad, self.selfheight);
+	CGPathAddLineToPoint(thePath, NULL, self.selfWidth - self.cornerRad, self.selfHeight);
 	// --	Arc around bottom right corner.
-	CGPathAddArcToPoint(thePath, NULL, self.selfwidth, self.selfheight, self.selfwidth, self.selfheight - self.cornerRad, self.cornerRad);
+	CGPathAddArcToPoint(thePath, NULL, self.selfWidth, self.selfHeight, self.selfWidth, self.selfHeight - self.cornerRad, self.cornerRad);
 	// --	Line to top right corner.
-	CGPathAddLineToPoint(thePath, NULL, self.selfwidth, self.tailHeight + self.cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, self.selfWidth, self.tailHeight + self.cornerRad);
 	// --	Arc around top right corner.
-	CGPathAddArcToPoint(thePath, NULL, self.selfwidth, self.tailHeight, self.selfwidth - self.cornerRad, self.tailHeight, self.cornerRad);
+	CGPathAddArcToPoint(thePath, NULL, self.selfWidth, self.tailHeight, self.selfWidth - self.cornerRad, self.tailHeight, self.cornerRad);
 	// --	Add line to tail base.
-	CGPathAddLineToPoint(thePath, NULL, self.selfwidth - self.tailxOffsetForBase, self.tailHeight);
+	CGPathAddLineToPoint(thePath, NULL, self.selfWidth - self.tailxOffsetForBase, self.tailHeight);
 	// --	Add line to tail right of tip.
-	CGPathAddLineToPoint(thePath, NULL, self.selfwidth * 0.5 + 1.0f, 0.0f);
+	CGPathAddLineToPoint(thePath, NULL, self.selfWidth * 0.5 + 1.0f, 0.0f);
 	
 	CGPathCloseSubpath(thePath);
 	

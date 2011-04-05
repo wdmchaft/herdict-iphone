@@ -70,14 +70,12 @@
 												   diameterForSiteSummaryLoadingAnimation)];
 		self.loadingIndicator.backgroundColor = [UIColor clearColor];
 		[self.loadingIndicator startAnimating];
-		self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(11 + self.loadingIndicator.frame.origin.x + diameterForSiteSummaryLoadingAnimation,
+		self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(12 + self.loadingIndicator.frame.origin.x + diameterForSiteSummaryLoadingAnimation,
 																	 1 + heightForSiteSummaryHideTab + 0.5 * (heightForSiteSummary - heightForSiteSummaryHideTab - diameterForSiteSummaryLoadingAnimation),
 																	 widthForSiteSummaryLoadingText,
 																	 heightForSiteSummaryLoadingText + 5)];
 		self.loadingText.text = @"Getting Summary...";
-		self.loadingText.font = [UIFont fontWithName:@"Helvetica" size:18];
-		self.loadingText.shadowOffset = CGSizeMake(0, 1);
-		self.loadingText.shadowColor = UIColorFromRGB(0x404040);
+		self.loadingText.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
 
 		self.loadingText.backgroundColor = [UIColor clearColor];
 		self.loadingText.textColor = [UIColor whiteColor];
@@ -102,7 +100,7 @@
 	CGContextSetLineWidth(context, 2);
 
 	CGContextSetRGBStrokeColor(context, 1.0, 0.4, 0.0, 0.4);
-	CGContextSetRGBFillColor(context, 1.0, 0.4, 0.0, 0.9);
+	CGContextSetRGBFillColor(context, 1.0, 0.4, 0.0, 0.8);
 	
 	CGContextAddPath(context, [self getPath]);
 
@@ -113,23 +111,23 @@
 
 	CGFloat offsetForStroke = 1;
 	CGFloat cornerRad = 4;
-	CGFloat selfwidth = self.frame.size.width;
-	CGFloat selfheight = self.frame.size.height;
+	CGFloat selfWidth = self.frame.size.width;
+	CGFloat selfHeight = self.frame.size.height;
 	
 	CGMutablePathRef thePath = CGPathCreateMutable();
 	
 	// --	Begin at right edge to the right of hideTab, proceed counterclockwise.
-	CGPathMoveToPoint(thePath, NULL, selfwidth + 2, heightForSiteSummaryHideTab);
-	CGPathAddLineToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab, heightForSiteSummaryHideTab);
-	CGPathAddLineToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab, cornerRad);
-	CGPathAddArcToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab, 0 + offsetForStroke, selfwidth - xOffsetForSiteSummaryHideTab - cornerRad, 0 + offsetForStroke, cornerRad);
-	CGPathAddLineToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab + cornerRad, 0 + offsetForStroke);
-	CGPathAddArcToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, 0 + offsetForStroke, selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, cornerRad, cornerRad);
-	CGPathAddLineToPoint(thePath, NULL, selfwidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, heightForSiteSummaryHideTab);
+	CGPathMoveToPoint(thePath, NULL, selfWidth + 2, heightForSiteSummaryHideTab);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth - xOffsetForSiteSummaryHideTab, heightForSiteSummaryHideTab);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth - xOffsetForSiteSummaryHideTab, cornerRad);
+	CGPathAddArcToPoint(thePath, NULL, selfWidth - xOffsetForSiteSummaryHideTab, 0 + offsetForStroke, selfWidth - xOffsetForSiteSummaryHideTab - cornerRad, 0 + offsetForStroke, cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab + cornerRad, 0 + offsetForStroke);
+	CGPathAddArcToPoint(thePath, NULL, selfWidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, 0 + offsetForStroke, selfWidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, cornerRad, cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, heightForSiteSummaryHideTab);
 	CGPathAddLineToPoint(thePath, NULL, 0 - 2, heightForSiteSummaryHideTab);
-	CGPathAddLineToPoint(thePath, NULL, 0 - offsetForStroke, selfheight + 2);
-	CGPathAddLineToPoint(thePath, NULL, selfwidth + offsetForStroke, selfheight + 2);
-	CGPathAddLineToPoint(thePath, NULL, selfwidth + 2, heightForSiteSummaryHideTab);
+	CGPathAddLineToPoint(thePath, NULL, 0 - offsetForStroke, selfHeight + 2);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth + offsetForStroke, selfHeight + 2);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth + 2, heightForSiteSummaryHideTab);
 	
 	return thePath;
 }
@@ -151,6 +149,7 @@
 	self.textView2.text = theMessageString;
 	[self addSubview:self.textView1];
 	[self addSubview:self.textView2];	
+
 	//	if (sheepColor == 0) {
 	//		self.theSiteSummary.theBackground.backgroundColor = UIColorFromRGB(0x98D428);
 	//	} else if (sheepColor == 1) {

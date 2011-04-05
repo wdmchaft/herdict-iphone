@@ -20,21 +20,26 @@
 @synthesize loadingText;
 
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+	//NSLog(@"%@ initWithNibName:%@ bundle:%@", self, nibNameOrNil, nibBundleOrNil);
 
-	self.title = @"Check Site";
-	
-	self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (self) {
 
-	[self setUpSiteLoadingMessage];
-	[self resetCheckSite];
-	
-	self.theSiteSummary = [[SiteSummary alloc] initWithFrame:CGRectMake(0,
-																		480 - heightForStatusBar_real - 48 - heightForSiteSummaryHideTab,
-																		320,
-																		heightForSiteSummary + 5)];
-	[self.view insertSubview:self.theSiteSummary aboveSubview:self.theWebView];	
+		self.title = @"Check Site";
+		
+		self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+		
+		[self setUpSiteLoadingMessage];
+		[self resetCheckSite];
+		
+		self.theSiteSummary = [[SiteSummary alloc] initWithFrame:CGRectMake(0,
+																			480 - heightForStatusBar_real - 48 - heightForSiteSummaryHideTab,
+																			320,
+																			heightForSiteSummary + 5)];
+		[self.view insertSubview:self.theSiteSummary aboveSubview:self.theWebView];
+	}
+	return self;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -135,8 +140,7 @@
 	self.theWebView.backgroundColor = [UIColor clearColor];
 	self.theWebView.scalesPageToFit = YES;
 	self.theWebView.userInteractionEnabled = YES;
-	[self.view insertSubview:self.theWebView belowSubview:self.theSiteSummary];
-	
+	[self.view insertSubview:self.theWebView belowSubview:self.theSiteSummary];	
 }
 
 - (void) loadUrl:(NSString *)urlString {
@@ -159,7 +163,6 @@
 	
 	[self resetCheckSite];
 	[self.theSiteSummary setStateLoading];
-
 	[[WebservicesController sharedSingleton] getSiteSummary:theUrlString forCountry:[[HerdictArrays sharedSingleton] detected_countryCode] urlEncoding:@"none" callbackDelegate:self];
 		
 	NSURL *theUrl = [NSURL URLWithString:urlString];

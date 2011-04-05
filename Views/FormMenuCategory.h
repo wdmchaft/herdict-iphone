@@ -16,9 +16,11 @@
 
 	UITextView *theMessage;
 	NSMutableArray *menuOptions;
-		
-	CGFloat selfwidth;
-	CGFloat selfheight;
+	
+	CGFloat selfOriginX;
+	CGFloat selfOriginY;
+	CGFloat selfWidth;
+	CGFloat selfHeight;
 	
 	CGFloat xPaddingLeft;
 	CGFloat xPaddingRight;
@@ -39,8 +41,10 @@
 @property (nonatomic, retain) UITextView *theMessage;
 @property (nonatomic, retain) NSMutableArray *menuOptions;
 
-@property (nonatomic) CGFloat selfwidth;
-@property (nonatomic) CGFloat selfheight;
+@property (nonatomic) CGFloat selfOriginX;
+@property (nonatomic) CGFloat selfOriginY;
+@property (nonatomic) CGFloat selfWidth;
+@property (nonatomic) CGFloat selfHeight;
 
 @property (nonatomic) CGFloat xPaddingLeft;
 @property (nonatomic) CGFloat xPaddingRight;

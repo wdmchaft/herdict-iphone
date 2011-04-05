@@ -14,8 +14,8 @@
 	
 	UITextView *theComments;
 	
-	CGFloat selfwidth;
-	CGFloat selfheight;
+	CGFloat selfWidth;
+	CGFloat selfHeight;
 	
 	CGFloat xPaddingLeft;
 	CGFloat xPaddingRight;
@@ -38,8 +38,8 @@
 
 @property (nonatomic, retain) UITextView *theComments;
 
-@property (nonatomic) CGFloat selfwidth;
-@property (nonatomic) CGFloat selfheight;
+@property (nonatomic) CGFloat selfWidth;
+@property (nonatomic) CGFloat selfHeight;
 
 @property (nonatomic) CGFloat xPaddingLeft;
 @property (nonatomic) CGFloat xPaddingRight;

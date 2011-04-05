@@ -29,59 +29,62 @@
 #pragma mark -
 #pragma mark lifecycle methods
 
-- (void)viewDidLoad {		
-	NSLog(@"VC_ReportSite viewDidLoad");
-
-	[super viewDidLoad];
-
-	self.title = @"Report Site";
-
-	self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+	NSLog(@"%@ initWithNibName:%@ bundle:%@", self, nibNameOrNil, nibBundleOrNil);
 	
-	self.formTable = [[UITableView alloc] initWithFrame:CGRectMake(0,
-																   heightForNavBar - yOverhangForNavBar + heightForURLBar,
-																   320,
-																   heightForFormStateCell * 4)
-												  style:UITableViewStylePlain];
-	self.formTable.backgroundColor = [UIColor clearColor];
-	self.formTable.userInteractionEnabled = YES;
-	self.formTable.scrollEnabled = NO;
-	self.formTable.delegate = self;
-	self.formTable.dataSource = self;
-	self.formTable.separatorStyle = UITableViewCellSeparatorStyleNone;
-	[self.view addSubview:self.formTable];
-	
-	self.sectionNowEditing = -1;
-	self.siteIsAccessible = NO;
-	self.keyCategory = 0;
-	
-	// --	menuCategory
-	self.menuCategory = [[FormMenuCategory alloc] initWithMessageHeight:0
-															  withFrame:CGRectMake(25, heightForNavBar - yOverhangForNavBar + heightForURLBar + 10, 270, 0)
-															 tailHeight:0];
-	self.menuCategory.theMessage.text = @"";
-	[self setUpMenuCategory];
-	
-	// --	menuComments
-	self.menuComments = [[FormMenuComments alloc] initWithCutoutHeight:112.0f
-															  withFrame:CGRectMake(20, heightForNavBar - yOverhangForNavBar + heightForURLBar + 20, 280, 0)
-															 tailHeight:0];
-	self.menuComments.theComments.delegate = self;
-	self.menuCommentsDefaultSelection = [NSString stringWithString:@"Tap to Type"];
-	
-	// --	menuAccessible
-	self.menuAccessible = [[FormMenuAccessible alloc] initWithFrame:CGRectMake(heightForFormStateCell, 28.0, 126.0, heightForMenuCategoryOption)];
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (self) {
+		
+		self.title = @"Report Site";
+		self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+		
+		self.formTable = [[UITableView alloc] initWithFrame:CGRectMake(0,
+																	   heightForNavBar - yOverhangForNavBar + heightForURLBar,
+																	   320,
+																	   heightForFormStateCell * 4)
+													  style:UITableViewStylePlain];
+		self.formTable.backgroundColor = [UIColor clearColor];
+		self.formTable.userInteractionEnabled = YES;
+		self.formTable.scrollEnabled = NO;
+		self.formTable.delegate = self;
+		self.formTable.dataSource = self;
+		self.formTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+		[self.view addSubview:self.formTable];
+		
+		self.sectionNowEditing = -1;
+		self.siteIsAccessible = NO;
+		self.keyCategory = 0;
+		
+		// --	menuCategory
+		self.menuCategory = [[FormMenuCategory alloc] initWithMessageHeight:0
+																  withFrame:CGRectMake(25, heightForNavBar - yOverhangForNavBar + heightForURLBar + 10, 270, 0)
+																 tailHeight:0];
+		self.menuCategory.theMessage.text = @"";
+		[self setUpMenuCategory];
+		
+		// --	menuComments
+		self.menuComments = [[FormMenuComments alloc] initWithCutoutHeight:112.0f
+																 withFrame:CGRectMake(20, heightForNavBar - yOverhangForNavBar + heightForURLBar + 20, 280, 0)
+																tailHeight:0];
+		self.menuComments.theComments.delegate = self;
+		self.menuCommentsDefaultSelection = [NSString stringWithString:@"Tap to Type"];
+		
+		// --	menuAccessible
+		self.menuAccessible = [[FormMenuAccessible alloc] initWithFrame:CGRectMake(heightForFormStateCell, 28.0, 126.0, heightForMenuCategoryOption)];		
+	}
+	return self;
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
+
 - (void)viewDidUnload {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
 }
+
 - (void)dealloc {
 	[menuAccessible release];
 	[menuComments release];
@@ -95,7 +98,7 @@
 	for (id item in [[HerdictArrays sharedSingleton] t01arrayCategories]) {
 		NSString *anOption = [NSString stringWithString:[item objectForKey:@"label"]];
 		[menuOptions addObject:anOption];
-	}	
+	}
 	[self.menuCategory setUpMenuOptionsArray:menuOptions];
 //	NSLog(@"[[HerdictArrays sharedSingleton] t01arrayCategories]: %@", [[HerdictArrays sharedSingleton] t01arrayCategories]);
 }
@@ -273,7 +276,11 @@
 
 	FormMenuCategory *theMenu;
 	if ([pathForRow section] == 0) {
-		[self setUpMenuCategory];
+		NSLog(@"self.menuCategory.frame.size.height: %f", self.menuCategory.frame.size.height);
+		if (self.menuCategory.frame.size.height < heightForMenuCategoryOption) {
+			NSLog(@"self.menuCategory.frame.size.height < heightForMenuCategoryOption");
+			[self setUpMenuCategory];
+		}
 		theMenu = self.menuCategory;
 	} else if ([pathForRow section] == 1) {
 		theMenu = self.menuComments;
@@ -282,7 +289,7 @@
 	[theMenu addShadow];
 	[self.view performSelector:@selector(bringSubviewToFront:) withObject:theMenu afterDelay:0.3];
 	if ([theMenu isEqual:self.menuComments]) {
-		[self.menuComments.theComments becomeFirstResponder];
+		[self.menuComments.theComments performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.3];
 	}
 	
 	FormStateCell *cell = [self.formTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
@@ -422,13 +429,11 @@
 	NSString *theTag = [[[[HerdictArrays sharedSingleton] t01arrayCategories] objectAtIndex:self.keyCategory] objectForKey:@"value"];
 	theTag = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)theTag, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
 	if ([theTag length] == 0) {
-		NSLog(@"theTag was null, now going blank");
 		theTag = @"";
 	}
 	
 	NSString *theComments = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self.comments, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
 	if ([theComments length] == 0) {
-		NSLog(@"theComments was null, now going blank");
 		theComments = @"";
 	}	
 		

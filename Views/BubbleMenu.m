@@ -28,12 +28,16 @@
 @synthesize tailWidth;
 @synthesize tailOffset;
 @synthesize cornerRad;
-@synthesize selfwidth;
-@synthesize selfheight;
+@synthesize selfWidth;
+@synthesize selfHeight;
+
+@synthesize animationRotateForUse;
+@synthesize animationRotateTuckedAway;
 
 
 - (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint {
-
+	//NSLog(@"%@ init", self);
+	
     self = [super initWithFrame:theFrame];
 	if (self) {
 		
@@ -54,18 +58,18 @@
 		
 		self.frameForShowMenu = self.frame;
 
-		self.selfwidth = self.frame.size.width;
-		self.selfheight = self.frame.size.height;
+		self.selfWidth = self.frame.size.width;
+		self.selfHeight = self.frame.size.height;
 
 		self.tailHeight = theTailHeight;
-		self.tailWidth = selfwidth * 0.175;
-		self.tailOffset = selfwidth * 0.725;
+		self.tailWidth = selfWidth * 0.175;
+		self.tailOffset = selfWidth * 0.725;
 				
 		self.cornerRad = 6.0;
 		self.rotationWhenHidden = CATransform3DMakeRotation(-(M_PI * 0.25), 0, 0, 1);
 
-		CGFloat xPaddingLeft = selfwidth * 0.04;
-		CGFloat xPaddingRight = selfwidth * 0.08;
+		CGFloat xPaddingLeft = selfWidth * 0.04;
+		CGFloat xPaddingRight = selfWidth * 0.08;
 		
 		// --	Basic setup for self.selectionBackground.  The parent object will manipulate its backgroundColor and origin.y. 
 		self.selectionBackground = [[UIView alloc] initWithFrame:CGRectZero];
@@ -79,7 +83,7 @@
 		// --	Set up the Message.
 		self.theMessage = [[UITextView alloc] initWithFrame:CGRectMake(xPaddingLeft,
 																	   tailHeight + yPaddingForMessage,
-																	   selfwidth - xPaddingRight,
+																	   selfWidth - xPaddingRight,
 																	   theMessageHeight)];
 		self.theMessage.textColor = [UIColor whiteColor];
 		self.theMessage.backgroundColor = [UIColor clearColor];
@@ -99,7 +103,7 @@
 		for (NSString *optionText in theOptionsArray) {
 			UITextView *menuOption = [[UITextView alloc] initWithFrame:CGRectMake(xPaddingLeft,
 																				  tailHeight + yPaddingForBubbleMenuBody + theMessageHeight + yPaddingForMessage + (heightForBubbleMenuOption * [theOptionsArray indexOfObject:optionText]),
-																				  selfwidth - xPaddingRight,
+																				  selfWidth - xPaddingRight,
 																				  heightForBubbleMenuOption)];
 			menuOption.contentMode = UIViewContentModeCenter;
 			menuOption.text = [NSString stringWithString:optionText];
@@ -113,6 +117,9 @@
 			[self addSubview:menuOption];
 		}
 		
+		[self setUpAnimationRotateForUse];
+		[self setUpAnimationRotateTuckedAway];
+		
 		[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(hideBubbleMenu) userInfo:nil repeats:NO];
 	}
     return self;
@@ -125,14 +132,12 @@
 }
 
 - (void) addShadow {
-
 	self.layer.masksToBounds = NO;
 	self.layer.shadowOffset = CGSizeZero;
 	self.layer.shadowRadius = 5;
 	self.layer.shadowOpacity = 0.8;
 	self.layer.shouldRasterize = YES;
-	self.layer.shadowPath = [self getPath];
-	
+	self.layer.shadowPath = [self getPath];	
 }
 
 - (void) drawRect:(CGRect)rect {
@@ -164,17 +169,17 @@
 	// --	Begin at top right corner of layer, i.e. tip of tail.
 	CGPathMoveToPoint(thePath, NULL, 0, l);
 	// --	Line to bottom left corner.
-	CGPathAddLineToPoint(thePath, NULL, stroke, selfheight - cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, stroke, selfHeight - cornerRad);
 	// --	Arc around bottom left corner.
-	CGPathAddArcToPoint(thePath, NULL, stroke, selfheight, cornerRad, selfheight, cornerRad);
+	CGPathAddArcToPoint(thePath, NULL, stroke, selfHeight, cornerRad, selfHeight, cornerRad);
 	// --	Line to bottom right corner.
-	CGPathAddLineToPoint(thePath, NULL, selfwidth - cornerRad, selfheight);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth - cornerRad, selfHeight);
 	// --	Arc around bottom right corner.
-	CGPathAddArcToPoint(thePath, NULL, selfwidth, selfheight, selfwidth, selfheight - cornerRad, cornerRad);
+	CGPathAddArcToPoint(thePath, NULL, selfWidth, selfHeight, selfWidth, selfHeight - cornerRad, cornerRad);
 	// --	Line to top right corner.
-	CGPathAddLineToPoint(thePath, NULL, selfwidth, tailHeight + cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth, tailHeight + cornerRad);
 	// --	Arc around top right corner.
-	CGPathAddArcToPoint(thePath, NULL, selfwidth, tailHeight, selfwidth - cornerRad, tailHeight, cornerRad);
+	CGPathAddArcToPoint(thePath, NULL, selfWidth, tailHeight, selfWidth - cornerRad, tailHeight, cornerRad);
 	// --	Add line to base of tail.
 	CGPathAddLineToPoint(thePath, NULL, tailWidth, tailHeight);
 	// --	Add line to near tip of tail.
@@ -195,7 +200,7 @@
 	BOOL animated = [withAnimation boolValue];
 	
 	if (animated) {
-		[self rotateForUse];
+		[self.layer addAnimation:self.animationRotateForUse forKey:@"scale"];
 		[UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseIn
 						 animations:^{
 							 self.alpha = 1;
@@ -209,13 +214,13 @@
 		self.alpha = 1;
 	}
 	
-	//	Add shadows only after the view is actually added...  shadow is on self.layer, which isn't drawn until then.
+	//	Add shadows only after the view is actually added...  nothing on the view's layer will be drawn unless the view has been added
 	[self addShadow];
 }
 
 - (void) hideBubbleMenu {
 	
-	[self rotateTuckedAway];
+	[self.layer addAnimation:self.animationRotateTuckedAway forKey:@"scale"];
 	[UIView animateWithDuration:0.15 delay:0 options:UIViewAnimationOptionCurveEaseIn
 					 animations:^{
 						 self.alpha = 0;
@@ -227,45 +232,40 @@
 
 }
 
-- (void) rotateForUse {
-	CAKeyframeAnimation *theAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+- (void) setUpAnimationRotateForUse {
+	self.animationRotateForUse = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
 	
 	NSArray *scaleValues = [NSArray arrayWithObjects:
 							[NSValue valueWithCATransform3D:self.rotationWhenHidden],
 							[NSValue valueWithCATransform3D:CATransform3DIdentity],
 							nil];
-	[theAnimation setValues:scaleValues];
+	[self.animationRotateForUse setValues:scaleValues];
 	
 	NSArray *timingFunctions = [NSArray arrayWithObjects:
 								[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut],
 								nil];
-	[theAnimation setTimingFunctions:timingFunctions];
-	[theAnimation setRemovedOnCompletion:NO];
-	theAnimation.fillMode = kCAFillModeForwards;
-	theAnimation.duration = 0.25;
-	
-	[self.layer addAnimation:theAnimation forKey:@"scale"];
-	
+	[self.animationRotateForUse setTimingFunctions:timingFunctions];
+	[self.animationRotateForUse setRemovedOnCompletion:NO];
+	self.animationRotateForUse.fillMode = kCAFillModeForwards;
+	self.animationRotateForUse.duration = 0.25;
 }
 
-- (void) rotateTuckedAway {	
-	CAKeyframeAnimation *theAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
+- (void) setUpAnimationRotateTuckedAway {	
+	self.animationRotateTuckedAway = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
 	
 	NSArray *scaleValues = [NSArray arrayWithObjects:
 							[NSValue valueWithCATransform3D:CATransform3DIdentity],
 							[NSValue valueWithCATransform3D:self.rotationWhenHidden],
 							nil];
-	[theAnimation setValues:scaleValues];
+	[self.animationRotateTuckedAway setValues:scaleValues];
 	
 	NSArray *timingFunctions = [NSArray arrayWithObjects:
 								[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut],
 								nil];
-	[theAnimation setTimingFunctions:timingFunctions];
-	[theAnimation setRemovedOnCompletion:NO];
-	theAnimation.fillMode = kCAFillModeForwards;
-	theAnimation.duration = 0.25;
-	
-	[self.layer addAnimation:theAnimation forKey:@"scale"];
+	[self.animationRotateTuckedAway setTimingFunctions:timingFunctions];
+	[self.animationRotateTuckedAway setRemovedOnCompletion:NO];
+	self.animationRotateTuckedAway.fillMode = kCAFillModeForwards;
+	self.animationRotateTuckedAway.duration = 0.35;
 }
 
 - (void) showSelectionBackgroundForOption:(int)optionNumber {

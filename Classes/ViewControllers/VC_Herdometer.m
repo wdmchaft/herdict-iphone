@@ -19,29 +19,29 @@
 
 #pragma mark UIViewController lifecycle
 
-- (void) viewDidLoad {
-	NSLog(@"VC_Herdometer viewDidLoad");
-
-	[super viewDidLoad];
-		
-	self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
-
-	self.title = @"Herdometer";
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+	//NSLog(@"%@ initWithNibName:%@ bundle:%@", self, nibNameOrNil, nibBundleOrNil);
 	
-	// --	Set up reportMapView.
-	self.reportMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0,
-																	 heightForNavBar - yOverhangForNavBar + heightForURLBar,
-																	 320,
-																	 480 - heightForStatusBar_nonBaseViews - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
-	self.reportMapView.delegate = self;
-	self.reportMapView.userInteractionEnabled = YES;
-	self.reportMapView.scrollEnabled = NO;
-	self.reportMapView.zoomEnabled = NO;
-	[self.view addSubview:self.reportMapView];	
-	self.indexOfCurrentReportToBeAnnotated = 0;	
-
-	[self fetchTickerFeed];
-
+	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+	if (self) {
+		self.title = @"Herdometer";
+		self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+		
+		// --	Set up reportMapView.
+		self.reportMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0,
+																		 heightForNavBar - yOverhangForNavBar + heightForURLBar,
+																		 320,
+																		 480 - heightForStatusBar_nonBaseViews - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
+		self.reportMapView.delegate = self;
+		self.reportMapView.userInteractionEnabled = YES;
+		self.reportMapView.scrollEnabled = NO;
+		self.reportMapView.zoomEnabled = NO;
+		[self.view addSubview:self.reportMapView];	
+		self.indexOfCurrentReportToBeAnnotated = 0;	
+		
+		[self fetchTickerFeed];		
+	}
+	return self;
 }
 
 - (void) viewWillAppear:(BOOL)animated {

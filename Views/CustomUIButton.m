@@ -69,8 +69,8 @@
 	
 	CGFloat stroke = 3;
 	CGFloat cornerRad = self.layer.cornerRadius;
-	CGFloat selfwidth = self.frame.size.width;
-	CGFloat selfheight = self.frame.size.height;
+	CGFloat selfWidth = self.frame.size.width;
+	CGFloat selfHeight = self.frame.size.height;
 	
 	CGContextSetLineJoin(context, kCGLineJoinRound);
 	CGContextSetLineWidth(context, 1);
@@ -79,7 +79,7 @@
 	CGContextBeginPath(context);	
 	// --	Begin at top right corner.
 	CGContextMoveToPoint(context,
-						 selfwidth		- cornerRad,//			- stroke,
+						 selfWidth		- cornerRad,//			- stroke,
 						 0//				+ stroke
 						 );
 	// --	Line to top left corner.
@@ -98,39 +98,39 @@
 	// --	Line to bottom left corner.
 	CGContextAddLineToPoint(context,
 							0,//			+ stroke,
-							selfheight	- cornerRad//			- stroke
+							selfHeight	- cornerRad//			- stroke
 							);
 	// --	Arc around bottom left corner.
 	CGContextAddArcToPoint(context,
 						   0,//			+ stroke,
-						   selfheight,//	- stroke,
+						   selfHeight,//	- stroke,
 						   0			+ cornerRad,//			+ stroke,
-						   selfheight,//	- stroke,
+						   selfHeight,//	- stroke,
 						   cornerRad
 						   );
 	// --	Line to bottom right corner.
 	CGContextAddLineToPoint(context,
-							selfwidth	- cornerRad,//			- stroke,
-							selfheight//	- stroke
+							selfWidth	- cornerRad,//			- stroke,
+							selfHeight//	- stroke
 							);
 	// --	Arc around bottom right corner.
 	CGContextAddArcToPoint(context,
-						   selfwidth,//	- stroke,
-						   selfheight,//	- stroke,
-						   selfwidth,//	- stroke,
-						   selfheight	- cornerRad,//			- stroke,
+						   selfWidth,//	- stroke,
+						   selfHeight,//	- stroke,
+						   selfWidth,//	- stroke,
+						   selfHeight	- cornerRad,//			- stroke,
 						   cornerRad
 						   );
 	// --	Line to top right corner.
 	CGContextAddLineToPoint(context,
-							selfwidth,//	- stroke,
+							selfWidth,//	- stroke,
 							0			+ cornerRad//			+ stroke
 							);
 	// --	Arc around top right corner.
 	CGContextAddArcToPoint(context,
-						   selfwidth,//	- stroke,
+						   selfWidth,//	- stroke,
 						   0,//			+ stroke,
-						   selfwidth	- cornerRad,//			- stroke,
+						   selfWidth	- cornerRad,//			- stroke,
 						   0,//			+ stroke,
 						   cornerRad);
 	
