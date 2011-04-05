@@ -137,7 +137,7 @@
 	NSString *countryOfCurrentReportToBeAnnotated = [[[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] objectForKey:@"description"] objectForKey:@"Reporter Country"];
 	
 	if ([[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] objectForKey:@"geodata"] == nil) {
-		[WebservicesController getRoughGeocodeForCountry:countryOfCurrentReportToBeAnnotated callbackDelegate:self];
+		[[WebservicesController sharedSingleton] getRoughGeocodeForCountry:countryOfCurrentReportToBeAnnotated callbackDelegate:self];
 	} else {
 		[self annotateReport];
 	}
@@ -252,7 +252,7 @@
 
 - (void) getRoughGeocodeForCountryCallbackHandler:(ASIHTTPRequest *)request {
 	
-	NSDictionary *responseDictionary = [WebservicesController getDictionaryFromJSONData:[request responseData]];
+	NSDictionary *responseDictionary = [[WebservicesController sharedSingleton] getDictionaryFromJSONData:[request responseData]];
 	
 	// --	Store the received info in the report dictionary.
 	NSMutableDictionary *geometryDict = [[[responseDictionary objectForKey:@"results"] objectAtIndex:0] objectForKey:@"geometry"];

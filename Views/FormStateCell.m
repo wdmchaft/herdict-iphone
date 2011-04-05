@@ -25,7 +25,7 @@
 		
 		self.userInteractionEnabled = YES;
 		
-		/* --	Get rid of the default UITableViewCell backgroundView	-- */
+		// --	Get rid of the default UITableViewCell backgroundView
 		UIView *backView = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
 		backView.backgroundColor = [UIColor clearColor];
 		self.backgroundView = backView;

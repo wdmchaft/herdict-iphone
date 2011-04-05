@@ -65,9 +65,9 @@
 
 - (void) getSiteSummaryCallbackHandler:(ASIHTTPRequest*)request {
 	
-	NSDictionary *siteSummaryDictionary = [WebservicesController getDictionaryFromJSONData:[request responseData]];
+	NSDictionary *siteSummaryDictionary = [[WebservicesController sharedSingleton] getDictionaryFromJSONData:[request responseData]];
 	
-	// --	We handle the site summary content right here - theSiteView and theSiteView.SiteSummary never have to know about it.
+	// --	We handle the site summary content right here - theSiteSummary never knows about it.
 	NSString *countryCode = [siteSummaryDictionary objectForKey:@"countryCode"];
 	NSString *countryString = [NSString string];
 	for (id item in [[HerdictArrays sharedSingleton] t02arrayCountries]) {
@@ -90,7 +90,7 @@
 
 - (void) setUpSiteLoadingMessage {
 
-	/* --	Set up loadingView	-- */
+	// --	Set up loadingView
 	self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(0,
 																heightForNavBar - yOverhangForNavBar + heightForURLBar,
 																320,
@@ -98,7 +98,7 @@
 	self.loadingView.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
 	[self.view addSubview:self.loadingView];
 
-	/* --	Set up loadingIndicator	-- */
+	// --	Set up loadingIndicator
 	self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 	[self.loadingIndicator setFrame:CGRectMake(0.5 * (320.0 - (diameterForSiteLoadingAnimation + widthForSiteLoadingText)),
 											   3 + (0.5 * (self.loadingView.frame.size.height - heightForSiteSummary - diameterForSiteLoadingAnimation)),
@@ -107,7 +107,7 @@
 	[self.loadingIndicator startAnimating];
 	[self.loadingView addSubview:self.loadingIndicator];
 
-	/* --	Set up loadingText	-- */
+	// --	Set up loadingText
 	self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(self.loadingIndicator.frame.origin.x + diameterForSiteLoadingAnimation,
 																 3 + (0.5 * (self.loadingView.frame.size.height - heightForSiteSummary - heightForSiteLoadingText)),
 																 widthForSiteLoadingText,
@@ -145,6 +145,7 @@
 	NSString *theUrlString = urlString;
 	theUrlString = [theUrlString stringByReplacingOccurrencesOfString:@"http://" withString:@""];
 	theUrlString = [theUrlString stringByReplacingOccurrencesOfString:@"www." withString:@""];
+	theUrlString = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)theUrlString, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
 	
 	if ([theUrlString isEqualToString:self.lastTestedUrl]) {
 		NSLog(@"[self.theUrlString isEqualToString:self.lastTestedUrl]");
@@ -159,7 +160,7 @@
 	[self resetCheckSite];
 	[self.theSiteSummary setStateLoading];
 
-	[WebservicesController getSiteSummary:theUrlString forCountry:@"US" urlEncoding:@"none" apiVersion:@"FF1.0" callbackDelegate:self];
+	[[WebservicesController sharedSingleton] getSiteSummary:theUrlString forCountry:[[HerdictArrays sharedSingleton] detected_countryCode] urlEncoding:@"none" callbackDelegate:self];
 		
 	NSURL *theUrl = [NSURL URLWithString:urlString];
 	NSURLRequest *theRequest = [NSURLRequest requestWithURL:theUrl];

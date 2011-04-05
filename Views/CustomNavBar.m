@@ -19,10 +19,13 @@
 		[self setBarStyle:UIBarStyleBlackTranslucent];
 		self.layer.cornerRadius = 4;
 		self.backgroundColor = [UIColor blackColor];
-		self.clipsToBounds = NO;
-		self.layer.masksToBounds = NO;
+		self.layer.masksToBounds = YES;
 	}
 	return self;
+}
+
+- (void)dealloc {
+    [super dealloc];
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -34,7 +37,7 @@
 	CGFloat selfheight = self.frame.size.height;
 	
 	CGContextSetLineJoin(context, kCGLineJoinRound);
-	CGContextSetLineWidth(context, 1);
+	CGContextSetLineWidth(context, 0);
 	CGContextSetRGBStrokeColor(context, 0.3, 0.3, 0.3, 0.4); 
 	
 	CGContextBeginPath(context);	
@@ -81,9 +84,6 @@
 	// --	Close the path.
 	CGContextClosePath(context);
 	
-	// --	Clip on the path.
-	CGContextClip(context);
-	
 	CGGradientRef myGradient;
 	
 	CGFloat locations[4];
@@ -116,10 +116,5 @@
 	
 	CGContextDrawPath(context, kCGPathStroke);
 }
-
-- (void)dealloc {
-    [super dealloc];
-}
-
 
 @end

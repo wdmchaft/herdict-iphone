@@ -12,7 +12,7 @@
 		blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
 
 
-/* --	App theme	-- */
+// --	App theme
 #define barThemeRed	0.984//0.915//0.949
 #define barThemeGreen	0.964//0.906//0.937
 #define barThemeBlue	0.920//0.769//0.914
@@ -20,7 +20,7 @@
 #define menuThemeGreen 0.945
 #define menuThemeBlue 0.973
 
-/* --	VC_Base elements	-- */
+// --	VC_Base elements
 #define heightForStatusBar_nonBaseViews 0
 #define heightForStatusBar_real 20.0
 
@@ -37,12 +37,12 @@
 #define heightForTabTracker 11.0
 #define widthForTabTracker 16.0
 
-/* --	VC_CheckSite elements	-- */
+// --	VC_CheckSite elements
 #define diameterForSiteLoadingAnimation 25.0
 #define widthForSiteLoadingText 120.0
 #define heightForSiteLoadingText 20.0
 
-/* --	SiteSummary elements	-- */
+// --	SiteSummary elements
 #define heightForSiteSummary 149.0
 #define xOffsetForSiteSummaryHideTab 40.0
 #define widthForSiteSummaryHideTab 150.0
@@ -53,7 +53,7 @@
 #define widthForSiteSummaryLoadingText 158.0  // perfect for text "Getting Summary..." in Helvetica 18.
 #define heightForSiteSummaryLoadingText 18.0
 
-/* --	VC_ReportSite elements	-- */
+// --	VC_ReportSite elements
 #define heightForFormStateCell 110.0
 #define diameterForFormStateCellIconView_full 48.0
 #define diameterForFormStateCellIconView_shrunk 30.0

@@ -6,7 +6,6 @@ current todo:
 	Notice in upper corner of map: "Feed updated: mm dd HH:MM UTC".... though only when the feed is > 1 hour old and a new one can't be gotten.
 		Generally, check for > 1 hour feed age, and update when that is found.
 	Caching of last sessions's reportFeed, so it can be reused.
-- Provide sourceId with report callout.
 - Memory management
 	...go through local vars for any that are retained and never released properly.
 - Splash screen, icon

@@ -16,7 +16,7 @@
 
 @interface VC_Herdometer : UIViewController <MKMapViewDelegate> {
 
-	/* -- Herdometer -- */
+	// -- Herdometer
 	MKMapView *reportMapView;
 	NSMutableArray *reportsFromFeed;
 	int indexOfCurrentReportToBeAnnotated;

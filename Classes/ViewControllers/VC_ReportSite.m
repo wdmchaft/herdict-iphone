@@ -150,7 +150,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
-	/* --	If it's the editCell	-- */
+	// --	If it's the editCell
 	if (indexPath.section == self.sectionNowEditing && indexPath.row == 1) {
 		FormClearCell *cellClear = [[[FormClearCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"cellClear"] autorelease];
 		return cellClear;
@@ -197,7 +197,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	
-	/* --	If an editCell is already showing	-- */
+	// --	If an editCell is already showing
 	if (self.sectionNowEditing > -1 && indexPath.row == 0) {
 
 		[self removeClearRow];
@@ -244,7 +244,7 @@
 		return;
 	}
 	
-	/* --	Have to set sectionNowEditing to -1 BEFORE the transactions coming up.. it's a flag for them	-- */
+	// --	Have to set sectionNowEditing to -1 BEFORE the transactions coming up.. it's a flag for them
 	int sectionNowEditing_priorValue = self.sectionNowEditing;
 	self.sectionNowEditing = -1;
 	
@@ -409,9 +409,9 @@
 		theReportType = @"siteInaccessible";
 	}
 	
-	NSString *theCountry = [[NetworkInfo sharedSingleton] detected_countryCode];
+	NSString *theCountry = [[HerdictArrays sharedSingleton] detected_countryCode];
 	
-	NSString *theDetectedIspName = [[NetworkInfo sharedSingleton] detected_ispName];
+	NSString *theDetectedIspName = [[HerdictArrays sharedSingleton] detected_ispName];
 	theDetectedIspName = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)theDetectedIspName, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
 
 	NSString *theLocation = [NSString string];
@@ -420,13 +420,19 @@
 	NSString *theSourceId = [NSString string];
 	
 	NSString *theTag = [[[[HerdictArrays sharedSingleton] t01arrayCategories] objectAtIndex:self.keyCategory] objectForKey:@"value"];
-	if ([theTag isEqualToString:[[HerdictArrays sharedSingleton] menuCategoryDefaultSelection]]) {
+	theTag = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)theTag, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
+	if ([theTag length] == 0) {
+		NSLog(@"theTag was null, now going blank");
 		theTag = @"";
 	}
 	
 	NSString *theComments = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self.comments, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
+	if ([theComments length] == 0) {
+		NSLog(@"theComments was null, now going blank");
+		theComments = @"";
+	}	
 		
-	[WebservicesController reportUrl:theUrl reportType:theReportType country:theCountry userISP:theDetectedIspName userLocation:theLocation interest:theInterest reason:theReason sourceId:theSourceId tag:theTag comments:theComments defaultCountryCode:theCountry defaultispDefaultName:theDetectedIspName callbackDelegate:self];
+	[[WebservicesController sharedSingleton] reportUrl:theUrl reportType:theReportType country:theCountry userISP:theDetectedIspName userLocation:theLocation interest:theInterest reason:theReason sourceId:theSourceId tag:theTag comments:theComments defaultCountryCode:theCountry defaultispDefaultName:theDetectedIspName callbackDelegate:self];
 }
 
 - (void) reportUrlStatusCallbackHandler:(ASIHTTPRequest *)request {

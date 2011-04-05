@@ -14,7 +14,7 @@
 
 - (TabTracker *)initAtTab:(int)tabNumber {
     
-	/* --	Decide frame here	-- */
+	// --	Decide frame here
 	CGRect frame = CGRectMake([self xOffset:tabNumber] - (widthForTabTracker / 2.0f),
 							  480.0f - heightForStatusBar_real - 49.0f - (heightForTabTracker - 2.0f),
 							  widthForTabTracker,
@@ -50,7 +50,7 @@
 	
 	CGContextDrawPath(context, kCGPathFillStroke);
 	
-	CGContextClip(context);
+//	CGContextClip(context);
 }
 
 - (CGPathRef) getPath {

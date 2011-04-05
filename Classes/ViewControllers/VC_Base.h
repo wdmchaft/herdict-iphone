@@ -25,8 +25,6 @@
 #import "BubbleMenu.h"
 #import "Screen.h"
 
-
-
 @interface VC_Base : UIViewController <UITabBarControllerDelegate, UINavigationBarDelegate, UIAlertViewDelegate, UISearchBarDelegate> {
 
 	// --	Nav Bar
@@ -40,21 +38,19 @@
 	// --	URL Bar
 	URLBar *theUrlBar;	
 	BubbleMenu *theUrlBarMenu;
-	
-	Screen *theScreen;	
-
-	UITabBarController *theController;
-	
 	NSString *currentUrl;
 	BOOL selectionMadeViaBubbleMenu;
-	int currentTab;
 	
+	Screen *theScreen;
+
 	TabTracker *theTabTracker;
-	
+
+	// --	tab bar controller
+	UITabBarController *theController;
 	VC_Herdometer *vcHerdometer;
 	VC_CheckSite *vcCheckSite;
 	VC_ReportSite *vcReportSite;
-	
+	int currentTab;
 }
 
 @property (nonatomic, retain) UIView *blackBackgroundForNavBar;
@@ -66,23 +62,18 @@
 
 @property (nonatomic, retain) URLBar *theUrlBar;
 @property (nonatomic, retain) BubbleMenu *theUrlBarMenu;
+@property (nonatomic, retain) NSString *currentUrl;
+@property (nonatomic) BOOL selectionMadeViaBubbleMenu;
 
 @property (nonatomic, retain) Screen *theScreen;
 
-// formerly in appDelegate
-@property (nonatomic, retain) IBOutlet UITabBarController *theController;
-
-@property (nonatomic, retain) NSString *currentUrl;
-@property (nonatomic) BOOL selectionMadeViaBubbleMenu;
-@property (nonatomic) int currentTab;
-
 @property (nonatomic, retain) TabTracker *theTabTracker;
 
+@property (nonatomic, retain) IBOutlet UITabBarController *theController;
 @property (nonatomic, retain) VC_Herdometer *vcHerdometer;
 @property (nonatomic, retain) VC_CheckSite *vcCheckSite;
 @property (nonatomic, retain) VC_ReportSite *vcReportSite;
-
-
+@property (nonatomic) int currentTab;
 
 - (BOOL) urlTyped;
 - (NSString *) fixUpTypedUrl;

@@ -62,7 +62,7 @@
 		self.hideLabel.userInteractionEnabled = NO;
 		[self addSubview:self.hideLabel];
 
-		/* --	Set up loadingIndicator and loadingText	-- */
+		// --	Set up loadingIndicator and loadingText
 		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 		[self.loadingIndicator setFrame:CGRectMake(0.5 * (self.frame.size.width - (diameterForSiteSummaryLoadingAnimation + 11 + widthForSiteSummaryLoadingText)),
 												   heightForSiteSummaryHideTab + 0.5 * (heightForSiteSummary - heightForSiteSummaryHideTab - diameterForSiteSummaryLoadingAnimation),

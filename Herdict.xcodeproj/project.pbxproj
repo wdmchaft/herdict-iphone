@@ -243,14 +243,14 @@
 		A6CCA39C1339E43B00708A7B /* BubbleMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BubbleMenu.h; sourceTree = "<group>"; };
 		A6CCA39D1339E43B00708A7B /* BubbleMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BubbleMenu.m; sourceTree = "<group>"; };
 		A6CCA39E1339E43B00708A7B /* SiteSummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteSummary.h; sourceTree = "<group>"; };
-		A6CCA39F1339E43B00708A7B /* SiteSummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteSummary.m; sourceTree = "<group>"; };
+		A6CCA39F1339E43B00708A7B /* SiteSummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteSummary.m; sourceTree = "<group>"; wrapsLines = 1; };
 		A6DEC67B13230F4D009C8D9F /* VC_Herdometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VC_Herdometer.h; sourceTree = "<group>"; wrapsLines = 1; };
 		A6DEC67C13230F4D009C8D9F /* VC_Herdometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VC_Herdometer.m; sourceTree = "<group>"; wrapsLines = 1; };
 		A6F64EDA133E6FBE0053DFB9 /* VC_CheckSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VC_CheckSite.h; sourceTree = "<group>"; };
-		A6F64EDB133E6FBE0053DFB9 /* VC_CheckSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VC_CheckSite.m; sourceTree = "<group>"; };
+		A6F64EDB133E6FBE0053DFB9 /* VC_CheckSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VC_CheckSite.m; sourceTree = "<group>"; wrapsLines = 1; };
 		A6F64EED133E76580053DFB9 /* VC_ReportSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VC_ReportSite.h; sourceTree = "<group>"; };
 		A6F64EEE133E76580053DFB9 /* VC_ReportSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VC_ReportSite.m; sourceTree = "<group>"; wrapsLines = 1; };
-		A6F64F0A133E7B0A0053DFB9 /* VC_Base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VC_Base.h; sourceTree = "<group>"; };
+		A6F64F0A133E7B0A0053DFB9 /* VC_Base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VC_Base.h; sourceTree = "<group>"; wrapsLines = 1; };
 		A6F64F0B133E7B0A0053DFB9 /* VC_Base.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VC_Base.m; sourceTree = "<group>"; };
 		A6F64F1B133E7D140053DFB9 /* HerdictArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HerdictArrays.h; sourceTree = "<group>"; };
 		A6F64F1C133E7D140053DFB9 /* HerdictArrays.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HerdictArrays.m; sourceTree = "<group>"; };

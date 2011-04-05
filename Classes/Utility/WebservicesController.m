@@ -14,6 +14,28 @@
 
 @implementation WebservicesController
 
+@synthesize apiVersion;
+
+- (id) init {
+
+	self = [super init];
+	if (self) {
+		self.apiVersion = @"FF1.0";
+	}
+	return self;
+}
+
++ (WebservicesController *)sharedSingleton {
+	static WebservicesController *sharedSingleton;
+	
+	@synchronized(self) {
+		if (!sharedSingleton) {
+			sharedSingleton = [[WebservicesController alloc] init];
+		}
+		return sharedSingleton;
+	}
+}
+
 - (void) dealloc {
 	[super dealloc];
 }
@@ -21,14 +43,14 @@
 #pragma mark -
 #pragma mark callouts to non-Herdict services
 
-+ (void)getIp:(id)theCallbackDelegate {
+- (void)getIp:(id)theCallbackDelegate {
 	
 	NSString *urlString = @"http://jsonip.com/";
 	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getIpCallbackHandler:)];
 	
 }
 
-+ (void) getInfoForIpAddress:(NSString *)theIpAddress callbackDelegate:(id)theDelegate {
+- (void) getInfoForIpAddress:(NSString *)theIpAddress callbackDelegate:(id)theDelegate {
 	
 	NSString *keyString = @"ESU-GVZ3DETL5GG9olyyGLaa6Q7";
 	NSString *valutaString = @"usd";
@@ -38,7 +60,7 @@
 	
 }
 
-+ (void)getRoughGeocodeForCountry:(NSString *)theCountry callbackDelegate:(id)theCallbackDelegate {
+- (void)getRoughGeocodeForCountry:(NSString *)theCountry callbackDelegate:(id)theCallbackDelegate {
 	
 	NSString *encodedCountryString = (NSString *)CFURLCreateStringByAddingPercentEscapes(
 																						 NULL,
@@ -54,28 +76,33 @@
 
 #pragma mark -
 #pragma mark callouts to Herdict services
-+ (void)getCountries:(id)theCallbackDelegate {
+- (void)getCountries:(id)theCallbackDelegate {
 	// TO2
-	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/init-countries/FF0.9"];
+	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/init-countries/%@", self.apiVersion];
 	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getCountriesCallbackHandler:)];	
 }
-+ (void)getCategories:(id)theCallbackDelegate {
+- (void)getCategories:(id)theCallbackDelegate {
 	// T01
-	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/init-categories/FF0.9"];
+	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/init-categories/%@", self.apiVersion];
 	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getCategoriesCallbackHandler:)];	
 }
 
-+ (void)getSiteSummary:(NSString *)theUrl forCountry:(NSString *)theCountry urlEncoding:(NSString *)theEncoding apiVersion:(NSString *)theVersion callbackDelegate:(id)theDelegate {
+- (void)getCurrentLocation:(id)theCallbackDelegate {
+	// T06
+	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/init-currentLocation/%@", self.apiVersion];
+	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getCurrentLocationCallbackHandler:)];
+}
+- (void)getSiteSummary:(NSString *)theUrl forCountry:(NSString *)theCountry urlEncoding:(NSString *)theEncoding callbackDelegate:(id)theDelegate {
 
 	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/site/%@/%@/%@/%@",
 						   theUrl,
 						   theCountry,
 						   theEncoding,
-						   theVersion];
-	[self asynchGETRequest:urlString callbackDelegate:theDelegate callbackSelector:@selector(getSiteSummaryCallbackHandler:)];	
+						   self.apiVersion];
+	[self asynchGETRequest:urlString callbackDelegate:theDelegate callbackSelector:@selector(getSiteSummaryCallbackHandler:)];
 }
 
-+ (void)reportUrl:(NSString *)theEncodedUrl reportType:(NSString *)theReportType country:(NSString *)theCountry userISP:(NSString *)theIsp userLocation:(NSString *)theLocation interest:(NSString *)theInterest reason:(NSString *)theReason sourceId:(NSString *)theSourceId tag:(NSString *)theTag comments:(NSString *)theComments defaultCountryCode:(NSString *)theDCC defaultispDefaultName:(NSString *)theDIN callbackDelegate:(id)theDelegate {
+- (void)reportUrl:(NSString *)theEncodedUrl reportType:(NSString *)theReportType country:(NSString *)theCountry userISP:(NSString *)theIsp userLocation:(NSString *)theLocation interest:(NSString *)theInterest reason:(NSString *)theReason sourceId:(NSString *)theSourceId tag:(NSString *)theTag comments:(NSString *)theComments defaultCountryCode:(NSString *)theDCC defaultispDefaultName:(NSString *)theDIN callbackDelegate:(id)theDelegate {
 	
 	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/report?%@&report.url=%@&report.country.shortName=%@&report.ispDefaultName=%@&report.location=%@&report.interest=%@&report.reason=%@&report.sourceId=%@&report.tag=%@&report.comments=%@&defaultCountryCode=%@&defaultispDefaultName=%@&encoding=%@",
 						   theReportType,
@@ -89,7 +116,8 @@
 						   theTag,
 						   theComments,
 						   theDCC,
-						   theDIN];
+						   theDIN,
+						   @""];
 	[self asynchGETRequest:urlString callbackDelegate:theDelegate callbackSelector:@selector(reportUrlStatusCallbackHandler:)];
 }
 
@@ -97,7 +125,7 @@
 #pragma mark -
 #pragma mark utilities
 
-+ (NSMutableDictionary *) getDictionaryFromJSONData:(NSData *)theData {
+- (NSMutableDictionary *) getDictionaryFromJSONData:(NSData *)theData {
 	//	Have a dictionary built using theData.
 	NSError *errorDeserializingJSONResponse = nil;
 	NSMutableDictionary *deserializedDictionary = [NSMutableDictionary dictionary];
@@ -114,7 +142,7 @@
 	}
 }
 
-+ (NSMutableArray *) getArrayFromJSONData:(NSData *)theData {
+- (NSMutableArray *) getArrayFromJSONData:(NSData *)theData {
 	//	Have an array built using theData.
 	NSError *errorDeserializingJSONResponse = nil;
 	NSMutableArray *deserializedArray = [NSMutableArray arrayWithArray:[[CJSONDeserializer deserializer] deserializeAsArray:theData error:&errorDeserializingJSONResponse]];
@@ -131,7 +159,7 @@
 }
 
 
-+ (void) asynchGETRequest:(NSString*)stringForURL callbackDelegate:(id)theDelegate callbackSelector:(SEL)theSelector {
+- (void) asynchGETRequest:(NSString*)stringForURL callbackDelegate:(id)theDelegate callbackSelector:(SEL)theSelector {
 	NSLog(@"GET request to URL: %@", stringForURL);
 	NSURL *url = [NSURL URLWithString:stringForURL];
 	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
