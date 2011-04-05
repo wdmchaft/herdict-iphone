@@ -101,8 +101,8 @@
 	CGContextSetLineJoin(context, kCGLineJoinRound);
 	CGContextSetLineWidth(context, 2);
 
-	CGContextSetRGBStrokeColor(context, 0, 0, 0, 0.4);
-	CGContextSetRGBFillColor(context, 0, 0, 0, 0.7);
+	CGContextSetRGBStrokeColor(context, 1.0, 0.4, 0.0, 0.4);
+	CGContextSetRGBFillColor(context, 1.0, 0.4, 0.0, 0.9);
 	
 	CGContextAddPath(context, [self getPath]);
 
@@ -157,7 +157,7 @@
 	//		self.theSiteSummary.theBackground.backgroundColor = UIColorFromRGB(0x98D428);
 	//	} else if (sheepColor == 2) {
 	//		self.theSiteSummary.theBackground.backgroundColor = UIColorFromRGB(0xFF6600);
-	//	}	
+	//	}
 }
 
 - (void) positionSiteSummaryInView {
@@ -195,7 +195,7 @@
 	[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
 						 [self setFrame:CGRectMake(0,
-												   480 - heightForStatusBar_real - 49 - heightForSiteSummaryHideTab,
+												   480 - heightForStatusBar_real - 48 - heightForSiteSummaryHideTab,
 												   320,
 												   heightForSiteSummary + 5)];
 					 } completion:^(BOOL finished){

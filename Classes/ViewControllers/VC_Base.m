@@ -236,7 +236,7 @@
 	if (self.selectionMadeViaBubbleMenu && menuOption > 0) {
 		[self.theUrlBarMenu showBubbleMenuWithAnimation:[NSNumber numberWithBool:NO]];
 		[self.theUrlBarMenu showSelectionBackgroundForOption:menuOption];
-		[self.theUrlBarMenu hideBubbleMenu];
+		[self.theUrlBarMenu performSelector:@selector(hideBubbleMenu) withObject:nil afterDelay:0.225];
 	}
 	
 	// --	Match the dismissed VC's theTabTracker state			
@@ -290,7 +290,7 @@
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
 	self.navItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonWiFi] autorelease];
-	[NSTimer scheduledTimerWithTimeInterval:0.00 target:self.theUrlBarMenu selector:@selector(hideBubbleMenu) userInfo:nil repeats:NO];
+	[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBarMenu selector:@selector(hideBubbleMenu) userInfo:nil repeats:NO];
 	[self.theScreen removeFromSuperview];
 
 	[self.vcHerdometer.timerInititiateAnnotateReport invalidate];
@@ -342,7 +342,7 @@
 	
 	// --	Have the menu show the selection background (and schedule its removal as well as the menu's).
 	[theMenu showSelectionBackgroundForOption:selectedSubview.tag];
-	[NSTimer scheduledTimerWithTimeInterval:0.25 target:theMenu selector:@selector(hideSelectionBackground) userInfo:nil repeats:NO];				
+	[NSTimer scheduledTimerWithTimeInterval:0.6 target:theMenu selector:@selector(hideSelectionBackground) userInfo:nil repeats:NO];				
 	
 	if ([theMenu isEqual:self.theUrlBarMenu]) {
 		if ([self urlTyped]) {

@@ -31,7 +31,7 @@
 	[self resetCheckSite];
 	
 	self.theSiteSummary = [[SiteSummary alloc] initWithFrame:CGRectMake(0,
-																		480 - heightForStatusBar_real - 49 - heightForSiteSummaryHideTab,
+																		480 - heightForStatusBar_real - 48 - heightForSiteSummaryHideTab,
 																		320,
 																		heightForSiteSummary + 5)];
 	[self.view insertSubview:self.theSiteSummary aboveSubview:self.theWebView];	
