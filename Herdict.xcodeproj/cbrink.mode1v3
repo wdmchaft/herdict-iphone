@@ -279,14 +279,15 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>16</integer>
-									<integer>4</integer>
+									<integer>26</integer>
+									<integer>20</integer>
+									<integer>17</integer>
 									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 27}, {230, 702}}</string>
+							<string>{{0, 162}, {230, 702}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -323,7 +324,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>HerdictArrays.m</string>
+								<string>VC_ReportSite.m</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -331,11 +332,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>HerdictArrays.m</string>
+										<string>VC_ReportSite.m</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>A66872F6134BACA5006EE8B4</string>
+										<string>A66873B1134BBDB0006EE8B4</string>
 										<key>history</key>
 										<array>
 											<string>A6453E221349534100103631</string>
@@ -345,22 +346,17 @@
 											<string>A64546A9134A955400103631</string>
 											<string>A64546BB134A966300103631</string>
 											<string>A64546C0134A975100103631</string>
-											<string>A64546C1134A975100103631</string>
 											<string>A64546C2134A975100103631</string>
 											<string>A64546C3134A975100103631</string>
 											<string>A64546C6134A975100103631</string>
 											<string>A64546C7134A975100103631</string>
 											<string>A64546C8134A975100103631</string>
 											<string>A64546C9134A975100103631</string>
-											<string>A64546CC134A975100103631</string>
 											<string>A64546CF134A980E00103631</string>
 											<string>A64546D0134A980E00103631</string>
 											<string>A64546D1134A980E00103631</string>
 											<string>A64546D4134A980E00103631</string>
-											<string>A64546D6134A980E00103631</string>
 											<string>A6454717134A9B2200103631</string>
-											<string>A645472C134A9E3100103631</string>
-											<string>A6454757134AB74800103631</string>
 											<string>A6454795134ABA9600103631</string>
 											<string>A64547A9134ABBBD00103631</string>
 											<string>A64547AA134ABBBD00103631</string>
@@ -374,14 +370,18 @@
 											<string>A6687186134B91D2006EE8B4</string>
 											<string>A66871A6134B939E006EE8B4</string>
 											<string>A66871A7134B939E006EE8B4</string>
-											<string>A6687202134B99EF006EE8B4</string>
 											<string>A6687225134B9E5A006EE8B4</string>
 											<string>A668726A134BA29D006EE8B4</string>
 											<string>A668726B134BA29D006EE8B4</string>
-											<string>A668729A134BA6A1006EE8B4</string>
 											<string>A66872B4134BA812006EE8B4</string>
-											<string>A66872F0134BAC7B006EE8B4</string>
-											<string>A66872F1134BAC7B006EE8B4</string>
+											<string>A6687328134BB613006EE8B4</string>
+											<string>A668735F134BB90F006EE8B4</string>
+											<string>A6687369134BB949006EE8B4</string>
+											<string>A6687377134BBB4D006EE8B4</string>
+											<string>A6687384134BBB83006EE8B4</string>
+											<string>A6687389134BBBD9006EE8B4</string>
+											<string>A6687390134BBC27006EE8B4</string>
+											<string>A66873B0134BBDB0006EE8B4</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -579,7 +579,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>A66872F3134BAC7B006EE8B4</string>
+		<string>A66873B2134BBDB0006EE8B4</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>A668714A134B8B70006EE8B4</string>
 		<string>A6687136134B8A84006EE8B4</string>
@@ -823,8 +823,6 @@
 							<key>Dock</key>
 							<array>
 								<dict>
-									<key>BecomeActive</key>
-									<true/>
 									<key>ContentConfiguration</key>
 									<dict>
 										<key>PBXProjectModuleGUID</key>
@@ -851,6 +849,8 @@
 							<string>318pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>

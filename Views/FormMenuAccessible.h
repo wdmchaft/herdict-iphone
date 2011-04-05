@@ -10,30 +10,25 @@
 #import <QuartzCore/QuartzCore.h>
 #import "Constants.h"
 #import "Screen.h"
+#import "CustomUIButton.h"
+
+@class FormMenuAccessible;
+@protocol FormMenuAccessibleDelegate
+@optional
+@end
 
 
 @interface FormMenuAccessible : UIView {
 
-	UIView *backgroundPlate1;
-	UILabel *button1;
-	UIView *backgroundPlate2;
-	UILabel *button2;
+	CustomUIButton *buttonYes;
+	CustomUIButton *buttonNo;
 	
-	UIView *selectionBackground;
-	CGFloat cornerRad;
-	
-	Screen *theScreen;
+	id <FormMenuAccessibleDelegate> theDelegate;
 }
 
+@property (nonatomic, retain) CustomUIButton *buttonYes;
+@property (nonatomic, retain) CustomUIButton *buttonNo;
 
-@property (nonatomic, retain) UIView *backgroundPlate1;
-@property (nonatomic, retain) UILabel *button1;
-@property (nonatomic, retain) UIView *backgroundPlate2;
-@property (nonatomic, retain) UILabel *button2;
-
-@property (nonatomic, retain) UIView *selectionBackground;
-@property (nonatomic) CGFloat cornerRad;
-
-@property (nonatomic, retain) Screen *theScreen;
+@property (nonatomic, retain) id <FormMenuAccessibleDelegate> theDelegate;
 
 @end

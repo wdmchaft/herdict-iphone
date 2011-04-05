@@ -61,6 +61,11 @@
 #define heightForMenuCategoryOption 27.0
 #define heightToSubtractWhenFormStateCellShrinks 0.0
 
+// --	FormMenuAccessible elements
+#define widthForFormMenuAccessibleButton 75.0
+#define heightForFormMenuAccessible 27.0
+#define gapForFormMenuAccessible 6.0
+
 //	Notes on UITableViewAnimations...
 //	Consider using reloadSections instead of deleteRowsAtIndexPaths.  The reload animation for deleteRowsAtIndexPaths doesn't look as good (deleted rows collapse upward while their contents appear to fall out the bottom).
 //	Consider invoking reloadSections 2x in any given case.  With a single invocation, new rows pass in front of existing rows when sliding into view, whereas with a double invocation they slide out from behind existing rows.. it looks way better.

@@ -19,7 +19,7 @@
 #import "HerdictArrays.h"
 
 
-@interface VC_ReportSite : UIViewController <UIAlertViewDelegate, FormStateCellDelegate, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate> {
+@interface VC_ReportSite : UIViewController <UIAlertViewDelegate, FormStateCellDelegate, FormMenuAccessibleDelegate, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate> {
 
 	UITableView *formTable;
 	

@@ -18,7 +18,7 @@
 
 - (id) initWithFrame:(CGRect)frame {
     
-    self = [super initWithFrame:CGRectMake(0, 0, 57, 30)];
+    self = [super initWithFrame:frame];
     if (self) {
 		
 		self.layer.cornerRadius = 5;
@@ -35,11 +35,11 @@
 		
 		self.titleLabel.backgroundColor = [UIColor clearColor];
 //		self.titleLabel.alpha = 0.9;
-				
-		self.selectionScreen = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+		
+		self.selectionScreen = [[UIView alloc] initWithFrame:CGRectZero];
 		self.selectionScreen.backgroundColor = [UIColor blackColor];
 		self.selectionScreen.alpha = 0;
-		[self addSubview:self.selectionScreen];
+		[self addSubview:self.selectionScreen];		
 	}
     return self;
 }
@@ -49,6 +49,10 @@
     [super dealloc];
 }
 
+- (void) setFrame:(CGRect)frame {
+	[super setFrame:frame];
+	[self.selectionScreen setFrame:CGRectMake(1, 1, frame.size.width - 2, frame.size.height - 2)];
+}
 
 - (void) setSelected {
 

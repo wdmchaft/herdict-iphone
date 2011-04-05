@@ -22,7 +22,11 @@
 - (id) init {
 	self = [super init];
 	if (self) {
+		
 		self.menuCategoryDefaultSelection = [NSString stringWithString:@"Tap to Select"];
+		
+		[self t01SetupFromPlist];
+		[self t02SetupFromPlist];
 	}
 	return self;
 }
@@ -41,21 +45,31 @@
 	}
 }
 
+- (void) t01SetupFromPlist {
+	NSString *plistPath = [[NSBundle mainBundle] bundlePath];
+	NSString *finalPlistPath = [plistPath stringByAppendingPathComponent:@"t01arrayCategory.plist"];
+	self.t01arrayCategories = [NSArray arrayWithContentsOfFile:finalPlistPath];
+}
+
+- (void) t02SetupFromPlist {
+	NSString *plistPath = [[NSBundle mainBundle] bundlePath];
+	NSString *finalPlistPath = [plistPath stringByAppendingPathComponent:@"t02arrayCountry.plist"];
+	self.t02arrayCountries = [NSArray arrayWithContentsOfFile:finalPlistPath];	
+}
+
 - (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {	
 	self.t01arrayCategories = [[WebservicesController sharedSingleton] getArrayFromJSONData:[request responseData]];
 	[self.t01arrayCategories insertObject:[NSDictionary dictionaryWithObject:self.menuCategoryDefaultSelection forKey:@"label"] atIndex:0];
-	NSLog(@"t01arrayCategories: %@", t01arrayCategories);
 }
 
 - (void) getCountriesCallbackHandler:(ASIHTTPRequest*)request {
 	self.t02arrayCountries = [[WebservicesController sharedSingleton] getArrayFromJSONData:[request responseData]];	
-	NSLog(@"t02arrayCountries: %@", t02arrayCountries);
-	NSLog(@"[self.t02arrayCountries count]: %i", [self.t02arrayCountries count]);
+	//NSLog(@"[self.t02arrayCountries count]: %i", [self.t02arrayCountries count]);
 }
 
 - (void) getCurrentLocationCallbackHandler:(ASIHTTPRequest *)request {
 	self.t06dictCurrentLocation = [[WebservicesController sharedSingleton] getDictionaryFromJSONData:[request responseData]];
-	NSLog(@"t06dictCurrentLocation: %@", t06dictCurrentLocation);
+	//NSLog(@"t06dictCurrentLocation: %@", t06dictCurrentLocation);
 	
 	self.detected_ispName = [self.t06dictCurrentLocation objectForKey:@"ispName"];
 	self.detected_countryCode = [self.t06dictCurrentLocation objectForKey:@"countryShort"];

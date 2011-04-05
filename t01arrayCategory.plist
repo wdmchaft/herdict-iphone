@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<array>
+ 		<dict>
+			<key>label</key>
+			<string>Tap to Select</string>
+			<key>value</key>
+			<string></string>
+ 		</dict>
+ 		<dict>
+			<key>label</key>
+			<string>News/Information</string>
+			<key>value</key>
+			<string>tag.news</string>
+		</dict>
+ 		<dict>
+			<key>label</key>
+			<string>Entertainment/Gaming</string>
+			<key>value</key>
+			<string>tag.entertainment</string>
+		</dict>
+ 		<dict>
+			<key>label</key>
+			<string>Politics</string>
+			<key>value</key>
+			<string>tag.politics</string>
+		</dict>		
+ 		<dict>
+			<key>label</key>
+			<string>Human Rights</string>
+			<key>value</key>
+			<string>tag.humanrights</string>
+		</dict>
+ 		<dict>
+			<key>label</key>
+			<string>Social networks/communities</string>
+			<key>value</key>
+			<string>tag.communities</string>
+		</dict>
+ 		<dict>
+			<key>label</key>
+			<string>Sexually explicit</string>
+			<key>value</key>
+			<string>tag.sexual</string>
+		</dict>
+ 		<dict>
+			<key>label</key>
+			<string>Health</string>
+			<key>value</key>
+			<string>tag.health</string>
+		</dict>
+ 		<dict>
+			<key>label</key>
+			<string>Blogs/blogging platforms</string>
+			<key>value</key>
+			<string>tag.blogs</string>
+		</dict>
+ 		<dict>
+			<key>label</key>
+			<string>Religion</string>
+			<key>value</key>
+			<string>tag.religion</string>
+		</dict>
+ 		<dict>
+			<key>label</key>
+			<string>Internet tools/proxies</string>
+			<key>value</key>
+			<string>tag.internettools</string>
+		</dict>
+ 		<dict>
+			<key>label</key>
+			<string>P2P/bittorrent/file-sharing</string>
+			<key>value</key>
+			<string>tag.filesharing</string>
+		</dict>
+	</array>
+</plist>

@@ -191,7 +191,7 @@
 		A64540381349FB1A00103631 /* FormMenuComments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormMenuComments.h; sourceTree = "<group>"; };
 		A64540391349FB1A00103631 /* FormMenuComments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormMenuComments.m; sourceTree = "<group>"; };
 		A64543CC134A5F5700103631 /* FormMenuAccessible.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormMenuAccessible.h; sourceTree = "<group>"; };
-		A64543CD134A5F5700103631 /* FormMenuAccessible.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormMenuAccessible.m; sourceTree = "<group>"; };
+		A64543CD134A5F5700103631 /* FormMenuAccessible.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormMenuAccessible.m; sourceTree = "<group>"; wrapsLines = 1; };
 		A64CF125133FC4C400BFCDB5 /* CustomNavBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomNavBar.h; sourceTree = "<group>"; };
 		A64CF126133FC4C400BFCDB5 /* CustomNavBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomNavBar.m; sourceTree = "<group>"; };
 		A64CF6F813404B9F00BFCDB5 /* Screen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Screen.m; sourceTree = "<group>"; };

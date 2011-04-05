@@ -30,7 +30,7 @@
 #pragma mark lifecycle methods
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-	NSLog(@"%@ initWithNibName:%@ bundle:%@", self, nibNameOrNil, nibBundleOrNil);
+	//NSLog(@"%@ initWithNibName:%@ bundle:%@", self, nibNameOrNil, nibBundleOrNil);
 	
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
@@ -60,7 +60,10 @@
 																  withFrame:CGRectMake(25, heightForNavBar - yOverhangForNavBar + heightForURLBar + 10, 270, 0)
 																 tailHeight:0];
 		self.menuCategory.theMessage.text = @"";
+		
+		// --	Total kludge...  call setUpMenuCategory once, it will use the shipped Categories array.  Then 6s later do it again in case the latest one has arrived.  TODO set this up so we just call it when [HerdictArrays sharedSingleton] gets the callback.  Prob the right approach is to route that callback through vcReportSite.
 		[self setUpMenuCategory];
+		[self performSelector:@selector(setUpMenuCategory) withObject:nil afterDelay:6.0];
 		
 		// --	menuComments
 		self.menuComments = [[FormMenuComments alloc] initWithCutoutHeight:112.0f
@@ -70,7 +73,8 @@
 		self.menuCommentsDefaultSelection = [NSString stringWithString:@"Tap to Type"];
 		
 		// --	menuAccessible
-		self.menuAccessible = [[FormMenuAccessible alloc] initWithFrame:CGRectMake(heightForFormStateCell, 28.0, 126.0, heightForMenuCategoryOption)];		
+		self.menuAccessible = [[FormMenuAccessible alloc] initWithFrame:CGRectMake(heightForFormStateCell, 28.0, (widthForFormMenuAccessibleButton * 2) + gapForFormMenuAccessible, heightForFormMenuAccessible)];
+		self.menuAccessible.theDelegate = self;
 	}
 	return self;
 }
@@ -188,7 +192,7 @@
 	if (indexPath.section == 2) {
 		UIImage *iconImage = [UIImage imageNamed:@"146-gavel@2x.png"];
 		cell.theIconView.image = iconImage;
-		[cell.cellLabel setCenter:CGPointMake(cell.cellLabel.center.x, cell.cellLabel.center.y - 4)];
+		[cell.cellLabel setCenter:CGPointMake(cell.cellLabel.center.x, cell.cellLabel.center.y - 7)];
 		cell.cellLabel.text = @"Site Accessible?";
 		cell.cellDetailLabel.alpha = 0;
 		[cell.textPlate insertSubview:self.menuAccessible atIndex:0];
@@ -276,11 +280,6 @@
 
 	FormMenuCategory *theMenu;
 	if ([pathForRow section] == 0) {
-		NSLog(@"self.menuCategory.frame.size.height: %f", self.menuCategory.frame.size.height);
-		if (self.menuCategory.frame.size.height < heightForMenuCategoryOption) {
-			NSLog(@"self.menuCategory.frame.size.height < heightForMenuCategoryOption");
-			[self setUpMenuCategory];
-		}
 		theMenu = self.menuCategory;
 	} else if ([pathForRow section] == 1) {
 		theMenu = self.menuComments;
@@ -332,18 +331,6 @@
 			}
 		}
 	}
-	// --	If it's in menuAccessible....
-	if ([self.menuAccessible pointInside:[touch locationInView:self.menuAccessible] withEvent:nil]) {				
-		// --	If it 's in any of this BubbleMenu's tagged views...
-		for (UIView *theSubview in [self.menuAccessible subviews]) {
-			if (theSubview.tag > 0) {
-				if ([theSubview pointInside:[touch locationInView:theSubview] withEvent:nil]) {
-					[self performSelector:@selector(selectFormMenuOption:) withObject:theSubview afterDelay:0];
-					return;
-				}
-			}
-		}
-	}	
 }
 
 #pragma mark -
@@ -358,24 +345,7 @@
 	[theMenu showSelectionBackgroundForOption:selectedSubview.tag];
 	[NSTimer scheduledTimerWithTimeInterval:0.25 target:theMenu selector:@selector(hideSelectionBackground) userInfo:nil repeats:NO];				
 	
-	if ([theMenu isEqual:self.menuAccessible]) {
-		if (selectedSubview.tag == 1) {
-			self.siteIsAccessible = YES;
-		} else {
-			self.siteIsAccessible = NO;
-		}
-		NSLog(@"self.siteIsAccessible: %@", self.siteIsAccessible ? @"YES" : @"NO");
-
-		// --	Confirmation alertView.
-		NSString *theUrl = [[self.tabBarController.delegate theUrlBar] text];
-		theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-		theUrl = [theUrl stringByReplacingOccurrencesOfString:@"www." withString:@""];		
-		UIAlertView *alertConfirm = [[UIAlertView alloc] initWithTitle:@"Confirm" message:[NSString stringWithFormat:@"Report %@ %@?", theUrl, self.siteIsAccessible ? @"accessible" : @"inaccessible"] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Submit",nil];
-		[alertConfirm show];
-		[alertConfirm release];	
-		
-		return;
-	} else if ([theMenu isEqual:self.menuCategory]) {
+	if ([theMenu isEqual:self.menuCategory]) {
 		self.keyCategory = selectedSubview.tag;		
 		if (self.keyCategory > 0) {
 			NSMutableDictionary *theDict = [[[HerdictArrays sharedSingleton] t01arrayCategories] objectAtIndex:self.keyCategory];
@@ -393,6 +363,27 @@
 	
 	[self performSelector:@selector(removeClearRow) withObject:nil afterDelay:0.1];
 	[self performSelector:@selector(removeDetailMenu) withObject:nil afterDelay:0.1];
+}
+
+- (void) selectButtonAccessibleNo {
+	[self.menuAccessible.buttonNo setNotSelected];
+	self.siteIsAccessible = NO;
+	[self prepareForReportCallout];	
+}
+
+- (void) selectButtonAccessibleYes {
+	[self.menuAccessible.buttonYes setNotSelected];
+	self.siteIsAccessible = YES;
+	[self prepareForReportCallout];	
+}
+
+- (void) prepareForReportCallout {
+	NSString *theUrl = [[self.tabBarController.delegate theUrlBar] text];
+	theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+	theUrl = [theUrl stringByReplacingOccurrencesOfString:@"www." withString:@""];		
+	UIAlertView *alertConfirm = [[UIAlertView alloc] initWithTitle:@"Confirm" message:[NSString stringWithFormat:@"Report %@ %@?", theUrl, self.siteIsAccessible ? @"accessible" : @"inaccessible"] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Submit",nil];
+	[alertConfirm show];
+	[alertConfirm release];		
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
