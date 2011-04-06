@@ -10,6 +10,8 @@
 
 @implementation VC_Base
 
+@synthesize aboutView;
+
 @synthesize blackBackgroundForNavBar;
 @synthesize navBar;
 @synthesize navItem;
@@ -37,19 +39,20 @@
 
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
-		[self.view setCenter:CGPointMake(self.view.center.x, self.view.center.y - 20)];
-		
-		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
-		
-		self.theController = [[UITabBarController alloc] init];
-		self.theController.delegate = self;
-		
+
+		// --	Get some material from Herdict etc.
 		[[WebservicesController sharedSingleton] getCategories:[HerdictArrays sharedSingleton]];
 		[[WebservicesController sharedSingleton] getCountries:[HerdictArrays sharedSingleton]]; 
 		[[WebservicesController sharedSingleton] getIp:[NetworkInfo sharedSingleton]];
 		[[WebservicesController sharedSingleton] getCurrentLocation:[HerdictArrays sharedSingleton]];
 		
+		// --	Init all our VCs now... gets us better performance when they appear.
+		[self.view setCenter:CGPointMake(self.view.center.x, self.view.center.y - 20)];
+		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
+		
 		// --	Set up theController
+		self.theController = [[UITabBarController alloc] init];
+		self.theController.delegate = self;
 		self.vcHerdometer = [[VC_Herdometer alloc] init];
 		UIImage *iconHerdometer = [UIImage imageNamed:@"07-map-marker.png"];
 		UITabBarItem *itemHerdometer = [[[UITabBarItem alloc] initWithTitle:@"Herdometer" image:iconHerdometer tag:0] autorelease];
@@ -67,12 +70,7 @@
 		[self.theController.view setFrame:CGRectMake(0, 0, 320, 460)];
 		[self.view addSubview:self.theController.view];
 		
-		// --	Set up theTabTracker
-		self.theTabTracker = [[TabTracker alloc] initAtTab:0];
-		[self.view addSubview:self.theTabTracker];
-		[self.view bringSubviewToFront:self.theTabTracker];		
-		
-		// --	Set up theUrlBar
+		// --	Set up theUrlBar (do this first just because the navBar stuff should be on top of it).
 		self.theUrlBar = [[URLBar alloc] initWithFrame:CGRectMake(0,heightForNavBar - yOverhangForNavBar,320,heightForURLBar)];
 		for (UIView *view in self.theUrlBar.subviews) {
 			if ([view isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
@@ -137,11 +135,23 @@
 																  heightForNavBar - yOverhangForNavBar + heightForURLBar,
 																  320,
 																  480 - heightForStatusBar_nonBaseViews - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 20)];
-		self.theScreen.backgroundColor = [UIColor clearColor];	
+		self.theScreen.backgroundColor = [UIColor clearColor];
+		
+		// --	Set up theTabTracker
+		self.theTabTracker = [[TabTracker alloc] initAtTab:0];
+		[self.view addSubview:self.theTabTracker];
+		[self.view bringSubviewToFront:self.theTabTracker];	
+		
+		// --	Set up aboutView.
+		self.aboutView = [[About alloc] initWithFrame:CGRectMake(0,
+																 460 + heightForNavBar - heightForStatusBar_nonBaseViews - heightForURLBar,
+																 320,
+																 460)];
 	}
-	
 	return self;
 }
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -159,15 +169,12 @@
 - (void)didReceiveMemoryWarning {
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc. that aren't in use.
 }
 - (void)viewDidUnload {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
 }
 - (void)dealloc {
+	[aboutView release];
 	[vcHerdometer release];
 	[vcCheckSite release];
 	[vcReportSite release];
@@ -189,19 +196,12 @@
 #pragma mark UITabBarControllerDelegate methods
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-	//	NSLog(@"theController.delegate says.. shouldSelectViewController");
+	//	NSLog(@"theController.delegate.. shouldSelectViewController");
 	
 	UIViewController *currentVc = theController.selectedViewController;
 	self.currentTab = [self.theController.viewControllers indexOfObject:currentVc];
 	UIViewController *selectedVc = viewController;
-	
-//	// --	Find out whether this selection is being made via the bubble menu
-//	if (self.theUrlBarMenu.alpha > 0) {
-//		self.selectionMadeViaBubbleMenu = YES;
-//	} else {
-//		self.selectionMadeViaBubbleMenu = NO;
-//	}
-	
+		
 	// --	Fix up theUrlBar.text
 	self.theUrlBar.text = [self fixUpTypedUrl];	
 	
@@ -224,16 +224,10 @@
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
 	//	NSLog(@"theController.delegate says.. didSelectViewController");
 	
+	[self.aboutView hide];
+	
 	UIViewController *selectedVC = viewController;
-	
-	// --	Match the dismissed VC's menu state
-//	int menuOption = [self.theController.viewControllers indexOfObject:selectedVC];
-//	if (self.selectionMadeViaBubbleMenu && menuOption > 0) {
-//		[self.theUrlBarMenu showBubbleMenuWithAnimation:[NSNumber numberWithBool:NO]];
-//		[self.theUrlBarMenu showSelectionBackgroundForOption:menuOption];
-//		[self.theUrlBarMenu performSelector:@selector(hideBubbleMenu) withObject:nil afterDelay:0.25];
-//	}
-	
+		
 	// --	Slide theTabTracker
 	[self.theTabTracker moveFromTab:self.currentTab toTab:[self.theController.viewControllers indexOfObject:selectedVC]];
 	
@@ -243,18 +237,21 @@
 	}
 }
 
-
 #pragma mark -
 #pragma mark UINavigationItem
 
 - (void) selectButtonInfo {
+	[self selectButtonCancelSearch];
 	[self.buttonInfo setNotSelected];
-	// TODO: actually load the 'About' view...
+	[self.view insertSubview:self.aboutView belowSubview:self.theUrlBar];
+	[self.aboutView show];
 }
+
 - (void) selectButtonWiFi {
 	[self.buttonWiFi setNotSelected];
-	// TODO: actually load the 'About' view...
+	// TODO: actually load the 'Wifi' view...
 }
+
 - (void) selectButtonCancelSearch {
 	[self.buttonCancelTyping setNotSelected];
 	[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];
@@ -271,7 +268,7 @@
 	//NSLog(@"searchBarTextDidBeginEditing");
 	self.navItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonCancelTyping] autorelease];
 	
-	[self.theUrlBarMenu showBubbleMenuWithAnimation:[NSNumber numberWithBool:YES]];
+	[self.theUrlBarMenu showBubbleMenu];	
 	
 	// --	add theScreen - this catches touches on reportMapView, so user doesn't have to tap Cancel to dismiss theUrlBar.
 	[self.view addSubview:self.theScreen];
@@ -316,7 +313,7 @@
 		}
 	}
 	if ([self.vcCheckSite.theSiteSummary pointInside:[touch locationInView:self.vcCheckSite.theSiteSummary] withEvent:nil]) {
-		if ([self.vcCheckSite.theSiteSummary.hideLabel.text isEqualToString:textForSiteSummaryHideTabStateShowing]) {
+		if (self.vcCheckSite.theSiteSummary.frame.origin.y < 300) {
 			[self.vcCheckSite.theSiteSummary positionSiteSummaryOutOfView];
 		} else {
 			[self.vcCheckSite.theSiteSummary positionSiteSummaryInView];
@@ -334,7 +331,7 @@
 //	NSLog(@"selectBubbleMenuOption: %i", selectedSubview.tag);
 	
 	BubbleMenu *theMenu = [selectedSubview superview];
-	
+		
 	// --	Have the menu show the selection background (and schedule its removal as well as the menu's).
 	[theMenu showSelectionBackgroundForOption:selectedSubview.tag];
 	[NSTimer scheduledTimerWithTimeInterval:0.75 target:theMenu selector:@selector(hideSelectionBackground) userInfo:nil repeats:NO];				

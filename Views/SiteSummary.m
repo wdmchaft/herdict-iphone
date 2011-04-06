@@ -175,7 +175,7 @@
 	// --	Switch hideLabel.text.
 	[UIView animateWithDuration:0.15 delay:0 options:nil
 					 animations:^{
-						 self.hideLabel.alpha = 0;
+//						 self.hideLabel.alpha = 0;
 					 } completion:^(BOOL finished){
 						 self.hideLabel.text = textForSiteSummaryHideTabStateShowing;
 						 [UIView animateWithDuration:0.15 delay:0 options:nil
@@ -203,7 +203,7 @@
 	
 	[UIView animateWithDuration:0.15 delay:0 options:nil
 					 animations:^{
-						 self.hideLabel.alpha = 0;
+//						 self.hideLabel.alpha = 0;
 					 } completion:^(BOOL finished){
 						 
 						 //	Switch hideLabel text.

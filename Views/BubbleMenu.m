@@ -192,27 +192,19 @@
 	return thePath;
 }
 
-- (void) showBubbleMenuWithAnimation:(NSNumber *)withAnimation {
+- (void) showBubbleMenu {
 	
 	[self setFrame:self.frameForShowMenu];
 	[self.superview bringSubviewToFront:self];
 	
-	BOOL animated = [withAnimation boolValue];
-	
-	if (animated) {
-		[self.layer addAnimation:self.animationRotateForUse forKey:@"scale"];
-		[UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseIn
-						 animations:^{
-							 self.alpha = 1;
-						 }
-						 completion:^(BOOL finished){
-						 }
-		 ];
-	} else {
-		CATransform3D theTransform = CATransform3DIdentity;
-		self.layer.transform = theTransform;
-		self.alpha = 1;
-	}
+	[self.layer addAnimation:self.animationRotateForUse forKey:@"scale"];
+	[UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseIn
+					 animations:^{
+						 self.alpha = 1;
+					 }
+					 completion:^(BOOL finished){
+					 }
+	 ];
 	
 	//	Add shadows only after the view is actually added...  nothing on the view's layer will be drawn unless the view has been added
 	[self addShadow];

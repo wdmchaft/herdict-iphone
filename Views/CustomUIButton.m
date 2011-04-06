@@ -163,7 +163,7 @@
 	
 	CGRect currentBounds = self.bounds;
 	CGPoint topCenter = CGPointMake(CGRectGetMidX(currentBounds), 0.0f);
-	CGPoint bottomCenter = CGPointMake(CGRectGetMidX(currentBounds), 30.0f);
+	CGPoint bottomCenter = CGPointMake(CGRectGetMidX(currentBounds), self.frame.size.height);
 	CGContextDrawLinearGradient(context, myGradient, topCenter, bottomCenter, 0);
 	
     CGGradientRelease(myGradient);

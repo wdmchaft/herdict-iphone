@@ -1,6 +1,6 @@
 current todo:
 
-- Hook up the ModalVCs for for 'Info' and 'My ISP'.
+- Hook up the ModalVC for 'My ISP'.
 - 'No Connectivity' alert
 - Memory management.. go through local vars for any that are retained and never released properly.
 	- Find out whether I should be releasing subviews in viewDidUnload as opposed to dealloc.

@@ -56,7 +56,7 @@
 
 - (CGPathRef) getPath;
 
-- (void)showBubbleMenuWithAnimation:(NSNumber *)animation;
+- (void)showBubbleMenu;
 - (void)hideBubbleMenu;
 - (void)setUpAnimationRotateForUse;
 - (void)setUpAnimationRotateTuckedAway;

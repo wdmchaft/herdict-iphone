@@ -19,6 +19,7 @@
 #import "VC_ReportSite.h"
 #import "TabTracker.h"
 
+#import "About.h"
 #import "CustomNavBar.h"
 #import "CustomUIButton.h"
 #import "URLBar.h"
@@ -28,6 +29,7 @@
 @interface VC_Base : UIViewController <UITabBarControllerDelegate, UINavigationBarDelegate, UIAlertViewDelegate, UISearchBarDelegate> {
 
 	// --	About
+	About *aboutView;
 	
 	// --	Nav Bar
 	UIView *blackBackgroundForNavBar;
@@ -55,6 +57,8 @@
 	int currentTab;
 }
 
+@property (nonatomic, retain) About *aboutView;
+
 @property (nonatomic, retain) UIView *blackBackgroundForNavBar;
 @property (nonatomic, retain) CustomNavBar *navBar;
 @property (nonatomic, retain) UINavigationItem *navItem;
@@ -77,8 +81,11 @@
 @property (nonatomic, retain) VC_ReportSite *vcReportSite;
 @property (nonatomic) int currentTab;
 
+- (void) selectButtonInfo;
+- (void) selectButtonWiFi;
+- (void) selectButtonCancelSearch;
+- (void) selectBubbleMenuOption:(UITextView *)selectedSubview;
 - (BOOL) urlTyped;
 - (NSString *) fixUpTypedUrl;
-- (void) selectBubbleMenuOption:(UITextView *)selectedSubview;
 
 @end

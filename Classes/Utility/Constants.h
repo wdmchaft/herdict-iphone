@@ -44,11 +44,11 @@
 
 // --	SiteSummary elements
 #define heightForSiteSummary 149.0
-#define xOffsetForSiteSummaryHideTab 40.0
-#define widthForSiteSummaryHideTab 150.0
+#define xOffsetForSiteSummaryHideTab 23.0
+#define widthForSiteSummaryHideTab 110.0
 #define heightForSiteSummaryHideTab 33.0
-#define textForSiteSummaryHideTabStateShowing @"Hide Summary"
-#define textForSiteSummaryHideTabStateHidden @"Show Summary"
+#define textForSiteSummaryHideTabStateShowing @"Summary"
+#define textForSiteSummaryHideTabStateHidden @"Summary"
 #define diameterForSiteSummaryLoadingAnimation 25.0
 #define widthForSiteSummaryLoadingText 158.0  // perfect for text "Getting Summary..." in Helvetica 18.
 #define heightForSiteSummaryLoadingText 18.0

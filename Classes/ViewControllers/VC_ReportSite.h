@@ -54,6 +54,9 @@
 - (void) addDetailMenuAtRow:(NSIndexPath *)pathForRow;
 - (void) removeDetailMenu;
 - (void) selectFormMenuOption:(UITextView *)selectedSubview;
+- (void) selectButtonAccessibleNo;
+- (void) selectButtonAccessibleYes;
+- (void) prepareForReportCallout;
 - (void) initiateReportCallout;
 
 @end

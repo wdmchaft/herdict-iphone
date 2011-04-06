@@ -203,7 +203,7 @@
 		A64D9A97134293E500D8B036 /* FormMenuCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormMenuCategory.h; sourceTree = "<group>"; };
 		A64D9A98134293E500D8B036 /* FormMenuCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormMenuCategory.m; sourceTree = "<group>"; };
 		A668711F134B87FE006EE8B4 /* About.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = About.h; sourceTree = "<group>"; };
-		A6687120134B87FE006EE8B4 /* About.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = About.m; sourceTree = "<group>"; };
+		A6687120134B87FE006EE8B4 /* About.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = About.m; sourceTree = "<group>"; wrapsLines = 1; };
 		A6724F7F12BBEA7A00BB607F /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
 		A679A30412B6F17A00A67538 /* Constants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; wrapsLines = 1; };
 		A679A31D12B6F17A00A67538 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
@@ -581,6 +581,8 @@
 		A6CCA3971339E43B00708A7B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A668711F134B87FE006EE8B4 /* About.h */,
+				A6687120134B87FE006EE8B4 /* About.m */,
 				A64CF125133FC4C400BFCDB5 /* CustomNavBar.h */,
 				A64CF126133FC4C400BFCDB5 /* CustomNavBar.m */,
 				A6CCA3981339E43B00708A7B /* CustomUIButton.h */,
@@ -605,8 +607,6 @@
 				A64540391349FB1A00103631 /* FormMenuComments.m */,
 				A64543CC134A5F5700103631 /* FormMenuAccessible.h */,
 				A64543CD134A5F5700103631 /* FormMenuAccessible.m */,
-				A668711F134B87FE006EE8B4 /* About.h */,
-				A6687120134B87FE006EE8B4 /* About.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
