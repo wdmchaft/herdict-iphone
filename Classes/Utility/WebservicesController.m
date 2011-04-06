@@ -15,12 +15,17 @@
 @implementation WebservicesController
 
 @synthesize apiVersion;
+@synthesize herdictReachability;
 
 - (id) init {
 
 	self = [super init];
 	if (self) {
 		self.apiVersion = @"FF1.0";
+		// --	Get the notifications started (for everyone).
+		self.herdictReachability = [[Reachability reachabilityWithHostName:@"www.herdict.org"] retain];
+		[self.herdictReachability startNotifier];
+		
 	}
 	return self;
 }

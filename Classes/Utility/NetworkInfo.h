@@ -13,20 +13,20 @@
 @interface NetworkInfo : NSObject {
 
 	NSString *ipAddress;
-//	NSMutableDictionary *ipInfoDict;
-//	NSString *detected_ispName;
-//	NSString *detected_countryCode;	
+	NSMutableDictionary *ipInfoDict;
+	NSString *detected_ispName;
+	NSString *detected_countryCode;	
 }
 
 @property (nonatomic, retain) NSString *ipAddress;
-//@property (nonatomic, retain) NSMutableDictionary *ipInfoDict;
-//@property (nonatomic, retain) NSString *detected_ispName;
-//@property (nonatomic, retain) NSString *detected_countryCode;
+@property (nonatomic, retain) NSMutableDictionary *ipInfoDict;
+@property (nonatomic, retain) NSString *detected_ispName;
+@property (nonatomic, retain) NSString *detected_countryCode;
 
 + (NetworkInfo *)sharedSingleton;
 
 - (void) getIpCallbackHandler:(ASIHTTPRequest *)theRequest;
-//- (void) getInfoForIpAddressCallbackHandler:(ASIHTTPRequest*)request;
+- (void) getInfoForIpAddressCallbackHandler:(ASIHTTPRequest*)request;
 
 
 @end

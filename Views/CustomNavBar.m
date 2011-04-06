@@ -89,10 +89,10 @@
 	CGFloat locations[4];
 	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
 	NSMutableArray *colors = [NSMutableArray arrayWithCapacity:4];
-	UIColor *color0 = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
-	UIColor *color1 = [UIColor colorWithRed:(barThemeRed - 0.032) green:(barThemeGreen - 0.032) blue:(barThemeBlue - 0.032)  alpha:1.0];	
-	UIColor *color2 = [UIColor colorWithRed:(barThemeRed - 0.062) green:(barThemeGreen - 0.062) blue:(barThemeBlue - 0.062)  alpha:1.0];
-	UIColor *color3 = [UIColor colorWithRed:(barThemeRed - navBarColorDelta) green:(barThemeGreen - navBarColorDelta) blue:(barThemeBlue - navBarColorDelta)  alpha:1.0];
+	UIColor *color0 = [UIColor colorWithRed:themeColorRed green:themeColorGreen blue:themeColorBlue alpha:1];
+	UIColor *color1 = [UIColor colorWithRed:(themeColorRed - 0.032) green:(themeColorGreen - 0.032) blue:(themeColorBlue - 0.032)  alpha:1.0];	
+	UIColor *color2 = [UIColor colorWithRed:(themeColorRed - 0.062) green:(themeColorGreen - 0.062) blue:(themeColorBlue - 0.062)  alpha:1.0];
+	UIColor *color3 = [UIColor colorWithRed:(themeColorRed - navBar__colorDelta) green:(themeColorGreen - navBar__colorDelta) blue:(themeColorBlue - navBar__colorDelta)  alpha:1.0];
 	
 	locations[0] = 0.00;
 	[colors addObject:(id)[color0 CGColor]];
@@ -108,7 +108,7 @@
 	
 	CGRect currentBounds = self.bounds;
 	CGPoint topCenter = CGPointMake(CGRectGetMidX(currentBounds), 0.0f);
-	CGPoint bottomCenter = CGPointMake(CGRectGetMidX(currentBounds), heightForNavBar);
+	CGPoint bottomCenter = CGPointMake(CGRectGetMidX(currentBounds), navBar__height);
 	CGContextDrawLinearGradient(context, myGradient, topCenter, bottomCenter, 0);
 	
     CGGradientRelease(myGradient);

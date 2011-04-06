@@ -43,13 +43,13 @@
 		
 		CGFloat yPaddingForMessage = 0;
 		if (theMessageHeight > 0) {
-			yPaddingForMessage = yPaddingForBubbleMenuBody;
+			yPaddingForMessage = bubbleMenu_body__yPadding;
 		}
 		
 		[self setFrame:CGRectMake(self.frame.origin.x,
 								  self.frame.origin.y,
 								  self.frame.size.width,
-								  theTailHeight + (yPaddingForBubbleMenuBody * 4) + theMessageHeight + yPaddingForMessage + ([theOptionsArray count] * heightForBubbleMenuOption))];
+								  theTailHeight + (bubbleMenu_body__yPadding * 4) + theMessageHeight + yPaddingForMessage + ([theOptionsArray count] * bubbleMenuOption__height))];
 		
 		self.alpha = 0;
 		self.backgroundColor = [UIColor clearColor];
@@ -102,9 +102,9 @@
 		// --	Set up each Menu Option.
 		for (NSString *optionText in theOptionsArray) {
 			UITextView *menuOption = [[UITextView alloc] initWithFrame:CGRectMake(xPaddingLeft,
-																				  tailHeight + yPaddingForBubbleMenuBody + theMessageHeight + yPaddingForMessage + (heightForBubbleMenuOption * [theOptionsArray indexOfObject:optionText]),
+																				  tailHeight + bubbleMenu_body__yPadding + theMessageHeight + yPaddingForMessage + (bubbleMenuOption__height * [theOptionsArray indexOfObject:optionText]),
 																				  selfWidth - xPaddingRight,
-																				  heightForBubbleMenuOption)];
+																				  bubbleMenuOption__height)];
 			menuOption.contentMode = UIViewContentModeCenter;
 			menuOption.text = [NSString stringWithString:optionText];
 			menuOption.tag = [theOptionsArray indexOfObject:optionText] + 1;

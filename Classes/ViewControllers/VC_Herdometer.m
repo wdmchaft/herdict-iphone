@@ -16,6 +16,8 @@
 @synthesize theAnnotation;
 @synthesize timerInititiateAnnotateReport;
 
+@synthesize haveFetchedReportFeed;
+
 
 #pragma mark UIViewController lifecycle
 
@@ -25,13 +27,13 @@
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
 		self.title = @"Herdometer";
-		self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+		self.view.backgroundColor = [UIColor colorWithRed:themeColorRed green:themeColorGreen blue:themeColorBlue alpha:1];
 		
 		// --	Set up reportMapView.
 		self.reportMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0,
-																		 heightForNavBar - yOverhangForNavBar + heightForURLBar,
+																		 urlBar__yOrigin + urlBar__height,
 																		 320,
-																		 480 - heightForStatusBar_nonBaseViews - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
+																		 480 - (urlBar__yOrigin + urlBar__height) - 49)];
 		self.reportMapView.delegate = self;
 		self.reportMapView.userInteractionEnabled = YES;
 		self.reportMapView.scrollEnabled = NO;
@@ -39,7 +41,11 @@
 		[self.view addSubview:self.reportMapView];	
 		self.indexOfCurrentReportToBeAnnotated = 0;	
 		
-		[self fetchTickerFeed];		
+		// --	Get Reachability notifications.
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkReachabilityEvent:) name:kReachabilityChangedNotification object:nil];
+		
+		self.haveFetchedReportFeed = NO;
+		[self fetchTickerFeed];
 	}
 	return self;
 }
@@ -71,6 +77,13 @@
 
 - (void) fetchTickerFeed {
 
+	if (self.haveFetchedReportFeed) {
+		return;
+	}
+	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
+		return;
+	}
+	
 	self.reportsFromFeed = [NSMutableArray array];
 
 	// TODO: See about the feed being available in multiple languages.	
@@ -115,6 +128,8 @@
 	
 	NSLog(@"[reportsFromFeed count]: %i", [self.reportsFromFeed count]);
 
+	self.haveFetchedReportFeed = YES;
+	
 	// --	Get reportsFromFeed ready for Herdometer action.
 	[self markAllReportsNotShown];
 	[self setCountryGeodataWhereKnown];
@@ -125,7 +140,12 @@
 
 - (void) initiateAnnotateReport {
 	
-	BOOL shouldContinue = ([self.reportsFromFeed count] > 0);
+	UIView *aboutView = [self.tabBarController.delegate aboutView];
+	UIView *networkView = [self.tabBarController.delegate networkView];
+	BOOL shouldContinue = ([self.reportsFromFeed count] > 0 && aboutView.alpha == 0.0 && networkView.alpha == 0.0);
+	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
+		shouldContinue = NO;
+	}
 	if (!shouldContinue) {
 		//NSLog(@"[self initiateAnnotateReport] found: !shouldContinue");
 		[self.reportMapView deselectAnnotation:self.theAnnotation animated:YES];
@@ -327,7 +347,6 @@
 	return 40.0f;
 }
 
-
 #pragma mark -
 #pragma mark self as MKMapViewDelegate
 
@@ -345,6 +364,14 @@
 
 	return reportAnnotationView;
 }
-				
+
+
+- (void) networkReachabilityEvent: (NSNotification *) notification {
+	Reachability *r = [notification object];
+	if ([r isReachable]) {
+		[self fetchTickerFeed];
+		[self initiateAnnotateReport];
+	}
+}
 
 @end

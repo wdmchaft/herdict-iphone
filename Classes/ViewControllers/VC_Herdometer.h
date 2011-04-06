@@ -13,6 +13,7 @@
 #import "ReportAnnotation.h"
 #import "ASIHTTPRequest.h"
 #import "TouchXML.h"
+#import "Reachability.h"
 
 @interface VC_Herdometer : UIViewController <MKMapViewDelegate> {
 
@@ -21,7 +22,8 @@
 	NSMutableArray *reportsFromFeed;
 	int indexOfCurrentReportToBeAnnotated;
 	ReportAnnotation *theAnnotation;
-	NSTimer *timerInititiateAnnotateReport;			
+	NSTimer *timerInititiateAnnotateReport;
+	BOOL haveFetchedReportFeed;
 }
 
 @property (nonatomic, retain) MKMapView *reportMapView;
@@ -29,6 +31,7 @@
 @property (nonatomic) int indexOfCurrentReportToBeAnnotated;
 @property (nonatomic, retain) ReportAnnotation *theAnnotation;
 @property (nonatomic, retain) NSTimer *timerInititiateAnnotateReport;
+@property (nonatomic) BOOL haveFetchedReportFeed;
 
 
 + (CGFloat)	annotationPadding;

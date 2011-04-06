@@ -28,15 +28,15 @@
 
 		self.title = @"Check Site";
 		
-		self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+		self.view.backgroundColor = [UIColor colorWithRed:themeColorRed green:themeColorGreen blue:themeColorBlue alpha:1];
 		
 		[self setUpSiteLoadingMessage];
 		[self resetCheckSite];
 		
 		self.theSiteSummary = [[SiteSummary alloc] initWithFrame:CGRectMake(0,
-																			480 - heightForStatusBar_real - 48 - heightForSiteSummaryHideTab,
+																			480 - statusBar__height - 48 - siteSummary_hideTab__height,
 																			320,
-																			heightForSiteSummary + 5)];
+																			siteSummary__height + 5)];
 		[self.view insertSubview:self.theSiteSummary aboveSubview:self.theWebView];
 	}
 	return self;
@@ -97,26 +97,26 @@
 
 	// --	Set up loadingView
 	self.loadingView = [[UIView alloc] initWithFrame:CGRectMake(0,
-																heightForNavBar - yOverhangForNavBar + heightForURLBar,
+																urlBar__yOrigin + urlBar__height,
 																320,
-																480 - heightForStatusBar_nonBaseViews - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
-	self.loadingView.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+																480 - (urlBar__yOrigin + urlBar__height) - 49)];
+	self.loadingView.backgroundColor = [UIColor colorWithRed:themeColorRed green:themeColorGreen blue:themeColorBlue alpha:1];
 	[self.view addSubview:self.loadingView];
 
 	// --	Set up loadingIndicator
 	self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-	[self.loadingIndicator setFrame:CGRectMake(0.5 * (320.0 - (diameterForSiteLoadingAnimation + widthForSiteLoadingText)),
-											   3 + (0.5 * (self.loadingView.frame.size.height - heightForSiteSummary - diameterForSiteLoadingAnimation)),
-											   diameterForSiteLoadingAnimation,
-											   diameterForSiteLoadingAnimation)];
+	[self.loadingIndicator setFrame:CGRectMake(0.5 * (320.0 - (siteLoadingAnimation__diameter + siteLoadingText__width)),
+											   3 + (0.5 * (self.loadingView.frame.size.height - siteSummary__height - siteLoadingAnimation__diameter)),
+											   siteLoadingAnimation__diameter,
+											   siteLoadingAnimation__diameter)];
 	[self.loadingIndicator startAnimating];
 	[self.loadingView addSubview:self.loadingIndicator];
 
 	// --	Set up loadingText
-	self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(self.loadingIndicator.frame.origin.x + diameterForSiteLoadingAnimation,
-																 3 + (0.5 * (self.loadingView.frame.size.height - heightForSiteSummary - heightForSiteLoadingText)),
-																 widthForSiteLoadingText,
-																 heightForSiteLoadingText)];
+	self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(self.loadingIndicator.frame.origin.x + siteLoadingAnimation__diameter,
+																 3 + (0.5 * (self.loadingView.frame.size.height - siteSummary__height - siteLoadingText__height)),
+																 siteLoadingText__width,
+																 siteLoadingText__height)];
 	self.loadingText.backgroundColor = [UIColor clearColor];
 	self.loadingText.text = @"Trying Site...";
 	self.loadingText.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
@@ -134,9 +134,9 @@
 		[self.theWebView release];
 	}
 	self.theWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0,
-																  heightForNavBar - yOverhangForNavBar + heightForURLBar,
+																  urlBar__yOrigin + urlBar__height,
 																  320,
-																  480 - heightForStatusBar_nonBaseViews - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 49)];
+																  480 - (urlBar__yOrigin + urlBar__height) - 49)];
 	self.theWebView.backgroundColor = [UIColor clearColor];
 	self.theWebView.scalesPageToFit = YES;
 	self.theWebView.userInteractionEnabled = YES;
@@ -144,6 +144,9 @@
 }
 
 - (void) loadUrl:(NSString *)urlString {
+	
+	// --	Note.. We are supposed to have checked for reachability before calling this method.
+	
 	NSLog(@"loadUrl: %@", urlString);
 	
 	NSString *theUrlString = urlString;

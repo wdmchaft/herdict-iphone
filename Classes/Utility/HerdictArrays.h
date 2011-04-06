@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "ASIHTTPRequest.h"
 #import "WebservicesController.h"
+#import "Reachability.h"
 
 @interface HerdictArrays : NSObject {
 
@@ -19,6 +20,7 @@
 	NSString *detected_ispName;
 	NSString *detected_countryCode;
 	NSString *detected_countryString;
+	
 }
 
 @property (nonatomic, retain) NSString *menuCategoryDefaultSelection;
@@ -30,6 +32,8 @@
 @property (nonatomic, retain) NSString *detected_countryString;
 
 + (HerdictArrays *) sharedSingleton;
+- (void) t01SetupFromPlist;
+- (void) t02SetupFromPlist;
 - (void) getCategoriesCallbackHandler:(ASIHTTPRequest *)request;
 - (void) getCountriesCallbackHandler:(ASIHTTPRequest *)request;
 - (void) getCurrentLocationCallbackHandler:(ASIHTTPRequest *)request;

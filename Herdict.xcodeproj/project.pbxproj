@@ -13,6 +13,8 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		288765080DF74369002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765070DF74369002DB57D /* CoreGraphics.framework */; };
 		28AD73880D9D96C1002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD73870D9D96C1002E5188 /* MainWindow.xib */; };
+		A61ED973134C06AE0085378F /* Network.m in Sources */ = {isa = PBXBuildFile; fileRef = A61ED972134C06AE0085378F /* Network.m */; };
+		A61EDA1B134C17830085378F /* berkmanlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = A61EDA1A134C17830085378F /* berkmanlogo.png */; };
 		A6238217133A6CC20063AF4C /* CancelButton.png in Resources */ = {isa = PBXBuildFile; fileRef = A6238216133A6CC20063AF4C /* CancelButton.png */; };
 		A62FE7D9133AE08500754BEC /* URLBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A62FE7D8133AE08500754BEC /* URLBar.m */; };
 		A63A48D1133B26E1004DBAC5 /* buttonInfo.png in Resources */ = {isa = PBXBuildFile; fileRef = A63A48D0133B26E1004DBAC5 /* buttonInfo.png */; };
@@ -117,6 +119,9 @@
 		28AD73870D9D96C1002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Herdict-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Herdict-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		A61ED971134C06AE0085378F /* Network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Network.h; sourceTree = "<group>"; };
+		A61ED972134C06AE0085378F /* Network.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Network.m; sourceTree = "<group>"; wrapsLines = 1; };
+		A61EDA1A134C17830085378F /* berkmanlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = berkmanlogo.png; sourceTree = "<group>"; };
 		A6238216133A6CC20063AF4C /* CancelButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CancelButton.png; sourceTree = "<group>"; };
 		A62FE7D7133AE08500754BEC /* URLBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLBar.h; sourceTree = "<group>"; };
 		A62FE7D8133AE08500754BEC /* URLBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLBar.m; sourceTree = "<group>"; };
@@ -256,9 +261,9 @@
 		A6F64F0A133E7B0A0053DFB9 /* VC_Base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VC_Base.h; sourceTree = "<group>"; wrapsLines = 1; };
 		A6F64F0B133E7B0A0053DFB9 /* VC_Base.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VC_Base.m; sourceTree = "<group>"; wrapsLines = 1; };
 		A6F64F1B133E7D140053DFB9 /* HerdictArrays.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HerdictArrays.h; sourceTree = "<group>"; };
-		A6F64F1C133E7D140053DFB9 /* HerdictArrays.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HerdictArrays.m; sourceTree = "<group>"; };
+		A6F64F1C133E7D140053DFB9 /* HerdictArrays.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HerdictArrays.m; sourceTree = "<group>"; wrapsLines = 1; };
 		A6F64F4B133E86CB0053DFB9 /* NetworkInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkInfo.h; sourceTree = "<group>"; };
-		A6F64F4C133E86CB0053DFB9 /* NetworkInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkInfo.m; sourceTree = "<group>"; };
+		A6F64F4C133E86CB0053DFB9 /* NetworkInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetworkInfo.m; sourceTree = "<group>"; wrapsLines = 1; };
 		A6F650AC133EF2410053DFB9 /* 179-notepad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "179-notepad@2x.png"; sourceTree = "<group>"; };
 		A6F650AD133EF2410053DFB9 /* 07-map-marker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "07-map-marker@2x.png"; sourceTree = "<group>"; };
 		A6F650AE133EF2410053DFB9 /* 06-magnify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "06-magnify@2x.png"; sourceTree = "<group>"; };
@@ -560,6 +565,7 @@
 				A63B57F8133C367100199382 /* Icons */,
 				A63A492D133B2F81004DBAC5 /* buttonInfoSelected.png */,
 				A63A4913133B2BD6004DBAC5 /* buttonWiFi.png */,
+				A61EDA1A134C17830085378F /* berkmanlogo.png */,
 				A63A48D0133B26E1004DBAC5 /* buttonInfo.png */,
 				A6238216133A6CC20063AF4C /* CancelButton.png */,
 				A6A6AACD133526820056DF45 /* globe.png */,
@@ -583,6 +589,8 @@
 			children = (
 				A668711F134B87FE006EE8B4 /* About.h */,
 				A6687120134B87FE006EE8B4 /* About.m */,
+				A61ED971134C06AE0085378F /* Network.h */,
+				A61ED972134C06AE0085378F /* Network.m */,
 				A64CF125133FC4C400BFCDB5 /* CustomNavBar.h */,
 				A64CF126133FC4C400BFCDB5 /* CustomNavBar.m */,
 				A6CCA3981339E43B00708A7B /* CustomUIButton.h */,
@@ -710,6 +718,7 @@
 				A6F650D4133EF6500053DFB9 /* 179-notepad.png in Resources */,
 				A6F650D5133EF6500053DFB9 /* 07-map-marker.png in Resources */,
 				A6F650D6133EF6500053DFB9 /* 06-magnify.png in Resources */,
+				A61EDA1B134C17830085378F /* berkmanlogo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -772,6 +781,7 @@
 				A645403A1349FB1A00103631 /* FormMenuComments.m in Sources */,
 				A64543CE134A5F5700103631 /* FormMenuAccessible.m in Sources */,
 				A6687121134B87FE006EE8B4 /* About.m in Sources */,
+				A61ED973134C06AE0085378F /* Network.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

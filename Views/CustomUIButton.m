@@ -145,9 +145,9 @@
 	CGFloat locations[4];
 	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
 	NSMutableArray *colors = [NSMutableArray arrayWithCapacity:3];
-	UIColor *color0 = [UIColor colorWithRed:(barThemeRed - 0.442) green:(barThemeGreen - 0.442) blue:(barThemeBlue - 0.442)  alpha:1.0];
-	UIColor *color1 = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
-	UIColor *color2 = [UIColor colorWithRed:(barThemeRed - 0.202) green:(barThemeGreen - 0.202) blue:(barThemeBlue - 0.202)  alpha:1.0];
+	UIColor *color0 = [UIColor colorWithRed:(themeColorRed - 0.442) green:(themeColorGreen - 0.442) blue:(themeColorBlue - 0.442)  alpha:1.0];
+	UIColor *color1 = [UIColor colorWithRed:themeColorRed green:themeColorGreen blue:themeColorBlue alpha:1];
+	UIColor *color2 = [UIColor colorWithRed:(themeColorRed - 0.202) green:(themeColorGreen - 0.202) blue:(themeColorBlue - 0.202)  alpha:1.0];
 	
 	locations[0] = 0.0;
 	[colors addObject:(id)[color0 CGColor]];

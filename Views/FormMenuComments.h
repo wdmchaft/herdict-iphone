@@ -59,14 +59,9 @@
 @property (nonatomic) CGFloat stroke;
 @property (nonatomic) CGFloat cornerRad;
 
-
-
 - (id)initWithCutoutHeight:(CGFloat)theCutoutHeight withFrame:(CGRect)theFrame tailHeight:(CGFloat)theTailHeight;
 
 - (CGPathRef) getPath;
 - (void) addShadow;
-
-- (void)showSelectionBackgroundForOption:(int)optionNumber;
-- (void)hideSelectionBackground;
 
 @end

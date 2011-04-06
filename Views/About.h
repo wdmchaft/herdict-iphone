@@ -12,16 +12,16 @@
 #import "CustomUIButton.h"
 
 
-@interface About : UIView {
+@interface About : UIView <UIWebViewDelegate> {
 
-	UILabel *heading;
-	UITextView *message;
+	UIImageView *berkmanLogoImageView;
+	UIWebView *message;
 	CustomUIButton *buttonLearnMore;	
 	CustomUIButton *buttonDone;
 }
 
-@property (nonatomic, retain) UILabel *heading;
-@property (nonatomic, retain) UITextView *message;
+@property (nonatomic, retain) UIImageView *berkmanLogoImageView;
+@property (nonatomic, retain) UIWebView *message;
 @property (nonatomic, retain) CustomUIButton *buttonLearnMore;
 @property (nonatomic, retain) CustomUIButton *buttonDone;
 

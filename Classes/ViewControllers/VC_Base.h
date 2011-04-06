@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "ASIHTTPRequest.h"
+#import "Reachability.h"
 
 #import "WebservicesController.h"
 #import "NetworkInfo.h"
@@ -19,25 +20,24 @@
 #import "VC_ReportSite.h"
 #import "TabTracker.h"
 
-#import "About.h"
 #import "CustomNavBar.h"
 #import "CustomUIButton.h"
 #import "URLBar.h"
 #import "BubbleMenu.h"
 #import "Screen.h"
 
-@interface VC_Base : UIViewController <UITabBarControllerDelegate, UINavigationBarDelegate, UIAlertViewDelegate, UISearchBarDelegate> {
+#import "About.h"
+#import "Network.h"
 
-	// --	About
-	About *aboutView;
+@interface VC_Base : UIViewController <UITabBarControllerDelegate, UINavigationBarDelegate, UIAlertViewDelegate, UISearchBarDelegate> {
 	
 	// --	Nav Bar
 	UIView *blackBackgroundForNavBar;
 	CustomNavBar *navBar;
 	UINavigationItem *navItem;
 	CustomUIButton *buttonCancelTyping;
-	CustomUIButton *buttonInfo;
-	CustomUIButton *buttonWiFi;
+	CustomUIButton *buttonAbout;
+	CustomUIButton *buttonNetwork;
 	
 	// --	URL Bar
 	URLBar *theUrlBar;	
@@ -55,16 +55,20 @@
 	VC_CheckSite *vcCheckSite;
 	VC_ReportSite *vcReportSite;
 	int currentTab;
+	
+	// --	About, Network
+	About *aboutView;
+	Network *networkView;
+	
+	BOOL haveDoneCallouts;
 }
-
-@property (nonatomic, retain) About *aboutView;
 
 @property (nonatomic, retain) UIView *blackBackgroundForNavBar;
 @property (nonatomic, retain) CustomNavBar *navBar;
 @property (nonatomic, retain) UINavigationItem *navItem;
 @property (nonatomic, retain) CustomUIButton *buttonCancelTyping;
-@property (nonatomic, retain) CustomUIButton *buttonInfo;
-@property (nonatomic, retain) CustomUIButton *buttonWiFi;
+@property (nonatomic, retain) CustomUIButton *buttonAbout;
+@property (nonatomic, retain) CustomUIButton *buttonNetwork;
 
 @property (nonatomic, retain) URLBar *theUrlBar;
 @property (nonatomic, retain) BubbleMenu *theUrlBarMenu;
@@ -81,11 +85,18 @@
 @property (nonatomic, retain) VC_ReportSite *vcReportSite;
 @property (nonatomic) int currentTab;
 
-- (void) selectButtonInfo;
-- (void) selectButtonWiFi;
+@property (nonatomic, retain) About *aboutView;
+@property (nonatomic, retain) Network *networkView;
+
+@property (nonatomic) BOOL haveDoneCallouts;
+
+
+- (void) selectButtonAbout;
+- (void) selectButtonNetwork;
 - (void) selectButtonCancelSearch;
 - (void) selectBubbleMenuOption:(UITextView *)selectedSubview;
 - (BOOL) urlTyped;
 - (NSString *) fixUpTypedUrl;
+- (void) initiateGetCurrentLocation;
 
 @end

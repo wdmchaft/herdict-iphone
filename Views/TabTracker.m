@@ -15,10 +15,10 @@
 - (TabTracker *)initAtTab:(int)tabNumber {
     
 	// --	Decide frame here
-	CGRect frame = CGRectMake([self xOffset:tabNumber] - (widthForTabTracker / 2.0f),
-							  480.0f - heightForStatusBar_real - 49.0f - (heightForTabTracker - 2.0f),
-							  widthForTabTracker,
-							  heightForTabTracker);	
+	CGRect frame = CGRectMake([self xOffset:tabNumber] - (tabTracker__width / 2.0f),
+							  480.0f - statusBar__height - 49.0f - (tabTracker__height - 2.0f),
+							  tabTracker__width,
+							  tabTracker__height);	
 	
     self = [super initWithFrame:frame];
     if (self) {

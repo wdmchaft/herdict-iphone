@@ -33,7 +33,7 @@
 		self.layer.shouldRasterize = YES;
 		self.layer.shadowPath = [self getPath];
 		
-		self.textView1 = [[UITextView alloc] initWithFrame:CGRectMake(32, 5 + heightForSiteSummaryHideTab, 280, 55)];
+		self.textView1 = [[UITextView alloc] initWithFrame:CGRectMake(32, 5 + siteSummary_hideTab__height, 280, 55)];
 		self.textView1.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
 		self.textView1.backgroundColor = [UIColor clearColor];
 		self.textView1.textColor = [UIColor whiteColor];
@@ -42,7 +42,7 @@
 		self.textView1.userInteractionEnabled = NO;
 		[self addSubview:self.textView1];
 		
-		self.textView2 = [[UITextView alloc] initWithFrame:CGRectMake(32, 53 + heightForSiteSummaryHideTab, 280, 55)];
+		self.textView2 = [[UITextView alloc] initWithFrame:CGRectMake(32, 53 + siteSummary_hideTab__height, 280, 55)];
 		self.textView2.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
 		self.textView2.backgroundColor = [UIColor clearColor];
 		self.textView2.textColor = [UIColor whiteColor];
@@ -50,30 +50,30 @@
 		self.textView2.userInteractionEnabled = NO;
 	//	[self addSubview:self.textView2];
 		
-		self.hideLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab,
+		self.hideLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - siteSummary_hideTab__xOffset - siteSummary_hideTab__width,
 																   0,
-																   widthForSiteSummaryHideTab,
-																   heightForSiteSummaryHideTab)];
+																   siteSummary_hideTab__width,
+																   siteSummary_hideTab__height)];
 		self.hideLabel.backgroundColor = [UIColor clearColor];
 		self.hideLabel.textAlignment = UITextAlignmentCenter;
 		self.hideLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
 		self.hideLabel.textColor = [UIColor whiteColor];
-		self.hideLabel.text = textForSiteSummaryHideTabStateHidden;
+		self.hideLabel.text = siteSummary_hideTab__text__stateHidden;
 		self.hideLabel.userInteractionEnabled = NO;
 		[self addSubview:self.hideLabel];
 
 		// --	Set up loadingIndicator and loadingText
 		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-		[self.loadingIndicator setFrame:CGRectMake(0.5 * (self.frame.size.width - (diameterForSiteSummaryLoadingAnimation + 11 + widthForSiteSummaryLoadingText)),
-												   heightForSiteSummaryHideTab + 0.5 * (heightForSiteSummary - heightForSiteSummaryHideTab - diameterForSiteSummaryLoadingAnimation),
-												   diameterForSiteSummaryLoadingAnimation,
-												   diameterForSiteSummaryLoadingAnimation)];
+		[self.loadingIndicator setFrame:CGRectMake(0.5 * (self.frame.size.width - (siteSummary_loadingAnimation__diameter + 11 + siteSummary_loadingText__width)),
+												   siteSummary_hideTab__height + 0.5 * (siteSummary__height - siteSummary_hideTab__height - siteSummary_loadingAnimation__diameter),
+												   siteSummary_loadingAnimation__diameter,
+												   siteSummary_loadingAnimation__diameter)];
 		self.loadingIndicator.backgroundColor = [UIColor clearColor];
 		[self.loadingIndicator startAnimating];
-		self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(12 + self.loadingIndicator.frame.origin.x + diameterForSiteSummaryLoadingAnimation,
-																	 1 + heightForSiteSummaryHideTab + 0.5 * (heightForSiteSummary - heightForSiteSummaryHideTab - diameterForSiteSummaryLoadingAnimation),
-																	 widthForSiteSummaryLoadingText,
-																	 heightForSiteSummaryLoadingText + 5)];
+		self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(12 + self.loadingIndicator.frame.origin.x + siteSummary_loadingAnimation__diameter,
+																	 1 + siteSummary_hideTab__height + 0.5 * (siteSummary__height - siteSummary_hideTab__height - siteSummary_loadingAnimation__diameter),
+																	 siteSummary_loadingText__width,
+																	 siteSummary_loadingText__height + 5)];
 		self.loadingText.text = @"Getting Summary...";
 		self.loadingText.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
 
@@ -117,17 +117,17 @@
 	CGMutablePathRef thePath = CGPathCreateMutable();
 	
 	// --	Begin at right edge to the right of hideTab, proceed counterclockwise.
-	CGPathMoveToPoint(thePath, NULL, selfWidth + 2, heightForSiteSummaryHideTab);
-	CGPathAddLineToPoint(thePath, NULL, selfWidth - xOffsetForSiteSummaryHideTab, heightForSiteSummaryHideTab);
-	CGPathAddLineToPoint(thePath, NULL, selfWidth - xOffsetForSiteSummaryHideTab, cornerRad);
-	CGPathAddArcToPoint(thePath, NULL, selfWidth - xOffsetForSiteSummaryHideTab, 0 + offsetForStroke, selfWidth - xOffsetForSiteSummaryHideTab - cornerRad, 0 + offsetForStroke, cornerRad);
-	CGPathAddLineToPoint(thePath, NULL, selfWidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab + cornerRad, 0 + offsetForStroke);
-	CGPathAddArcToPoint(thePath, NULL, selfWidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, 0 + offsetForStroke, selfWidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, cornerRad, cornerRad);
-	CGPathAddLineToPoint(thePath, NULL, selfWidth - xOffsetForSiteSummaryHideTab - widthForSiteSummaryHideTab, heightForSiteSummaryHideTab);
-	CGPathAddLineToPoint(thePath, NULL, 0 - 2, heightForSiteSummaryHideTab);
+	CGPathMoveToPoint(thePath, NULL, selfWidth + 2, siteSummary_hideTab__height);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth - siteSummary_hideTab__xOffset, siteSummary_hideTab__height);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth - siteSummary_hideTab__xOffset, cornerRad);
+	CGPathAddArcToPoint(thePath, NULL, selfWidth - siteSummary_hideTab__xOffset, 0 + offsetForStroke, selfWidth - siteSummary_hideTab__xOffset - cornerRad, 0 + offsetForStroke, cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth - siteSummary_hideTab__xOffset - siteSummary_hideTab__width + cornerRad, 0 + offsetForStroke);
+	CGPathAddArcToPoint(thePath, NULL, selfWidth - siteSummary_hideTab__xOffset - siteSummary_hideTab__width, 0 + offsetForStroke, selfWidth - siteSummary_hideTab__xOffset - siteSummary_hideTab__width, cornerRad, cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth - siteSummary_hideTab__xOffset - siteSummary_hideTab__width, siteSummary_hideTab__height);
+	CGPathAddLineToPoint(thePath, NULL, 0 - 2, siteSummary_hideTab__height);
 	CGPathAddLineToPoint(thePath, NULL, 0 - offsetForStroke, selfHeight + 2);
 	CGPathAddLineToPoint(thePath, NULL, selfWidth + offsetForStroke, selfHeight + 2);
-	CGPathAddLineToPoint(thePath, NULL, selfWidth + 2, heightForSiteSummaryHideTab);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth + 2, siteSummary_hideTab__height);
 	
 	return thePath;
 }
@@ -165,9 +165,9 @@
 	[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
 						 [self setFrame:CGRectMake(0,
-												   480 - heightForStatusBar_real - 49 - heightForSiteSummary,
+												   480 - statusBar__height - 49 - siteSummary__height,
 												   320,
-												   heightForSiteSummary + 5)];
+												   siteSummary__height + 5)];
 					 } completion:^(BOOL finished){
 					 }
 	 ];	
@@ -177,7 +177,7 @@
 					 animations:^{
 //						 self.hideLabel.alpha = 0;
 					 } completion:^(BOOL finished){
-						 self.hideLabel.text = textForSiteSummaryHideTabStateShowing;
+						 self.hideLabel.text = siteSummary_hideTab__text__stateShowing;
 						 [UIView animateWithDuration:0.15 delay:0 options:nil
 										  animations:^{
 											  self.hideLabel.alpha = 1;
@@ -194,9 +194,9 @@
 	[UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
 						 [self setFrame:CGRectMake(0,
-												   480 - heightForStatusBar_real - 48 - heightForSiteSummaryHideTab,
+												   480 - statusBar__height - 48 - siteSummary_hideTab__height,
 												   320,
-												   heightForSiteSummary + 5)];
+												   siteSummary__height + 5)];
 					 } completion:^(BOOL finished){
 					 }
 	 ];
@@ -207,7 +207,7 @@
 					 } completion:^(BOOL finished){
 						 
 						 //	Switch hideLabel text.
-						 self.hideLabel.text = textForSiteSummaryHideTabStateHidden;
+						 self.hideLabel.text = siteSummary_hideTab__text__stateHidden;
 						 						 
 						 [UIView animateWithDuration:0.15 delay:0 options:nil
 										  animations:^{

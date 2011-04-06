@@ -10,7 +10,7 @@
 
 @implementation About
 
-@synthesize heading;
+@synthesize berkmanLogoImageView;
 @synthesize message;
 @synthesize buttonLearnMore;
 @synthesize buttonDone;
@@ -20,35 +20,31 @@
     self = [super initWithFrame:frame];
     if (self) {
 		
-		self.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+		self.backgroundColor = [UIColor colorWithRed:1 green:0.985 blue:0.955 alpha:0.95];
+		self.layer.cornerRadius = 10.0f;
+		self.layer.shadowRadius = 5.0f;
+		self.layer.shouldRasterize = YES;
+		self.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
+		self.layer.shadowOpacity = 0.4f;
 		
-		self.heading = [[UILabel alloc] initWithFrame:CGRectMake(25, 27, 270, 30)];
-		self.heading.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
-		self.heading.textAlignment = UITextAlignmentCenter;
-		self.heading.backgroundColor = [UIColor clearColor];
-		self.heading.textColor = [UIColor colorWithRed:0.2 green:0.2 blue:0.2 alpha:0.9];
-		self.heading.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
-		self.heading.layer.shadowColor = [UIColor grayColor].CGColor;
-		self.heading.layer.shadowRadius = 1.0f;
-		self.heading.layer.shadowOpacity = 0.5f;
-		self.heading.layer.shouldRasterize = YES;		
-		self.heading.text = @"About Herdict";
-		[self addSubview:self.heading];
+		self.alpha = 0;
 		
+		UIImage *logoImage = [UIImage imageNamed:@"berkmanlogo.png"];
+		self.berkmanLogoImageView = [[UIImageView alloc] initWithImage:logoImage];
+		[self.berkmanLogoImageView setFrame:CGRectMake((aboutView__width - aboutView_berkmanLogo__width) / 2.0,
+													   12,
+													   aboutView_berkmanLogo__width,
+													   aboutView_berkmanLogo__height)];
+		[self addSubview:self.berkmanLogoImageView];
 		
-		self.message = [[UITextView alloc] initWithFrame:CGRectMake(30, 62, 260, 210)];
-		self.message.scrollEnabled = NO;
-		self.message.editable = NO;
-		self.message.font = [UIFont fontWithName:@"Helvetica" size:15];
-		self.message.textAlignment = UITextAlignmentLeft;
+		self.message = [[UIWebView alloc] initWithFrame:CGRectMake((aboutView__width - aboutView_message__width) / 2.0,
+																   aboutView_berkmanLogo__height + 10,
+																   aboutView_message__width,
+																   aboutView_messageView__height)];
+		self.message.userInteractionEnabled = NO;
 		self.message.backgroundColor = [UIColor clearColor];
-		self.message.textColor = [UIColor blackColor];
-		self.message.layer.shadowOffset = CGSizeMake(0.0f, 0.0f);
-		self.message.layer.shadowColor = [UIColor grayColor].CGColor;
-		self.message.layer.shadowRadius = 1.0f;
-		self.message.layer.shadowOpacity = 0.3f;
-		self.message.layer.shouldRasterize = YES;
-		self.message.text = @"Herdict is a project of the Berkman Center for Internet & Society at Harvard University. Herdict is a portmanteau of 'herd' and 'verdict' and seeks to show the verdict of the users (the herd). Herdict Web seeks to gain insight into what users around the world are experiencing in terms of web accessibility; or in other words, determine the herdict.";
+		self.message.opaque = NO;
+		[self.message loadHTMLString:[NSString stringWithFormat:@"<body align='justify' style=\"background-color:transparent;font-family:Helvetica;font-size:15px;color:black;\"><b>%@</b></body>",@"Herdict is a project of the Berkman Center for Internet & Society at Harvard University."] baseURL:nil];
 		[self addSubview:self.message];
 		
 		self.buttonLearnMore = [CustomUIButton buttonWithType:UIButtonTypeCustom];		
@@ -56,8 +52,11 @@
 		[self.buttonLearnMore addTarget:self.buttonLearnMore action:@selector(setSelected) forControlEvents:UIControlEventTouchDown];
 		[self.buttonLearnMore addTarget:self action:@selector(selectButtonLearnMore) forControlEvents:UIControlEventTouchUpInside];
 		[self.buttonLearnMore addTarget:self.buttonLearnMore action:@selector(setNotSelected) forControlEvents:UIControlEventTouchUpOutside];
-		[self.buttonLearnMore setFrame:CGRectMake(35,277,250,33)];
-		[self.buttonLearnMore.titleLabel setFont:[UIFont boldSystemFontOfSize:14]];
+		[self.buttonLearnMore setFrame:CGRectMake((aboutView__width - aboutView_message__width) / 2.0,
+												  aboutView_buttonLearnMore__yOffset,
+												  aboutView_message__width,
+												  30)];
+		[self.buttonLearnMore.titleLabel setFont:[UIFont boldSystemFontOfSize:12]];
 		[self addSubview:self.buttonLearnMore];
 		
 		self.buttonDone = [CustomUIButton buttonWithType:UIButtonTypeCustom];		
@@ -65,8 +64,11 @@
 		[self.buttonDone addTarget:self.buttonDone action:@selector(setSelected) forControlEvents:UIControlEventTouchDown];
 		[self.buttonDone addTarget:self action:@selector(selectButtonDone) forControlEvents:UIControlEventTouchUpInside];
 		[self.buttonDone addTarget:self.buttonDone action:@selector(setNotSelected) forControlEvents:UIControlEventTouchUpOutside];
-		[self.buttonDone setFrame:CGRectMake(35,317,250,33)];
-		[self.buttonDone.titleLabel setFont:[UIFont boldSystemFontOfSize:14]];
+		[self.buttonDone setFrame:CGRectMake((aboutView__width - aboutView_message__width) / 2.0,
+											 aboutView_buttonDone__yOffset,
+											 aboutView_message__width,
+											 30)];
+		[self.buttonDone.titleLabel setFont:[UIFont boldSystemFontOfSize:12]];
 		[self addSubview:self.buttonDone];
 	}
     return self;
@@ -76,29 +78,23 @@
 	[buttonDone release];
 	[buttonLearnMore release];
 	[message release];
-	[heading release];	
+	[berkmanLogoImageView release];
     [super dealloc];
 }
 
 - (void) show {
-	[UIView animateWithDuration:0.35 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
+	[UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
-						 [self setFrame:CGRectMake(self.frame.origin.x,
-												   heightForNavBar - yOverhangForNavBar + heightForURLBar,
-												   self.frame.size.width,
-												   self.frame.size.height)];
+						 self.alpha = 1;
 					 } completion:^(BOOL finished){
 					 }
 	 ];
 }
 
 - (void) hide {
-	[UIView animateWithDuration:0.25 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
+	[UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
-						 [self setFrame:CGRectMake(self.frame.origin.x,
-												   460,
-												   self.frame.size.width,
-												   self.frame.size.height)];
+						 self.alpha = 0;
 					 } completion:^(BOOL finished){
 						 [self removeFromSuperview];
 					 }

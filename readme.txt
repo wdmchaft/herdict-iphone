@@ -1,12 +1,11 @@
 current todo:
 
-- Hook up the ModalVC for 'My ISP'.
-- 'No Connectivity' alert
-- Memory management.. go through local vars for any that are retained and never released properly.
-	- Find out whether I should be releasing subviews in viewDidUnload as opposed to dealloc.
 - Splash screen, icon
+- Minor memory management checks:
+	- go one more time through local vars for any that are retained and never released properly.
+	- find out whether I should be releasing subviews in viewDidUnload as opposed to dealloc.
 
-Future todo:
+future todo:
 
 - Color the siteSummary depending on Herdometer.
 - Add 'Watched Sites' tab (should be straightforward)

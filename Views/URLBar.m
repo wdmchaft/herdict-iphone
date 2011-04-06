@@ -53,9 +53,9 @@
 	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
 	NSMutableArray *colors = [NSMutableArray arrayWithCapacity:2];
 
-	UIColor *color0 = [UIColor colorWithRed:(barThemeRed - navBarColorDelta) green:(barThemeGreen - navBarColorDelta) blue:(barThemeBlue - navBarColorDelta)  alpha:1.0];
-	UIColor *color1 = [UIColor colorWithRed:(barThemeRed - urlBarColorDelta) green:(barThemeGreen - urlBarColorDelta) blue:(barThemeBlue - urlBarColorDelta)  alpha:1.0];
-	UIColor *color2 = [UIColor colorWithRed:(barThemeRed - 0.382) green:(barThemeGreen - 0.382) blue:(barThemeBlue - 0.382)  alpha:1.0];
+	UIColor *color0 = [UIColor colorWithRed:(themeColorRed - navBar__colorDelta) green:(themeColorGreen - navBar__colorDelta) blue:(themeColorBlue - navBar__colorDelta)  alpha:1.0];
+	UIColor *color1 = [UIColor colorWithRed:(themeColorRed - urlBar__colorDelta) green:(themeColorGreen - urlBar__colorDelta) blue:(themeColorBlue - urlBar__colorDelta)  alpha:1.0];
+	UIColor *color2 = [UIColor colorWithRed:(themeColorRed - 0.382) green:(themeColorGreen - 0.382) blue:(themeColorBlue - 0.382)  alpha:1.0];
 	
 	locations[0] = 0.25;
 	[colors addObject:(id)[color0 CGColor]];
@@ -69,7 +69,7 @@
 	
 	CGRect currentBounds = self.bounds;
 	CGPoint topCenter = CGPointMake(CGRectGetMidX(currentBounds), 0.0f);
-	CGPoint bottomCenter = CGPointMake(CGRectGetMidX(currentBounds), (heightForURLBar));
+	CGPoint bottomCenter = CGPointMake(CGRectGetMidX(currentBounds), (urlBar__height));
 	CGContextDrawLinearGradient(context, myGradient, topCenter, bottomCenter, 0);
 	
     CGGradientRelease(myGradient);

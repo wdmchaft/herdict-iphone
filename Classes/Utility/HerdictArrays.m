@@ -19,6 +19,7 @@
 @synthesize detected_countryCode;
 @synthesize detected_countryString;
 
+
 - (id) init {
 	self = [super init];
 	if (self) {
@@ -26,7 +27,7 @@
 		self.menuCategoryDefaultSelection = [NSString stringWithString:@"Tap to Select"];
 		
 		[self t01SetupFromPlist];
-		[self t02SetupFromPlist];
+		[self t02SetupFromPlist];		
 	}
 	return self;
 }
@@ -69,7 +70,7 @@
 
 - (void) getCurrentLocationCallbackHandler:(ASIHTTPRequest *)request {
 	self.t06dictCurrentLocation = [[WebservicesController sharedSingleton] getDictionaryFromJSONData:[request responseData]];
-	//NSLog(@"t06dictCurrentLocation: %@", t06dictCurrentLocation);
+	NSLog(@"t06dictCurrentLocation: %@", t06dictCurrentLocation);
 	
 	self.detected_ispName = [self.t06dictCurrentLocation objectForKey:@"ispName"];
 	self.detected_countryCode = [self.t06dictCurrentLocation objectForKey:@"countryShort"];

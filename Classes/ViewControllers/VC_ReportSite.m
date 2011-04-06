@@ -36,12 +36,12 @@
 	if (self) {
 		
 		self.title = @"Report Site";
-		self.view.backgroundColor = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
+		self.view.backgroundColor = [UIColor colorWithRed:themeColorRed green:themeColorGreen blue:themeColorBlue alpha:1];
 		
 		self.formTable = [[UITableView alloc] initWithFrame:CGRectMake(0,
-																	   heightForNavBar - yOverhangForNavBar + heightForURLBar,
+																	   urlBar__yOrigin + urlBar__height,
 																	   320,
-																	   heightForFormStateCell * 4)
+																	   formStateCell__height * 4)
 													  style:UITableViewStylePlain];
 		self.formTable.backgroundColor = [UIColor clearColor];
 		self.formTable.userInteractionEnabled = YES;
@@ -57,23 +57,22 @@
 		
 		// --	menuCategory
 		self.menuCategory = [[FormMenuCategory alloc] initWithMessageHeight:0
-																  withFrame:CGRectMake(25, heightForNavBar - yOverhangForNavBar + heightForURLBar + 10, 270, 0)
+																  withFrame:CGRectMake(25, urlBar__yOrigin + urlBar__height + 10, 270, 0)
 																 tailHeight:0];
 		self.menuCategory.theMessage.text = @"";
 		
-		// --	Total kludge...  call setUpMenuCategory once, it will use the shipped Categories array.  Then 6s later do it again in case the latest one has arrived.  TODO set this up so we just call it when [HerdictArrays sharedSingleton] gets the callback.  Prob the right approach is to route that callback through vcReportSite.
+		// --	Call setUpMenuCategory once here.. it will use the shipped Categories array.  It gets called again when we hear back from the Herdict API.
 		[self setUpMenuCategory];
-		[self performSelector:@selector(setUpMenuCategory) withObject:nil afterDelay:6.0];
 		
 		// --	menuComments
 		self.menuComments = [[FormMenuComments alloc] initWithCutoutHeight:112.0f
-																 withFrame:CGRectMake(20, heightForNavBar - yOverhangForNavBar + heightForURLBar + 20, 280, 0)
+																 withFrame:CGRectMake(20, urlBar__yOrigin + urlBar__height + 20, 280, 0)
 																tailHeight:0];
 		self.menuComments.theComments.delegate = self;
 		self.menuCommentsDefaultSelection = [NSString stringWithString:@"Tap to Type"];
 		
 		// --	menuAccessible
-		self.menuAccessible = [[FormMenuAccessible alloc] initWithFrame:CGRectMake(heightForFormStateCell, 28.0, (widthForFormMenuAccessibleButton * 2) + gapForFormMenuAccessible, heightForFormMenuAccessible)];
+		self.menuAccessible = [[FormMenuAccessible alloc] initWithFrame:CGRectMake(formStateCell__height, 28.0, (formMenuAccessible_button__width * 2) + formMenuAccessible__gapBetweenButtons, formMenuAccessible__height)];
 		self.menuAccessible.theDelegate = self;
 	}
 	return self;
@@ -95,6 +94,11 @@
 	[menuCategory release];
 	[formTable release];
     [super dealloc];
+}
+
+- (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {	
+	[[HerdictArrays sharedSingleton] getCategoriesCallbackHandler:request];
+	[self performSelector:@selector(setUpMenuCategory) withObject:nil afterDelay:2.0];
 }
 
 - (void) setUpMenuCategory {
@@ -138,21 +142,21 @@
 
 	CGFloat subtractFromRowHeight = 0.0;
 	if (indexPath.section == self.sectionNowEditing) {
-		subtractFromRowHeight = heightToSubtractWhenFormStateCellShrinks;
+		subtractFromRowHeight = formStateCell__heightToSubtractWhenShrinking;
 	}
 	
 	UITableViewCell *cellAtPath = [self tableView:self.formTable cellForRowAtIndexPath:indexPath];
 	if ([cellAtPath isKindOfClass:[FormClearCell class]]) {
 //		NSLog(@"hFRAIP about to return %f", 250.0 + subtractFromRowHeight);
-		return heightForFormClearCell + subtractFromRowHeight;
+		return formClearCell__height + subtractFromRowHeight;
 	}
 
 	if (indexPath.section < 2) {
-//		NSLog(@"hFRAIP about to return %f", heightForFormStateCell - subtractFromRowHeight);
-		return heightForFormStateCell - subtractFromRowHeight;
+//		NSLog(@"hFRAIP about to return %f", formStateCell__height - subtractFromRowHeight);
+		return formStateCell__height - subtractFromRowHeight;
 	}
-//	NSLog(@"hFRAIP about to return %f", heightForFormStateCell - subtractFromRowHeight - 1);	
-	return heightForFormStateCell - subtractFromRowHeight - 1;
+//	NSLog(@"hFRAIP about to return %f", formStateCell__height - subtractFromRowHeight - 1);	
+	return formStateCell__height - subtractFromRowHeight - 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -395,6 +399,11 @@
 
 - (void) initiateReportCallout {
 
+	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
+		[[[[UIAlertView alloc] initWithTitle:@"No Connection" message:@"You must have an Internet connection to submit a report." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil] autorelease] show];
+		return;
+	}
+	
 	NSString *theUrl = [[self.tabBarController.delegate theUrlBar] text]; 
 	theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
 	theUrl = [theUrl stringByReplacingOccurrencesOfString:@"www." withString:@""];
@@ -427,7 +436,7 @@
 	if ([theComments length] == 0) {
 		theComments = @"";
 	}	
-		
+	
 	[[WebservicesController sharedSingleton] reportUrl:theUrl reportType:theReportType country:theCountry userISP:theDetectedIspName userLocation:theLocation interest:theInterest reason:theReason sourceId:theSourceId tag:theTag comments:theComments defaultCountryCode:theCountry defaultispDefaultName:theDetectedIspName callbackDelegate:self];
 }
 

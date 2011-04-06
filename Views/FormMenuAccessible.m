@@ -27,7 +27,7 @@
 		[self.buttonYes addTarget:self.buttonYes action:@selector(setSelected) forControlEvents:UIControlEventTouchDown];
 		[self.buttonYes addTarget:self.theDelegate action:@selector(selectButtonAccessibleYes) forControlEvents:UIControlEventTouchUpInside];
 		[self.buttonYes addTarget:self.buttonYes action:@selector(setNotSelected) forControlEvents:UIControlEventTouchUpOutside];
-		[self.buttonYes setFrame:CGRectMake(0, 0, widthForFormMenuAccessibleButton, heightForMenuCategoryOption)];
+		[self.buttonYes setFrame:CGRectMake(0, 0, formMenuAccessible_button__width, menuCategoryOption__height)];
 		[self.buttonYes setTitle:@"Yes" forState:UIControlStateNormal];
 		[self addSubview:self.buttonYes];
 		
@@ -35,7 +35,7 @@
 		[self.buttonNo addTarget:self.buttonNo action:@selector(setSelected) forControlEvents:UIControlEventTouchDown];
 		[self.buttonNo addTarget:self.theDelegate action:@selector(selectButtonAccessibleNo) forControlEvents:UIControlEventTouchUpInside];
 		[self.buttonNo addTarget:self.buttonNo action:@selector(setNotSelected) forControlEvents:UIControlEventTouchUpOutside];
-		[self.buttonNo setFrame:CGRectMake(widthForFormMenuAccessibleButton + gapForFormMenuAccessible, 0, widthForFormMenuAccessibleButton, heightForMenuCategoryOption)];
+		[self.buttonNo setFrame:CGRectMake(formMenuAccessible_button__width + formMenuAccessible__gapBetweenButtons, 0, formMenuAccessible_button__width, menuCategoryOption__height)];
 		[self.buttonNo setTitle:@"No" forState:UIControlStateNormal];
 		[self addSubview:self.buttonNo];
 	}

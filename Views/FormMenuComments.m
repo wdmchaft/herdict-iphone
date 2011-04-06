@@ -77,6 +77,8 @@
 		self.theComments.scrollEnabled = YES;
 		self.theComments.returnKeyType = UIReturnKeyDone;
 		self.theComments.userInteractionEnabled = YES;
+		self.theComments.autocorrectionType = UITextAutocorrectionTypeNo;
+		self.theComments.autocapitalizationType = UITextAutocapitalizationTypeNone;
 		self.theComments.font = [UIFont fontWithName:@"Helvetica-Bold" size:16];
 		[self addSubview:self.theComments];
 		

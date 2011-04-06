@@ -10,14 +10,12 @@
 
 @implementation VC_Base
 
-@synthesize aboutView;
-
 @synthesize blackBackgroundForNavBar;
 @synthesize navBar;
 @synthesize navItem;
 @synthesize buttonCancelTyping;
-@synthesize buttonInfo;
-@synthesize buttonWiFi;
+@synthesize buttonAbout;
+@synthesize buttonNetwork;
 
 @synthesize theUrlBar;
 @synthesize theUrlBarMenu;
@@ -34,18 +32,17 @@
 @synthesize vcReportSite;
 @synthesize currentTab;
 
+@synthesize aboutView;
+@synthesize networkView;
+
+@synthesize haveDoneCallouts;
+
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	//NSLog(@"%@ initWithNibName:%@ bundle:%@", self, nibNameOrNil, nibBundleOrNil);
 
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
 
-		// --	Get some material from Herdict etc.
-		[[WebservicesController sharedSingleton] getCategories:[HerdictArrays sharedSingleton]];
-		[[WebservicesController sharedSingleton] getCountries:[HerdictArrays sharedSingleton]]; 
-		[[WebservicesController sharedSingleton] getIp:[NetworkInfo sharedSingleton]];
-		[[WebservicesController sharedSingleton] getCurrentLocation:[HerdictArrays sharedSingleton]];
-		
 		// --	Init all our VCs now... gets us better performance when they appear.
 		[self.view setCenter:CGPointMake(self.view.center.x, self.view.center.y - 20)];
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
@@ -71,7 +68,7 @@
 		[self.view addSubview:self.theController.view];
 		
 		// --	Set up theUrlBar (do this first just because the navBar stuff should be on top of it).
-		self.theUrlBar = [[URLBar alloc] initWithFrame:CGRectMake(0,heightForNavBar - yOverhangForNavBar,320,heightForURLBar)];
+		self.theUrlBar = [[URLBar alloc] initWithFrame:CGRectMake(0, urlBar__yOrigin, 320, urlBar__height)];
 		for (UIView *view in self.theUrlBar.subviews) {
 			if ([view isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
 				[view removeFromSuperview];
@@ -82,10 +79,10 @@
 		[self.view addSubview:self.theUrlBar];
 		
 		// --	Set up blackBackgroundForNavBar, navBar, navItem
-		self.blackBackgroundForNavBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, heightForNavBar + heightForURLBar - yOverhangForNavBar)];
+		self.blackBackgroundForNavBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, urlBar__yOrigin + urlBar__height)];
 		self.blackBackgroundForNavBar.backgroundColor = [UIColor blackColor];
 		[self.view insertSubview:self.blackBackgroundForNavBar belowSubview:self.theUrlBar];	
-		self.navBar = [[CustomNavBar alloc] initWithFrame:CGRectMake(0, 0, 320, heightForNavBar)];
+		self.navBar = [[CustomNavBar alloc] initWithFrame:CGRectMake(0, 0, 320, navBar__height)];
 		self.navBar.delegate = self;
 		[self.view addSubview:self.navBar];		
 		self.navItem = [[UINavigationItem alloc] initWithTitle:@"Herdict"];
@@ -96,20 +93,20 @@
 		navItem.titleView = herdictBadgeImageView;
 		
 		// --	Set up navBar buttons
-		self.buttonInfo = [CustomUIButton buttonWithType:UIButtonTypeCustom];
-		[self.buttonInfo addTarget:self.buttonInfo action:@selector(setSelected) forControlEvents:UIControlEventTouchDown];
-		[self.buttonInfo addTarget:self action:@selector(selectButtonInfo) forControlEvents:UIControlEventTouchUpInside];
-		[self.buttonInfo addTarget:self.buttonInfo action:@selector(setNotSelected) forControlEvents:UIControlEventTouchUpOutside];
-		[self.buttonInfo setBackgroundImage:[UIImage imageNamed:@"buttonInfo.png"] forState:UIControlStateNormal];
-		[self.buttonInfo setFrame:CGRectMake(0, 0, 40, 30)];
-		navItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonInfo] autorelease];
-		self.buttonWiFi = [CustomUIButton buttonWithType:UIButtonTypeCustom];
-		[self.buttonWiFi addTarget:self.buttonWiFi action:@selector(setSelected) forControlEvents:UIControlEventTouchDown];
-		[self.buttonWiFi addTarget:self action:@selector(selectButtonWiFi) forControlEvents:UIControlEventTouchUpInside];
-		[self.buttonWiFi addTarget:self.buttonWiFi action:@selector(setNotSelected) forControlEvents:UIControlEventTouchUpOutside];
-		[self.buttonWiFi setBackgroundImage:[UIImage imageNamed:@"buttonWiFi.png"] forState:UIControlStateNormal];
-		[self.buttonWiFi setFrame:CGRectMake(0, 0, 40, 30)];
-		navItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonWiFi] autorelease];
+		self.buttonAbout = [CustomUIButton buttonWithType:UIButtonTypeCustom];
+		[self.buttonAbout addTarget:self.buttonAbout action:@selector(setSelected) forControlEvents:UIControlEventTouchDown];
+		[self.buttonAbout addTarget:self action:@selector(selectButtonAbout) forControlEvents:UIControlEventTouchUpInside];
+		[self.buttonAbout addTarget:self.buttonAbout action:@selector(setNotSelected) forControlEvents:UIControlEventTouchUpOutside];
+		[self.buttonAbout setBackgroundImage:[UIImage imageNamed:@"buttonInfo.png"] forState:UIControlStateNormal];
+		[self.buttonAbout setFrame:CGRectMake(0, 0, 40, 30)];
+		navItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonAbout] autorelease];
+		self.buttonNetwork = [CustomUIButton buttonWithType:UIButtonTypeCustom];
+		[self.buttonNetwork addTarget:self.buttonNetwork action:@selector(setSelected) forControlEvents:UIControlEventTouchDown];
+		[self.buttonNetwork addTarget:self action:@selector(selectButtonNetwork) forControlEvents:UIControlEventTouchUpInside];
+		[self.buttonNetwork addTarget:self.buttonNetwork action:@selector(setNotSelected) forControlEvents:UIControlEventTouchUpOutside];
+		[self.buttonNetwork setBackgroundImage:[UIImage imageNamed:@"buttonWiFi.png"] forState:UIControlStateNormal];
+		[self.buttonNetwork setFrame:CGRectMake(0, 0, 40, 30)];
+		navItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonNetwork] autorelease];
 		
 		// --	Set up buttonCancelTyping but don't use it here
 		self.buttonCancelTyping = [CustomUIButton buttonWithType:UIButtonTypeCustom];
@@ -124,7 +121,7 @@
 		[urlMenuOptions addObject:[NSString stringWithString:@"Check Site"]];
 		[urlMenuOptions addObject:[NSString stringWithString:@"Submit a Report"]];
 		self.theUrlBarMenu = [[BubbleMenu alloc] initWithMessageHeight:0
-															 withFrame:CGRectMake(-60, heightForNavBar - yOverhangForNavBar - 20, 170, 0)
+															 withFrame:CGRectMake(-60, urlBar__yOrigin - 20, 170, 0)
 													  menuOptionsArray:urlMenuOptions
 															tailHeight:22
 														   anchorPoint:CGPointMake(0, 0)];
@@ -132,9 +129,9 @@
 		
 		// --	Set up theScreen but don't show it yet
 		self.theScreen = [[Screen alloc] initWithFrame:CGRectMake(0,
-																  heightForNavBar - yOverhangForNavBar + heightForURLBar,
+																  urlBar__yOrigin + urlBar__height,
 																  320,
-																  480 - heightForStatusBar_nonBaseViews - (heightForNavBar - yOverhangForNavBar + heightForURLBar) - 20)];
+																  480 - (urlBar__yOrigin + urlBar__height) - 20)];
 		self.theScreen.backgroundColor = [UIColor clearColor];
 		
 		// --	Set up theTabTracker
@@ -143,15 +140,25 @@
 		[self.view bringSubviewToFront:self.theTabTracker];	
 		
 		// --	Set up aboutView.
-		self.aboutView = [[About alloc] initWithFrame:CGRectMake(0,
-																 460 + heightForNavBar - heightForStatusBar_nonBaseViews - heightForURLBar,
-																 320,
-																 460)];
+		self.aboutView = [[About alloc] initWithFrame:CGRectMake((320 - aboutView__width) / 2.0,
+																 (480 - aboutView__height) / 2.0,
+																 aboutView__width,
+																 aboutView__height)];
+		
+		// --	Set up networkView.
+		self.networkView = [[Network alloc] initWithFrame:CGRectMake((320 - networkView__width) / 2.0,
+																 (480 - networkView__height__stateLoading) / 2.0,
+																 networkView__width,
+																 networkView__height__stateLoading)];
+		
+		// --	Get Reachability notifications.
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkReachabilityEvent:) name:kReachabilityChangedNotification object:nil];
+
+		self.haveDoneCallouts = NO;
+		[self launchCallouts];
 	}
 	return self;
 }
-
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -183,8 +190,8 @@
 	[theScreen release];
 	[theUrlBarMenu release];
 	[theUrlBar release];
-	[buttonWiFi release];
-	[buttonInfo release];
+	[buttonNetwork release];
+	[buttonAbout release];
 	[buttonCancelTyping release];
 	[navItem release];
 	[navBar release];
@@ -210,11 +217,18 @@
 		return YES;
 	}
 	
-	// --	Otherwise...
+	// --	If they have not entered a URL, [self urlTyped] will handle it, and after that we don't proceed.
 	if (![self urlTyped]) {
 		return NO;
 	}
 	
+	// --	Check for reachability.. this will bring up self.networkView if there is none.
+	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
+		[self selectButtonNetwork];
+		return NO;
+	}
+
+	// --	Bring vcReportSite to its top menu level.
 	if ([currentVc isEqual:self.vcReportSite]) {
 		[self.vcReportSite selectFormMenuOption:nil];
 	}
@@ -240,16 +254,21 @@
 #pragma mark -
 #pragma mark UINavigationItem
 
-- (void) selectButtonInfo {
+- (void) selectButtonAbout {
+	NSLog(@"selectButtonAbout");
 	[self selectButtonCancelSearch];
-	[self.buttonInfo setNotSelected];
-	[self.view insertSubview:self.aboutView belowSubview:self.theUrlBar];
+	[self.buttonAbout setNotSelected];
+	[self.view addSubview:self.aboutView];
+	[self.networkView hide];
 	[self.aboutView show];
 }
 
-- (void) selectButtonWiFi {
-	[self.buttonWiFi setNotSelected];
-	// TODO: actually load the 'Wifi' view...
+- (void) selectButtonNetwork {
+	NSLog(@"selectButtonNetwork");
+	[self.buttonNetwork setNotSelected];
+	[self.view addSubview:self.networkView];
+	[self.aboutView hide];
+	[self.networkView show];
 }
 
 - (void) selectButtonCancelSearch {
@@ -268,6 +287,9 @@
 	//NSLog(@"searchBarTextDidBeginEditing");
 	self.navItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonCancelTyping] autorelease];
 	
+	[self.aboutView hide];
+	[self.networkView hide];
+	
 	[self.theUrlBarMenu showBubbleMenu];	
 	
 	// --	add theScreen - this catches touches on reportMapView, so user doesn't have to tap Cancel to dismiss theUrlBar.
@@ -281,7 +303,7 @@
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
-	self.navItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonWiFi] autorelease];
+	self.navItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonNetwork] autorelease];
 	[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBarMenu selector:@selector(hideBubbleMenu) userInfo:nil repeats:NO];
 	[self.theScreen removeFromSuperview];
 
@@ -388,6 +410,36 @@
 	}
 	
 	return typedUrl;
+}
+
+- (void) networkReachabilityEvent: (NSNotification *) notification {
+	Reachability *r = [notification object];
+	if ([r isReachable]) {
+		[self launchCallouts];
+	} else {
+		[self selectButtonNetwork];
+	}
+}
+
+- (void) launchCallouts {
+
+	if (self.haveDoneCallouts) {
+		return;
+	}
+	
+	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
+		[[HerdictArrays sharedSingleton] t02SetupFromPlist];
+		[[HerdictArrays sharedSingleton] t01SetupFromPlist];
+		[self selectButtonNetwork];
+		return;
+	}
+	
+	[[WebservicesController sharedSingleton] getCategories:self.vcReportSite];
+	[[WebservicesController sharedSingleton] getCountries:[HerdictArrays sharedSingleton]]; 
+	[[WebservicesController sharedSingleton] getIp:[NetworkInfo sharedSingleton]];
+	[[WebservicesController sharedSingleton] getCurrentLocation:[HerdictArrays sharedSingleton]];
+	
+	self.haveDoneCallouts = YES;
 }
 
 @end

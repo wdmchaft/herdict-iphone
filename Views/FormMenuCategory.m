@@ -45,7 +45,7 @@
 
 		self.yPaddingForMessage = 0.0;
 		if (theMessageHeight > 0.0) {
-			self.yPaddingForMessage = yPaddingForBubbleMenuBody;
+			self.yPaddingForMessage = bubbleMenu_body__yPadding;
 		}
 		
 		self.messageHeight = theMessageHeight;
@@ -54,7 +54,7 @@
 		self.tailxOffsetForBase = self.selfWidth * 0.30;
 		self.tailxOffsetForTip = self.selfWidth * 0.5;
 		
-		self.selfHeight = self.tailHeight + (yPaddingForBubbleMenuBody * 4.0) + self.messageHeight + self.yPaddingForMessage;
+		self.selfHeight = self.tailHeight + (bubbleMenu_body__yPadding * 4.0) + self.messageHeight + self.yPaddingForMessage;
 
 		self.xPaddingLeft = self.selfWidth * 0.065;
 		self.xPaddingRight = self.selfWidth * 0.08;
@@ -114,7 +114,7 @@
 	if ([theOptionsArray count] - 1 > 0) {
 		theCount = [theOptionsArray count] - 1;
 	}
-	self.selfHeight = self.tailHeight + (yPaddingForBubbleMenuBody * 4) + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * theCount);	
+	self.selfHeight = self.tailHeight + (bubbleMenu_body__yPadding * 4) + self.messageHeight + self.yPaddingForMessage + (menuCategoryOption__height * theCount);	
 	
 	[self setFrame:CGRectMake(self.selfOriginX,
 							  self.selfOriginY,
@@ -132,9 +132,9 @@
 	for (NSString *optionText in theOptionsArray) {
 		if ([theOptionsArray indexOfObject:optionText] > 0) {
 			UITextView *menuOption = [[[UITextView alloc] initWithFrame:CGRectMake(self.xPaddingLeft,
-																				  self.tailHeight + self.messageHeight + self.yPaddingForMessage + (heightForMenuCategoryOption * (-1 + [theOptionsArray indexOfObject:optionText])),
+																				  self.tailHeight + self.messageHeight + self.yPaddingForMessage + (menuCategoryOption__height * (-1 + [theOptionsArray indexOfObject:optionText])),
 																				  self.selfWidth - self.xPaddingRight,
-																				  heightForMenuCategoryOption)] autorelease];
+																				  menuCategoryOption__height)] autorelease];
 			menuOption.contentMode = UIViewContentModeCenter;
 			menuOption.text = [NSString stringWithString:optionText];
 			menuOption.tag = [theOptionsArray indexOfObject:optionText];

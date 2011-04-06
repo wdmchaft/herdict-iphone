@@ -33,22 +33,22 @@
 
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
 		
-		self.theIconView = [[UIImageView alloc] initWithFrame:CGRectMake((0.5 * (heightForFormStateCell - diameterForFormStateCellIconView_full)),
-																		 (0.5 * (heightForFormStateCell - diameterForFormStateCellIconView_full)),
-																		 diameterForFormStateCellIconView_full,
-																		 diameterForFormStateCellIconView_full)];
+		self.theIconView = [[UIImageView alloc] initWithFrame:CGRectMake((0.5 * (formStateCell__height - formStateCell_iconView__diameter__full)),
+																		 (0.5 * (formStateCell__height - formStateCell_iconView__diameter__full)),
+																		 formStateCell_iconView__diameter__full,
+																		 formStateCell_iconView__diameter__full)];
 		[self addSubview:self.theIconView];
 		
 		self.textPlate = [[UIView alloc] initWithFrame:CGRectMake(0,
-																  (0.5 * (heightForFormStateCell - diameterForFormStateCellIconView_full)),
+																  (0.5 * (formStateCell__height - formStateCell_iconView__diameter__full)),
 																  320,
-																  diameterForFormStateCellIconView_full)];
+																  formStateCell_iconView__diameter__full)];
 		self.textPlate.backgroundColor = [UIColor clearColor];
 		[self addSubview:self.textPlate];
 		
-		self.cellLabel = [[UILabel alloc] initWithFrame:CGRectMake(heightForFormStateCell,
+		self.cellLabel = [[UILabel alloc] initWithFrame:CGRectMake(formStateCell__height,
 																   -3,
-																   320 - heightForFormStateCell,
+																   320 - formStateCell__height,
 																   30)];
 		self.cellLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
 		self.cellLabel.textColor = [UIColor blackColor];
@@ -56,9 +56,9 @@
 		self.cellLabel.backgroundColor = [UIColor clearColor];
 		[self.textPlate addSubview:self.cellLabel];
 		
-		self.cellDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(heightForFormStateCell,
+		self.cellDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(formStateCell__height,
 																		 25,
-																		 320 - heightForFormStateCell - 30,
+																		 320 - formStateCell__height - 30,
 																		 25)];
 		self.cellDetailLabel.font = [UIFont fontWithName:@"Helvetica" size:17];
 		self.cellDetailLabel.textColor = [UIColor grayColor];
@@ -101,21 +101,21 @@
 //							 self.cellDetailLabel.alpha = 0;
 //							 self.theIconView.alpha = 0;
 						 } completion:^(BOOL finished){
-//							 [self.cellLabel setFrame:CGRectMake(heightForFormStateCell - 5.0,
-//																 (0.5 * (diameterForFormStateCellIconView_shrunk - 5.0)),
+//							 [self.cellLabel setFrame:CGRectMake(formStateCell__height - 5.0,
+//																 (0.5 * (formStateCell_iconView__diameter__shrunk - 5.0)),
 //																 self.frame.size.width,
 //																 20.0)];
 //							 self.cellLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
 //							 [self.textPlate setFrame:CGRectMake(0.0,
-//																 (0.5 * (theNewHeight - diameterForFormStateCellIconView_full)),
+//																 (0.5 * (theNewHeight - formStateCell_iconView__diameter__full)),
 //																 320.0,
-//																 diameterForFormStateCellIconView_full)];
+//																 formStateCell_iconView__diameter__full)];
 							 //		[UIView animateWithDuration:0.3
 							 //						 animations:^{
-							 //							 [self.theIconView setFrame:CGRectMake(0.5 * (heightForFormStateCell - diameterForFormStateCellIconView_full),
-							 //																   (0.5 * (theNewHeight - diameterForFormStateCellIconView_full)),
-							 //																   diameterForFormStateCellIconView_full,
-							 //																   diameterForFormStateCellIconView_full)];							 
+							 //							 [self.theIconView setFrame:CGRectMake(0.5 * (formStateCell__height - formStateCell_iconView__diameter__full),
+							 //																   (0.5 * (theNewHeight - formStateCell_iconView__diameter__full)),
+							 //																   formStateCell_iconView__diameter__full,
+							 //																   formStateCell_iconView__diameter__full)];							 
 						 }
 		 ];
 		[UIView animateWithDuration:0.1 delay:0.25 options:nil
@@ -129,22 +129,22 @@
 						 animations:^{
 //							 self.cellLabel.alpha = 0;
 						 } completion:^(BOOL finished){
-//							 [self.cellLabel setFrame:CGRectMake(heightForFormStateCell,
+//							 [self.cellLabel setFrame:CGRectMake(formStateCell__height,
 //																 -3.0,
-//																 320.0 - heightForFormStateCell,
+//																 320.0 - formStateCell__height,
 //																 30.0)];
 //							 self.cellLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
 //							 //	Make sure textPlate, superview to cellLabel, knows the new values...
 //							 [self.textPlate setFrame:CGRectMake(0.0,
-//																 (0.5 * (theNewHeight - diameterForFormStateCellIconView_shrunk)),
+//																 (0.5 * (theNewHeight - formStateCell_iconView__diameter__shrunk)),
 //																 320.0,
-//																 diameterForFormStateCellIconView_shrunk)];
+//																 formStateCell_iconView__diameter__shrunk)];
 							 //		[UIView animateWithDuration:0.3
 							 //						 animations:^{
-							 //							 [self.theIconView setFrame:CGRectMake(0.5 * (heightForFormStateCell - diameterForFormStateCellIconView_shrunk),
-							 //																   (0.5 * (theNewHeight - diameterForFormStateCellIconView_shrunk)),
-							 //																   diameterForFormStateCellIconView_shrunk,
-							 //																   diameterForFormStateCellIconView_shrunk)];							 
+							 //							 [self.theIconView setFrame:CGRectMake(0.5 * (formStateCell__height - formStateCell_iconView__diameter__shrunk),
+							 //																   (0.5 * (theNewHeight - formStateCell_iconView__diameter__shrunk)),
+							 //																   formStateCell_iconView__diameter__shrunk,
+							 //																   formStateCell_iconView__diameter__shrunk)];							 
 						 }
 		 ];
 		[UIView animateWithDuration:0.075 delay:0.2 options:nil
@@ -167,11 +167,11 @@
 	CGFloat locations[5];
 	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
 	NSMutableArray *colors = [NSMutableArray arrayWithCapacity:5];
-	UIColor *color0 = [UIColor colorWithRed:barThemeRed green:barThemeGreen blue:barThemeBlue alpha:1];
-//	UIColor *color1 = [UIColor colorWithRed:(barThemeRed - 0.022) green:(barThemeGreen - 0.022) blue:(barThemeBlue - 0.022)  alpha:1];	
-//	UIColor *color2 = [UIColor colorWithRed:(barThemeRed - 0.062) green:(barThemeGreen - 0.062) blue:(barThemeBlue - 0.062)  alpha:1];
-//	UIColor *color3 = [UIColor colorWithRed:(barThemeRed - 0.092) green:(barThemeGreen - 0.092) blue:(barThemeBlue - 0.092)  alpha:0.9];
-	UIColor *color4 = [UIColor colorWithRed:(barThemeRed - 0.182) green:(barThemeGreen - 0.182) blue:(barThemeBlue - 0.182)  alpha:1];
+	UIColor *color0 = [UIColor colorWithRed:themeColorRed green:themeColorGreen blue:themeColorBlue alpha:1];
+//	UIColor *color1 = [UIColor colorWithRed:(themeColorRed - 0.022) green:(themeColorGreen - 0.022) blue:(themeColorBlue - 0.022)  alpha:1];	
+//	UIColor *color2 = [UIColor colorWithRed:(themeColorRed - 0.062) green:(themeColorGreen - 0.062) blue:(themeColorBlue - 0.062)  alpha:1];
+//	UIColor *color3 = [UIColor colorWithRed:(themeColorRed - 0.092) green:(themeColorGreen - 0.092) blue:(themeColorBlue - 0.092)  alpha:0.9];
+	UIColor *color4 = [UIColor colorWithRed:(themeColorRed - 0.182) green:(themeColorGreen - 0.182) blue:(themeColorBlue - 0.182)  alpha:1];
 
 	locations[0] = 0.00;
 	[colors addObject:(id)[color0 CGColor]];
