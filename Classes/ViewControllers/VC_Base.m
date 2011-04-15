@@ -422,6 +422,7 @@
 }
 
 - (void) launchCallouts {
+	NSLog(@"vcBase finished launchCallouts");
 
 	if (self.haveDoneCallouts) {
 		return;
@@ -430,14 +431,13 @@
 	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
 		[[HerdictArrays sharedSingleton] t02SetupFromPlist];
 		[[HerdictArrays sharedSingleton] t01SetupFromPlist];
-		[self selectButtonNetwork];
 		return;
 	}
 	
 	[[WebservicesController sharedSingleton] getCategories:self.vcReportSite];
 	[[WebservicesController sharedSingleton] getCountries:[HerdictArrays sharedSingleton]]; 
 	[[WebservicesController sharedSingleton] getIp:[NetworkInfo sharedSingleton]];
-	[[WebservicesController sharedSingleton] getCurrentLocation:[HerdictArrays sharedSingleton]];
+	[[WebservicesController sharedSingleton] getCurrentLocation:self.networkView];
 	
 	self.haveDoneCallouts = YES;
 }

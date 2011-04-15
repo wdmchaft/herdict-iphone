@@ -98,5 +98,6 @@
 - (BOOL) urlTyped;
 - (NSString *) fixUpTypedUrl;
 - (void) initiateGetCurrentLocation;
+- (void) launchCallouts;
 
 @end

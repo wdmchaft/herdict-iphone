@@ -17,6 +17,8 @@
 @synthesize buttonDone;
 @synthesize loadingIndicator;
 @synthesize loadingText;
+@synthesize latestNotification;
+
 
 - (id)initWithFrame:(CGRect)frame {
     
@@ -67,7 +69,7 @@
 		self.messageView.userInteractionEnabled = NO;
 		self.messageView.backgroundColor = [UIColor clearColor];
 		self.messageView.opaque = NO;
-						
+		
 		self.buttonDone = [CustomUIButton buttonWithType:UIButtonTypeCustom];		
 		[self.buttonDone setTitle:@"OK" forState:UIControlStateNormal];
 		[self.buttonDone addTarget:self.buttonDone action:@selector(setSelected) forControlEvents:UIControlEventTouchDown];
@@ -96,33 +98,133 @@
 }
 
 - (void) networkReachabilityEvent: (NSNotification *) notification {
-	NSLog(@"notified of a reachability event");
-	Reachability *r = [notification object];
-	if (![r isReachable]) {
-		[self noConnectivity];
-		return;
-	}		
-	BOOL requiresPassword = NO;
-	if ([r isInterventionRequired]) {
-		requiresPassword = YES;
+	//NSLog(@"notified of a reachability event");
+
+	[[HerdictArrays sharedSingleton] setDetected_ispName:@""];
+	[[WebservicesController sharedSingleton] getCurrentLocation:[HerdictArrays sharedSingleton]];
+
+	self.latestNotification = [notification object];
+
+	if (![self.latestNotification isReachable]) {
+		[NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(show) userInfo:nil repeats:NO];
 	}
-	if ([r isReachableViaWWAN]) {
-		[self connectedVia:@"wwan" requiresPassword:requiresPassword];
-		return;
-	}
-	if ([r isReachableViaWiFi]) {
-		[self connectedVia:@"wifi" requiresPassword:requiresPassword];
-		return;
-	}	
 }
 
 - (void) show {
+	
+	BOOL requiresPassword = NO;
+	
+	if (![self.latestNotification isReachable]) {
+		[self noConnectivity];
+	} else {
+		if ([self.latestNotification isInterventionRequired]) {
+			requiresPassword = YES;
+		}
+		if ([self.latestNotification isReachableViaWWAN]) {
+			[self configureViewForConnectionVia:@"wwan" requiresPassword:requiresPassword];
+		}
+		if ([self.latestNotification isReachableViaWiFi]) {
+			[self configureViewForConnectionVia:@"wifi" requiresPassword:requiresPassword];
+		}
+	}
+	
 	[UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
 						 self.alpha = 1;
 					 } completion:^(BOOL finished){
 					 }
-	 ];
+	 ];	
+}
+		
+- (void) noConnectivity {
+	
+	[self.loadingIndicator removeFromSuperview];
+	[self.loadingText removeFromSuperview];
+	
+	[self.messageView loadHTMLString:[NSString stringWithFormat:@"<body align='justify' style=\"background-color:transparent;font-family:Helvetica;font-size:15px;color:black;\"><b>%@</b></body>",@"Your device does not have an active Internet connection at this time."] baseURL:nil];
+	
+	[self.messageView setFrame:CGRectMake((networkView__width - networkView_messageView__width) / 2.0,
+										  networkView_messageView__yOffset,
+										  networkView_messageView__width,
+										  networkView_messageView__height__stateNoConnectivity)];
+	[self addSubview:self.messageView];	
+	[self.buttonDone setFrame:CGRectMake((networkView__width - networkView_messageView__width) / 2.0,
+										 networkView_buttonDone__yOffset__stateNoConnectivity,
+										 networkView_messageView__width,
+										 30)];
+	[self setFrame:CGRectMake(0.5 * (320.0 - networkView__width),
+							  0.5 * (480.0 - networkView__height__stateNoConnectivity),
+							  networkView__width,
+							  networkView__height__stateNoConnectivity)];
+}
+
+- (void) configureViewForConnectionVia:(NSString *)connectionType requiresPassword:(BOOL)requiresPassword {
+	NSLog(@"configureViewForConnectionVia:%@ requiresPassword:%@", connectionType, requiresPassword ? @"YES" : @"NO");
+	
+	self.networkImageView.alpha = 1;
+	
+	[self.loadingIndicator removeFromSuperview];
+	[self.loadingText removeFromSuperview];
+
+	NSString *networkTypeSubstring = [NSString stringWithString:@""];
+	NSString *ispNameSubstring = [NSString stringWithString:@""];
+	NSString *requiresPasswordSubstring = [NSString stringWithString:@""];
+	CGFloat heightForNetworkView_messageView;
+	CGFloat networkView_yOffset_buttonDone;
+	CGFloat heightForNetworkView;
+	
+	if (requiresPassword) {
+		requiresPasswordSubstring = @"  You may have to provide a password or accept terms of service before this connection will work properly.";
+	}
+	
+	if ([connectionType isEqualToString:@"wwan"]) {
+		networkTypeSubstring = @"You are connected to the Internet via your wireless service provider";	
+		heightForNetworkView_messageView = networkView_messageView__height__stateCarrier;
+		networkView_yOffset_buttonDone = networkView_buttonDone__yOffset__stateCarrier;
+		heightForNetworkView = networkView__height__stateCarrier;
+	} else if ([connectionType isEqualToString:@"wifi"]) {
+		if ([[[HerdictArrays sharedSingleton] detected_ispName] isEqualToString:@""]) {
+			networkTypeSubstring = @"a Wifi network";
+			heightForNetworkView_messageView = networkView_messageView__height__stateWifi__notShowingIspName;
+			networkView_yOffset_buttonDone = networkView_buttonDone__yOffset__stateWifi__notShowingIspName;
+			heightForNetworkView = networkView__height__stateWifi__notShowingIspName;
+		} else {
+			networkTypeSubstring = [NSString stringWithFormat:@"You are connected to a Wi-Fi access point"];
+			ispNameSubstring = [NSString stringWithFormat:@"; the Internet Service Provider is %@", [[HerdictArrays sharedSingleton] detected_ispName]];
+			NSLog(@"[[HerdictArrays sharedSingleton] detected_ispName]: %@", [[HerdictArrays sharedSingleton] detected_ispName]);
+			NSLog(@"[ispNameSubstring: %@", ispNameSubstring);			
+			heightForNetworkView_messageView = networkView_messageView__height__stateWifi__showingIspName;
+			networkView_yOffset_buttonDone = networkView_buttonDone__yOffset__stateWifi__showingIspName;
+			heightForNetworkView = networkView__height__stateWifi__showingIspName;
+		}
+	}
+	[self.messageView loadHTMLString:[NSString stringWithFormat:@"<body align='justify' style=\"background-color:transparent;font-family:Helvetica;font-size:14px;color:black;\"><b>%@%@%@</b></body>",
+									  networkTypeSubstring,
+									  ispNameSubstring,
+									  @".",
+									  requiresPasswordSubstring] baseURL:nil];
+	
+	[self.messageView setFrame:CGRectMake((networkView__width - networkView_messageView__width) / 2.0,
+										  networkView_messageView__yOffset,
+										  networkView_messageView__width,
+										  heightForNetworkView_messageView)];
+	[self addSubview:self.messageView];
+	
+	[self.buttonDone setFrame:CGRectMake((networkView__width - networkView_messageView__width) / 2.0,
+										 networkView_yOffset_buttonDone,
+										 networkView_messageView__width,
+										 30)];
+	
+	[self setFrame:CGRectMake(0.5 * (320.0 - networkView__width),
+							  0.5 * (480.0 - heightForNetworkView),
+							  networkView__width,
+							  heightForNetworkView)];
+}
+
+
+- (void) selectButtonDone {
+	[self.buttonDone setNotSelected];
+	[self hide];
 }
 
 - (void) hide {
@@ -133,78 +235,6 @@
 						 [self removeFromSuperview];
 					 }
 	 ];
-}
-
-- (void) connectedVia:(NSString *)connectionType requiresPassword:(BOOL)requiresPassword {
-	NSLog(@"connectedVia:%@ requiresPassword:%@", connectionType, requiresPassword ? @"YES" : @"NO");
-
-	self.networkImageView.alpha = 1;
-
-	[self.loadingIndicator removeFromSuperview];
-	[self.loadingText removeFromSuperview];
-
-	NSString *messageSubstring = @"your wireless service provider.";	
-	CGFloat heightForNetworkView_messageView = networkView_messageView__height__stateCarrier;
-	CGFloat networkView_yOffset_buttonDone = networkView_buttonDone__yOffset__stateCarrier;
-	CGFloat heightForNetworkView = networkView__height__stateCarrier;
-	requiresPassword = YES;
-	if ([connectionType isEqualToString:@"wifi"]) {
-		if (requiresPassword) {
-			messageSubstring = @"a Wi-Fi access point, but you may have to provide a password or accept terms of service before it will work properly.\n\nYou can see the network name (SSID) in your phone's Settings menu.";
-			heightForNetworkView_messageView = networkView_messageView__height__stateWifi__interventionRequired;
-			networkView_yOffset_buttonDone = networkView_buttonDone__yOffset__stateWifi__interventionRequired;
-			heightForNetworkView = networkView__height__stateWifi__interventionRequired;			
-		} else {
-			messageSubstring = @"a Wi-Fi access point.  You can see the network name (SSID) in your phone's Settings menu.";
-			heightForNetworkView_messageView = networkView_messageView__height__stateWifi__noIntervention;
-			networkView_yOffset_buttonDone = networkView_buttonDone__yOffset__stateWifi__noIntervention;
-			heightForNetworkView = networkView__height__stateWifi__noIntervention;
-		}			
-	}
-	[self.messageView loadHTMLString:[NSString stringWithFormat:@"<body align='justify' style=\"background-color:transparent;font-family:Helvetica;font-size:14px;color:black;\"><b>%@%@</b></body>",@"You are connected to the Internet via ", messageSubstring] baseURL:nil];	
-	[self.messageView setFrame:CGRectMake((networkView__width - networkView_messageView__width) / 2.0,
-										  networkView_messageView__yOffset,
-										  networkView_messageView__width,
-										  heightForNetworkView_messageView)];
-	[self addSubview:self.messageView];
-	
-	[self.buttonDone setFrame:CGRectMake((networkView__width - networkView_messageView__width) / 2.0,
-										  networkView_yOffset_buttonDone,
-										  networkView_messageView__width,
-										  30)];
-	
-	[self setFrame:CGRectMake(0.5 * (320.0 - networkView__width),
-							  0.5 * (480.0 - heightForNetworkView),
-							  networkView__width,
-							  heightForNetworkView)];
-}
-
-- (void) noConnectivity {
-
-	[self.loadingIndicator removeFromSuperview];
-	[self.loadingText removeFromSuperview];
-	
-	[self.messageView loadHTMLString:[NSString stringWithFormat:@"<body align='justify' style=\"background-color:transparent;font-family:Helvetica;font-size:15px;color:black;\"><b>%@%@</b></body>",@"Your device does not have an active Internet connection at this time."] baseURL:nil];
-	[self.messageView setFrame:CGRectMake((networkView__width - networkView_messageView__width) / 2.0,
-										  networkView_messageView__yOffset,
-										  networkView_messageView__width,
-										  networkView_messageView__height__stateNoConnectivity)];
-	[self addSubview:self.messageView];
-	
-	[self.buttonDone setFrame:CGRectMake((networkView__width - networkView_messageView__width) / 2.0,
-										 networkView_buttonDone__yOffset__stateNoConnectivity,
-										 networkView_messageView__width,
-										 30)];
-	
-	[self setFrame:CGRectMake(0.5 * (320.0 - networkView__width),
-							  0.5 * (480.0 - networkView__height__stateNoConnectivity),
-							  networkView__width,
-							  networkView__height__stateNoConnectivity)];
-}
-
-- (void) selectButtonDone {
-	[self.buttonDone setNotSelected];
-	[self hide];
 }
 
 @end

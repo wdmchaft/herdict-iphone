@@ -20,7 +20,8 @@
 	CustomUIButton *buttonDone;
 	UIActivityIndicatorView *loadingIndicator;
 	UILabel *loadingText;
-
+	Reachability *latestNotification;
+	
 }
 
 @property (nonatomic, retain) UIImageView *networkImageView;
@@ -29,12 +30,13 @@
 @property (nonatomic, retain) CustomUIButton *buttonDone;
 @property (nonatomic, retain) UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, retain) UILabel *loadingText;
+@property (nonatomic, retain) Reachability *latestNotification;
 
 - (void) show;
 - (void) hide;
 - (void) networkReachabilityEvent:(NSNotification *)notification;
 - (void) noConnectivity;
-- (void) connectedVia:(NSString *)connectionType requiresPassword:(BOOL)requiresPassword;
+- (void) configureViewForConnectionVia:(NSString *)connectionType requiresPassword:(BOOL)requiresPassword;
 - (void) selectButtonDone;
 
 @end
