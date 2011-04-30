@@ -19,6 +19,8 @@
 @synthesize loadingText;
 @synthesize latestNotification;
 
+@synthesize delegate;
+
 
 - (id)initWithFrame:(CGRect)frame {
     
@@ -45,17 +47,17 @@
 		
 		// --	Set up loadingIndicator and loadingText
 		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-		[self.loadingIndicator setFrame:CGRectMake(0.5 * (networkView__width - (siteSummary_loadingAnimation__diameter + 11 + siteSummary_loadingText__width)),
+		[self.loadingIndicator setFrame:CGRectMake(0.5 * (networkView__width - (siteSummaryTab_loadingAnimation__diameter + 11 + siteSummaryTab_loadingText__width)),
 												   networkView_loadingIndicator__yOffset__stateLoading,
-												   siteSummary_loadingAnimation__diameter,
-												   siteSummary_loadingAnimation__diameter)];
+												   siteSummaryTab_loadingAnimation__diameter,
+												   siteSummaryTab_loadingAnimation__diameter)];
 		self.loadingIndicator.backgroundColor = [UIColor clearColor];
 		[self.loadingIndicator startAnimating];
 		[self addSubview:self.loadingIndicator];
-		self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(12 + self.loadingIndicator.frame.origin.x + siteSummary_loadingAnimation__diameter,
+		self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(12 + self.loadingIndicator.frame.origin.x + siteSummaryTab_loadingAnimation__diameter,
 																	 1 + networkView_loadingIndicator__yOffset__stateLoading,
-																	 siteSummary_loadingText__width,
-																	 siteSummary_loadingText__height + 5)];
+																	 siteSummaryTab_loadingText__width,
+																	 siteSummaryTab_loadingText__height + 5)];
 		self.loadingText.text = @"Checking Connection...";
 		self.loadingText.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
 		self.loadingText.backgroundColor = [UIColor clearColor];
@@ -112,6 +114,8 @@
 
 - (void) show {
 	
+	[[self.delegate vcHerdometer] pauseAnnotatingReport];
+	
 	BOOL requiresPassword = NO;
 	
 	if (![self.latestNotification isReachable]) {
@@ -133,7 +137,7 @@
 						 self.alpha = 1;
 					 } completion:^(BOOL finished){
 					 }
-	 ];	
+	 ];
 }
 		
 - (void) noConnectivity {
@@ -228,6 +232,9 @@
 }
 
 - (void) hide {
+	
+	[[self.delegate vcHerdometer] resumeAnnotatingReport];
+	
 	[UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
 						 self.alpha = 0;

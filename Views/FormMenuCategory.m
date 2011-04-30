@@ -107,14 +107,14 @@
     [super dealloc];
 }
 
-- (void) setUpMenuOptionsArray:(NSMutableArray *)theOptionsArray {
+- (void) setUpMenuOptionsArray:(NSMutableArray *)theOptionsArray optionHeight:(CGFloat)theOptionHeight optionFontSize:(CGFloat)theOptionFontSize {
 //	NSLog(@"[formMenuCategory setUpMenuOptionsArray], self.frame.size.height: %f", self.frame.size.height);
 
 	int theCount = 0;
 	if ([theOptionsArray count] - 1 > 0) {
 		theCount = [theOptionsArray count] - 1;
 	}
-	self.selfHeight = self.tailHeight + (bubbleMenu_body__yPadding * 4) + self.messageHeight + self.yPaddingForMessage + (menuCategoryOption__height * theCount);	
+	self.selfHeight = self.tailHeight + (bubbleMenu_body__yPadding * 4) + self.messageHeight + self.yPaddingForMessage + (theOptionHeight * theCount);	
 	
 	[self setFrame:CGRectMake(self.selfOriginX,
 							  self.selfOriginY,
@@ -132,9 +132,9 @@
 	for (NSString *optionText in theOptionsArray) {
 		if ([theOptionsArray indexOfObject:optionText] > 0) {
 			UITextView *menuOption = [[[UITextView alloc] initWithFrame:CGRectMake(self.xPaddingLeft,
-																				  self.tailHeight + self.messageHeight + self.yPaddingForMessage + (menuCategoryOption__height * (-1 + [theOptionsArray indexOfObject:optionText])),
+																				  self.tailHeight + self.messageHeight + self.yPaddingForMessage + (theOptionHeight * (-1 + [theOptionsArray indexOfObject:optionText])),
 																				  self.selfWidth - self.xPaddingRight,
-																				  menuCategoryOption__height)] autorelease];
+																				  theOptionHeight)] autorelease];
 			menuOption.contentMode = UIViewContentModeCenter;
 			menuOption.text = [NSString stringWithString:optionText];
 			menuOption.tag = [theOptionsArray indexOfObject:optionText];
@@ -143,7 +143,7 @@
 			menuOption.backgroundColor = [UIColor clearColor];
 			menuOption.editable = NO;
 			menuOption.userInteractionEnabled = NO;
-			menuOption.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
+			menuOption.font = [UIFont fontWithName:@"Helvetica-Bold" size:theOptionFontSize];
 			[self addSubview:menuOption];
 		}
 	}
@@ -159,7 +159,7 @@
 	self.layer.shadowOpacity = 0.8f;
 	self.layer.shouldRasterize = YES;
 	
-	self.layer.shadowPath = [self getPath];
+	self.layer.shadowPath = [self newPath];
 }
 
 - (void) showSelectionBackgroundForOption:(int)optionNumber {
@@ -177,7 +177,7 @@
 }
 
 
-- (CGPathRef) getPath {
+- (CGPathRef) newPath {
 
 	//	// trig vars
 	//	CGFloat l				= 5.0;
@@ -226,7 +226,7 @@
 	CGContextSetRGBStrokeColor(context, 0, 0, 0, 0.4); 
 	CGContextSetRGBFillColor(context, 0, 0, 0, 0.7);
 	
-	CGPathRef thePath = [self getPath];
+	CGPathRef thePath = [self newPath];
 	CGContextAddPath(context, thePath);
 	
 	CGContextDrawPath(context, kCGPathFillStroke);

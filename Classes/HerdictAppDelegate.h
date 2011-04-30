@@ -13,11 +13,13 @@
 @interface HerdictAppDelegate : NSObject <UIApplicationDelegate> {
 
     UIWindow *window;
+	UIView *viewSplash;
 	VC_Base *vcBase;
 	
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) UIView *viewSplash;
 @property (nonatomic, retain) VC_Base *vcBase;
 
 @end

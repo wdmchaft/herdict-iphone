@@ -30,7 +30,7 @@
 	self.layer.shadowRadius = 1.0f;
 	self.layer.shadowOpacity = 0.8f;
 	self.layer.shouldRasterize = YES;
-	self.layer.shadowPath = [self getPath];	
+	self.layer.shadowPath = [self newPath];	
 	
     return self;
 }
@@ -46,14 +46,14 @@
 //	CGContextSetRGBFillColor(context, 0.2f, 0.2f, 0.2f, 1.0f);
 	CGContextSetRGBFillColor(context, 0.1f, 0.1f, 0.1f, 1.1f);
 	
-	CGContextAddPath(context, [self getPath]);
+	CGContextAddPath(context, [self newPath]);
 	
 	CGContextDrawPath(context, kCGPathFillStroke);
 	
 //	CGContextClip(context);
 }
 
-- (CGPathRef) getPath {
+- (CGPathRef) newPath {
 
 	CGFloat selfWidth = self.frame.size.width;
 	CGFloat selfHeight = self.frame.size.height;

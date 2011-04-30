@@ -33,33 +33,33 @@
 
 		self.selectionStyle = UITableViewCellSelectionStyleNone;
 		
-		self.theIconView = [[UIImageView alloc] initWithFrame:CGRectMake((0.5 * (formStateCell__height - formStateCell_iconView__diameter__full)),
-																		 (0.5 * (formStateCell__height - formStateCell_iconView__diameter__full)),
-																		 formStateCell_iconView__diameter__full,
-																		 formStateCell_iconView__diameter__full)];
+		self.theIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0,
+																		 0,
+																		 0,
+																		 0)];
 		[self addSubview:self.theIconView];
 		
 		self.textPlate = [[UIView alloc] initWithFrame:CGRectMake(0,
-																  (0.5 * (formStateCell__height - formStateCell_iconView__diameter__full)),
+																  0,
 																  320,
-																  formStateCell_iconView__diameter__full)];
+																  0)];
 		self.textPlate.backgroundColor = [UIColor clearColor];
 		[self addSubview:self.textPlate];
 		
-		self.cellLabel = [[UILabel alloc] initWithFrame:CGRectMake(formStateCell__height,
+		self.cellLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
 																   -3,
-																   320 - formStateCell__height,
-																   30)];
+																   0,
+																   0)];
 		self.cellLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:24];
 		self.cellLabel.textColor = [UIColor blackColor];
 		self.cellLabel.alpha = 1;
 		self.cellLabel.backgroundColor = [UIColor clearColor];
 		[self.textPlate addSubview:self.cellLabel];
 		
-		self.cellDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(formStateCell__height,
-																		 25,
-																		 320 - formStateCell__height - 30,
-																		 25)];
+		self.cellDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
+																		 0,
+																		 0,
+																		 0)];
 		self.cellDetailLabel.font = [UIFont fontWithName:@"Helvetica" size:17];
 		self.cellDetailLabel.textColor = [UIColor grayColor];
 		self.cellDetailLabel.alpha = 1;
@@ -193,7 +193,7 @@
 	CGContextDrawLinearGradient(context, myGradient, topCenter, bottomCenter, 0);
 	
     CGGradientRelease(myGradient);
-    CGColorSpaceRelease(space);
+//    CGColorSpaceRelease(space);
 	
 	CGContextDrawPath(context, kCGPathStroke);
 }

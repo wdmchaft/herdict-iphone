@@ -15,8 +15,9 @@
 @synthesize indexOfCurrentReportToBeAnnotated;
 @synthesize theAnnotation;
 @synthesize timerInititiateAnnotateReport;
-
 @synthesize haveFetchedReportFeed;
+
+@synthesize delegate;
 
 
 #pragma mark UIViewController lifecycle
@@ -31,9 +32,9 @@
 		
 		// --	Set up reportMapView.
 		self.reportMapView = [[MKMapView alloc] initWithFrame:CGRectMake(0,
-																		 urlBar__yOrigin + urlBar__height,
+																		 controllerVc__yOrigin,
 																		 320,
-																		 480 - (urlBar__yOrigin + urlBar__height) - 49)];
+																		 controllerVc__height)];
 		self.reportMapView.delegate = self;
 		self.reportMapView.userInteractionEnabled = YES;
 		self.reportMapView.scrollEnabled = NO;
@@ -62,7 +63,8 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
 
-	[self.timerInititiateAnnotateReport invalidate];
+	NSLog(@"about to call [self.timerInititiateAnnotateReport invalidate]");
+	[self.timerInititiateAnnotateReport invalidate];	
 }
 
 - (void) dealloc {
@@ -76,8 +78,9 @@
 #pragma mark Herdometer
 
 - (void) fetchTickerFeed {
-
 	if (self.haveFetchedReportFeed) {
+		[self.timerInititiateAnnotateReport invalidate];
+		self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
 		return;
 	}
 	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
@@ -138,11 +141,25 @@
 	self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
 }
 
-- (void) initiateAnnotateReport {
+- (void) pauseAnnotatingReport {
+
+	[self.timerInititiateAnnotateReport invalidate];
+	[self.reportMapView removeAnnotation:self.theAnnotation];
+}
+
+- (void) resumeAnnotatingReport {
 	
-	UIView *aboutView = [self.tabBarController.delegate aboutView];
-	UIView *networkView = [self.tabBarController.delegate networkView];
-	BOOL shouldContinue = ([self.reportsFromFeed count] > 0 && aboutView.alpha == 0.0 && networkView.alpha == 0.0);
+	[self.timerInititiateAnnotateReport invalidate];
+	self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
+}
+
+- (void) initiateAnnotateReport {
+	//NSLog(@"initiateAnnotateReport");
+		
+	BOOL shouldContinue = YES;
+	if ([self.reportsFromFeed count] <= 0) {
+		shouldContinue = NO;
+	}
 	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
 		shouldContinue = NO;
 	}
@@ -150,10 +167,10 @@
 		//NSLog(@"[self initiateAnnotateReport] found: !shouldContinue");
 		[self.reportMapView deselectAnnotation:self.theAnnotation animated:YES];
 		[self.timerInititiateAnnotateReport invalidate];
-		self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:4 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
+		self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
 		return;
 	}
-		
+
 	NSString *countryOfCurrentReportToBeAnnotated = [[[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] objectForKey:@"description"] objectForKey:@"Reporter Country"];
 	
 	if ([[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] objectForKey:@"geodata"] == nil) {
@@ -164,6 +181,8 @@
 }
 
 - (void) annotateReport {
+	//NSLog(@"annotateReport");
+	
 	// --	Get the report info ready.
 	NSMutableDictionary *geometryDict = [[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] objectForKey:@"geodata"];
 	NSMutableDictionary *reportDict = [self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated];
@@ -192,7 +211,7 @@
 	
 	// --	Mark this report as 'shown'.
 	[[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] setObject:@"true" forKey:@"shown"];
-	
+
 	// --	Get ready to annotate the next report...
 	self.indexOfCurrentReportToBeAnnotated = [self indexOfReportToBeAnnotatedNext];
 	[self.timerInititiateAnnotateReport invalidate];
@@ -271,6 +290,7 @@
 
 
 - (void) getRoughGeocodeForCountryCallbackHandler:(ASIHTTPRequest *)request {
+	NSLog(@"getRoughGeocodeForCountryCallbackHandler");	
 	
 	NSDictionary *responseDictionary = [[WebservicesController sharedSingleton] getDictionaryFromJSONData:[request responseData]];
 	
@@ -293,7 +313,7 @@
 }
 
 - (void) markAllReportsNotShown {
-	NSLog(@"entered markAllReportsNotShown"); 
+	//NSLog(@"entered markAllReportsNotShown"); 
 	
 	for (NSMutableDictionary *report in self.reportsFromFeed) {
 		[report setObject:@"false" forKey:@"shown"];
@@ -353,10 +373,8 @@
 - (MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation {
 	MKAnnotationView *reportAnnotationView = [[[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"reportAnnotation"] autorelease];
 	ReportAnnotation *thisAnnotation = annotation;
-	UIImage *sheepPin;
-	if (thisAnnotation.sheepColor == 0) {
-		sheepPin = [UIImage imageNamed:@"icon_herdometer_sheep_green_smaller"];
-	} else if (thisAnnotation.sheepColor == 2) {
+	UIImage *sheepPin = [UIImage imageNamed:@"icon_herdometer_sheep_green_smaller"];
+	if (thisAnnotation.sheepColor == 2) {
 		sheepPin = [UIImage imageNamed:@"icon_herdometer_sheep_orange_smaller"];
 	}
 	reportAnnotationView.image = sheepPin;
@@ -370,7 +388,6 @@
 	Reachability *r = [notification object];
 	if ([r isReachable]) {
 		[self fetchTickerFeed];
-		[self initiateAnnotateReport];
 	}
 }
 

@@ -52,9 +52,8 @@
 @property (nonatomic) CGFloat selfHeight;
 
 
-- (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint;
-
-- (CGPathRef) getPath;
+- (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint optionHeight:(CGFloat)theOptionHeight optionFontSize:(CGFloat)theFontSize;
+- (CGPathRef) newPath;
 
 - (void)showBubbleMenu;
 - (void)hideBubbleMenu;

@@ -112,7 +112,7 @@
 	CGContextDrawLinearGradient(context, myGradient, topCenter, bottomCenter, 0);
 	
     CGGradientRelease(myGradient);
-    CGColorSpaceRelease(space);
+//    CGColorSpaceRelease(space);
 	
 	CGContextDrawPath(context, kCGPathStroke);
 }

@@ -17,19 +17,17 @@
 
 #import "VC_Herdometer.h"
 #import "VC_CheckSite.h"
-#import "VC_ReportSite.h"
-#import "TabTracker.h"
+#import "ReportSite.h"
 
 #import "CustomNavBar.h"
 #import "CustomUIButton.h"
 #import "URLBar.h"
-#import "BubbleMenu.h"
 #import "Screen.h"
 
 #import "About.h"
 #import "Network.h"
 
-@interface VC_Base : UIViewController <UITabBarControllerDelegate, UINavigationBarDelegate, UIAlertViewDelegate, UISearchBarDelegate> {
+@interface VC_Base : UIViewController <UINavigationBarDelegate, UIAlertViewDelegate, UISearchBarDelegate, VC_HerdometerDelegate, VC_CheckSiteDelegate, ModalTabDelegate> {
 	
 	// --	Nav Bar
 	UIView *blackBackgroundForNavBar;
@@ -37,25 +35,19 @@
 	UINavigationItem *navItem;
 	CustomUIButton *buttonCancelTyping;
 	CustomUIButton *buttonAbout;
+	CustomUIButton *buttonHerdometer;
 	CustomUIButton *buttonNetwork;
 	
 	// --	URL Bar
-	URLBar *theUrlBar;	
-	BubbleMenu *theUrlBarMenu;
+	URLBar *theUrlBar;
 	NSString *currentUrlFixedUp;
-	BOOL selectionMadeViaBubbleMenu;
+	
+	UINavigationController *theController;
+	VC_Herdometer *vcHerdometer;
+	VC_CheckSite *vcCheckSite;
 	
 	Screen *theScreen;
 
-	TabTracker *theTabTracker;
-
-	// --	tab bar controller
-	UITabBarController *theController;
-	VC_Herdometer *vcHerdometer;
-	VC_CheckSite *vcCheckSite;
-	VC_ReportSite *vcReportSite;
-	int currentTab;
-	
 	// --	About, Network
 	About *aboutView;
 	Network *networkView;
@@ -63,27 +55,22 @@
 	BOOL haveDoneCallouts;
 }
 
+
 @property (nonatomic, retain) UIView *blackBackgroundForNavBar;
 @property (nonatomic, retain) CustomNavBar *navBar;
 @property (nonatomic, retain) UINavigationItem *navItem;
 @property (nonatomic, retain) CustomUIButton *buttonCancelTyping;
 @property (nonatomic, retain) CustomUIButton *buttonAbout;
+@property (nonatomic, retain) CustomUIButton *buttonHerdometer;
 @property (nonatomic, retain) CustomUIButton *buttonNetwork;
-
 @property (nonatomic, retain) URLBar *theUrlBar;
-@property (nonatomic, retain) BubbleMenu *theUrlBarMenu;
 @property (nonatomic, retain) NSString *currentUrlFixedUp;
-@property (nonatomic) BOOL selectionMadeViaBubbleMenu;
 
-@property (nonatomic, retain) Screen *theScreen;
-
-@property (nonatomic, retain) TabTracker *theTabTracker;
-
-@property (nonatomic, retain) IBOutlet UITabBarController *theController;
+@property (nonatomic, retain) UINavigationController *theController;
 @property (nonatomic, retain) VC_Herdometer *vcHerdometer;
 @property (nonatomic, retain) VC_CheckSite *vcCheckSite;
-@property (nonatomic, retain) VC_ReportSite *vcReportSite;
-@property (nonatomic) int currentTab;
+
+@property (nonatomic, retain) Screen *theScreen;
 
 @property (nonatomic, retain) About *aboutView;
 @property (nonatomic, retain) Network *networkView;
@@ -91,13 +78,18 @@
 @property (nonatomic) BOOL haveDoneCallouts;
 
 
+- (BOOL) isAnyModalTabPositionedInView;
+- (ModalTab*) modalTabInFront;
+- (void) positionAllModalTabsOutOfViewExcept:(ModalTab *)thisModalTab;
+- (void) positionAllModalTabsInViewBehind:(ModalTab*)thisModalTab;
+- (void) positionAllModalTabsInViewWithYOrigin:(CGFloat)yOriginNew;
+
 - (void) selectButtonAbout;
 - (void) selectButtonNetwork;
 - (void) selectButtonCancelSearch;
-- (void) selectBubbleMenuOption:(UITextView *)selectedSubview;
 - (BOOL) urlTyped;
 - (NSString *) fixUpTypedUrl;
-- (void) initiateGetCurrentLocation;
 - (void) launchCallouts;
+- (BOOL) isModalPopupShowing;
 
 @end

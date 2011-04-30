@@ -15,6 +15,13 @@
 #import "TouchXML.h"
 #import "Reachability.h"
 
+@class VC_Herdometer;
+@protocol VC_HerdometerDelegate
+@optional
+- (BOOL) isModalPopupShowing;
+@end
+
+
 @interface VC_Herdometer : UIViewController <MKMapViewDelegate> {
 
 	// -- Herdometer
@@ -24,6 +31,8 @@
 	ReportAnnotation *theAnnotation;
 	NSTimer *timerInititiateAnnotateReport;
 	BOOL haveFetchedReportFeed;
+	
+	id <VC_HerdometerDelegate> delegate;
 }
 
 @property (nonatomic, retain) MKMapView *reportMapView;
@@ -33,11 +42,15 @@
 @property (nonatomic, retain) NSTimer *timerInititiateAnnotateReport;
 @property (nonatomic) BOOL haveFetchedReportFeed;
 
+@property (nonatomic, retain) id <VC_HerdometerDelegate> delegate;
+
 
 + (CGFloat)	annotationPadding;
 + (CGFloat)	calloutHeight;
 - (void) fetchTickerFeed;
 - (void) initiateAnnotateReport;
+- (void) pauseAnnotatingReport;
+- (void) resumeAnnotatingReport;
 - (void) getRoughGeocodeForCountryCallbackHandler:(ASIHTTPRequest *)request;
 - (void) annotateReport;
 - (void) markAllReportsNotShown;

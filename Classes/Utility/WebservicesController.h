@@ -14,10 +14,12 @@
 
 @interface WebservicesController : NSObject {
 
+	NSString *tld;
 	NSString *apiVersion;
 	Reachability *herdictReachability;	
 }
 
+@property (nonatomic, retain) NSString *tld;
 @property (nonatomic, retain) NSString *apiVersion;
 @property (nonatomic, retain) Reachability *herdictReachability;
 

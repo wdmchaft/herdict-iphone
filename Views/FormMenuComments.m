@@ -106,11 +106,11 @@
 	self.layer.shadowOpacity = 0.8f;
 	self.layer.shouldRasterize = YES;
 	
-	self.layer.shadowPath = [self getPath];
+	self.layer.shadowPath = [self newPath];
 }
 
 
-- (CGPathRef) getPath {
+- (CGPathRef) newPath {
 	
 	//	// trig vars
 	//	CGFloat l				= 5.0;
@@ -159,7 +159,7 @@
 	CGContextSetRGBStrokeColor(context, 1, 1, 1, 0.4); 
 	CGContextSetRGBFillColor(context, 0, 0, 0, 0.4);
 	
-	CGPathRef thePath = [self getPath];
+	CGPathRef thePath = [self newPath];
 	CGContextAddPath(context, thePath);
 	
 	CGContextDrawPath(context, kCGPathFillStroke);

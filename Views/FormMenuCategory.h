@@ -60,9 +60,9 @@
 @property (nonatomic) CGFloat cornerRad;
 
 - (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame tailHeight:(CGFloat)theTailHeight;
-- (void)setUpMenuOptionsArray:(NSMutableArray *)theOptionsArray;
+- (void) setUpMenuOptionsArray:(NSMutableArray *)theOptionsArray optionHeight:(CGFloat)theOptionHeight optionFontSize:(CGFloat)theOptionFontSize;
 
-- (CGPathRef) getPath;
+- (CGPathRef) newPath;
 - (void) addShadow;
 
 - (void)showSelectionBackgroundForOption:(int)optionNumber;

@@ -10,32 +10,47 @@
 #import "WebservicesController.h"
 #import "HerdictArrays.h"
 #import "SiteSummary.h"
+#import "ReportSite.h"
+#import "LoadingBar.h"
+#import "ErrorView.h"
+
+@class VC_CheckSite;
+@protocol VC_CheckSiteDelegate
+@optional
+@end
 
 
-@interface VC_CheckSite : UIViewController {
+@interface VC_CheckSite : UIViewController <UIWebViewDelegate> {
 
-	UIView *loadingView;
+	// --	theWebView
 	UIWebView *theWebView;
-	SiteSummary *theSiteSummary;
 	NSString *lastTestedUrl;
+	LoadingBar *theLoadingBar;
+	ErrorView *theErrorView;
+
+	// --	ModalTabs
+	SiteSummary *theTabSiteSummary;
+	ReportSite *theTabReportSite;
 	
-	UIActivityIndicatorView *loadingIndicator;
-	UILabel *loadingText;	
+	id <VC_CheckSiteDelegate> delegate;
+
 }
 
-@property (nonatomic, retain) UIView *loadingView;
+// --	theWebView
 @property (nonatomic, retain) UIWebView *theWebView;
-@property (nonatomic, retain) SiteSummary *theSiteSummary;
 @property (nonatomic, retain) NSString *lastTestedUrl;
+@property (nonatomic, retain) LoadingBar *theLoadingBar;
+@property (nonatomic, retain) ErrorView *theErrorView;
 
-@property (nonatomic, retain) UIActivityIndicatorView *loadingIndicator;
-@property (nonatomic, retain) UILabel *loadingText;
+// --	ModalTabs
+@property (nonatomic, retain) SiteSummary *theTabSiteSummary;
+@property (nonatomic, retain) ReportSite *theTabReportSite;
 
-- (void) setUpSiteLoadingMessage;
+@property (nonatomic, retain) id <VC_CheckSiteDelegate> delegate;
+
+- (void) setUploadingBarMessage;
 - (void) resetCheckSite;
-
 - (void) loadUrl:(NSString *)urlString;
-
 - (void) getSiteSummaryCallbackHandler:(ASIHTTPRequest*)request;
 
 @end

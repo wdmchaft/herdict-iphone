@@ -12,6 +12,12 @@
 #import "HerdictArrays.h"
 #import "CustomUIButton.h"
 
+@class Network;
+@protocol NetworkViewDelegate
+@optional
+@end
+
+
 @interface Network : UIView {
 
 	UIImageView *networkImageView;
@@ -22,6 +28,8 @@
 	UILabel *loadingText;
 	Reachability *latestNotification;
 	
+	id <NetworkViewDelegate> delegate;
+	
 }
 
 @property (nonatomic, retain) UIImageView *networkImageView;
@@ -31,6 +39,7 @@
 @property (nonatomic, retain) UIActivityIndicatorView *loadingIndicator;
 @property (nonatomic, retain) UILabel *loadingText;
 @property (nonatomic, retain) Reachability *latestNotification;
+@property (nonatomic, retain) id <NetworkViewDelegate> delegate;
 
 - (void) show;
 - (void) hide;

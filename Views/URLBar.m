@@ -11,11 +11,13 @@
 
 @implementation URLBar
 
+@synthesize buttonSearch;
 
 - (id)initWithFrame:(CGRect)frame {
     
     self = [super initWithFrame:frame];
     if (self) {
+		
 		self.placeholder = @"Enter URL to Get or Submit a Report";
 		self.autocorrectionType = UITextAutocorrectionTypeNo;
 		self.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -24,9 +26,21 @@
 		UITextField *searchBarTextField = [[self subviews] objectAtIndex:1];
 		searchBarTextField.returnKeyType = UIReturnKeyGo;
 		searchBarTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+//		[searchBarTextField setFrame:CGRectMake(searchBarTextField.frame.origin.x,
+//												searchBarTextField.frame.origin.y,
+//												searchBarTextField.frame.size.width - 60,
+//												searchBarTextField.frame.size.height)];
+//		
+//		self.buttonSearch = [CustomUIButton buttonWithType:UIButtonTypeCustom];
+//		[self.buttonSearch addTarget:self.buttonSearch action:@selector(setSelected) forControlEvents:UIControlEventTouchDown];
+//		[self.buttonSearch addTarget:self.delegate action:@selector(selectButtonAccessibleYes) forControlEvents:UIControlEventTouchUpInside];
+//		[self.buttonSearch addTarget:self.buttonSearch action:@selector(setNotSelected) forControlEvents:UIControlEventTouchUpOutside];
+//		[self.buttonSearch setFrame:CGRectMake(275, 0, 50, 30)];
+//		[self.buttonSearch setTitle:@"Yes" forState:UIControlStateNormal];
+//		[self addSubview:self.buttonSearch];
 		
 		UIImage *urlIcon = [UIImage imageNamed:@"globe.png"];	
-		UIImageView *urlIconView = [[UIImageView alloc] initWithImage:urlIcon];
+		UIImageView *urlIconView = [[[UIImageView alloc] initWithImage:urlIcon] autorelease];
 		[searchBarTextField.leftView addSubview:urlIconView];
 		
 		self.layer.masksToBounds = NO;
@@ -73,7 +87,7 @@
 	CGContextDrawLinearGradient(context, myGradient, topCenter, bottomCenter, 0);
 	
     CGGradientRelease(myGradient);
-    CGColorSpaceRelease(space);
+//    CGColorSpaceRelease(space);
 
 	CGContextDrawPath(context, kCGPathStroke);
 }

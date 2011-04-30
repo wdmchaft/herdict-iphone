@@ -12,20 +12,26 @@
 @implementation CustomUIButton
 
 @synthesize selectionScreen;
-
-//@synthesize theTitle;
-
+@synthesize componentRed;
+@synthesize componentGreen;
+@synthesize componentBlue;
+@synthesize componentAlpha;
 
 - (id) initWithFrame:(CGRect)frame {
     
     self = [super initWithFrame:frame];
     if (self) {
 		
+		self.componentRed = themeColorRed;
+		self.componentGreen = themeColorGreen;
+		self.componentBlue = themeColorBlue;
+		self.componentAlpha = 1.0f;
+		
 		self.layer.cornerRadius = 5;
 		self.layer.masksToBounds = YES;
 		
 		[self.titleLabel setFont:[UIFont boldSystemFontOfSize:12]];
-		[self setTitleShadowOffset:CGSizeMake(0, 1)];
+		self.titleLabel.shadowOffset = CGSizeMake(0, 1);
 
 		[self setTitleColor:UIColorFromRGB(0x404040) forState:UIControlStateNormal];
 		[self setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -47,6 +53,13 @@
 - (void)dealloc {
 	[selectionScreen release];
     [super dealloc];
+}
+
+- (void) setColorComponentsWithRed:(CGFloat)theRed withGreen:(CGFloat)theGreen withBlue:(CGFloat)theBlue withAlpha:(CGFloat)theAlpha {
+	self.componentRed = theRed;
+	self.componentGreen = theGreen;
+	self.componentBlue = theBlue;
+	self.componentAlpha = theAlpha;
 }
 
 - (void) setFrame:(CGRect)frame {
@@ -71,7 +84,6 @@
 	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
-	CGFloat stroke = 3;
 	CGFloat cornerRad = self.layer.cornerRadius;
 	CGFloat selfWidth = self.frame.size.width;
 	CGFloat selfHeight = self.frame.size.height;
@@ -145,9 +157,9 @@
 	CGFloat locations[4];
 	CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
 	NSMutableArray *colors = [NSMutableArray arrayWithCapacity:3];
-	UIColor *color0 = [UIColor colorWithRed:(themeColorRed - 0.442) green:(themeColorGreen - 0.442) blue:(themeColorBlue - 0.442)  alpha:1.0];
-	UIColor *color1 = [UIColor colorWithRed:themeColorRed green:themeColorGreen blue:themeColorBlue alpha:1];
-	UIColor *color2 = [UIColor colorWithRed:(themeColorRed - 0.202) green:(themeColorGreen - 0.202) blue:(themeColorBlue - 0.202)  alpha:1.0];
+	UIColor *color0 = [UIColor colorWithRed:(self.componentRed - 0.442) green:(self.componentGreen - 0.442) blue:(self.componentBlue - 0.442)  alpha:self.componentAlpha];
+	UIColor *color1 = [UIColor colorWithRed:self.componentRed green:self.componentGreen blue:self.componentBlue alpha:self.componentAlpha];
+	UIColor *color2 = [UIColor colorWithRed:(self.componentRed - 0.202) green:(self.componentGreen - 0.202) blue:(self.componentBlue - 0.202)  alpha:self.componentAlpha];
 	
 	locations[0] = 0.0;
 	[colors addObject:(id)[color0 CGColor]];
@@ -167,7 +179,7 @@
 	CGContextDrawLinearGradient(context, myGradient, topCenter, bottomCenter, 0);
 	
     CGGradientRelease(myGradient);
-    CGColorSpaceRelease(space);
+//    CGColorSpaceRelease(space);
 	
 	CGContextDrawPath(context, kCGPathStroke);
 	

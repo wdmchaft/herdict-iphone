@@ -14,6 +14,7 @@
 
 @implementation WebservicesController
 
+@synthesize tld;
 @synthesize apiVersion;
 @synthesize herdictReachability;
 
@@ -21,6 +22,7 @@
 
 	self = [super init];
 	if (self) {
+		self.tld = @"dev";
 		self.apiVersion = @"FF1.0";
 		// --	Get the notifications started (for everyone).
 		self.herdictReachability = [[Reachability reachabilityWithHostName:@"www.herdict.org"] retain];
@@ -76,6 +78,7 @@
 	
 	NSString *urlString = [NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?address=%@&sensor=false",encodedCountryString];
 	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getRoughGeocodeForCountryCallbackHandler:)];
+	[encodedCountryString release];
 }
 
 
@@ -83,23 +86,23 @@
 #pragma mark callouts to Herdict services
 - (void)getCountries:(id)theCallbackDelegate {
 	// TO2
-	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/init-countries/%@", self.apiVersion];
+	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/init-countries/%@", self.tld, self.apiVersion];
 	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getCountriesCallbackHandler:)];	
 }
 - (void)getCategories:(id)theCallbackDelegate {
 	// T01
-	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/init-categories/%@", self.apiVersion];
+	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/init-categories/%@", self.tld, self.apiVersion];
 	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getCategoriesCallbackHandler:)];	
 }
-
 - (void)getCurrentLocation:(id)theCallbackDelegate {
 	// T06
-	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/init-currentLocation/%@", self.apiVersion];
+	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/init-currentLocation/%@", self.tld, self.apiVersion];
 	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getCurrentLocationCallbackHandler:)];
 }
 - (void)getSiteSummary:(NSString *)theUrl forCountry:(NSString *)theCountry urlEncoding:(NSString *)theEncoding callbackDelegate:(id)theDelegate {
 
-	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/site/%@/%@/%@/%@",
+	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/site/%@/%@/%@/%@",
+						   self.tld,
 						   theUrl,
 						   theCountry,
 						   theEncoding,
@@ -109,7 +112,8 @@
 
 - (void)reportUrl:(NSString *)theEncodedUrl reportType:(NSString *)theReportType country:(NSString *)theCountry userISP:(NSString *)theIsp userLocation:(NSString *)theLocation interest:(NSString *)theInterest reason:(NSString *)theReason sourceId:(NSString *)theSourceId tag:(NSString *)theTag comments:(NSString *)theComments defaultCountryCode:(NSString *)theDCC defaultispDefaultName:(NSString *)theDIN callbackDelegate:(id)theDelegate {
 	
-	NSString *urlString = [NSString stringWithFormat:@"http://www.herdict.org/web/action/ajax/plugin/report?%@&report.url=%@&report.country.shortName=%@&report.ispDefaultName=%@&report.location=%@&report.interest=%@&report.reason=%@&report.sourceId=%@&report.tag=%@&report.comments=%@&defaultCountryCode=%@&defaultispDefaultName=%@&encoding=%@",
+	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/report?%@&report.url=%@&report.country.shortName=%@&report.ispDefaultName=%@&report.location=%@&report.interest=%@&report.reason=%@&report.sourceId=%@&report.tag=%@&report.comments=%@&defaultCountryCode=%@&defaultispDefaultName=%@&encoding=%@",
+						   self.tld,
 						   theReportType,
 						   theEncodedUrl,
 						   theCountry,
@@ -163,8 +167,12 @@
 	}
 }
 
-
 - (void) asynchGETRequest:(NSString*)stringForURL callbackDelegate:(id)theDelegate callbackSelector:(SEL)theSelector {
+	
+	if (![self.herdictReachability isReachable]) {
+		return;
+	}
+	
 	NSLog(@"GET request to URL: %@", stringForURL);
 	NSURL *url = [NSURL URLWithString:stringForURL];
 	ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
@@ -173,6 +181,5 @@
 	[request setDidFailSelector:theSelector];
 	[request startAsynchronous];
 }
-
 
 @end

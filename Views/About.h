@@ -11,6 +11,10 @@
 #import "Constants.h"
 #import "CustomUIButton.h"
 
+@class About;
+@protocol AboutViewDelegate
+@optional
+@end
 
 @interface About : UIView <UIWebViewDelegate> {
 
@@ -18,12 +22,16 @@
 	UIWebView *message;
 	CustomUIButton *buttonLearnMore;	
 	CustomUIButton *buttonDone;
+	
+	id <AboutViewDelegate> delegate;
 }
 
 @property (nonatomic, retain) UIImageView *berkmanLogoImageView;
 @property (nonatomic, retain) UIWebView *message;
 @property (nonatomic, retain) CustomUIButton *buttonLearnMore;
 @property (nonatomic, retain) CustomUIButton *buttonDone;
+
+@property (nonatomic, retain) id <AboutViewDelegate> delegate;
 
 - (void) show;
 - (void) hide;

@@ -35,7 +35,7 @@
 @synthesize animationRotateTuckedAway;
 
 
-- (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint {
+- (id)initWithMessageHeight:(CGFloat)theMessageHeight withFrame:(CGRect)theFrame menuOptionsArray:(NSMutableArray *)theOptionsArray tailHeight:(CGFloat)theTailHeight anchorPoint:(CGPoint)theAnchorPoint optionHeight:(CGFloat)theOptionHeight optionFontSize:(CGFloat)theOptionFontSize {
 	//NSLog(@"%@ init", self);
 	
     self = [super initWithFrame:theFrame];
@@ -49,7 +49,7 @@
 		[self setFrame:CGRectMake(self.frame.origin.x,
 								  self.frame.origin.y,
 								  self.frame.size.width,
-								  theTailHeight + (bubbleMenu_body__yPadding * 4) + theMessageHeight + yPaddingForMessage + ([theOptionsArray count] * bubbleMenuOption__height))];
+								  theTailHeight + (bubbleMenu_body__yPadding * 4) + theMessageHeight + yPaddingForMessage + ([theOptionsArray count] * theOptionHeight))];
 		
 		self.alpha = 0;
 		self.backgroundColor = [UIColor clearColor];
@@ -113,7 +113,7 @@
 			menuOption.backgroundColor = [UIColor clearColor];
 			menuOption.editable = NO;
 			menuOption.userInteractionEnabled = NO;
-			menuOption.font = [UIFont fontWithName:@"Helvetica-Bold" size:17];
+			menuOption.font = [UIFont fontWithName:@"Helvetica-Bold" size:theOptionFontSize];
 			[self addSubview:menuOption];
 		}
 		
@@ -137,25 +137,24 @@
 	self.layer.shadowRadius = 5;
 	self.layer.shadowOpacity = 0.8;
 	self.layer.shouldRasterize = YES;
-	self.layer.shadowPath = [self getPath];	
+	self.layer.shadowPath = [self newPath];	
 }
 
 - (void) drawRect:(CGRect)rect {
 		
 	CGContextRef context = UIGraphicsGetCurrentContext();
 
-	CGContextAddPath(context, [self getPath]);
+	CGContextAddPath(context, [self newPath]);
 	
 	CGContextSetLineJoin(context, kCGLineJoinRound);
 	CGContextSetLineWidth(context, 0);
 	CGContextSetRGBStrokeColor(context, 0, 0, 0, 0.4); 
 	CGContextSetRGBFillColor(context, 0, 0, 0, 0.7);
 
-
 	CGContextDrawPath(context, kCGPathFillStroke);
 }
 
-- (CGPathRef) getPath {
+- (CGPathRef) newPath {
 
 	// trig vars
 	CGFloat l				= 5.0;
@@ -261,7 +260,7 @@
 }
 
 - (void) showSelectionBackgroundForOption:(int)optionNumber {
-	UITextView *selectedOption = [self viewWithTag:optionNumber];
+	UITextView *selectedOption = (UITextView*)[self viewWithTag:optionNumber];
 
 	self.selectionBackground.backgroundColor = UIColorFromRGB(0x5AabF7);
 	[self.selectionBackground setFrame:CGRectMake(selectedOption.frame.origin.x,

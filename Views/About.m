@@ -15,6 +15,8 @@
 @synthesize buttonLearnMore;
 @synthesize buttonDone;
 
+@synthesize delegate;
+
 - (id)initWithFrame:(CGRect)frame {
     
     self = [super initWithFrame:frame];
@@ -29,22 +31,22 @@
 		
 		self.alpha = 0;
 		
-		UIImage *logoImage = [UIImage imageNamed:@"berkmanlogo.png"];
-		self.berkmanLogoImageView = [[UIImageView alloc] initWithImage:logoImage];
-		[self.berkmanLogoImageView setFrame:CGRectMake((aboutView__width - aboutView_berkmanLogo__width) / 2.0,
-													   12,
-													   aboutView_berkmanLogo__width,
-													   aboutView_berkmanLogo__height)];
-		[self addSubview:self.berkmanLogoImageView];
+//		UIImage *logoImage = [UIImage imageNamed:@"berkmanlogo.png"];
+//		self.berkmanLogoImageView = [[UIImageView alloc] initWithImage:logoImage];
+//		[self.berkmanLogoImageView setFrame:CGRectMake((aboutView__width - aboutView_berkmanLogo__width) / 2.0,
+//													   12,
+//													   aboutView_berkmanLogo__width,
+//													   aboutView_berkmanLogo__height)];
+//		[self addSubview:self.berkmanLogoImageView];
 		
 		self.message = [[UIWebView alloc] initWithFrame:CGRectMake((aboutView__width - aboutView_message__width) / 2.0,
-																   aboutView_berkmanLogo__height + 10,
+																   12,
 																   aboutView_message__width,
 																   aboutView_messageView__height)];
 		self.message.userInteractionEnabled = NO;
 		self.message.backgroundColor = [UIColor clearColor];
 		self.message.opaque = NO;
-		[self.message loadHTMLString:[NSString stringWithFormat:@"<body align='justify' style=\"background-color:transparent;font-family:Helvetica;font-size:15px;color:black;\"><b>%@</b></body>",@"Herdict is a project of the Berkman Center for Internet & Society at Harvard University."] baseURL:nil];
+		[self.message loadHTMLString:[NSString stringWithFormat:@"<body align='justify' style=\"background-color:transparent;font-family:Helvetica;font-size:13px;color:black;\"><b>%@</b></body>",@"Have you ever come across a web site that you could not access and wondered, \"Am I the only one?\" Herdict Web aggregates reports of inaccessible sites, allowing users to compare data to see if inaccessibility is a shared problem. By crowdsourcing data from around the world, we can document accessibility for any web site, anywhere."] baseURL:nil];
 		[self addSubview:self.message];
 		
 		self.buttonLearnMore = [CustomUIButton buttonWithType:UIButtonTypeCustom];		
@@ -78,11 +80,14 @@
 	[buttonDone release];
 	[buttonLearnMore release];
 	[message release];
-	[berkmanLogoImageView release];
+//	[berkmanLogoImageView release];
     [super dealloc];
 }
 
 - (void) show {
+	
+	[[self.delegate vcHerdometer] pauseAnnotatingReport];
+	
 	[UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
 						 self.alpha = 1;
@@ -92,6 +97,9 @@
 }
 
 - (void) hide {
+	
+	[[self.delegate vcHerdometer] resumeAnnotatingReport];
+
 	[UIView animateWithDuration:0.1 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
 						 self.alpha = 0;

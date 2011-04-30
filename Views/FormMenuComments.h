@@ -61,7 +61,7 @@
 
 - (id)initWithCutoutHeight:(CGFloat)theCutoutHeight withFrame:(CGRect)theFrame tailHeight:(CGFloat)theTailHeight;
 
-- (CGPathRef) getPath;
+- (CGPathRef) newPath;
 - (void) addShadow;
 
 @end

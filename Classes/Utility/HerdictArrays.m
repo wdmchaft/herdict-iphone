@@ -25,9 +25,10 @@
 	if (self) {
 		
 		self.menuCategoryDefaultSelection = [NSString stringWithString:@"Tap to Select"];
+		self.detected_ispName = detected_ispName_notFoundString;
 		
 		[self t01SetupFromPlist];
-		[self t02SetupFromPlist];		
+		[self t02SetupFromPlist];
 	}
 	return self;
 }
@@ -55,15 +56,17 @@
 - (void) t02SetupFromPlist {
 	NSString *plistPath = [[NSBundle mainBundle] bundlePath];
 	NSString *finalPlistPath = [plistPath stringByAppendingPathComponent:@"t02arrayCountry.plist"];
-	self.t02arrayCountries = [NSArray arrayWithContentsOfFile:finalPlistPath];	
+	self.t02arrayCountries = [NSArray arrayWithContentsOfFile:finalPlistPath];
 }
 
-- (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {	
+- (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {
+	NSLog(@"%@ getCategoriesCallbackHandler", [self class]); 
 	self.t01arrayCategories = [[WebservicesController sharedSingleton] getArrayFromJSONData:[request responseData]];
 	[self.t01arrayCategories insertObject:[NSDictionary dictionaryWithObject:self.menuCategoryDefaultSelection forKey:@"label"] atIndex:0];
 }
 
 - (void) getCountriesCallbackHandler:(ASIHTTPRequest*)request {
+	NSLog(@"getCountriesCallbackHandler");
 	self.t02arrayCountries = [[WebservicesController sharedSingleton] getArrayFromJSONData:[request responseData]];	
 	//NSLog(@"[self.t02arrayCountries count]: %i", [self.t02arrayCountries count]);
 }
@@ -72,9 +75,9 @@
 	self.t06dictCurrentLocation = [[WebservicesController sharedSingleton] getDictionaryFromJSONData:[request responseData]];
 	NSLog(@"t06dictCurrentLocation: %@", t06dictCurrentLocation);
 	
-	self.detected_ispName = [self.t06dictCurrentLocation objectForKey:@"ispName"];
+	self.detected_ispName = [[self.t06dictCurrentLocation objectForKey:@"ispName"] capitalizedString];
 	self.detected_countryCode = [self.t06dictCurrentLocation objectForKey:@"countryShort"];
-	self.detected_countryString = [self.t06dictCurrentLocation objectForKey:@"countryLong"];
+	self.detected_countryString = [[self.t06dictCurrentLocation objectForKey:@"countryLong"] capitalizedString];
 }
 
 @end

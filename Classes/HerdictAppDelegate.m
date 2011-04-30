@@ -11,6 +11,7 @@
 @implementation HerdictAppDelegate
 
 @synthesize window;
+@synthesize viewSplash;
 @synthesize vcBase;
 
 
@@ -19,17 +20,32 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
 
-	// --	Set up vcBase.
-	self.vcBase = [[VC_Base alloc] init];
-	[self.vcBase.view setFrame:CGRectMake(0, 20, 320, 460)];
-	[self.window addSubview:self.vcBase.view];
-	
 	// --	Show the window.
     [self.window makeKeyAndVisible];
 
+	// --	Set up viewSplash.
+	self.viewSplash = [[UIView alloc] initWithFrame:self.window.frame];
+	UIImage *imageSplash = [UIImage imageNamed:@"splashImage.png"];
+	UIImageView *imageViewSplash = [[[UIImageView alloc] initWithImage:imageSplash] autorelease];
+	[imageViewSplash setFrame:CGRectMake(0, 0, self.window.frame.size.width, self.window.frame.size.width * 0.6)];
+	[imageViewSplash setCenter:self.window.center];
+	[self.viewSplash addSubview:imageViewSplash];
+	[self.window addSubview:self.viewSplash];
+	
+	[NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(showVcBase) userInfo:nil repeats:NO];
+	
+	// --	Set up vcBase.
+	self.vcBase = [[VC_Base alloc] init];
+	[self.vcBase.view setFrame:CGRectMake(0, 20, 320, 460)];
+	 
     return YES;
 }
 
+- (void) showVcBase {
+	[self.viewSplash removeFromSuperview];
+	self.viewSplash = nil;
+	[self.window addSubview:self.vcBase.view];
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     /*

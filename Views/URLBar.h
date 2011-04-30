@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "Constants.h"
-
+#import "CustomUIButton.h"
 
 @interface URLBar : UISearchBar {
 
+	CustomUIButton *buttonSearch;
 }
+
+@property (nonatomic, retain) CustomUIButton *buttonSearch;
 
 @end

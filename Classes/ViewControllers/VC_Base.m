@@ -15,22 +15,18 @@
 @synthesize navItem;
 @synthesize buttonCancelTyping;
 @synthesize buttonAbout;
+@synthesize buttonHerdometer;
 @synthesize buttonNetwork;
 
 @synthesize theUrlBar;
-@synthesize theUrlBarMenu;
 @synthesize currentUrlFixedUp;
-@synthesize selectionMadeViaBubbleMenu;
 
 @synthesize theScreen;
 
-@synthesize theTabTracker;
-
-@synthesize theController;
 @synthesize vcHerdometer;
 @synthesize vcCheckSite;
-@synthesize vcReportSite;
-@synthesize currentTab;
+
+@synthesize theController;
 
 @synthesize aboutView;
 @synthesize networkView;
@@ -42,30 +38,21 @@
 
 	self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
 	if (self) {
-
-		// --	Init all our VCs now... gets us better performance when they appear.
+		
 		[self.view setCenter:CGPointMake(self.view.center.x, self.view.center.y - 20)];
 		[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque];
 		
-		// --	Set up theController
-		self.theController = [[UITabBarController alloc] init];
-		self.theController.delegate = self;
-		self.vcHerdometer = [[VC_Herdometer alloc] init];
-		UIImage *iconHerdometer = [UIImage imageNamed:@"07-map-marker.png"];
-		UITabBarItem *itemHerdometer = [[[UITabBarItem alloc] initWithTitle:@"Herdometer" image:iconHerdometer tag:0] autorelease];
-		self.vcHerdometer.tabBarItem = itemHerdometer;
-		self.vcCheckSite = [[VC_CheckSite alloc] init];
-		UIImage *iconCheckSite = [UIImage imageNamed:@"06-magnify.png"];
-		UITabBarItem *itemCheckSite = [[[UITabBarItem alloc] initWithTitle:@"Check Site" image:iconCheckSite tag:1] autorelease];
-		self.vcCheckSite.tabBarItem = itemCheckSite;	
-		self.vcReportSite = [[VC_ReportSite alloc] init];
-		UIImage *iconReportSite = [UIImage imageNamed:@"179-notepad.png"];
-		UITabBarItem *itemReportSite = [[[UITabBarItem alloc] initWithTitle:@"Report Site" image:iconReportSite tag:2] autorelease];
-		self.vcReportSite.tabBarItem = itemReportSite;
-		NSArray *controllers = [NSArray arrayWithObjects:self.vcHerdometer, self.vcCheckSite, self.vcReportSite, nil];
-		theController.viewControllers = controllers;
-		[self.theController.view setFrame:CGRectMake(0, 0, 320, 460)];
+		// --	Set up theController and the VCs.
+		self.theController = [[UINavigationController alloc] initWithNibName:nil bundle:nil];		
+		[self.theController.view setFrame:self.view.frame];
 		[self.view addSubview:self.theController.view];
+		self.vcHerdometer = [[VC_Herdometer alloc] initWithNibName:nil bundle:nil];
+		self.vcHerdometer.delegate = self;
+		self.vcCheckSite = [[VC_CheckSite alloc] initWithNibName:nil bundle:nil];
+		self.vcCheckSite.theTabSiteSummary.delegate = self;
+		self.vcCheckSite.theTabReportSite.delegate = self;
+		self.vcCheckSite.delegate = self;
+		[self.theController pushViewController:vcHerdometer animated:YES];
 		
 		// --	Set up theUrlBar (do this first just because the navBar stuff should be on top of it).
 		self.theUrlBar = [[URLBar alloc] initWithFrame:CGRectMake(0, urlBar__yOrigin, 320, urlBar__height)];
@@ -100,6 +87,12 @@
 		[self.buttonAbout setBackgroundImage:[UIImage imageNamed:@"buttonInfo.png"] forState:UIControlStateNormal];
 		[self.buttonAbout setFrame:CGRectMake(0, 0, 40, 30)];
 		navItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonAbout] autorelease];
+		self.buttonHerdometer = [CustomUIButton buttonWithType:UIButtonTypeCustom];
+		[self.buttonHerdometer addTarget:self.buttonHerdometer action:@selector(setSelected) forControlEvents:UIControlEventTouchDown];
+		[self.buttonHerdometer addTarget:self action:@selector(selectButtonHerdometer) forControlEvents:UIControlEventTouchUpInside];
+		[self.buttonHerdometer addTarget:self.buttonHerdometer action:@selector(setNotSelected) forControlEvents:UIControlEventTouchUpOutside];
+		[self.buttonHerdometer setBackgroundImage:[UIImage imageNamed:@"buttonHerdometer.png"] forState:UIControlStateNormal];
+		[self.buttonHerdometer setFrame:CGRectMake(0, 0, 40, 30)];
 		self.buttonNetwork = [CustomUIButton buttonWithType:UIButtonTypeCustom];
 		[self.buttonNetwork addTarget:self.buttonNetwork action:@selector(setSelected) forControlEvents:UIControlEventTouchDown];
 		[self.buttonNetwork addTarget:self action:@selector(selectButtonNetwork) forControlEvents:UIControlEventTouchUpInside];
@@ -116,28 +109,12 @@
 		[self.buttonCancelTyping addTarget:self.buttonCancelTyping action:@selector(setNotSelected) forControlEvents:UIControlEventTouchUpOutside];
 		[self.buttonCancelTyping setFrame:CGRectMake(0,0,57,30)];
 		
-		// --	Set up theUrlBarMenu
-		NSMutableArray *urlMenuOptions = [NSMutableArray array];
-		[urlMenuOptions addObject:[NSString stringWithString:@"Check Site"]];
-		[urlMenuOptions addObject:[NSString stringWithString:@"Submit a Report"]];
-		self.theUrlBarMenu = [[BubbleMenu alloc] initWithMessageHeight:0
-															 withFrame:CGRectMake(-60, urlBar__yOrigin - 20, 170, 0)
-													  menuOptionsArray:urlMenuOptions
-															tailHeight:22
-														   anchorPoint:CGPointMake(0, 0)];
-		[self.view addSubview:self.theUrlBarMenu];
-		
 		// --	Set up theScreen but don't show it yet
 		self.theScreen = [[Screen alloc] initWithFrame:CGRectMake(0,
 																  urlBar__yOrigin + urlBar__height,
 																  320,
 																  480 - (urlBar__yOrigin + urlBar__height) - 20)];
 		self.theScreen.backgroundColor = [UIColor clearColor];
-		
-		// --	Set up theTabTracker
-		self.theTabTracker = [[TabTracker alloc] initAtTab:0];
-		[self.view addSubview:self.theTabTracker];
-		[self.view bringSubviewToFront:self.theTabTracker];	
 		
 		// --	Set up aboutView.
 		self.aboutView = [[About alloc] initWithFrame:CGRectMake((320 - aboutView__width) / 2.0,
@@ -182,13 +159,8 @@
 }
 - (void)dealloc {
 	[aboutView release];
-	[vcHerdometer release];
-	[vcCheckSite release];
-	[vcReportSite release];
-	[theTabTracker release];
 	[theController release];
 	[theScreen release];
-	[theUrlBarMenu release];
 	[theUrlBar release];
 	[buttonNetwork release];
 	[buttonAbout release];
@@ -200,62 +172,19 @@
 }
 
 #pragma mark -
-#pragma mark UITabBarControllerDelegate methods
-
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
-	//	NSLog(@"theController.delegate.. shouldSelectViewController");
-	
-	UIViewController *currentVc = theController.selectedViewController;
-	self.currentTab = [self.theController.viewControllers indexOfObject:currentVc];
-	UIViewController *selectedVc = viewController;
-		
-	// --	Fix up theUrlBar.text
-	self.theUrlBar.text = [self fixUpTypedUrl];	
-	
-	// --	If they are selecting Herdometer, just let them go there
-	if ([selectedVc isKindOfClass:[VC_Herdometer class]]) {
-		return YES;
-	}
-	
-	// --	If they have not entered a URL, [self urlTyped] will handle it, and after that we don't proceed.
-	if (![self urlTyped]) {
-		return NO;
-	}
-	
-	// --	Check for reachability.. this will bring up self.networkView if there is none.
-	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
-		[self selectButtonNetwork];
-		return NO;
-	}
-
-	// --	Bring vcReportSite to its top menu level.
-	if ([currentVc isEqual:self.vcReportSite]) {
-		[self.vcReportSite selectFormMenuOption:nil];
-	}
-	return YES;
-}
-
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-	//	NSLog(@"theController.delegate says.. didSelectViewController");
-	
-	[self.aboutView hide];
-	
-	UIViewController *selectedVC = viewController;
-		
-	// --	Slide theTabTracker
-	[self.theTabTracker moveFromTab:self.currentTab toTab:[self.theController.viewControllers indexOfObject:selectedVC]];
-	
-	// --	If it's vcCheckSite...									
-	if ([selectedVC isKindOfClass:[VC_CheckSite class]]) {
-		[selectedVC loadUrl:self.theUrlBar.text];
-	}
-}
-
-#pragma mark -
 #pragma mark UINavigationItem
 
+- (void) selectButtonHerdometer {	
+	[self selectButtonCancelSearch];
+	[self.buttonHerdometer setNotSelected];
+	[self.theController popViewControllerAnimated:YES];
+	self.navItem.leftBarButtonItem = nil;
+	self.navItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonAbout] autorelease];
+	
+}
+
 - (void) selectButtonAbout {
-	NSLog(@"selectButtonAbout");
+	//NSLog(@"selectButtonAbout");
 	[self selectButtonCancelSearch];
 	[self.buttonAbout setNotSelected];
 	[self.view addSubview:self.aboutView];
@@ -280,7 +209,38 @@
 #pragma mark self as UISearchBarDelegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-	[self selectBubbleMenuOption:[self.theUrlBarMenu viewWithTag:1]];
+
+	//	NSLog(@"theController.delegate.. shouldSelectViewController");
+	
+	// --	Fix up theUrlBar.text
+	self.theUrlBar.text = [self fixUpTypedUrl];	
+	
+	// --	If they have not entered a URL, [self urlTyped] will handle it, and after that we don't proceed.
+	if (![self urlTyped]) {
+		return;
+	}
+	
+	// --	Check for reachability.. this will bring up self.networkView if there is none.
+	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
+		[self.theUrlBar resignFirstResponder];
+		[self selectButtonNetwork];
+		return;
+	}
+	
+	[self.theUrlBar resignFirstResponder];
+	[self.aboutView hide];
+	[self.networkView hide];
+
+	[self.vcCheckSite loadUrl:self.theUrlBar.text];
+
+	if ([[self.theController topViewController] isEqual:self.vcCheckSite]) {
+		return;
+	}
+	
+	[self.vcHerdometer pauseAnnotatingReport];
+	[self.theController pushViewController:self.vcCheckSite animated:YES];
+	self.navItem.leftBarButtonItem = nil;
+	self.navItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonHerdometer] autorelease];
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
@@ -290,89 +250,18 @@
 	[self.aboutView hide];
 	[self.networkView hide];
 	
-	[self.theUrlBarMenu showBubbleMenu];	
-	
 	// --	add theScreen - this catches touches on reportMapView, so user doesn't have to tap Cancel to dismiss theUrlBar.
 	[self.view addSubview:self.theScreen];
 	[self.view bringSubviewToFront:self.theScreen];
-
-	[self.vcHerdometer.timerInititiateAnnotateReport invalidate];
-	[self.vcHerdometer.reportMapView removeAnnotation:self.vcHerdometer.theAnnotation];
 	
-	[self.vcCheckSite.theSiteSummary positionSiteSummaryOutOfView];	
+	[self.vcHerdometer pauseAnnotatingReport];
 }
 
 - (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar {
 	self.navItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonNetwork] autorelease];
-	[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBarMenu selector:@selector(hideBubbleMenu) userInfo:nil repeats:NO];
 	[self.theScreen removeFromSuperview];
-
-	[self.vcHerdometer.timerInititiateAnnotateReport invalidate];
-	self.vcHerdometer.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:1 target:self.vcHerdometer selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
-}
-
-
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	//NSLog(@"touchesBegan on %@", self);
 	
-	UITouch *touch = [touches anyObject];
-	
-	// --	If it's in any of our BubbleMenu views....
-	for (UIView *theMenu in [self.view subviews]) {
-		if ([theMenu isKindOfClass:[BubbleMenu class]]) {
-			if ([theMenu pointInside:[touch locationInView:theMenu] withEvent:nil]) {
-				
-				// --	If it 's in any of this BubbleMenu's tagged views...
-				for (UIView *theSubview in [theMenu subviews]) {
-					if (theSubview.tag > 0) {
-						if ([theSubview pointInside:[touch locationInView:theSubview] withEvent:nil]) {
-							[self performSelector:@selector(selectBubbleMenuOption:) withObject:theSubview afterDelay:0];
-							return;
-						}
-					}
-				}
-			}
-		}
-	}
-	if ([self.vcCheckSite.theSiteSummary pointInside:[touch locationInView:self.vcCheckSite.theSiteSummary] withEvent:nil]) {
-		if (self.vcCheckSite.theSiteSummary.frame.origin.y < 300) {
-			[self.vcCheckSite.theSiteSummary positionSiteSummaryOutOfView];
-		} else {
-			[self.vcCheckSite.theSiteSummary positionSiteSummaryInView];
-		}
-		return;
-	}	
-	if ([self.theUrlBar isFirstResponder]) {
-		if (![self.theUrlBar pointInside:[touch locationInView:self.theUrlBar] withEvent:nil]) {		
-			[self.theUrlBar resignFirstResponder];
-		}
-	}	
-}
-
-- (void) selectBubbleMenuOption:(UITextView *)selectedSubview {
-//	NSLog(@"selectBubbleMenuOption: %i", selectedSubview.tag);
-	
-	BubbleMenu *theMenu = [selectedSubview superview];
-		
-	// --	Have the menu show the selection background (and schedule its removal as well as the menu's).
-	[theMenu showSelectionBackgroundForOption:selectedSubview.tag];
-	[NSTimer scheduledTimerWithTimeInterval:0.75 target:theMenu selector:@selector(hideSelectionBackground) userInfo:nil repeats:NO];				
-	
-	if ([theMenu isEqual:self.theUrlBarMenu]) {
-		if ([self urlTyped]) {
-			[NSTimer scheduledTimerWithTimeInterval:0.0 target:self.theUrlBar selector:@selector(resignFirstResponder) userInfo:nil repeats:NO];		
-
-			// --	Use self.tabBarController to manage the switch... have to hand-hold it a little
-			if ([self tabBarController:self.theController shouldSelectViewController:[self.theController.viewControllers objectAtIndex:selectedSubview.tag]]) {
-				[self performSelector:@selector(switchToTab:) withObject:[NSNumber numberWithInt:selectedSubview.tag] afterDelay:0.4];
-			}
-		}
-	}
-}
-
-- (void) switchToTab:(NSNumber *)tabIndex {
-	self.theController.selectedIndex = [tabIndex intValue];
-	[self tabBarController:self.theController didSelectViewController:[self.theController.viewControllers objectAtIndex:[tabIndex intValue]]];
+	[self.vcHerdometer resumeAnnotatingReport];
 }
 
 - (BOOL) urlTyped {
@@ -422,8 +311,8 @@
 }
 
 - (void) launchCallouts {
-	NSLog(@"vcBase finished launchCallouts");
-
+	//NSLog(@"vcBase began launchCallouts");
+	
 	if (self.haveDoneCallouts) {
 		return;
 	}
@@ -434,12 +323,140 @@
 		return;
 	}
 	
-	[[WebservicesController sharedSingleton] getCategories:self.vcReportSite];
+	[[WebservicesController sharedSingleton] getCategories:self.vcCheckSite.theTabReportSite];
 	[[WebservicesController sharedSingleton] getCountries:[HerdictArrays sharedSingleton]]; 
 	[[WebservicesController sharedSingleton] getIp:[NetworkInfo sharedSingleton]];
 	[[WebservicesController sharedSingleton] getCurrentLocation:self.networkView];
 	
 	self.haveDoneCallouts = YES;
+	
+	//NSLog(@"vcBase finished launchCallouts");
+}
+
+- (BOOL) isModalPopupShowing {
+
+	if (self.networkView.alpha > 0) {
+		return TRUE;
+	}
+	if (self.aboutView.alpha > 0) {
+		return TRUE;
+	}
+	return FALSE;
+}
+
+- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+	NSLog(@"touchesBegan on %@", [self class]);
+	
+	UITouch *touch = [touches anyObject];
+	
+	if ([self.theUrlBar isFirstResponder]) {
+		if (![self.theUrlBar pointInside:[touch locationInView:self.theUrlBar] withEvent:nil]) {		
+			[self.theUrlBar resignFirstResponder];
+		}
+	}	
+	
+	for (UIView *aView in self.vcCheckSite.view.subviews) {
+		if ([aView isKindOfClass:[ModalTab class]]) {
+			ModalTab *theTab = (ModalTab*)aView;
+			if ([[theTab tabLabel] pointInside:[touch locationInView:[theTab tabLabel]] withEvent:nil]) {
+				if ([self isAnyModalTabPositionedInView]) {
+					if ([[self modalTabInFront] isEqual:theTab]) {
+						[self positionAllModalTabsOutOfViewExcept:nil];
+					} else {
+						[self positionAllModalTabsOutOfViewExcept:theTab];
+					}
+				} else {
+					[self.vcCheckSite.view bringSubviewToFront:aView];
+					[self positionAllModalTabsInViewBehind:theTab];
+				}
+			} else if ([theTab isKindOfClass:[ReportSite class]]) {
+				ReportSite *theReportTab = (ReportSite*)theTab;
+				if ([[theReportTab tabLabel] pointInside:[touch locationInView:[theReportTab labelAddComments]] withEvent:nil] || [[theReportTab tabLabel] pointInside:[touch locationInView:[theReportTab imageViewAddComments]] withEvent:nil]) {
+					[theReportTab configureToAddComments];
+				}
+				if ([[theReportTab tabLabel] pointInside:[touch locationInView:[theReportTab labelSelectCategory]] withEvent:nil] || [[theReportTab tabLabel] pointInside:[touch locationInView:[theReportTab imageViewSelectCategory]] withEvent:nil]) {
+					[theReportTab configureToSelectCategory];
+				}
+			}
+		}
+	}	
+}
+
+#pragma mark -
+#pragma mark ModalTabDelegate
+
+
+- (BOOL) isAnyModalTabPositionedInView {
+	for (UIView *aView in self.vcCheckSite.view.subviews) {
+		if ([aView isKindOfClass:[ModalTab class]]) {
+			if ([(ModalTab*)aView isPositionedInView]) {
+				return YES;
+			}
+		}
+	}
+	return NO;
+}
+
+- (ModalTab *) modalTabInFront {
+	ModalTab *tabInFront = nil;
+	for (UIView *aView in self.vcCheckSite.view.subviews) {
+		if ([aView isKindOfClass:[ModalTab class]] && (!tabInFront || [self.vcCheckSite.view.subviews indexOfObject:aView] > [self.vcCheckSite.view.subviews indexOfObject:tabInFront])) {
+			tabInFront = (ModalTab*)aView;
+		}
+	}
+	return tabInFront;
+}
+
+- (void) positionAllModalTabsOutOfViewExcept:(ModalTab*)thisModalTab {
+
+	NSMutableArray *allModalTabs = [NSMutableArray array];
+	for (UIView *aView in self.vcCheckSite.view.subviews) {
+		if ([aView isKindOfClass:[ModalTab class]] && ![aView isEqual:thisModalTab]) {
+			[allModalTabs addObject:(ModalTab*)aView];
+		}
+	}
+	
+	for (ModalTab *aModalTab in allModalTabs) {
+		if (![aModalTab isEqual:thisModalTab]) {
+			if (thisModalTab && [aModalTab isEqual:[allModalTabs lastObject]]) {
+				[aModalTab positionTabOutOfViewForDelegate:self forNewForegroundTab:thisModalTab];
+			} else {
+				[aModalTab positionTabOutOfViewForDelegate:nil forNewForegroundTab:nil];
+			}
+		}
+	}
+}
+
+- (void) positionAllModalTabsInViewBehind:(ModalTab*)thisModalTab {
+	NSLog(@"positionAllModalTabsInViewBehind:%@",[thisModalTab class]);
+	
+	NSMutableArray *allModalTabs = [NSMutableArray array];
+	for (UIView *aView in self.vcCheckSite.view.subviews) {
+		if ([aView isKindOfClass:[ModalTab class]]) {
+			[allModalTabs addObject:(ModalTab*)aView];
+		}
+	}
+	if (thisModalTab) {
+		NSLog(@"thisModalTab");
+		[self.vcCheckSite.view bringSubviewToFront:thisModalTab];
+		[allModalTabs insertObject:thisModalTab atIndex:0];
+		for (ModalTab *aTab in allModalTabs) {
+			[aTab positionTabInViewWithYOrigin:(thisModalTab.yOrigin__current - (2.0 * [allModalTabs indexOfObject:aTab]))];
+		}
+	} else {
+		for (ModalTab *aTab in allModalTabs) {
+			aTab.yOrigin__current = aTab.yOrigin__default;
+			[aTab positionTabInViewWithYOrigin:aTab.yOrigin__current];
+		}
+	}
+}
+
+- (void) positionAllModalTabsInViewWithYOrigin:(CGFloat)yOriginNew {
+	for (UIView *aView in self.vcCheckSite.view.subviews) {
+		if ([aView isKindOfClass:[ModalTab class]]) {
+			[(ModalTab*)aView positionTabInViewWithYOrigin:yOriginNew];
+		}
+	}	
 }
 
 @end
