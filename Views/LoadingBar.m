@@ -24,12 +24,12 @@
     self = [super initWithFrame:frame];
     if (self) {
 		
-		self.componentRed = modalTab__text__colorRed;
-		self.componentGreen = modalTab__text__colorGreen;
-		self.componentBlue = modalTab__text__colorBlue;
-		self.componentAlpha = 1.0f;		
-		
 		self.backgroundColor = [UIColor clearColor];
+		self.componentRed = 0.0f;
+		self.componentGreen = 0.0f;
+		self.componentBlue = 0.0f;
+		self.componentAlpha = 0.7f;		
+		
 		// --	Set up loadingIndicator
 		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
 		[self.loadingIndicator setFrame:CGRectMake(0.5 * (self.frame.size.width - (loadingBarAnimation__diameter + loadingBarText__width)),
@@ -52,13 +52,8 @@
 				
 		[self addSubview:self.loadingIndicator];
 		[self addSubview:self.loadingText];
-    }
-	
-	NSLog(@"self.frame.origin.x: %f", self.frame.origin.x);
+    }	
     return self;
-}
-
-- (void) setColorComponentsWithRed:(CGFloat)theRed withGreen:(CGFloat)theGreen withBlue:(CGFloat)theBlue withAlpha:(CGFloat)theAlpha {
 }
 
 - (void) drawRect:(CGRect)rect {
@@ -67,7 +62,7 @@
 	CGContextSetLineJoin(context, kCGLineJoinRound);
 	CGContextSetLineWidth(context, 2);
 	
-	CGContextSetRGBStrokeColor(context, self.componentRed, self.componentGreen, self.componentBlue, 0.7);
+	CGContextSetRGBStrokeColor(context, self.componentRed, self.componentGreen, self.componentBlue, self.componentAlpha * 0.6f);
 	CGContextSetRGBFillColor(context, self.componentRed, self.componentGreen, self.componentBlue, self.componentAlpha);
 	
 	CGContextAddPath(context, [self newPath]);

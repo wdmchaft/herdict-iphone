@@ -11,6 +11,7 @@
 
 @implementation VC_CheckSite
 
+@synthesize delegate;
 // --	theWebView
 @synthesize theWebView;
 @synthesize lastTestedUrl;
@@ -19,8 +20,6 @@
 // --	ModalTabs
 @synthesize theTabSiteSummary;
 @synthesize theTabReportSite;
-
-@synthesize delegate;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
 	//NSLog(@"%@ initWithNibName:%@ bundle:%@", self, nibNameOrNil, nibBundleOrNil);
@@ -31,18 +30,18 @@
 		self.view.backgroundColor = [UIColor colorWithRed:themeColorRed green:themeColorGreen blue:themeColorBlue alpha:1];
 		
 		[self resetCheckSite];
-				
-		self.theTabSiteSummary = [[SiteSummary alloc] initWithFrame:CGRectMake(0,
-																			vcCheckSite__height - modalTab__tabLabel__heightDefault,
-																			320,
-																			modalTab__heightTotal)];
-		[self.view addSubview:self.theTabSiteSummary];
-		
+						
 		self.theTabReportSite = [[ReportSite alloc] initWithFrame:CGRectMake(0,
 																			   vcCheckSite__height - modalTab__tabLabel__heightDefault,
 																			   320,
 																			   modalTab__heightTotal)];
 		[self.view addSubview:self.theTabReportSite];
+		
+		self.theTabSiteSummary = [[SiteSummary alloc] initWithFrame:CGRectMake(0,
+																			   vcCheckSite__height - modalTab__tabLabel__heightDefault,
+																			   320,
+																			   modalTab__heightTotal)];
+		[self.view addSubview:self.theTabSiteSummary];
 		
 		self.theLoadingBar = [[LoadingBar alloc] initWithFrame:CGRectMake(loadingBar__xOrigin, loadingBar__yOrigin__stateHide, loadingBar__width, loadingBar__height)];
 		[self.view addSubview:self.theLoadingBar];
@@ -86,25 +85,16 @@
 }
 
 - (void) getSiteSummaryCallbackHandler:(ASIHTTPRequest*)request {
-	NSLog(@"getSiteSummaryCallbackHandler");
+	//NSLog(@"getSiteSummaryCallbackHandler");
 	
 	NSDictionary *siteSummaryDictionary = [[WebservicesController sharedSingleton] getDictionaryFromJSONData:[request responseData]];
 	
-	// --	We handle the site summary content right here - theTabSiteSummary never knows about it.
-	NSString *countryCode = [siteSummaryDictionary objectForKey:@"countryCode"];
-	NSString *countryString = [NSString string];
-	for (id item in [[HerdictArrays sharedSingleton] t02arrayCountries]) {
-		NSString *countryCodeFromArray = [item objectForKey:@"value"];
-		if ([countryCodeFromArray isEqualToString:countryCode]) {
-			countryString = [item objectForKey:@"label"];
-		}
-	}
 	int countryInaccessibleCount = [[siteSummaryDictionary objectForKey:@"countryInaccessibleCount"] intValue];
 	int globalInaccessibleCount = [[siteSummaryDictionary objectForKey:@"globalInaccessibleCount"] intValue];
 	int sheepColor = [[siteSummaryDictionary objectForKey:@"sheepColor"] intValue];
 	int siteId = [[siteSummaryDictionary objectForKey:@"siteId"] intValue];
 	
-	NSString *messageString = [NSString stringWithFormat:@"%d   times in %@\n%d   times around the world", countryInaccessibleCount, countryString, globalInaccessibleCount];
+	NSString *messageString = [NSString stringWithFormat:@"%d   times in %@\n%d   times around the world", countryInaccessibleCount, [[HerdictArrays sharedSingleton] detected_countryString], globalInaccessibleCount];
 	
 	[self.theTabSiteSummary setStateLoaded:messageString theColor:sheepColor];
 }
@@ -129,11 +119,11 @@
 	[self.view sendSubviewToBack:self.theWebView];
 }
 
-- (void) loadUrl:(NSString *)urlString {
+- (void) loadTypedUrl:(NSString *)urlString {
 	
 	// --	Note.. We are supposed to check for reachability before calling this method.  As of the writing of this comment, we do.
 
-	NSLog(@"loadUrl: %@", urlString);
+	NSLog(@"loadTypedUrl: %@", urlString);
 	
 	NSString *theUrlString = urlString;
 	theUrlString = [theUrlString stringByReplacingOccurrencesOfString:@"http://" withString:@""];
@@ -153,7 +143,7 @@
 	self.lastTestedUrl = theUrlString;
 	
 	[self resetCheckSite];
-	[self.theTabReportSite configureDefault];
+	[self.theTabReportSite resetData];
 	[self.theTabReportSite.delegate positionAllModalTabsOutOfViewExcept:nil];
 	[self.theTabSiteSummary setStateLoading];
 	[[WebservicesController sharedSingleton] getSiteSummary:theUrlString forCountry:[[HerdictArrays sharedSingleton] detected_countryCode] urlEncoding:@"none" callbackDelegate:self];
@@ -173,6 +163,11 @@
 	
 	NSString *requestedUrl = [NSString stringWithFormat:@"%@", request.URL];
 	[[self.delegate theUrlBar] setText:requestedUrl];
+	[self.theTabReportSite resetData];
+	[self.theTabSiteSummary setStateLoading];
+	[self.view bringSubviewToFront:self.theTabSiteSummary];
+	[self.theTabSiteSummary.delegate positionAllModalTabsInViewBehind:self.theTabSiteSummary];
+	[[WebservicesController sharedSingleton] getSiteSummary:requestedUrl forCountry:[[HerdictArrays sharedSingleton] detected_countryCode] urlEncoding:@"none" callbackDelegate:self];
 	
 	NSLog(@"webView:%@ shouldStartLoadWithRequest:%@ navigationType:%i", webView, request, navigationType);
 	return YES;

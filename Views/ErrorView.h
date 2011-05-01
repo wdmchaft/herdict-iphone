@@ -15,14 +15,23 @@
 
 	NSString *errorString;
 	UIWebView *errorWebView;
-	
 	CustomUIButton *buttonOk;
 
+	// color components
+	CGFloat componentRed;
+	CGFloat componentGreen;
+	CGFloat componentBlue;
+	CGFloat componentAlpha;
 }
 
 @property (nonatomic, retain) NSString *errorString;
 @property (nonatomic, retain) UIWebView *errorWebView;
 @property (nonatomic, retain) CustomUIButton *buttonOk;
+
+@property (nonatomic) CGFloat componentRed;
+@property (nonatomic) CGFloat componentGreen;
+@property (nonatomic) CGFloat componentBlue;
+@property (nonatomic) CGFloat componentAlpha;	
 
 - (void) setErrorMessage:(NSString *)theString;
 - (void) selectButtonOk;

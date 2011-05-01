@@ -45,7 +45,7 @@
 	//	[self addSubview:self.textView2];
 		
 		// --	Set up loadingIndicator and loadingText
-		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
 		[self.loadingIndicator setFrame:CGRectMake(0.5 * (self.frame.size.width - (siteSummaryTab_loadingAnimation__diameter + 11 + siteSummaryTab_loadingText__width)),
 												   modalTab__tabLabel__heightDefault + 0.5 * ((vcCheckSite__height - siteSummaryTab__yOrigin__configurationDefault) - modalTab__tabLabel__heightDefault - siteSummaryTab_loadingAnimation__diameter),
 												   siteSummaryTab_loadingAnimation__diameter,

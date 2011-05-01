@@ -231,7 +231,7 @@
 	[self.aboutView hide];
 	[self.networkView hide];
 
-	[self.vcCheckSite loadUrl:self.theUrlBar.text];
+	[self.vcCheckSite loadTypedUrl:self.theUrlBar.text];
 
 	if ([[self.theController topViewController] isEqual:self.vcCheckSite]) {
 		return;
@@ -345,7 +345,7 @@
 }
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	NSLog(@"touchesBegan on %@", [self class]);
+	//NSLog(@"touchesBegan on %@", [self class]);
 	
 	UITouch *touch = [touches anyObject];
 	
@@ -428,7 +428,7 @@
 }
 
 - (void) positionAllModalTabsInViewBehind:(ModalTab*)thisModalTab {
-	NSLog(@"positionAllModalTabsInViewBehind:%@",[thisModalTab class]);
+	//NSLog(@"positionAllModalTabsInViewBehind:%@",[thisModalTab class]);
 	
 	NSMutableArray *allModalTabs = [NSMutableArray array];
 	for (UIView *aView in self.vcCheckSite.view.subviews) {
@@ -437,7 +437,6 @@
 		}
 	}
 	if (thisModalTab) {
-		NSLog(@"thisModalTab");
 		[self.vcCheckSite.view bringSubviewToFront:thisModalTab];
 		[allModalTabs insertObject:thisModalTab atIndex:0];
 		for (ModalTab *aTab in allModalTabs) {

@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Constants.h"
+#import <QuartzCore/QuartzCore.h>
 
 
 @interface LoadingBar : UIView {
@@ -29,7 +31,6 @@
 @property (nonatomic) CGFloat componentBlue;
 @property (nonatomic) CGFloat componentAlpha;	
 
-- (void) setColorComponentsWithRed:(CGFloat)theRed withGreen:(CGFloat)theGreen withBlue:(CGFloat)theBlue withAlpha:(CGFloat)theAlpha;
 - (CGPathRef) newPath;
 
 - (void) show;

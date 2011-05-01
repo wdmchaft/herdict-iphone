@@ -15,15 +15,21 @@
 @synthesize errorWebView;
 @synthesize buttonOk;
 
+@synthesize componentRed;
+@synthesize componentGreen;
+@synthesize componentBlue;
+@synthesize componentAlpha;
+
 - (id)initWithFrame:(CGRect)frame {
     
     self = [super initWithFrame:frame];
     if (self) {
-		
-		self.layer.cornerRadius = 8.0f;
-		self.layer.masksToBounds = YES;
-		
-		self.backgroundColor = [UIColor colorWithRed:modalTab__text__colorRed green:modalTab__text__colorGreen blue:modalTab__text__colorBlue alpha:1.0f];
+
+		self.backgroundColor = [UIColor clearColor];
+		self.componentRed = 0.0f;
+		self.componentGreen = 0.0f;
+		self.componentBlue = 0.0f;
+		self.componentAlpha = 0.7f;
 		
 		self.errorWebView = [[UIWebView alloc] initWithFrame:CGRectMake(self.frame.size.width * 0.1,
 																		  self.frame.size.height * 0.1,
@@ -59,9 +65,45 @@
 		[self.buttonOk setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 		[self.buttonOk setTitleShadowColor:UIColorFromRGB(0x404040) forState:UIControlStateNormal];
 		[self addSubview:self.buttonOk];
-		
 	}
     return self;
+}
+
+- (void) drawRect:(CGRect)rect {
+	CGContextRef context = UIGraphicsGetCurrentContext();
+	
+	CGContextSetLineJoin(context, kCGLineJoinRound);
+	CGContextSetLineWidth(context, 2);
+	
+	CGContextSetRGBStrokeColor(context, self.componentRed, self.componentGreen, self.componentBlue, self.componentAlpha * 0.6f);
+	CGContextSetRGBFillColor(context, self.componentRed, self.componentGreen, self.componentBlue, self.componentAlpha);
+	
+	CGContextAddPath(context, [self newPath]);
+	
+	CGContextDrawPath(context, kCGPathFillStroke);		
+}
+
+- (CGPathRef) newPath {
+	
+	CGFloat offsetForStroke = 1.0f;
+	CGFloat cornerRad = 8.0f;
+	CGFloat selfWidth = self.frame.size.width;
+	CGFloat selfHeight = self.frame.size.height;
+	
+	CGMutablePathRef thePath = CGPathCreateMutable();
+	
+	// --	Begin at right edge to the right of hideTab, proceed counterclockwise.
+	CGPathMoveToPoint(thePath, NULL, selfWidth - cornerRad, 0);
+	CGPathAddLineToPoint(thePath, NULL, cornerRad, 0);
+	CGPathAddArcToPoint(thePath, NULL, 0, 0, 0, cornerRad, cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, 0, selfHeight - cornerRad);
+	CGPathAddArcToPoint(thePath, NULL, 0, selfHeight, cornerRad, selfHeight, cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth - cornerRad, selfHeight);
+	CGPathAddArcToPoint(thePath, NULL, selfWidth, selfHeight, selfWidth, selfHeight - cornerRad, cornerRad);
+	CGPathAddLineToPoint(thePath, NULL, selfWidth, cornerRad);
+	CGPathAddArcToPoint(thePath, NULL, selfWidth, 0, selfWidth - cornerRad, 0, cornerRad);
+	
+	return thePath;
 }
 
 - (void) setErrorMessage:(NSString *)theString {
@@ -72,14 +114,6 @@
 	[self.buttonOk setNotSelected];
 	[self performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.1f];
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code.
-}
-*/
 
 - (void)dealloc {
     [super dealloc];

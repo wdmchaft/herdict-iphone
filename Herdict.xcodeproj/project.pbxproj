@@ -20,6 +20,7 @@
 		A6238217133A6CC20063AF4C /* CancelButton.png in Resources */ = {isa = PBXBuildFile; fileRef = A6238216133A6CC20063AF4C /* CancelButton.png */; };
 		A62F1158136B3D8C0020FA81 /* LoadingBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A62F1157136B3D8C0020FA81 /* LoadingBar.m */; };
 		A62F1318136CA0890020FA81 /* ErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = A62F1317136CA0890020FA81 /* ErrorView.m */; };
+		A62F1463136CD8D70020FA81 /* libxml2.2.7.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A62F145B136CD8670020FA81 /* libxml2.2.7.3.dylib */; };
 		A62FE7D9133AE08500754BEC /* URLBar.m in Sources */ = {isa = PBXBuildFile; fileRef = A62FE7D8133AE08500754BEC /* URLBar.m */; };
 		A634F55D135E0C5B00BE3EF2 /* splashImage.png in Resources */ = {isa = PBXBuildFile; fileRef = A634F55C135E0C5B00BE3EF2 /* splashImage.png */; };
 		A63A48D1133B26E1004DBAC5 /* buttonInfo.png in Resources */ = {isa = PBXBuildFile; fileRef = A63A48D0133B26E1004DBAC5 /* buttonInfo.png */; };
@@ -137,6 +138,7 @@
 		A62F1157136B3D8C0020FA81 /* LoadingBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingBar.m; sourceTree = "<group>"; wrapsLines = 1; };
 		A62F1316136CA0890020FA81 /* ErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorView.h; sourceTree = "<group>"; };
 		A62F1317136CA0890020FA81 /* ErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorView.m; sourceTree = "<group>"; wrapsLines = 1; };
+		A62F145B136CD8670020FA81 /* libxml2.2.7.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.7.3.dylib; path = usr/lib/libxml2.2.7.3.dylib; sourceTree = SDKROOT; };
 		A62FE7D7133AE08500754BEC /* URLBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLBar.h; sourceTree = "<group>"; };
 		A62FE7D8133AE08500754BEC /* URLBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLBar.m; sourceTree = "<group>"; };
 		A634F55C135E0C5B00BE3EF2 /* splashImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splashImage.png; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 				A679A3AA12B6F1FC00A67538 /* libz.1.2.3.dylib in Frameworks */,
 				A679AAC512B96D4C00A67538 /* MapKit.framework in Frameworks */,
 				A679AB1912B9748800A67538 /* CoreLocation.framework in Frameworks */,
+				A62F1463136CD8D70020FA81 /* libxml2.2.7.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,6 +346,7 @@
 				A679A3A912B6F1FC00A67538 /* libz.1.2.3.dylib */,
 				A679AAC412B96D4C00A67538 /* MapKit.framework */,
 				A679AB1812B9748800A67538 /* CoreLocation.framework */,
+				A62F145B136CD8670020FA81 /* libxml2.2.7.3.dylib */,
 			);
 			name = Provider;
 			sourceTree = "<group>";

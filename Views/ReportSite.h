@@ -58,9 +58,9 @@
 
 @property (nonatomic, retain) FormMenuCategory *menuCategory;
 @property (nonatomic, retain) FormMenuComments *menuComments;
-@property (nonatomic, retain) NSString *menuCommentsDefaultSelection;
 
 // --	init
+- (void) resetData;
 - (void) setUpMenuCategory;
 
 // --	configurationDefault

@@ -50,7 +50,7 @@
 
 - (void) setUploadingBarMessage;
 - (void) resetCheckSite;
-- (void) loadUrl:(NSString *)urlString;
+- (void) loadTypedUrl:(NSString *)urlString;
 - (void) getSiteSummaryCallbackHandler:(ASIHTTPRequest*)request;
 
 @end

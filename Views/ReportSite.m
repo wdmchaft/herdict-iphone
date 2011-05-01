@@ -44,7 +44,6 @@
 		self.labelSelectCategory.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
 		self.labelSelectCategory.textColor = [UIColor colorWithRed:modalTab__text__colorRed green:modalTab__text__colorGreen blue:modalTab__text__colorBlue alpha:1];
 		self.labelSelectCategory.backgroundColor = [UIColor clearColor];
-		self.labelSelectCategory.text = reportSiteTab__labelSelectCategory__text__configurationDefault;
 		self.labelSelectCategory.textAlignment = UITextAlignmentLeft;
 
 		UIImage *imageAddComments = [UIImage imageNamed:@"09-chat-2@2x dark.png"];
@@ -54,7 +53,6 @@
 		self.labelAddComments.font = [UIFont fontWithName:@"Helvetica-Bold" size:15];
 		self.labelAddComments.textColor = [UIColor colorWithRed:modalTab__text__colorRed green:modalTab__text__colorGreen blue:modalTab__text__colorBlue alpha:1];
 		self.labelAddComments.backgroundColor = [UIColor clearColor];
-		self.labelAddComments.text = reportSiteTab__labelAddComments__text__configurationDefault;
 		self.labelAddComments.textAlignment = UITextAlignmentLeft;
 		
 		self.buttonSiteAccessible = [CustomUIButton buttonWithType:UIButtonTypeCustom];
@@ -91,9 +89,6 @@
 		[self.buttonSiteInaccessible setTitleShadowColor:UIColorFromRGB(0x404040) forState:UIControlStateNormal];		
 		[self.buttonSiteInaccessible setTitle:@"Site Inaccessible" forState:UIControlStateNormal];
 		
-		self.siteIsAccessible = NO;
-		self.keyCategory = 0;
-		
 		// --	menuCategory
 		self.menuCategory = [[FormMenuCategory alloc] initWithMessageHeight:0
 																  withFrame:CGRectMake(0.5 * (self.frame.size.width - reportSiteTab__menuCategory__width), reportSiteTab__menuCategory__yOrigin, reportSiteTab__menuCategory__width, 0)
@@ -113,6 +108,7 @@
 		self.menuComments.theComments.text = reportSiteTab__menuComments__textInitial;
 		self.menuComments.theComments.delegate = self;
 				
+		[self resetData];
     }
     return self;
 }
@@ -123,6 +119,14 @@
 	[menuComments release];
 	[menuCategory release];
     [super dealloc];
+}
+
+- (void) resetData {
+	self.labelSelectCategory.text = reportSiteTab__labelSelectCategory__text__configurationDefault;
+	self.labelAddComments.text = reportSiteTab__labelAddComments__text__configurationDefault;
+	self.siteIsAccessible = NO;
+	self.keyCategory = 0;
+	[self configureDefault];
 }
 
 - (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {
@@ -171,7 +175,7 @@
 #pragma mark UITouch
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-	NSLog(@"touchesBegan on %@", [self class]);
+	//NSLog(@"touchesBegan on %@", [self class]);
 	
 	UITouch *touch = [touches anyObject];
 	

@@ -1,0 +1,11 @@
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_CheckSite.m: In function '-[VC_CheckSite getSiteSummaryCallbackHandler:]':
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_CheckSite.m:95: warning: unused variable 'siteId'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_CheckSite.m: In function '-[VC_CheckSite webView:shouldStartLoadWithRequest:navigationType:]':
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_CheckSite.m:165: warning: '-theUrlBar' not found in protocol(s)
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_CheckSite.m:165: warning: no '-theUrlBar' method found
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_CheckSite.m:165: warning: (Messages without a matching method signature
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_CheckSite.m:165: warning: will be assumed to return 'id' and accept
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_CheckSite.m:165: warning: '...' as arguments.)
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_CheckSite.m: At top level:
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_CheckSite.m:190: warning: incomplete implementation of class 'VC_CheckSite'
+/projects/Herdict Working/iOS/Classes/ViewControllers/VC_CheckSite.m:190: warning: method definition for '-setUploadingBarMessage' not found

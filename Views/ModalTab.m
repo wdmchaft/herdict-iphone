@@ -124,7 +124,7 @@
 }
 
 - (void) positionTabInViewWithYOrigin:(CGFloat)yOriginNew {
-	NSLog(@"%@ positionTabInViewWithYOrigin: %f", [self class], yOriginNew);
+	//NSLog(@"%@ positionTabInViewWithYOrigin: %f", [self class], yOriginNew);
 
 	[UIView animateWithDuration:modalTab__duration__changeConfiguration delay:0.0f options:UIViewAnimationOptionCurveEaseOut
 					 animations:^{
