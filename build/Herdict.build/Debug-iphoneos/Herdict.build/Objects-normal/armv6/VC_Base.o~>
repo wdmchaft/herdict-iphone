@@ -1,5 +1,0 @@
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Base.m: In function '-[VC_Base touchesBegan:withEvent:]':
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Base.m:378: warning: 'ReportSite' may not respond to '-configureToSelectCategory'
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Base.m:378: warning: (Messages without a matching method signature
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Base.m:378: warning: will be assumed to return 'id' and accept
-/projects/Herdict Working/iOS/Classes/ViewControllers/VC_Base.m:378: warning: '...' as arguments.)
