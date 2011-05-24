@@ -48,9 +48,9 @@
 
 @property (nonatomic, retain) id <VC_CheckSiteDelegate> delegate;
 
-- (void) setUploadingBarMessage;
+- (NSString *) urlWithoutScheme:theUrl;
+- (NSString *) domainOfUrl:(NSString *)theUrl;
 - (void) resetCheckSite;
-- (void) loadTypedUrl:(NSString *)urlString;
 - (void) getSiteSummaryCallbackHandler:(ASIHTTPRequest*)request;
 
 @end

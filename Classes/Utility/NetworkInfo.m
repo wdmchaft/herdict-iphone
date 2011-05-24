@@ -30,14 +30,14 @@
 #pragma mark callbackHandlers
 
 - (void) getIpCallbackHandler:(ASIHTTPRequest *)theRequest {
-	NSLog(@"getIpCallbackHandler");
+	//NSLog(@"getIpCallbackHandler");
 	NSDictionary *ipDict = [[WebservicesController sharedSingleton] getDictionaryFromJSONData:[theRequest responseData]];
 	self.ipAddress = [ipDict objectForKey:@"ip"];
 //	[[WebservicesController sharedSingleton] getInfoForIpAddress:self.ipAddress callbackDelegate:self];
 }
 
 - (void) getInfoForIpAddressCallbackHandler:(ASIHTTPRequest*)request {
-	NSLog(@"getInfoForIpAddressCallbackHandler");
+	//NSLog(@"getInfoForIpAddressCallbackHandler");
 
 	// --	Fix the response string, which may contain invalid JSON.
 	NSString *responseString = [request responseString];

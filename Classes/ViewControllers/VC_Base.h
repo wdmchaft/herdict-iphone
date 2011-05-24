@@ -87,8 +87,7 @@
 - (void) selectButtonAbout;
 - (void) selectButtonNetwork;
 - (void) selectButtonCancelSearch;
-- (BOOL) urlTyped;
-- (NSString *) fixUpTypedUrl;
+- (NSURLRequest *) formatTypedUrl;
 - (void) launchCallouts;
 - (BOOL) isModalPopupShowing;
 

@@ -84,10 +84,10 @@
 #define controllerVc__yOrigin 36.0f
 #define controllerVc__height 380.0f
 
-// --	VC_CheckSite elements
+// --	VC_CheckSite
 #define vcCheckSite__height 417.0f
 
-// --	ModalTab elements
+// --	ModalTab
 #define modalTab__count 2.0f
 #define modalTab__heightTotal 440.0f
 #define modalTab__tabLabel__width 130.0f
@@ -95,14 +95,20 @@
 #define modalTab__text__colorRed 0.37f//0.694f
 #define modalTab__text__colorGreen 0.37f//0.69f
 #define modalTab__text__colorBlue 0.37f//0.69f
-// --	SiteSummary subclass
-#define siteSummaryTab__yOrigin__configurationDefault 266.0f
+
+// --	SiteSummary (subclass of ModalTab)
 #define siteSummaryTab__tabLabel__text @"Summary"
 #define siteSummaryTab_loadingAnimation__diameter 22.0f
-#define siteSummaryTab_loadingText__width 141.0f  // perfect for text "Getting Summary..." in Helvetica 16.
-#define siteSummaryTab_loadingText__height 16.0f
-#define siteSummaryTab_loadingText__fontSize 15.0f
-// --	ReportSiteTab subclass
+#define siteSummaryTab__yOrigin__configurationDomainOnly 266.0f
+#define siteSummaryTab_domainLoadingText__width 141.0f
+#define siteSummaryTab_domainLoadingText__height 16.0f
+#define siteSummaryTab_domainLoadingText__fontSize 15.0f
+#define siteSummaryTab__yOrigin__configurationDomainAndPath 266.0f
+#define siteSummaryTab_domainAndPathLoadingText__width 141.0f
+#define siteSummaryTab_domainAndPathLoadingText__height 16.0f
+#define siteSummaryTab_domainAndPathLoadingText__fontSize 15.0f
+
+// --	ReportSiteTab (subclass of ModalTab)
 #define modalTab__duration__changeConfiguration 0.2f
 #define modalTab__duration__addRemoveCommentsSubviews 0.15f
 #define reportSiteTab__yOrigin__configurationDefault 247.0f

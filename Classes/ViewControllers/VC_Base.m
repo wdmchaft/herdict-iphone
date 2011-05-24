@@ -209,34 +209,29 @@
 #pragma mark self as UISearchBarDelegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
+		
+	// --	If they have not entered any text, stop.
+	if ([self.theUrlBar.text length] == 0) {
+		//[self.theUrlBarMenu hideSelectionBackground];
+		UIAlertView *alertNoUrl = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter a URL." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+		[alertNoUrl show];
+		[alertNoUrl release];
+		return;
+	}
+	
+    // --	Fix up theUrlBar.text
+	NSURLRequest *theRequest = [self requestWithTypedUrl];
+    
+    // --   Load it.
+    [self.vcCheckSite.theWebView loadRequest:theRequest];
 
-	//	NSLog(@"theController.delegate.. shouldSelectViewController");
-	
-	// --	Fix up theUrlBar.text
-	self.theUrlBar.text = [self fixUpTypedUrl];	
-	
-	// --	If they have not entered a URL, [self urlTyped] will handle it, and after that we don't proceed.
-	if (![self urlTyped]) {
-		return;
-	}
-	
-	// --	Check for reachability.. this will bring up self.networkView if there is none.
-	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
-		[self.theUrlBar resignFirstResponder];
-		[self selectButtonNetwork];
-		return;
-	}
-	
+    // --   Clear the screen, push vcCheckSite.view into foreground.
 	[self.theUrlBar resignFirstResponder];
 	[self.aboutView hide];
 	[self.networkView hide];
-
-	[self.vcCheckSite loadTypedUrl:self.theUrlBar.text];
-
 	if ([[self.theController topViewController] isEqual:self.vcCheckSite]) {
 		return;
 	}
-	
 	[self.vcHerdometer pauseAnnotatingReport];
 	[self.theController pushViewController:self.vcCheckSite animated:YES];
 	self.navItem.leftBarButtonItem = nil;
@@ -264,19 +259,6 @@
 	[self.vcHerdometer resumeAnnotatingReport];
 }
 
-- (BOOL) urlTyped {
-//	NSLog(@"entered urlTyped");
-
-	if ([self.theUrlBar.text length] == 0) {
-		//[self.theUrlBarMenu hideSelectionBackground];
-		UIAlertView *alertNoUrl = [[UIAlertView alloc] initWithTitle:nil message:@"Please enter a URL." delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-		[alertNoUrl show];
-		[alertNoUrl release];
-		return NO;
-	}
-	return YES;
-}
-
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
 
 	if ([alertView.message isEqualToString:@"Please enter a URL."]) {
@@ -284,21 +266,24 @@
 	}
 }
 
-- (NSString *) fixUpTypedUrl {
-//	NSLog(@"fixUpTypedUrl");
-	NSString *typedUrl = self.theUrlBar.text;
+- (NSURLRequest *) requestWithTypedUrl {
+//	NSLog(@"requestWithTypedUrl");
+	NSString *typedUrlString = self.theUrlBar.text;
 	
-	typedUrl = [typedUrl lowercaseString];
+	typedUrlString = [typedUrlString lowercaseString];
 
-	if ([typedUrl length] > 0) {
-		NSRange rangeHttp = [typedUrl rangeOfString:@"http"];
+	if ([typedUrlString length] > 0) {
+		NSRange rangeHttp = [typedUrlString rangeOfString:@"http"];
 		if (rangeHttp.location == NSNotFound) {
 			//NSLog(@"location isEqual NSNotFound");
-			typedUrl = [NSString stringWithFormat:@"%@%@", @"http://", typedUrl];
+			typedUrlString = [NSString stringWithFormat:@"%@%@", @"http://", typedUrlString];
 		}
 	}
 	
-	return typedUrl;
+    NSURL *theUrl = [NSURL URLWithString:typedUrlString];
+    NSURLRequest *theRequest = [NSURLRequest requestWithURL:theUrl];
+    
+	return theRequest;
 }
 
 - (void) networkReachabilityEvent: (NSNotification *) notification {

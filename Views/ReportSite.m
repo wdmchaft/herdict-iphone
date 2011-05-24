@@ -238,6 +238,7 @@
 
 #pragma mark -
 #pragma mark report callout sequence
+
 - (void) prepareForReportCallout {
 	NSString *theUrl = [[self.delegate theUrlBar] text];
 	theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
@@ -408,9 +409,11 @@
 
 - (void) configureDefault {
 
-	[self.delegate positionAllModalTabsInViewWithYOrigin:reportSiteTab__yOrigin__configurationDefault];
-	[super configureDefault];
-
+    if ([[self.delegate modalTabInFront] isEqual:self]) {
+        [self.delegate positionAllModalTabsInViewWithYOrigin:reportSiteTab__yOrigin__configurationDefault];
+        [super configureDefault];
+    }
+    
 	[UIView animateWithDuration:0.05 delay:0 options:UIViewAnimationCurveEaseOut
 					 animations:^{
 						 self.menuComments.alpha = 0;

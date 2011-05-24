@@ -336,7 +336,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>A62F157F136CF07D0020FA81</string>
+										<string>A630B634136CF6690093E420</string>
 										<key>history</key>
 										<array>
 											<string>A6DFC176135DA4A20015333F</string>
@@ -372,7 +372,7 @@
 											<string>A62F156A136CF01E0020FA81</string>
 											<string>A62F1570136CF04F0020FA81</string>
 											<string>A62F157D136CF07D0020FA81</string>
-											<string>A62F157E136CF07D0020FA81</string>
+											<string>A62F158C136CF5680020FA81</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -384,14 +384,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1172, 490}}</string>
+								<string>{{0, 0}, {1172, 483}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 120 1440 758 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>490pt</string>
+							<string>483pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -404,14 +404,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 495}, {1172, 222}}</string>
+								<string>{{0, 488}, {1172, 229}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 120 1440 758 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>222pt</string>
+							<string>229pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -430,9 +430,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>A62F1128136B31650020FA81</string>
+				<string>A630B62B136CF6690093E420</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>A62F1129136B31650020FA81</string>
+				<string>A630B62C136CF6690093E420</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -570,11 +570,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>A62F1580136CF07D0020FA81</string>
-		<string>1C530D57069F1CE1000CFCEE</string>
-		<string>A62F114A136B35E70020FA81</string>
-		<string>A62F114B136B35E70020FA81</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>A679A20A12B6ECB000A67538</string>
 		<string>/projects/Herdict Working/iOS/Herdict.xcodeproj</string>
@@ -596,14 +591,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>VC_CheckSite.m</string>
+								<string></string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -659,7 +652,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>A679A20A12B6ECB000A67538</string>
-				<string>A62F112A136B31650020FA81</string>
+				<string>A630B62D136CF6690093E420</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -781,13 +774,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>A62F1131136B340C0020FA81</string>
+				<string>A630B62E136CF6690093E420</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>A62F1132136B340C0020FA81</string>
-				<string>A62F1133136B340C0020FA81</string>
-				<string>A62F1134136B340C0020FA81</string>
-				<string>A62F1135136B340C0020FA81</string>
-				<string>A62F1136136B340C0020FA81</string>
+				<string>A630B62F136CF6690093E420</string>
+				<string>A630B630136CF6690093E420</string>
+				<string>A630B631136CF6690093E420</string>
+				<string>A630B632136CF6690093E420</string>
+				<string>A630B633136CF6690093E420</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>

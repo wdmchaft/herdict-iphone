@@ -85,18 +85,29 @@
 }
 
 - (void) getSiteSummaryCallbackHandler:(ASIHTTPRequest*)request {
-	//NSLog(@"getSiteSummaryCallbackHandler");
+	NSLog(@"ENTERING getSiteSummaryCallbackHandler");
 	
+    // --   Pull out and prepare the site summary data.
 	NSDictionary *siteSummaryDictionary = [[WebservicesController sharedSingleton] getDictionaryFromJSONData:[request responseData]];
-	
+    NSLog(@"    siteSummaryDictionary: %@", siteSummaryDictionary);
 	int countryInaccessibleCount = [[siteSummaryDictionary objectForKey:@"countryInaccessibleCount"] intValue];
 	int globalInaccessibleCount = [[siteSummaryDictionary objectForKey:@"globalInaccessibleCount"] intValue];
 	int sheepColor = [[siteSummaryDictionary objectForKey:@"sheepColor"] intValue];
-	int siteId = [[siteSummaryDictionary objectForKey:@"siteId"] intValue];
-	
 	NSString *messageString = [NSString stringWithFormat:@"%d   times in %@\n%d   times around the world", countryInaccessibleCount, [[HerdictArrays sharedSingleton] detected_countryString], globalInaccessibleCount];
 	
-	[self.theTabSiteSummary setStateLoaded:messageString theColor:sheepColor];
+    // --   Tell theTabSiteSummary what to do.  TODO: might want to have this logic in theTabSiteSummary, with a simpler interface.
+    NSString *theUrlDomainWithPath = [self urlWithoutScheme:[[self.delegate theUrlBar] text]];
+    NSString *theUrlDomain = [self domainOfUrl:theUrlDomainWithPath];
+    NSLog(@"    theUrlDomain: %@", theUrlDomain);
+    NSLog(@"    theUrlWithPath: %@", theUrlDomainWithPath);
+    if ([theUrlDomain isEqualToString:theUrlDomainWithPath]) {
+        [self.theTabSiteSummary setStateLoaded:messageString theColor:sheepColor domainOnly:YES];
+    } else {
+        [self.theTabSiteSummary setStateLoaded:messageString theColor:sheepColor domainOnly:NO];
+        
+        // --   Fire off the second callout, getting the site summary for the domain this time.
+        [[WebservicesController sharedSingleton] getSiteSummary:theUrlDomain forCountry:[[HerdictArrays sharedSingleton] detected_countryCode] urlEncoding:@"none" callbackDelegate:self];
+    }    
 }
 
 - (void) resetCheckSite {
@@ -119,72 +130,78 @@
 	[self.view sendSubviewToBack:self.theWebView];
 }
 
-- (void) loadTypedUrl:(NSString *)urlString {
-	
-	// --	Note.. We are supposed to check for reachability before calling this method.  As of the writing of this comment, we do.
+- (NSString*) urlWithoutScheme:(NSString *)theUrl {
+    
+    NSString *theUrlString = [theUrl stringByReplacingOccurrencesOfString:@"http://www." withString:@""];
+    theUrlString = [theUrlString stringByReplacingOccurrencesOfString:@"http://" withString:@""];
 
-	NSLog(@"loadTypedUrl: %@", urlString);
-	
-	NSString *theUrlString = urlString;
-	theUrlString = [theUrlString stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	theUrlString = [theUrlString stringByReplacingOccurrencesOfString:@"www." withString:@""];
-	theUrlString = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)theUrlString, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
-	
-	if ([theUrlString isEqualToString:self.lastTestedUrl]) {
-		NSLog(@"[self.theUrlString isEqualToString:self.lastTestedUrl]");
-		[theUrlString release];
-		return;
-	}
-	if ([theUrlString length] == 0) {
-		NSLog(@"[self.theUrlString length] == 0");
-		[theUrlString release];
-		return;
-	}
-	self.lastTestedUrl = theUrlString;
-	
-	[self resetCheckSite];
-	[self.theTabReportSite resetData];
-	[self.theTabReportSite.delegate positionAllModalTabsOutOfViewExcept:nil];
-	[self.theTabSiteSummary setStateLoading];
-	[[WebservicesController sharedSingleton] getSiteSummary:theUrlString forCountry:[[HerdictArrays sharedSingleton] detected_countryCode] urlEncoding:@"none" callbackDelegate:self];
-		
-	NSURL *theUrl = [NSURL URLWithString:urlString];
-	NSURLRequest *theRequest = [NSURLRequest requestWithURL:theUrl];
-	[self.theWebView loadRequest:theRequest];
+    return theUrlString;
+}
 
-	[theUrlString release];
+- (NSString *) domainOfUrl:(NSString *)theUrl {
+    NSLog(@"ENTERING domainOfUrl:theUrl");
+    NSLog(@"    theUrl: %@",theUrl);
+          
+	NSString *theUrlString = [self urlWithoutScheme:theUrl];
+    
+    // --	Drop the first "/" and anything following it.
+	NSRange rangeOfFirstSlash = [theUrlString rangeOfString:@"/"];
+	NSString *domainFromUrl = [theUrlString substringWithRange:NSMakeRange(0, rangeOfFirstSlash.location + 1)];
+    NSLog(@"    domain: %@", domainFromUrl);
+
+    return domainFromUrl;
 }
 
 #pragma mark -
 #pragma mark UIWebViewDelegate
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-	[self.theLoadingBar show];
-	
-	NSString *requestedUrl = [NSString stringWithFormat:@"%@", request.URL];
-	[[self.delegate theUrlBar] setText:requestedUrl];
+	NSLog(@"ENTERING webView:self.theWebView shouldStartLoadWithRequest:%@ navigationType:%i", webView, request, navigationType);
+
+	// --   Show that we have started working.
+    [self resetCheckSite];
+    [self.theLoadingBar show];	
+    NSString *theUrlString = [NSString stringWithFormat:@"%@", request.URL];
+	[[self.delegate theUrlBar] setText:theUrlString];
+
+    // --	Check for reachability.  If there is none: stop working, and show vcBase.networkView.
+	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
+		[[self.delegate theUrlBar] resignFirstResponder];
+		[self.delegate selectButtonNetwork];
+		return;
+	}
+
+    // --   Let the tabs know we have a new URL.
 	[self.theTabReportSite resetData];
-	[self.theTabSiteSummary setStateLoading];
+
+	theUrlString = [self urlWithoutScheme:theUrlString];
+    if ([[self domainOfUrl:theUrlString] isEqualToString:theUrlString]) {
+        NSLog(@"    [[self domainOfUrl:theUrlString] isEqualToString:theUrlString]");
+        [self.theTabSiteSummary configureDefault];
+    } else {
+        NSLog(@"    NOT [[self domainOfUrl:theUrlString] isEqualToString:theUrlString]");
+        [self.theTabSiteSummary configureForDomainAndPath];
+    }
+    
 	[self.view bringSubviewToFront:self.theTabSiteSummary];
 	[self.theTabSiteSummary.delegate positionAllModalTabsInViewBehind:self.theTabSiteSummary];
-	[[WebservicesController sharedSingleton] getSiteSummary:requestedUrl forCountry:[[HerdictArrays sharedSingleton] detected_countryCode] urlEncoding:@"none" callbackDelegate:self];
+	[[WebservicesController sharedSingleton] getSiteSummary:theUrlString forCountry:[[HerdictArrays sharedSingleton] detected_countryCode] urlEncoding:@"none" callbackDelegate:self];
 	
-	NSLog(@"webView:%@ shouldStartLoadWithRequest:%@ navigationType:%i", webView, request, navigationType);
 	return YES;
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-//	[self.theLoadingBar show];
-	NSLog(@"webViewDidStartLoad:%@", webView);
+	//NSLog(@"webViewDidStartLoad:%@", webView);
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	[self.theLoadingBar hide];
-	NSLog(@"webViewDidFinishLoad:%@", webView);	
+	//NSLog(@"webViewDidFinishLoad:%@", webView);	
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+	NSLog(@"ENTERING webView:%@ didFailLoadWithError:%@", webView, error);
 	[self.theLoadingBar hide];
 	[self.theErrorView setErrorMessage:[error localizedDescription]];
+    [self.theTabSiteSummary.delegate positionAllModalTabsOutOfViewExcept:nil];
 	[self.view addSubview:self.theErrorView];
-	NSLog(@"webView:%@ didFailLoadWithError:%@", webView, error);
 }
 
 @end

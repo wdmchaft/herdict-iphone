@@ -101,13 +101,19 @@
 }
 - (void)getSiteSummary:(NSString *)theUrl forCountry:(NSString *)theCountry urlEncoding:(NSString *)theEncoding callbackDelegate:(id)theDelegate {
 
-	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/site/%@/%@/%@/%@",
+    NSString* theUrlString = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
+	theUrlString = [theUrlString stringByReplacingOccurrencesOfString:@"www." withString:@""];
+	theUrlString = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)theUrl, NULL, (CFStringRef)@"!*'();:@&=+$.,/?%#[]", kCFStringEncodingUTF8);
+    
+	NSString *calloutUrlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/site/%@/%@/%@/%@",
 						   self.tld,
-						   theUrl,
+						   theUrlString,
 						   theCountry,
 						   theEncoding,
 						   self.apiVersion];
-	[self asynchGETRequest:urlString callbackDelegate:theDelegate callbackSelector:@selector(getSiteSummaryCallbackHandler:)];
+	[self asynchGETRequest:calloutUrlString callbackDelegate:theDelegate callbackSelector:@selector(getSiteSummaryCallbackHandler:)];
+    
+    [theUrlString release];
 }
 
 - (void)reportUrl:(NSString *)theEncodedUrl reportType:(NSString *)theReportType country:(NSString *)theCountry userISP:(NSString *)theIsp userLocation:(NSString *)theLocation interest:(NSString *)theInterest reason:(NSString *)theReason sourceId:(NSString *)theSourceId tag:(NSString *)theTag comments:(NSString *)theComments defaultCountryCode:(NSString *)theDCC defaultispDefaultName:(NSString *)theDIN callbackDelegate:(id)theDelegate {

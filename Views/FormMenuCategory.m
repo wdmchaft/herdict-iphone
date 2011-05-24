@@ -163,7 +163,7 @@
 }
 
 - (void) showSelectionBackgroundForOption:(int)optionNumber {
-	UITextView *selectedOption = [self viewWithTag:optionNumber];
+	UITextView *selectedOption = (UITextView *)[self viewWithTag:optionNumber];
 	
 	self.selectionBackground.backgroundColor = UIColorFromRGB(0x5AabF7);
 	[self.selectionBackground setFrame:CGRectMake(selectedOption.frame.origin.x - 6,

@@ -47,7 +47,7 @@
 		
 		// --	Set up loadingIndicator and loadingText
 		self.loadingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-		[self.loadingIndicator setFrame:CGRectMake(0.5 * (networkView__width - (siteSummaryTab_loadingAnimation__diameter + 11 + siteSummaryTab_loadingText__width)),
+		[self.loadingIndicator setFrame:CGRectMake(0.5 * (networkView__width - (siteSummaryTab_loadingAnimation__diameter + 11 + siteSummaryTab_domainLoadingText__width)),
 												   networkView_loadingIndicator__yOffset__stateLoading,
 												   siteSummaryTab_loadingAnimation__diameter,
 												   siteSummaryTab_loadingAnimation__diameter)];
@@ -56,8 +56,8 @@
 		[self addSubview:self.loadingIndicator];
 		self.loadingText = [[UILabel alloc] initWithFrame:CGRectMake(12 + self.loadingIndicator.frame.origin.x + siteSummaryTab_loadingAnimation__diameter,
 																	 1 + networkView_loadingIndicator__yOffset__stateLoading,
-																	 siteSummaryTab_loadingText__width,
-																	 siteSummaryTab_loadingText__height + 5)];
+																	 siteSummaryTab_domainLoadingText__width,
+																	 siteSummaryTab_domainLoadingText__height + 5)];
 		self.loadingText.text = @"Checking Connection...";
 		self.loadingText.font = [UIFont fontWithName:@"Helvetica-Bold" size:14];
 		self.loadingText.backgroundColor = [UIColor clearColor];

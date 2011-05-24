@@ -11,18 +11,27 @@
 
 @interface SiteSummary : ModalTab {
 
-	UITextView *textView1;
-	UITextView *textView2;
-	UIActivityIndicatorView *loadingIndicator;
-	UILabel *loadingText;		
+	UITextView *domainMessageString1;
+	UITextView *domainMessageString2;
+    UIActivityIndicatorView *domainLoadingIndicator;
+	UILabel *domainLoadingText;		
+
+    UITextView *domainAndPathMessageString1;
+    UITextView *domainAndPathMessageString2;
+	UIActivityIndicatorView *domainAndPathLoadingIndicator;
+	UILabel *domainAndPathLoadingText;
 }
 
-@property (nonatomic, retain) UITextView *textView1;
-@property (nonatomic, retain) UITextView *textView2;
-@property (nonatomic, retain) UIActivityIndicatorView *loadingIndicator;
-@property (nonatomic, retain) UILabel *loadingText;
+@property (nonatomic, retain) UITextView *domainMessageString1;
+@property (nonatomic, retain) UITextView *domainMessageString2;
+@property (nonatomic, retain) UIActivityIndicatorView *domainLoadingIndicator;
+@property (nonatomic, retain) UILabel *domainLoadingText;
 
-- (void) setStateLoading;
-- (void) setStateLoaded:(NSString *)theMessageString theColor:(int)theSheepColor;
+@property (nonatomic, retain) UITextView *domainAndPathMessageString1;
+@property (nonatomic, retain) UITextView *domainAndPathMessageString2;
+@property (nonatomic, retain) UIActivityIndicatorView *domainAndPathLoadingIndicator;
+@property (nonatomic, retain) UILabel *domainAndPathLoadingText;
+
+- (void) setStateLoaded:(NSString *)theMessageString theColor:(int)theSheepColor domainOnly:(BOOL)isDomainOnly;
 
 @end

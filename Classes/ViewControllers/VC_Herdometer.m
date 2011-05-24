@@ -290,7 +290,7 @@
 
 
 - (void) getRoughGeocodeForCountryCallbackHandler:(ASIHTTPRequest *)request {
-	NSLog(@"getRoughGeocodeForCountryCallbackHandler");	
+	//NSLog(@"getRoughGeocodeForCountryCallbackHandler");	
 	
 	NSDictionary *responseDictionary = [[WebservicesController sharedSingleton] getDictionaryFromJSONData:[request responseData]];
 	
