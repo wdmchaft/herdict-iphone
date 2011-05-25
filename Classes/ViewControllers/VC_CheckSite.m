@@ -96,7 +96,9 @@
 	NSString *messageString = [NSString stringWithFormat:@"%d   times in %@\n%d   times around the world", countryInaccessibleCount, [[HerdictArrays sharedSingleton] detected_countryString], globalInaccessibleCount];
 	
     // --   Tell theTabSiteSummary what to do.  TODO: if this logic gets any more complicated, put it in SiteSummary.
-    [self.theTabSiteSummary setStateLoaded:messageString theColor:sheepColor domainOnly:YES];
+    [self.theTabSiteSummary setStateLoaded:messageString theColor:sheepColor];
+
+	NSLog(@"getSiteSummaryCallbackHandler:request >> RETURNING void");
 }
 
 - (void) resetCheckSite {
@@ -138,7 +140,8 @@
 
     // --   Make sure this is a URL and not something like "about:blank"
     NSRange rangeOfDot = [theString rangeOfString:@"."];
-    if (rangeOfDot.location) {
+    NSLog(@"domainOfUrl:theUrl >> (rangeOfDot.location < [theString length]) == %@", (rangeOfDot.location < [theString length]) ? @"yes" : @"no");
+    if (rangeOfDot.location < [theString length]) {
         // --	Drop the first "/" and anything following it.  If there is no "/", drop nothing.
         NSRange rangeOfFirstSlash = [theString rangeOfString:@"/"];
         NSLog(@"domainOfUrl:theUrl >> using substring with range: %@", NSStringFromRange(NSMakeRange(0, rangeOfFirstSlash.location)));
@@ -146,7 +149,6 @@
     }
     
     NSLog(@"domainOfUrl:theUrl >> RETURNING %@", theString);
-
     return theString;
 }
 
@@ -157,7 +159,7 @@
 	NSLog(@"webView:self.theWebView shouldStartLoadWithRequest:%@ navigationType:%i >> ENTERING", request, navigationType);
 
 	// --   Show that we have started working.
-    [self resetCheckSite];
+//    [self resetCheckSite];
     [self.theLoadingBar show];	
     NSString *theUrlString = [NSString stringWithFormat:@"%@", request.URL];
 	[[self.delegate theUrlBar] setText:theUrlString];
@@ -166,27 +168,28 @@
 	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
 		[[self.delegate theUrlBar] resignFirstResponder];
 		[self.delegate selectButtonNetwork];
-		return;
+		return NO;
 	}
 
     // --   Let the tabs know we have a new URL.
 	[self.theTabReportSite resetData];
-
 	theUrlString = [self domainOfUrl:theUrlString];
     [self.theTabSiteSummary configureDefault];
-    
 	[self.view bringSubviewToFront:self.theTabSiteSummary];
 	[self.theTabSiteSummary.delegate positionAllModalTabsInViewBehind:self.theTabSiteSummary];
 	[[WebservicesController sharedSingleton] getSiteSummary:theUrlString forCountry:[[HerdictArrays sharedSingleton] detected_countryCode] urlEncoding:@"none" callbackDelegate:self];
 	
+    NSLog(@"webView:self.theWebView shouldStartLoadWithRequest:%@ navigationType:%i >> RETURNING true", request, navigationType);
 	return YES;
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-	//NSLog(@"webViewDidStartLoad:%@", webView);
+	NSLog(@"webViewDidStartLoad:webView >> ENTERING");
+	NSLog(@"webViewDidStartLoad:webView >> RETURNING void");
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
+	NSLog(@"webViewDidFinishLoad:webView >> ENTERING");
 	[self.theLoadingBar hide];
-	//NSLog(@"webViewDidFinishLoad:%@", webView);	
+	NSLog(@"webViewDidFinishLoad:webView >> RETURNING void");
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 	NSLog(@"webView:%@ didFailLoadWithError:%@ >> ENTERING", webView, error);
@@ -194,6 +197,7 @@
 	[self.theErrorView setErrorMessage:[error localizedDescription]];
     [self.theTabSiteSummary.delegate positionAllModalTabsOutOfViewExcept:nil];
 	[self.view addSubview:self.theErrorView];
+	NSLog(@"webView:%@ didFailLoadWithError:%@ >> RETURNING void", webView, error);
 }
 
 @end

@@ -154,15 +154,22 @@
 }
 
 - (void) initiateAnnotateReport {
-	//NSLog(@"initiateAnnotateReport");
-		
+	NSLog(@"initiateAnnotateReport >> ENTERING");
+    
+    // --   If there is any reason not to annotate now, don't.
 	BOOL shouldContinue = YES;
 	if ([self.reportsFromFeed count] <= 0) {
 		shouldContinue = NO;
+        NSLog(@"initiateAnnotateReport >> found we don't have reportsFromFeed yet");
 	}
 	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
 		shouldContinue = NO;
+        NSLog(@"initiateAnnotateReport >> found no reachability");
 	}
+    if ([[[self.delegate theController] topViewController] isKindOfClass:[VC_CheckSite class]]) {
+        shouldContinue = NO;
+        NSLog(@"initiateAnnotateReport >> found vcCheckSite is pushed");
+    }
 	if (!shouldContinue) {
 		//NSLog(@"[self initiateAnnotateReport] found: !shouldContinue");
 		[self.reportMapView deselectAnnotation:self.theAnnotation animated:YES];
@@ -178,6 +185,7 @@
 	} else {
 		[self annotateReport];
 	}
+	NSLog(@"initiateAnnotateReport >> RETURNING void");
 }
 
 - (void) annotateReport {

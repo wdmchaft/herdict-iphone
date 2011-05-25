@@ -14,6 +14,7 @@
 #import "ASIHTTPRequest.h"
 #import "TouchXML.h"
 #import "Reachability.h"
+#import "VC_CheckSite.h"
 
 @class VC_Herdometer;
 @protocol VC_HerdometerDelegate
