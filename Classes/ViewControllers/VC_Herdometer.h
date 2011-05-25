@@ -15,6 +15,8 @@
 #import "TouchXML.h"
 #import "Reachability.h"
 #import "VC_CheckSite.h"
+#import "URLStringUtils.h"
+
 
 @class VC_Herdometer;
 @protocol VC_HerdometerDelegate

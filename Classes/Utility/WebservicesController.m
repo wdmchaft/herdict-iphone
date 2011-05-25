@@ -68,7 +68,8 @@
 }
 
 - (void)getRoughGeocodeForCountry:(NSString *)theCountry callbackDelegate:(id)theCallbackDelegate {
-	
+	NSLog(@"getRoughGeocodeForCountry:theCountry callbackDelegate:theCallbackDelegate >> ENTERING");
+    
 	NSString *encodedCountryString = (NSString *)CFURLCreateStringByAddingPercentEscapes(
 																						 NULL,
 																						 (CFStringRef)theCountry,
@@ -79,6 +80,7 @@
 	NSString *urlString = [NSString stringWithFormat:@"http://maps.googleapis.com/maps/api/geocode/json?address=%@&sensor=false",encodedCountryString];
 	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getRoughGeocodeForCountryCallbackHandler:)];
 	[encodedCountryString release];
+	NSLog(@"getRoughGeocodeForCountry:theCountry callbackDelegate:theCallbackDelegate >> RETURNING void");
 }
 
 
@@ -101,8 +103,7 @@
 }
 - (void)getSiteSummary:(NSString *)theUrl forCountry:(NSString *)theCountry urlEncoding:(NSString *)theEncoding callbackDelegate:(id)theDelegate {
 
-    NSString* theUrlString = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	theUrlString = [theUrlString stringByReplacingOccurrencesOfString:@"www." withString:@""];
+    NSString* theUrlString = [[URLStringUtils sharedSingleton] domainOfUrl:theUrl];
 	theUrlString = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)theUrl, NULL, (CFStringRef)@"!*'();:@&=+$.,/?%#[]", kCFStringEncodingUTF8);
     
 	NSString *calloutUrlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/site/%@/%@/%@/%@",

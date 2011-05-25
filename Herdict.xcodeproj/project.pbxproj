@@ -111,6 +111,7 @@
 		A6F650D4133EF6500053DFB9 /* 179-notepad.png in Resources */ = {isa = PBXBuildFile; fileRef = A6F650D1133EF6500053DFB9 /* 179-notepad.png */; };
 		A6F650D5133EF6500053DFB9 /* 07-map-marker.png in Resources */ = {isa = PBXBuildFile; fileRef = A6F650D2133EF6500053DFB9 /* 07-map-marker.png */; };
 		A6F650D6133EF6500053DFB9 /* 06-magnify.png in Resources */ = {isa = PBXBuildFile; fileRef = A6F650D3133EF6500053DFB9 /* 06-magnify.png */; };
+		A6FACF33138CA5CD004F2BFD /* URLStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = A6FACF32138CA5CD004F2BFD /* URLStringUtils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -279,6 +280,8 @@
 		A6F650D1133EF6500053DFB9 /* 179-notepad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "179-notepad.png"; sourceTree = "<group>"; };
 		A6F650D2133EF6500053DFB9 /* 07-map-marker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "07-map-marker.png"; sourceTree = "<group>"; };
 		A6F650D3133EF6500053DFB9 /* 06-magnify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "06-magnify.png"; sourceTree = "<group>"; };
+		A6FACF31138CA5CD004F2BFD /* URLStringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLStringUtils.h; sourceTree = "<group>"; };
+		A6FACF32138CA5CD004F2BFD /* URLStringUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLStringUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -519,6 +522,8 @@
 				A63E2C0B132D77E700804457 /* ReportAnnotation.m */,
 				A6F64F1B133E7D140053DFB9 /* HerdictArrays.h */,
 				A6F64F1C133E7D140053DFB9 /* HerdictArrays.m */,
+				A6FACF31138CA5CD004F2BFD /* URLStringUtils.h */,
+				A6FACF32138CA5CD004F2BFD /* URLStringUtils.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -800,6 +805,7 @@
 				A60593BA135A21FD0047DCF7 /* ModalTab.m in Sources */,
 				A62F1158136B3D8C0020FA81 /* LoadingBar.m in Sources */,
 				A62F1318136CA0890020FA81 /* ErrorView.m in Sources */,
+				A6FACF33138CA5CD004F2BFD /* URLStringUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

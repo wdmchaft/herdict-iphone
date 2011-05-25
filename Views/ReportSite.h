@@ -17,6 +17,7 @@
 #import "Screen.h"
 #import "NetworkInfo.h"
 #import "HerdictArrays.h"
+#import "URLStringUtils.h"
 
 
 @interface ReportSite : ModalTab <UIAlertViewDelegate, UITextViewDelegate> {

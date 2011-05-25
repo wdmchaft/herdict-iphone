@@ -10,6 +10,7 @@
 #import "ASIHTTPRequest.h"
 #import "Reachability.h"
 #import "CoreLocation/CoreLocation.h"
+#import "URLStringUtils.h"
 
 
 @interface WebservicesController : NSObject {

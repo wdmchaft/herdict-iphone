@@ -130,7 +130,7 @@
 }
 
 - (void) getCategoriesCallbackHandler:(ASIHTTPRequest*)request {
-	NSLog(@"%@ getCategoriesCallbackHandler", [self class]); 
+//	NSLog(@"%@ getCategoriesCallbackHandler", [self class]); 
 	[[HerdictArrays sharedSingleton] getCategoriesCallbackHandler:request];
 	[self performSelector:@selector(setUpMenuCategory) withObject:nil afterDelay:1.0];
 }
@@ -241,8 +241,7 @@
 
 - (void) prepareForReportCallout {
 	NSString *theUrl = [[self.delegate theUrlBar] text];
-	theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	theUrl = [theUrl stringByReplacingOccurrencesOfString:@"www." withString:@""];		
+    theUrl = [[URLStringUtils sharedSingleton] domainOfUrl:theUrl];
 	UIAlertView *alertConfirm = [[UIAlertView alloc] initWithTitle:@"Confirm" message:[NSString stringWithFormat:@"Report %@ %@?", theUrl, self.siteIsAccessible ? @"accessible" : @"inaccessible"] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Submit",nil];
 	[alertConfirm show];
 	[alertConfirm release];		
@@ -262,9 +261,8 @@
 		return;
 	}
 	
-	NSString *theUrl = [[self.delegate theUrlBar] text]; 
-	theUrl = [theUrl stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-	theUrl = [theUrl stringByReplacingOccurrencesOfString:@"www." withString:@""];
+	NSString *theUrl = [[self.delegate theUrlBar] text];
+    theUrl = [[URLStringUtils sharedSingleton] domainOfUrl:theUrl];
 	theUrl = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)theUrl, NULL, (CFStringRef)@"!*'();:@&=+$,/?%#[]", kCFStringEncodingUTF8);
 	
 	NSString *theReportType = [NSString string];
@@ -313,9 +311,11 @@
 		UIAlertView *alertThankYou = [[UIAlertView alloc] initWithTitle:@"Report Submitted" message:@"Thanks for participating!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Done",nil];
 		[alertThankYou show];
 		[alertThankYou release];
-		[self.delegate positionAllModalTabsOutOfViewExcept:nil];
-		self.labelSelectCategory.text = reportSiteTab__labelSelectCategory__text__configurationDefault;
-		self.labelAddComments.text = reportSiteTab__labelAddComments__text__configurationDefault;
+//		[self.delegate positionAllModalTabsOutOfViewExcept:nil];
+        [self resetData];
+        NSString *theUrlString = [[self.delegate theUrlBar] text];
+        theUrlString = [[URLStringUtils sharedSingleton] domainOfUrl:theUrlString];
+        [[WebservicesController sharedSingleton] getSiteSummary:theUrlString forCountry:[[HerdictArrays sharedSingleton] detected_countryCode] urlEncoding:@"none" callbackDelegate:[self.delegate vcCheckSite]];
 	} else {
 		UIAlertView *alertError = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error submitting your report." delegate:self cancelButtonTitle:nil otherButtonTitles:@"Done",nil];
 		[alertError show];

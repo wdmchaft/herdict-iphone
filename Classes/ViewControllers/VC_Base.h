@@ -14,6 +14,7 @@
 
 #import "WebservicesController.h"
 #import "NetworkInfo.h"
+#import "URLStringUtils.h"
 
 #import "VC_Herdometer.h"
 #import "VC_CheckSite.h"

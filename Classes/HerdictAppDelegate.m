@@ -32,7 +32,7 @@
 	[self.viewSplash addSubview:imageViewSplash];
 	[self.window addSubview:self.viewSplash];
 	
-	[NSTimer scheduledTimerWithTimeInterval:0.5f target:self selector:@selector(showVcBase) userInfo:nil repeats:NO];
+	[NSTimer scheduledTimerWithTimeInterval:2.0f target:self selector:@selector(showVcBase) userInfo:nil repeats:NO];
 	
 	// --	Set up vcBase.
 	self.vcBase = [[VC_Base alloc] init];

@@ -178,6 +178,7 @@
 	[self selectButtonCancelSearch];
 	[self.buttonHerdometer setNotSelected];
 	[self.theController popViewControllerAnimated:YES];
+    [self.vcHerdometer resumeAnnotatingReport];
 	self.navItem.leftBarButtonItem = nil;
 	self.navItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonAbout] autorelease];
 	
@@ -232,7 +233,7 @@
 	if ([[self.theController topViewController] isEqual:self.vcCheckSite]) {
 		return;
 	}
-	[self.vcHerdometer pauseAnnotatingReport];
+//	[self.vcHerdometer pauseAnnotatingReport];   this doesn't always work because there may be a web callout outstanding
 	[self.theController pushViewController:self.vcCheckSite animated:YES];
 	self.navItem.leftBarButtonItem = nil;
 	self.navItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:self.buttonHerdometer] autorelease];

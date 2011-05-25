@@ -121,37 +121,6 @@
 	[self.view sendSubviewToBack:self.theWebView];
 }
 
-- (NSString*) urlWithoutScheme:(NSString *)theUrl {
-    NSLog(@"urlWithoutScheme:theUrl >> ENTERING");
-    NSLog(@"urlWithoutScheme:theUrl >> theUrl: %@", theUrl);
-    
-    NSString *theUrlString = [theUrl stringByReplacingOccurrencesOfString:@"http://www." withString:@""];
-    theUrlString = [theUrlString stringByReplacingOccurrencesOfString:@"http://" withString:@""];
-
-    NSLog(@"urlWithoutScheme:theUrl >> RETURNING %@", theUrlString);
-    return theUrlString;
-}
-
-- (NSString *) domainOfUrl:(NSString *)theUrl {
-    NSLog(@"domainOfUrl:theUrl >> ENTERING");
-    NSLog(@"domainOfUrl:theUrl >> theUrl: %@",theUrl);
-          
-	NSString *theString = [self urlWithoutScheme:theUrl];
-
-    // --   Make sure this is a URL and not something like "about:blank"
-    NSRange rangeOfDot = [theString rangeOfString:@"."];
-    NSLog(@"domainOfUrl:theUrl >> (rangeOfDot.location < [theString length]) == %@", (rangeOfDot.location < [theString length]) ? @"yes" : @"no");
-    if (rangeOfDot.location < [theString length]) {
-        // --	Drop the first "/" and anything following it.  If there is no "/", drop nothing.
-        NSRange rangeOfFirstSlash = [theString rangeOfString:@"/"];
-        NSLog(@"domainOfUrl:theUrl >> using substring with range: %@", NSStringFromRange(NSMakeRange(0, rangeOfFirstSlash.location)));
-        theString = [theString substringWithRange:NSMakeRange(0, rangeOfFirstSlash.location)];        
-    }
-    
-    NSLog(@"domainOfUrl:theUrl >> RETURNING %@", theString);
-    return theString;
-}
-
 #pragma mark -
 #pragma mark UIWebViewDelegate
 
@@ -173,7 +142,7 @@
 
     // --   Let the tabs know we have a new URL.
 	[self.theTabReportSite resetData];
-	theUrlString = [self domainOfUrl:theUrlString];
+	theUrlString = [[URLStringUtils sharedSingleton] domainOfUrl:theUrlString];
     [self.theTabSiteSummary configureDefault];
 	[self.view bringSubviewToFront:self.theTabSiteSummary];
 	[self.theTabSiteSummary.delegate positionAllModalTabsInViewBehind:self.theTabSiteSummary];
@@ -183,13 +152,13 @@
 	return YES;
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-	NSLog(@"webViewDidStartLoad:webView >> ENTERING");
-	NSLog(@"webViewDidStartLoad:webView >> RETURNING void");
+//	NSLog(@"webViewDidStartLoad:webView >> ENTERING");
+//	NSLog(@"webViewDidStartLoad:webView >> RETURNING void");
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-	NSLog(@"webViewDidFinishLoad:webView >> ENTERING");
+//	NSLog(@"webViewDidFinishLoad:webView >> ENTERING");
 	[self.theLoadingBar hide];
-	NSLog(@"webViewDidFinishLoad:webView >> RETURNING void");
+//	NSLog(@"webViewDidFinishLoad:webView >> RETURNING void");
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 	NSLog(@"webView:%@ didFailLoadWithError:%@ >> ENTERING", webView, error);

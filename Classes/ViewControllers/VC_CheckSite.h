@@ -13,6 +13,7 @@
 #import "ReportSite.h"
 #import "LoadingBar.h"
 #import "ErrorView.h"
+#import "URLStringUtils.h"
 
 @class VC_CheckSite;
 @protocol VC_CheckSiteDelegate
@@ -48,8 +49,6 @@
 
 @property (nonatomic, retain) id <VC_CheckSiteDelegate> delegate;
 
-- (NSString *) urlWithoutScheme:theUrl;
-- (NSString *) domainOfUrl:(NSString *)theUrl;
 - (void) resetCheckSite;
 - (void) getSiteSummaryCallbackHandler:(ASIHTTPRequest*)request;
 

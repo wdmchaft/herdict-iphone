@@ -63,7 +63,6 @@
 
 - (void) viewWillDisappear:(BOOL)animated {
 
-	NSLog(@"about to call [self.timerInititiateAnnotateReport invalidate]");
 	[self.timerInititiateAnnotateReport invalidate];	
 }
 
@@ -154,21 +153,21 @@
 }
 
 - (void) initiateAnnotateReport {
-	NSLog(@"initiateAnnotateReport >> ENTERING");
+//	NSLog(@"initiateAnnotateReport >> ENTERING");
     
     // --   If there is any reason not to annotate now, don't.
 	BOOL shouldContinue = YES;
 	if ([self.reportsFromFeed count] <= 0) {
 		shouldContinue = NO;
-        NSLog(@"initiateAnnotateReport >> found we don't have reportsFromFeed yet");
+//        NSLog(@"initiateAnnotateReport >> found we don't have reportsFromFeed yet");
 	}
 	if (![[[WebservicesController sharedSingleton] herdictReachability] isReachable]) {
 		shouldContinue = NO;
-        NSLog(@"initiateAnnotateReport >> found no reachability");
+//        NSLog(@"initiateAnnotateReport >> found no reachability");
 	}
     if ([[[self.delegate theController] topViewController] isKindOfClass:[VC_CheckSite class]]) {
         shouldContinue = NO;
-        NSLog(@"initiateAnnotateReport >> found vcCheckSite is pushed");
+//        NSLog(@"initiateAnnotateReport >> found vcCheckSite is pushed");
     }
 	if (!shouldContinue) {
 		//NSLog(@"[self initiateAnnotateReport] found: !shouldContinue");
@@ -185,11 +184,11 @@
 	} else {
 		[self annotateReport];
 	}
-	NSLog(@"initiateAnnotateReport >> RETURNING void");
+//	NSLog(@"initiateAnnotateReport >> RETURNING void");
 }
 
 - (void) annotateReport {
-	//NSLog(@"annotateReport");
+//	NSLog(@"annotateReport >> ENTERING");
 	
 	// --	Get the report info ready.
 	NSMutableDictionary *geometryDict = [[self.reportsFromFeed objectAtIndex:self.indexOfCurrentReportToBeAnnotated] objectForKey:@"geodata"];
@@ -223,7 +222,9 @@
 	// --	Get ready to annotate the next report...
 	self.indexOfCurrentReportToBeAnnotated = [self indexOfReportToBeAnnotatedNext];
 	[self.timerInititiateAnnotateReport invalidate];
-	self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:4.5 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
+	self.timerInititiateAnnotateReport = [NSTimer scheduledTimerWithTimeInterval:3.5 target:self selector:@selector(initiateAnnotateReport) userInfo:nil repeats:NO];
+
+//	NSLog(@"annotateReport >> RETURNING void");
 }
 
 - (NSString *) getAnnotationTitleString:(NSMutableDictionary *) reportDict {
@@ -298,7 +299,7 @@
 
 
 - (void) getRoughGeocodeForCountryCallbackHandler:(ASIHTTPRequest *)request {
-	//NSLog(@"getRoughGeocodeForCountryCallbackHandler");	
+	NSLog(@"getRoughGeocodeForCountryCallbackHandler >> ENTERING");	
 	
 	NSDictionary *responseDictionary = [[WebservicesController sharedSingleton] getDictionaryFromJSONData:[request responseData]];
 	
@@ -308,6 +309,7 @@
 	[reportDict setObject:geometryDict forKey:@"geodata"];
 	
 	[self annotateReport];
+    NSLog(@"getRoughGeocodeForCountryCallbackHandler >> RETURNING void");
 }
 
 - (BOOL) allReportsAreShown {
