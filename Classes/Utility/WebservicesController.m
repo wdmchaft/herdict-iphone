@@ -22,7 +22,7 @@
 
 	self = [super init];
 	if (self) {
-		self.tld = @"dev";
+		self.tld = @"dev2";
 		self.apiVersion = @"FF1.0";
 		// --	Get the notifications started (for everyone).
 		self.herdictReachability = [[Reachability reachabilityWithHostName:@"www.herdict.org"] retain];
@@ -103,13 +103,19 @@
 }
 - (void)getSiteSummary:(NSString *)theUrl forCountry:(NSString *)theCountry urlEncoding:(NSString *)theEncoding callbackDelegate:(id)theDelegate {
 
+    NSString *countryCode = theCountry;
+    if (!theCountry) {
+        NSLog(@"country not known, setting to US");
+        theCountry = @"US";
+    }
+
     NSString* theUrlString = [[URLStringUtils sharedSingleton] domainOfUrl:theUrl];
 	theUrlString = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)theUrl, NULL, (CFStringRef)@"!*'();:@&=+$.,/?%#[]", kCFStringEncodingUTF8);
     
 	NSString *calloutUrlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/site/%@/%@/%@/%@",
 						   self.tld,
 						   theUrlString,
-						   theCountry,
+						   countryCode,
 						   theEncoding,
 						   self.apiVersion];
 	[self asynchGETRequest:calloutUrlString callbackDelegate:theDelegate callbackSelector:@selector(getSiteSummaryCallbackHandler:)];
@@ -119,11 +125,17 @@
 
 - (void)reportUrl:(NSString *)theEncodedUrl reportType:(NSString *)theReportType country:(NSString *)theCountry userISP:(NSString *)theIsp userLocation:(NSString *)theLocation interest:(NSString *)theInterest reason:(NSString *)theReason sourceId:(NSString *)theSourceId tag:(NSString *)theTag comments:(NSString *)theComments defaultCountryCode:(NSString *)theDCC defaultispDefaultName:(NSString *)theDIN callbackDelegate:(id)theDelegate {
 	
+    NSString *countryCode = theCountry;
+    if (!theCountry) {
+        NSLog(@"country not known, setting to US");
+        theCountry = @"US";
+    }
+    
 	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/report?%@&report.url=%@&report.country.shortName=%@&report.ispDefaultName=%@&report.location=%@&report.interest=%@&report.reason=%@&report.sourceId=%@&report.tag=%@&report.comments=%@&defaultCountryCode=%@&defaultispDefaultName=%@&encoding=%@",
 						   self.tld,
 						   theReportType,
 						   theEncodedUrl,
-						   theCountry,
+						   countryCode,
 						   theIsp,
 						   theLocation,
 						   theInterest,
