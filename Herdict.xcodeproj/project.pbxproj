@@ -128,7 +128,6 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		477B431C148D77AC005A2D18 /* orange_sheep.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_sheep.png; sourceTree = "<group>"; };
 		477B431E148D77E3005A2D18 /* orange_sheep_large.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = orange_sheep_large.png; sourceTree = "<group>"; };
-		47A82832149914A700C3C843 /* Herdict.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Herdict.entitlements; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Herdict-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Herdict-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		A60593B5135A21D80047DCF7 /* ReportSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportSite.h; sourceTree = "<group>"; };
 		A60593B6135A21D80047DCF7 /* ReportSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportSite.m; sourceTree = "<group>"; wrapsLines = 1; };
@@ -335,7 +334,6 @@
 		29B97314FDCFA39411CA2CEA /* Provider */ = {
 			isa = PBXGroup;
 			children = (
-				47A82832149914A700C3C843 /* Herdict.entitlements */,
 				477B431E148D77E3005A2D18 /* orange_sheep_large.png */,
 				477B431C148D77AC005A2D18 /* orange_sheep.png */,
 				080E96DDFE201D6D7F000001 /* Classes */,
