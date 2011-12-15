@@ -14,7 +14,7 @@
 
 @implementation WebservicesController
 
-@synthesize tld;
+@synthesize subdomain;
 @synthesize apiVersion;
 @synthesize herdictReachability;
 
@@ -22,7 +22,7 @@
 
 	self = [super init];
 	if (self) {
-		self.tld = @"dev";
+		self.subdomain = @"dev2";
 		self.apiVersion = @"FF1.0";
 		// --	Get the notifications started (for everyone).
 		self.herdictReachability = [[Reachability reachabilityWithHostName:@"www.herdict.org"] retain];
@@ -86,23 +86,23 @@
 #pragma mark callouts to Herdict services
 - (void)getCountries:(id)theCallbackDelegate {
 	// TO2
-	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/init-countries/%@", self.tld, self.apiVersion];
+	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/init-countries/%@", self.subdomain, self.apiVersion];
 	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getCountriesCallbackHandler:)];	
 }
 - (void)getCategories:(id)theCallbackDelegate {
 	// T01
-	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/init-categories/%@", self.tld, self.apiVersion];
+	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/init-categories/%@", self.subdomain, self.apiVersion];
 	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getCategoriesCallbackHandler:)];	
 }
 - (void)getCurrentLocation:(id)theCallbackDelegate {
 	// T06
-	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/init-currentLocation/%@", self.tld, self.apiVersion];
+	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/init-currentLocation/%@", self.subdomain, self.apiVersion];
 	[self asynchGETRequest:urlString callbackDelegate:theCallbackDelegate callbackSelector:@selector(getCurrentLocationCallbackHandler:)];
 }
 - (void)getSiteSummary:(NSString *)theUrl forCountry:(NSString *)theCountry urlEncoding:(NSString *)theEncoding callbackDelegate:(id)theDelegate {
 
 	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/site/%@/%@/%@/%@",
-						   self.tld,
+						   self.subdomain,
 						   theUrl,
 						   theCountry,
 						   theEncoding,
@@ -113,7 +113,7 @@
 - (void)reportUrl:(NSString *)theEncodedUrl reportType:(NSString *)theReportType country:(NSString *)theCountry userISP:(NSString *)theIsp userLocation:(NSString *)theLocation interest:(NSString *)theInterest reason:(NSString *)theReason sourceId:(NSString *)theSourceId tag:(NSString *)theTag comments:(NSString *)theComments defaultCountryCode:(NSString *)theDCC defaultispDefaultName:(NSString *)theDIN callbackDelegate:(id)theDelegate {
 	
 	NSString *urlString = [NSString stringWithFormat:@"http://%@.herdict.org/web/action/ajax/plugin/report?%@&report.url=%@&report.country.shortName=%@&report.ispDefaultName=%@&report.location=%@&report.interest=%@&report.reason=%@&report.sourceId=%@&report.tag=%@&report.comments=%@&defaultCountryCode=%@&defaultispDefaultName=%@&encoding=%@",
-						   self.tld,
+						   self.subdomain,
 						   theReportType,
 						   theEncodedUrl,
 						   theCountry,
